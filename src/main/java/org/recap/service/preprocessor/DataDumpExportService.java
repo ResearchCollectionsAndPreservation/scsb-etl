@@ -249,7 +249,8 @@ public class DataDumpExportService {
 
         dataDumpRequest.setDateTimeString(getDateTimeString());
 
-        dataDumpRequest.setRequestId(new SimpleDateFormat(RecapConstants.DATE_FORMAT_YYYYMMDDHHMM).format(new Date()));
+        dataDumpRequest.setRequestId(new SimpleDateFormat(RecapConstants.DATE_FORMAT_YYYYMMDDHHMM).format(new Date())+
+                "-"+dataDumpRequest.getInstitutionCodes()+"-"+dataDumpRequest.getRequestingInstitutionCode()+"-"+dataDumpRequest.getFetchType());
     }
 
     /**
