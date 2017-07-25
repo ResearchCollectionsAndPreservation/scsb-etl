@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -34,7 +35,7 @@ public class DataDumpExecutorService {
      * @throws ExecutionException   the execution exception
      * @throws InterruptedException the interrupted exception
      */
-    public String generateDataDump(DataDumpRequest dataDumpRequest) throws ExecutionException, InterruptedException {
+    public String generateDataDump(DataDumpRequest dataDumpRequest) throws ExecutionException, InterruptedException, ParseException {
         String outputString = null;
         for(DataDumpExecutorInterface dataDumpExecutorInterface:getExecutor()){
             if(dataDumpExecutorInterface.isInterested(dataDumpRequest.getFetchType())){

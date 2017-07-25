@@ -83,6 +83,7 @@ public class DataExportEmailProcessor implements Processor {
     private List<String> institutionCodes;
     private String requestingInstitutionCode;
     private String folderName;
+    private String reportFileName;
     private String toEmailId;
     private String requestId;
     private String fetchType;
@@ -99,6 +100,7 @@ public class DataExportEmailProcessor implements Processor {
         String failedBibs = "0";
         String exportedItemCount = "0";
         List<ReportEntity> byFileName = reportDetailRepository.findByFileName(requestId);
+        setReportFileName(byFileName.get(0));
         List<ReportEntity> successReportEntities = new ArrayList<>();
         List<ReportEntity> failureReportEntities = new ArrayList<>();
         for (ReportEntity reportEntity:byFileName) {
@@ -129,6 +131,23 @@ public class DataExportEmailProcessor implements Processor {
         }
     }
 
+    private void setReportFileName(ReportEntity reportEntity){
+        for (ReportDataEntity reportDataEntity:reportEntity.getReportDataEntities()){
+            if(reportDataEntity.getHeaderName().equals(RecapConstants.HEADER_FETCH_TYPE)){
+                if (reportDataEntity.getHeaderValue().equals(RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL)) {
+                    String[] split = folderName.split("/");
+                    reportFileName =split[0]+File.separator+split[1]+File.separator+RecapConstants.EXPORT_DATA_DUMP_INCREMENTAL+split[2];
+                } else if(reportDataEntity.getHeaderValue().equals(RecapConstants.DATADUMP_FETCHTYPE_DELETED)) {
+                    String[] split = folderName.split("/");
+                    reportFileName = split[0]+File.separator+split[1]+File.separator+RecapConstants.EXPORT_DATA_DUMP_DELETIONS+split[2];
+                }
+                else{
+                    String[] split = folderName.split("/");
+                    reportFileName =split[0]+File.separator+split[1]+File.separator+RecapConstants.EXPORT_DATA_DUMP_FULL+split[2];
+                }
+            }
+        }
+    }
     /**
      * To send a batch export success and failure reports to FTP.
      *
@@ -138,11 +157,11 @@ public class DataExportEmailProcessor implements Processor {
     private void sendBatchExportReportToFTP(List<ReportEntity> reportEntities, String type) {
         if(CollectionUtils.isNotEmpty(reportEntities)) {
             if(type.equalsIgnoreCase(RecapConstants.SUCCESS)) {
-                DataDumpSuccessReport dataDumpSuccessReport = ftpDataDumpSuccessReportGenerator.getDataDumpSuccessReport(reportEntities, folderName);
+                DataDumpSuccessReport dataDumpSuccessReport = ftpDataDumpSuccessReportGenerator.getDataDumpSuccessReport(reportEntities, reportFileName);
                 producerTemplate.sendBody(RecapConstants.DATAEXPORT_WITH_SUCCESS_REPORT_FTP_Q, dataDumpSuccessReport);
                 logger.info("The Success Report folder : {}", folderName);
             } else if (type.equalsIgnoreCase(RecapConstants.FAILURE)) {
-                DataDumpFailureReport dataDumpFailureReport = ftpDataDumpFailureReportGenerator.getDataDumpFailureReport(reportEntities, folderName);
+                DataDumpFailureReport dataDumpFailureReport = ftpDataDumpFailureReportGenerator.getDataDumpFailureReport(reportEntities, reportFileName);
                 producerTemplate.sendBody(RecapConstants.DATAEXPORT_WITH_FAILURE_REPORT_FTP_Q, dataDumpFailureReport);
                 logger.info("The Failure Report folder : {}", folderName);
             }

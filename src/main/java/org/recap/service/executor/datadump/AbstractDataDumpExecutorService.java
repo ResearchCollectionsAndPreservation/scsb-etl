@@ -62,7 +62,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
      * @throws InterruptedException
      */
     @Override
-    public String process(DataDumpRequest dataDumpRequest) throws ExecutionException, InterruptedException {
+    public String process(DataDumpRequest dataDumpRequest) throws ExecutionException, InterruptedException, ParseException {
         String outputString;
 
         SearchRecordsRequest searchRecordsRequest = new SearchRecordsRequest();
@@ -178,17 +178,22 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
      * @param pageNum
      * @return
      */
-    private String getFileName(DataDumpRequest dataDumpRequest, int pageNum) {
+    private String getFileName(DataDumpRequest dataDumpRequest, int pageNum) throws ParseException {
         String institutions = StringUtils.join(dataDumpRequest.getInstitutionCodes(), "-");
-        return dataDumpRequest.getRequestingInstitutionCode()
+        SimpleDateFormat dateFormatForReport=new SimpleDateFormat(RecapConstants.DATE_FORMAT_FOR_REPORT_NAME);
+        SimpleDateFormat dateFomatFromApi=new SimpleDateFormat(RecapConstants.DATE_FORMAT_FROM_API);
+        Date parsedDate = dateFomatFromApi.parse(dataDumpRequest.getDateTimeString());
+        String formattedDate = dateFormatForReport.format(parsedDate);
+        String fileName=dataDumpRequest.getRequestingInstitutionCode()
                 + File.separator
                 + getOutputFormat(dataDumpRequest)
                 + File.separator
                 + institutions
-                + "-"
-                + dataDumpRequest.getDateTimeString()
+                + "_"
+                + formattedDate
                 + File.separator
                 + pageNum;
+        return fileName;
     }
 
     /**
@@ -216,15 +221,21 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
      * @param dataDumpRequest
      * @return
      */
-    private String getFolderName(DataDumpRequest dataDumpRequest) {
+    private String getFolderName(DataDumpRequest dataDumpRequest) throws ParseException {
         String institutions = StringUtils.join(dataDumpRequest.getInstitutionCodes(), "-");
-        return dataDumpRequest.getRequestingInstitutionCode()
+        SimpleDateFormat dateFormatForReport=new SimpleDateFormat(RecapConstants.DATE_FORMAT_FOR_REPORT_NAME);
+        SimpleDateFormat dateFomatFromApi=new SimpleDateFormat(RecapConstants.DATE_FORMAT_FROM_API);
+        Date parsedDate = dateFomatFromApi.parse(dataDumpRequest.getDateTimeString());
+        String formattedDate = dateFormatForReport.format(parsedDate);
+        String folderName=dataDumpRequest.getRequestingInstitutionCode()
                 + File.separator
                 + getOutputFormat(dataDumpRequest)
                 + File.separator
                 + institutions
-                + "-"
-                + dataDumpRequest.getDateTimeString();
+                + "_"
+                + formattedDate;
+
+        return folderName;
     }
 
     /**
