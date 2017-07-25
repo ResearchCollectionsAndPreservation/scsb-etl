@@ -57,10 +57,8 @@ public class BibEntityGeneratorActiveMQConsumer {
             HashMap hashMap = iterator.next();
             Integer bibId = (Integer) hashMap.get("bibId");
             List<Integer> itemIds = (List<Integer>) hashMap.get("itemIds");
-            if(CollectionUtils.isNotEmpty(itemIds)) {
-                bibIdList.add(bibId);
-                bibItemMap.put(bibId, itemIds);
-            }
+            bibIdList.add(bibId);
+            bibItemMap.put(bibId, itemIds);
         }
 
         if(CollectionUtils.isNotEmpty(bibIdList)) {
