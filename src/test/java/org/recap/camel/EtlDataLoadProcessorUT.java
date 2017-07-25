@@ -89,4 +89,46 @@ public class EtlDataLoadProcessorUT extends BaseTestCase{
         assertNotNull(bibliographicEntity);
     }
 
+    @Test
+    public void testFailureReportEntity() throws Exception {
+
+        assertNotNull(etlDataLoadProcessor);
+        assertNotNull(recordProcessor);
+        assertNotNull(xmlRecordRepository);
+        assertNotNull(bibliographicDetailsRepository);
+        assertNotNull(holdingsDetailsRepository);
+        assertNotNull(itemDetailsRepository);
+        assertNotNull(producer);
+
+        XmlRecordEntity xmlRecordEntity = new XmlRecordEntity();
+        String xmlFileName = "InvalidRecordForEtlLoadTest.xml";
+        xmlRecordEntity.setXmlFileName(xmlFileName);
+        xmlRecordEntity.setOwningInstBibId(".b100006279");
+        xmlRecordEntity.setOwningInst("NYPL");
+        xmlRecordEntity.setDataLoaded(new Date());
+        URL resource = getClass().getResource(xmlFileName);
+        assertNotNull(resource);
+        File file = new File(resource.toURI());
+        String content = FileUtils.readFileToString(file, "UTF-8");
+        xmlRecordEntity.setXml(content.getBytes());
+        xmlRecordRepository.save(xmlRecordEntity);
+
+        etlDataLoadProcessor.setFileName(xmlFileName);
+        etlDataLoadProcessor.setBatchSize(10);
+        etlDataLoadProcessor.setRecordProcessor(recordProcessor);
+        etlDataLoadProcessor.setXmlRecordRepository(xmlRecordRepository);
+        etlDataLoadProcessor.setBibliographicDetailsRepository(bibliographicDetailsRepository);
+        etlDataLoadProcessor.setHoldingsDetailsRepository(holdingsDetailsRepository);
+        etlDataLoadProcessor.setItemDetailsRepository(itemDetailsRepository);
+        etlDataLoadProcessor.setProducer(producer);
+        etlDataLoadProcessor.setInstitutionName("NYPL");
+        assertNotNull(etlDataLoadProcessor.getXmlRecordRepository());
+        assertEquals(etlDataLoadProcessor.getBatchSize(), new Integer(10));
+        assertEquals(etlDataLoadProcessor.getRecordProcessor(), recordProcessor);
+        assertEquals(etlDataLoadProcessor.getFileName(), xmlFileName);
+        etlDataLoadProcessor.startLoadProcess();
+        assertEquals(recordProcessor.getXmlFileName(),xmlFileName);
+
+    }
+
 }
