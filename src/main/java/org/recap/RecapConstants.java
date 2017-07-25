@@ -82,6 +82,8 @@ public class RecapConstants {
 
 
     public static final String DATE_FORMAT_FOR_FILE_NAME = "ddMMMyyyy";
+    public static final String DATE_FORMAT_FOR_REPORT_NAME="yyyyMMdd_HHmmss";
+    public static final String DATE_FORMAT_FROM_API="ddMMMyyyyHHmm";
     public static final String FAILURE = "Failure";
     public static final String SUCCESS = "Success";
 
@@ -206,6 +208,10 @@ public class RecapConstants {
     public static final String FAILED_BIBS = "FailedBibs";
     public static final String COLLECTION_GROUP_IDS = "collectionGroupIds";
     public static final String FETCH_TYPE = "fetchType";
+    public static final String HEADER_FETCH_TYPE = "FetchType";
+    public static final String EXPORT_DATA_DUMP_INCREMENTAL = "ExportDataDump_Incremental_";
+    public static final String EXPORT_DATA_DUMP_DELETIONS = "ExportDataDump_Deletions_";
+    public static final String EXPORT_DATA_DUMP_FULL = "ExportDataDump_Full_";
     public static final String EXPORT_FROM_DATE = "exportFromDate";
 
     public static final String DATADUMP_SUCCESS_REPORT_CSV_ROUTE_ID = "dataDumpSucccessReportCsvRouteId";

@@ -2,6 +2,7 @@ package org.recap.service.executor.datadump;
 
 import org.recap.model.export.DataDumpRequest;
 
+import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -25,6 +26,6 @@ public interface DataDumpExecutorInterface {
      * @throws ExecutionException   the execution exception
      * @throws InterruptedException the interrupted exception
      */
-    public String process(DataDumpRequest dataDumpRequest) throws ExecutionException, InterruptedException;
+    public String process(DataDumpRequest dataDumpRequest) throws ExecutionException, InterruptedException, ParseException;
 
 }
