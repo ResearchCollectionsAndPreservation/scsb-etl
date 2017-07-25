@@ -57,11 +57,20 @@ public class DataDumpEmailService {
     private String getLocation(String transmissionType,String dateTimeStringForFolder) {
         String location = null;
         if ("0".equals(transmissionType)) {
-            location = "FTP location - " + ftpDataDumpDirectory + File.separator + dateTimeStringForFolder;
+            location = "FTP location - " + getFtpLocation(ftpDataDumpDirectory) + File.separator + dateTimeStringForFolder;
         } else if ("2".equals(transmissionType)) {
             location = "File System - " + fileSystemDataDumpDirectory + File.separator + dateTimeStringForFolder;
         }
         return location;
+    }
+
+    private String getFtpLocation(String ftpLocation) {
+        if (ftpLocation.contains(RecapConstants.FTP_PORT)) {
+            String[] splittedFtpLocation = ftpLocation.split(RecapConstants.FTP_PORT);
+            return splittedFtpLocation[1];
+        } else {
+            return ftpLocation;
+        }
     }
 
 }
