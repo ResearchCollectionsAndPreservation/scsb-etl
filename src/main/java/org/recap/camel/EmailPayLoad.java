@@ -13,7 +13,9 @@ public class EmailPayLoad implements Serializable{
     private Integer count;
     private Integer failedCount;
     private String to;
+    private String cc;
     private Integer itemCount;
+    private String subject;
 
     /**
      * Gets institutions.
@@ -105,11 +107,57 @@ public class EmailPayLoad implements Serializable{
         this.to = to;
     }
 
+    /**
+     * Gets item count.
+     *
+     * @return the item count
+     */
     public Integer getItemCount() {
         return itemCount;
     }
 
+    /**
+     * Sets item count.
+     *
+     * @param itemCount the item count
+     */
     public void setItemCount(Integer itemCount) {
         this.itemCount = itemCount;
+    }
+
+    /**
+     * Gets subject.
+     *
+     * @return the subject
+     */
+    public String getSubject() {
+        return subject;
+    }
+
+    /**
+     * Sets subject.
+     *
+     * @param subject the subject
+     */
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    /**
+     * Gets cc.
+     *
+     * @return the cc
+     */
+    public String getCc() {
+        return cc;
+    }
+
+    /**
+     * Sets cc.
+     *
+     * @param cc the cc
+     */
+    public void setCc(String cc) {
+        this.cc = cc;
     }
 }

@@ -232,6 +232,12 @@ public class RecapConstants {
     public static final String PROCESS_RECORDS="processRecords";
     public static final String FTP_ROUTE="ftpRoute";
 
+    //EmailHeaders
+    public static final String EMAIL_INCREMENTAL_DATA_DUMP="Incremental_Data_Dump";
+    public static final String EMAIL_DELETION_DATA_DUMP="Deletion_Data_Dump";
+    public static final String SUBJECT_INCREMENTAL_DATA_DUMP="Export Data Dump Report - Incremental";
+    public static final String SUBJECT_DELETION_DATA_DUMP="Deleted Records Report";
+
     //Logger
     public static final String ERROR = "error-->";
     public static final String ITEM_EXPORTED_COUNT = "itemExportedCount";

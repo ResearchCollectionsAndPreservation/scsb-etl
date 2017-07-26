@@ -66,7 +66,23 @@ public class EmailRouteBuilder {
                                         .setHeader("to", simple("${header.emailPayLoad.to}"))
                                         .log("email body for no data available")
                                         .to("smtps://" + smtpServer + "?username=" + username + "&password=" + emailPassword)
-                    ;
+                                    .when(header("emailBodyFor").isEqualTo(RecapConstants.EMAIL_INCREMENTAL_DATA_DUMP))
+                                        .setHeader("subject", simple("${header.emailPayLoad.subject}"))
+                                        .setBody(simple("The report is available in the ${header.emailPayLoad.location}"))
+                                        .setHeader("from", simple(from))
+                                        .setHeader("to", simple("${header.emailPayLoad.to}"))
+                                        .setHeader("cc", simple("${header.emailPayLoad.cc}"))
+                                        .log("Email sent for Incremental DataDump")
+                                        .to("smtps://" + smtpServer + "?username=" + username + "&password=" + emailPassword)
+                                    .when(header("emailBodyFor").isEqualTo(RecapConstants.EMAIL_DELETION_DATA_DUMP))
+                                        .setHeader("subject", simple("${header.emailPayLoad.subject}"))
+                                        .setBody(simple("The report is available in the ${header.emailPayLoad.location}"))
+                                        .setHeader("from", simple(from))
+                                        .setHeader("to", simple("${header.emailPayLoad.to}"))
+                                        .setHeader("cc", simple("${header.emailPayLoad.cc}"))
+                                        .log("Email sent for Deletion data dump")
+                                        .to("smtps://" + smtpServer + "?username=" + username + "&password=" + emailPassword)
+                            ;
                 }
 
                 private void loadEmailBodyTemplate() {

@@ -125,9 +125,16 @@ public class DataExportEmailProcessor implements Processor {
         }
         sendBatchExportReportToFTP(successReportEntities, RecapConstants.SUCCESS);
         sendBatchExportReportToFTP(failureReportEntities, RecapConstants.FAILURE);
-        processEmail(totalRecordCount,failedBibs,exportedItemCount);
+
         if(fetchType.equals(fetchTypeFull)) {
+            processEmail(totalRecordCount,failedBibs,exportedItemCount,fetchType,requestingInstitutionCode);
             writeFullDumpStatusToFile();
+        }
+        else if(fetchType.equals(RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL)){
+            processEmail(totalRecordCount,failedBibs,exportedItemCount,fetchType,requestingInstitutionCode);
+        }
+        else if(fetchType.equals(RecapConstants.DATADUMP_FETCHTYPE_DELETED)){
+            processEmail(totalRecordCount,failedBibs,exportedItemCount,fetchType,requestingInstitutionCode);
         }
     }
 
@@ -193,7 +200,7 @@ public class DataExportEmailProcessor implements Processor {
      * @param failedBibs
      * @param exportedItemCount
      */
-    private void processEmail(String totalRecordCount, String failedBibs, String exportedItemCount){
+    private void processEmail(String totalRecordCount, String failedBibs, String exportedItemCount,String fetchType,String requestingInstitutionCode){
         if (transmissionType.equals(RecapConstants.DATADUMP_TRANSMISSION_TYPE_FTP)
                 ||transmissionType.equals(RecapConstants.DATADUMP_TRANSMISSION_TYPE_FILESYSTEM)) {
             dataDumpEmailService.sendEmail(institutionCodes,
@@ -203,7 +210,7 @@ public class DataExportEmailProcessor implements Processor {
                     this.folderName,
                     toEmailId,
                     RecapConstants.DATADUMP_DATA_AVAILABLE,
-                    Integer.valueOf(exportedItemCount)
+                    Integer.valueOf(exportedItemCount),fetchType,requestingInstitutionCode
             );
         }
     }
