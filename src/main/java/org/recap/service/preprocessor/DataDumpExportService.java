@@ -116,8 +116,8 @@ public class DataDumpExportService {
                             null,
                             dataDumpRequest.getToEmailAddress(),
                             RecapConstants.DATADUMP_NO_DATA_AVAILABLE,
-                            Integer.valueOf(0)
-                    );
+                            Integer.valueOf(0),
+                            dataDumpRequest.getFetchType(), dataDumpRequest.getRequestingInstitutionCode());
                     if (RecapConstants.EXPORT_SCHEDULER_CALL) {
                         producerTemplate.sendBody(RecapConstants.DATA_DUMP_COMPLETION_FROM, dataDumpRequest.getRequestingInstitutionCode());
                     }
