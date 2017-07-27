@@ -78,7 +78,8 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
         boolean isRecordsToProcess = totalBibsCount > 0 ? true : false;
         boolean canProcess = canProcessRecords(totalBibsCount, dataDumpRequest.getTransmissionType());
         boolean bibHasItems = bibHasItems(results);
-        if (isRecordsToProcess && canProcess && bibHasItems) {
+        boolean isDeleted = dataDumpRequest.getFetchType().equals(RecapConstants.DATADUMP_FETCHTYPE_DELETED);
+        if (isRecordsToProcess && canProcess && (bibHasItems || isDeleted)) {//Deleted feed may not have items, if an item got transferred to another bib and source bib became an orphan
             outputString = RecapConstants.DATADUMP_RECORDS_AVAILABLE_FOR_PROCESS;
             sendBodyForIsRecordAvailableMessage(outputString);
             String fileName = getFileName(dataDumpRequest, 0);
