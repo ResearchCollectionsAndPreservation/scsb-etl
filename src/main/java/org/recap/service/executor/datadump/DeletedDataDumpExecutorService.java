@@ -4,13 +4,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.recap.RecapConstants;
 import org.recap.model.export.DataDumpRequest;
 import org.recap.model.search.SearchRecordsRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by premkb on 27/9/16.
  */
 @Service
 public class DeletedDataDumpExecutorService extends AbstractDataDumpExecutorService {
+
+    @Value("${datadump.deleted.type.onlyorphan.institution}")
+    private String deletedOnlyOrphanInstitution;
 
     /**
      * Returns true if selected fetch type is deleted records data dump.
@@ -31,11 +38,30 @@ public class DeletedDataDumpExecutorService extends AbstractDataDumpExecutorServ
      */
     @Override
     public void populateSearchRequest(SearchRecordsRequest searchRecordsRequest, DataDumpRequest dataDumpRequest) {
+        boolean onlyOrphan = isDeletedOnlyOrphanInstitution(dataDumpRequest);
         searchRecordsRequest.setDeleted(true);
-        if(StringUtils.isNotBlank(dataDumpRequest.getDate())) {
+        if(StringUtils.isNotBlank(dataDumpRequest.getDate()) && !onlyOrphan) {
             searchRecordsRequest.setFieldName(RecapConstants.ITEM_LASTUPDATED_DATE);
+            searchRecordsRequest.setFieldValue(getFormattedDateString(dataDumpRequest.getDate()));
+        } else if(StringUtils.isNotBlank(dataDumpRequest.getDate()) && onlyOrphan){
+            searchRecordsRequest.setFieldName(RecapConstants.BIB_LASTUPDATED_DATE);
             searchRecordsRequest.setFieldValue(getFormattedDateString(dataDumpRequest.getDate()));
         }
         searchRecordsRequest.setRequestingInstitution(dataDumpRequest.getRequestingInstitutionCode());
+    }
+
+    private boolean isDeletedOnlyOrphanInstitution(DataDumpRequest dataDumpRequest){
+        String requestingInstitution = dataDumpRequest.getRequestingInstitutionCode();
+        List<String> deleteOnlyOrphanInstitutionList = getInstitutionList(deletedOnlyOrphanInstitution);
+        if(deleteOnlyOrphanInstitutionList.contains(requestingInstitution)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private List<String> getInstitutionList(String institutionString){
+        List<String> institutionList = Arrays.asList(institutionString.split("\\s*,\\s*"));
+        return institutionList;
     }
 }
