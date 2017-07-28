@@ -67,7 +67,7 @@ public class SCSBXMLFormatActiveMQConsumer {
         }
         long endTime = System.currentTimeMillis();
 
-        logger.info("Time taken to generate scsb xml for : {} is : seconds " , records.size() ,  (endTime - startTime) / 1000 );
+        logger.info("Time taken to generate scsb xml for : {} is {} : seconds " , records.size() ,  (endTime - startTime) / 1000 );
 
         return toSCSBXmlString;
     }
