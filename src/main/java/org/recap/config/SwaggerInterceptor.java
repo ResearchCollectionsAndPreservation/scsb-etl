@@ -1,5 +1,6 @@
 package org.recap.config;
 
+import org.recap.spring.SwaggerAPIProvider;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,7 +29,7 @@ public class SwaggerInterceptor implements HandlerInterceptor {
         boolean continueExport;
         String date = new Date().toString();
         String key = request.getHeader("api_key");
-        if (key != null && "recap".equalsIgnoreCase(key)) {
+        if (key != null && SwaggerAPIProvider.getInstance().getSwaggerApiKey().equalsIgnoreCase(key)) {
             continueExport = true;
         } else {
             continueExport = false;
