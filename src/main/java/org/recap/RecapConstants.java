@@ -242,6 +242,9 @@ public class RecapConstants {
     public static final String ERROR = "error-->";
     public static final String ITEM_EXPORTED_COUNT = "itemExportedCount";
 
+    //scsb-api-key
+    public static final String API_KEY = "api_key";
+
     public class MarcFields {
         public static final String CF_001 = "001";
         public static final String CF_009 = "009";
