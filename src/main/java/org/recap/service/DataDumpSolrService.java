@@ -1,6 +1,7 @@
 package org.recap.service;
 
 import org.recap.model.search.SearchRecordsRequest;
+import org.recap.spring.SwaggerAPIProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -48,7 +49,7 @@ public class DataDumpSolrService {
     public Map getResults(SearchRecordsRequest searchRecordsRequest) {
         String url = getSolrClientUrl() + "searchService/searchRecords";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("api_key","recap");
+        headers.set("api_key", SwaggerAPIProvider.getInstance().getSwaggerApiKey());
         HttpEntity<SearchRecordsRequest> requestEntity = new HttpEntity<>(searchRecordsRequest,headers);
         ResponseEntity<Map> responseEntity = getRestTemplate().postForEntity(url, requestEntity, Map.class);
 
