@@ -4,6 +4,8 @@ import org.recap.RecapConstants;
 import org.recap.model.jpa.ReportDataEntity;
 import org.recap.model.jpa.ReportEntity;
 import org.recap.repository.ReportDetailRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -16,6 +18,7 @@ import java.util.*;
 @Component
 public class DataExportReportActiveMQConsumer {
 
+    private static final Logger logger = LoggerFactory.getLogger(DataExportReportActiveMQConsumer.class);
     /**
      * The Report detail repository.
      */
@@ -42,6 +45,8 @@ public class DataExportReportActiveMQConsumer {
         String numBibsExported = (String) body.get(RecapConstants.NUM_BIBS_EXPORTED);
         String numRecords = (String) body.get(RecapConstants.NUM_RECORDS);
         Integer exportedItemCount = (Integer) body.get(RecapConstants.ITEM_EXPORTED_COUNT);
+        logger.info("No. of bib exported for a single batch---->{}",numRecords);
+        logger.info("No. of item exported for a single batch---->{}",exportedItemCount);
 
         List<ReportEntity> byFileName = getReportDetailRepository().findByFileNameAndType(requestId, RecapConstants.BATCH_EXPORT_SUCCESS);
 
@@ -102,7 +107,7 @@ public class DataExportReportActiveMQConsumer {
 
             ReportDataEntity reportDataEntityExportedItemCount = new ReportDataEntity();
             reportDataEntities.add(reportDataEntityExportedItemCount);
-            reportDataEntityExportedItemCount.setHeaderName("ExportedItemCount");
+            reportDataEntityExportedItemCount.setHeaderName(RecapConstants.EXPORTED_ITEM_COUNT);
             reportDataEntityExportedItemCount.setHeaderValue(String.valueOf(exportedItemCount));
 
 
@@ -112,7 +117,12 @@ public class DataExportReportActiveMQConsumer {
             for (Iterator<ReportDataEntity> iterator = reportDataEntities.iterator(); iterator.hasNext(); ) {
                 ReportDataEntity reportDataEntity = iterator.next();
                 if (reportDataEntity.getHeaderName().equals(numBibsExported)) {
+                    logger.info("Updated bib count-->{}",(Integer.valueOf(reportDataEntity.getHeaderValue()) + Integer.valueOf(numRecords)));
                     reportDataEntity.setHeaderValue(String.valueOf(Integer.valueOf(reportDataEntity.getHeaderValue()) + Integer.valueOf(numRecords)));
+                }
+                if(reportDataEntity.getHeaderName().equals(RecapConstants.EXPORTED_ITEM_COUNT)){
+                    logger.info("Updated item count-->{}",(Integer.valueOf(reportDataEntity.getHeaderValue())+exportedItemCount));
+                    reportDataEntity.setHeaderValue(String.valueOf(Integer.valueOf(reportDataEntity.getHeaderValue())+exportedItemCount));
                 }
             }
         }

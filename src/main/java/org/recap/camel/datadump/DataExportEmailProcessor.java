@@ -113,7 +113,7 @@ public class DataExportEmailProcessor implements Processor {
                 if(reportDataEntity.getHeaderName().equals(RecapConstants.FAILED_BIBS)){
                     failedBibs = reportDataEntity.getHeaderValue();
                 }
-                if(reportDataEntity.getHeaderName().equals("ExportedItemCount")){
+                if(reportDataEntity.getHeaderName().equals(RecapConstants.EXPORTED_ITEM_COUNT)){
                     exportedItemCount = reportDataEntity.getHeaderValue();
                 }
             }

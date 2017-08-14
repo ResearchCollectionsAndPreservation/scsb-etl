@@ -200,6 +200,7 @@ public class RecapConstants {
 
     public static final String NUM_RECORDS = "Num Records";
     public static final String NUM_BIBS_EXPORTED = "NoOfBibsExported";
+    public static final String EXPORTED_ITEM_COUNT = "ExportedItemCount";
     public static final String BATCH_EXPORT = "BatchExport";
     public static final String BATCH_EXPORT_SUCCESS = "BatchExportSuccess";
     public static final String BATCH_EXPORT_FAILURE = "BatchExportFailure";
