@@ -3,6 +3,9 @@ package org.recap.camel.datadump;
 import org.apache.camel.Exchange;
 import org.apache.camel.impl.DefaultExchange;
 import org.apache.camel.processor.aggregate.AggregationStrategy;
+import org.recap.RecapConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,6 +16,8 @@ import java.util.Map;
  * Created by peris on 11/5/16.
  */
 public class DataExportAggregator implements AggregationStrategy {
+
+    private Logger logger = LoggerFactory.getLogger(DataExportAggregator.class);
     /**
      * This method aggregates an old and new exchange together to create a single combined exchange.
      * The strategy is to update the batch size in old exchange with the records size in the new exchange.
@@ -22,16 +27,28 @@ public class DataExportAggregator implements AggregationStrategy {
      */
     @Override
     public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
+        boolean isFirstBatch = false;
         if (oldExchange == null) {
             oldExchange = new DefaultExchange(newExchange);
             oldExchange.getIn().setHeaders(newExchange.getIn().getHeaders());
             List<Object> body = new ArrayList<>();
             oldExchange.getIn().setBody(body);
             oldExchange.getExchangeId();
+            isFirstBatch = true;
         }
         List body = (List) newExchange.getIn().getBody();
         List oldBody = oldExchange.getIn().getBody(List.class);
         if (null != oldBody && null != body) {
+            if (!isFirstBatch) {
+                Integer itemExportCount = (Integer) newExchange.getIn().getHeader(RecapConstants.ITEM_EXPORTED_COUNT);
+                Integer previousItemExportCount = (Integer) oldExchange.getIn().getHeader(RecapConstants.ITEM_EXPORTED_COUNT);
+                Integer updatedItemExportCount = previousItemExportCount + itemExportCount;
+                newExchange.getIn().setHeader(RecapConstants.ITEM_EXPORTED_COUNT,updatedItemExportCount);
+                logger.info("itemExportCount--->{} previousItemExportCount--->{} updatedItemExportCount--->{}",itemExportCount,previousItemExportCount,updatedItemExportCount);
+            } else {
+                Integer itemExportCount = (Integer) newExchange.getIn().getHeader(RecapConstants.ITEM_EXPORTED_COUNT);
+                logger.info("first batch...itemExportCount-->{}",itemExportCount);
+            }
             oldBody.addAll(body);
             Object oldBatchSize = oldExchange.getIn().getHeader("batchSize");
             Integer newBatchSize = 0;
