@@ -73,7 +73,9 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
 
         Map results = dataDumpSolrService.getResults(searchRecordsRequest);
         Integer totalPageCount = (Integer) results.get("totalPageCount");
+        logger.info("totalPageCount--->{}",totalPageCount);
         Integer totalBibsCount = Integer.valueOf((String) results.get("totalRecordsCount"));
+        logger.info("totalBibsCount--->{}",totalBibsCount);
 
         boolean isRecordsToProcess = totalBibsCount > 0 ? true : false;
         boolean canProcess = canProcessRecords(totalBibsCount, dataDumpRequest.getTransmissionType());
