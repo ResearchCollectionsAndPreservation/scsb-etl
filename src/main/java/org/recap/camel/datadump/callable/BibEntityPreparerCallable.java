@@ -1,11 +1,10 @@
 package org.recap.camel.datadump.callable;
 
 import org.recap.model.jpa.BibliographicEntity;
+import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.ItemEntity;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 /**
@@ -47,7 +46,20 @@ public class BibEntityPreparerCallable implements Callable {
             }
         }
         bibliographicEntity.setItemEntities(filteredItems);
+        filterUnwantedHoldings(bibliographicEntity);
+        return bibliographicEntity;
+    }
 
+    private BibliographicEntity filterUnwantedHoldings(BibliographicEntity bibliographicEntity){
+        Set<HoldingsEntity> holdingsEntitySet = new HashSet<>();
+        List<HoldingsEntity> holdingsEntityList = new ArrayList<>();
+        for(ItemEntity itemEntity:bibliographicEntity.getItemEntities()){
+            holdingsEntitySet.add(itemEntity.getHoldingsEntities().get(0));
+        }
+        for(HoldingsEntity holdingsEntity:holdingsEntitySet){
+            holdingsEntityList.add(holdingsEntity);
+        }
+        bibliographicEntity.setHoldingsEntities(holdingsEntityList);
         return bibliographicEntity;
     }
 }
