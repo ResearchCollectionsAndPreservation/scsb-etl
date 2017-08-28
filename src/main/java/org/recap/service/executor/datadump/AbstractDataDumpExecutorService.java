@@ -53,6 +53,9 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
     @Value("${datadump.batch.size}")
     private String dataDumpBatchSize;
 
+    @Value("${datadump.solr.fetch.delay}")
+    private Long solrFetchDelay;
+
     /**
      * Initiates the data dump process.
      *
@@ -76,6 +79,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
         logger.info("totalPageCount--->{}",totalPageCount);
         Integer totalBibsCount = Integer.valueOf((String) results.get("totalRecordsCount"));
         logger.info("totalBibsCount--->{}",totalBibsCount);
+        logger.info("solrFetchDelay--->{}",solrFetchDelay);
 
         boolean isRecordsToProcess = totalBibsCount > 0 ? true : false;
         boolean canProcess = canProcessRecords(totalBibsCount, dataDumpRequest.getTransmissionType());
@@ -93,7 +97,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
             sendBodyAndHeader(results, headerString);
 
             for (int pageNum = 1; pageNum < totalPageCount; pageNum++) {
-                Thread.sleep(10000);
+                Thread.sleep(solrFetchDelay);
                 searchRecordsRequest.setPageNumber(pageNum);
                 BatchCounter.setCurrentPage(pageNum + 1);
                 Map results1 = dataDumpSolrService.getResults(searchRecordsRequest);
