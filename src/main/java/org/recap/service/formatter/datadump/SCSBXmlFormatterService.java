@@ -182,7 +182,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
         try {
             Bib bib = getBib(bibliographicEntity,matchingBibInfoDetailList);
             List<Integer> itemIds = getItemIds(bibliographicEntity);
-            List<Holdings> holdings = getHoldings(bibliographicEntity.getHoldingsEntities(),itemIds,bibliographicEntity.getNonOrphanHoldingsIdList());
+            List<Holdings> holdings = getHoldings(bibliographicEntity.getHoldingsEntities(),itemIds,getNonOrphanHoldingsIdList(bibliographicEntity.getItemEntities()));
             bibRecord = new BibRecord();
             bibRecord.setBib(bib);
             bibRecord.setHoldings(holdings);
@@ -192,6 +192,14 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
             results.put(RecapConstants.FAILURE, String.valueOf(e.getCause()));
         }
         return results;
+    }
+
+    private List<Integer> getNonOrphanHoldingsIdList(List<ItemEntity> itemEntityList){
+        Set<Integer> holdingsIdSet = new HashSet<>();
+        for(ItemEntity itemEntity:itemEntityList){
+            holdingsIdSet.add(itemEntity.getHoldingsEntities().get(0).getHoldingsId());
+        }
+        return new ArrayList<>(holdingsIdSet);
     }
 
     /**
