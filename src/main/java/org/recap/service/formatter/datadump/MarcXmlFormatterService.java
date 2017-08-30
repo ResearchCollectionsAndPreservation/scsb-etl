@@ -195,7 +195,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
     private Record addHoldingInfo(Record record, List<HoldingsEntity> holdingsEntityList,List<Integer> itemIds,List<Integer> nonOrphanHoldingsIdList) {
         Record holdingRecord;
         for (HoldingsEntity holdingsEntity : holdingsEntityList) {
-            if (nonOrphanHoldingsIdList !=null && nonOrphanHoldingsIdList.contains(holdingsEntity.getHoldingsId())) {
+            //if (nonOrphanHoldingsIdList !=null && nonOrphanHoldingsIdList.contains(holdingsEntity.getHoldingsId())) {
                 holdingRecord = getRecordFromContent(holdingsEntity.getContent());
                 for (DataField dataField : holdingRecord.getDataFields()) {
                     if (RecapConstants.MarcFields.DF_852.equals(dataField.getTag())) {
@@ -217,7 +217,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
                         record = addItemInfo(record, itemEntity, holdingsEntity);
                     }
                 }
-            }
+            //}
         }
         return record;
     }
