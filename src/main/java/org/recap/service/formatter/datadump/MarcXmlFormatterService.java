@@ -102,7 +102,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
             stripTagsFromBib(record,Arrays.asList(RecapConstants.MarcFields.DF_852,RecapConstants.MarcFields.DF_876));
             add009Field(record, bibliographicEntity);
             List<Integer> itemIds = getItemIds(bibliographicEntity);
-            record = addHoldingInfo(record, bibliographicEntity.getHoldingsEntities(),itemIds,bibliographicEntity.getNonOrphanHoldingsIdList());
+            record = addHoldingInfo(record, bibliographicEntity.getHoldingsEntities(),itemIds,getNonOrphanHoldingsIdList(bibliographicEntity.getItemEntities()));
             results.put(RecapConstants.SUCCESS, record);
         } catch (Exception e) {
             logger.info("failed bib own ins bib id--->{}",bibliographicEntity.getOwningInstitutionBibId());
@@ -143,6 +143,18 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
         return itemIds;
     }
 
+    /**
+     * This method is to filter the holdings which are belonging to share and open item and not belonging private item
+     * @param itemEntityList
+     * @return
+     */
+    private List<Integer> getNonOrphanHoldingsIdList(List<ItemEntity> itemEntityList){
+        Set<Integer> holdingsIdSet = new HashSet<>();
+        for(ItemEntity itemEntity:itemEntityList){
+            holdingsIdSet.add(itemEntity.getHoldingsEntities().get(0).getHoldingsId());
+        }
+        return new ArrayList<>(holdingsIdSet);
+    }
     /**
      * Build marc record from byte array marc content.
      * @param content
