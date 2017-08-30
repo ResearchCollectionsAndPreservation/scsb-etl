@@ -106,6 +106,7 @@ public class BibEntityGeneratorActiveMQConsumer {
                     .withHeader("exportFormat", exchange.getIn().getHeader("exportFormat"))
                     .withHeader("transmissionType", exchange.getIn().getHeader("transmissionType"));
             fluentProducerTemplate.send();
+            bibliographicEntities  = null;
         }
     }
 
