@@ -143,6 +143,11 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
         return itemIds;
     }
 
+    /**
+     * This method is to filter the holdings which are belonging to share and open item and not belonging private item
+     * @param itemEntityList
+     * @return
+     */
     private List<Integer> getNonOrphanHoldingsIdList(List<ItemEntity> itemEntityList){
         Set<Integer> holdingsIdSet = new HashSet<>();
         for(ItemEntity itemEntity:itemEntityList){
