@@ -10,6 +10,7 @@ public class DataDumpRequest {
     private List<String> institutionCodes;
     private String fetchType;
     private String date;
+    private String toDate;
     private boolean isRecordsAvailable;
     private List<Integer> collectionGroupIds;
     private String transmissionType;
@@ -215,5 +216,23 @@ public class DataDumpRequest {
      */
     public void setRequestId(String requestId) {
         this.requestId = requestId;
+    }
+
+    /**
+     * Gets to date.
+     *
+     * @return the to date
+     */
+    public String getToDate() {
+        return toDate;
+    }
+
+    /**
+     * Sets to date.
+     *
+     * @param toDate the to date
+     */
+    public void setToDate(String toDate) {
+        this.toDate = toDate;
     }
 }
