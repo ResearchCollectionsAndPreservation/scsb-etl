@@ -40,15 +40,20 @@ public class BibEntityPreparerCallable implements Callable {
         List<ItemEntity> itemEntities =  bibliographicEntity.getItemEntities();
         List<ItemEntity> filteredItems = new ArrayList<>();
         Set<Integer> requiredHoldingsIds = new HashSet<>();
+        List<Integer> requiredHoldingsIdsList = new ArrayList<>();
         for (Iterator<ItemEntity> itemEntityIterator = itemEntities.iterator(); itemEntityIterator.hasNext(); ) {
             ItemEntity itemEntity = itemEntityIterator.next();
             if(itemIds.contains(itemEntity.getItemId())){
-                requiredHoldingsIds.add(itemEntity.getHoldingsEntities().get(0).getHoldingsId());
+                //requiredHoldingsIds.add(itemEntity.getHoldingsEntities().get(0).getHoldingsId());
+                if (!requiredHoldingsIdsList.contains(itemEntity.getHoldingsEntities().get(0).getHoldingsId())) {
+                    requiredHoldingsIdsList.add(itemEntity.getHoldingsEntities().get(0).getHoldingsId());
+                }
                 filteredItems.add(itemEntity);
             }
         }
         bibliographicEntity.setItemEntities(filteredItems);
-        bibliographicEntity.setNonOrphanHoldingsIdList(new ArrayList<>(requiredHoldingsIds));
+        //bibliographicEntity.setNonOrphanHoldingsIdList(new ArrayList<>(requiredHoldingsIds));
+        bibliographicEntity.setNonOrphanHoldingsIdList(requiredHoldingsIdsList);
         return bibliographicEntity;
     }
 

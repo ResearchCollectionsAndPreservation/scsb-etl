@@ -95,7 +95,13 @@ public class BibEntityGeneratorActiveMQConsumer {
         logger.info("Time taken to prepare {} bib entities is : {} seconds, solr result size {}" , bibliographicEntities.size() , (endTime - startTime) / 1000,dataDumpSearchResults.size());
 
             getExecutorService().shutdown();
-
+        logger.info("sending page count {} to marcrecord formatter route",currentPageCountStr);
+            String currentPageCountStrbeforesendingToNxt = new DataExportHeaderUtil().getValueFor(batchHeaders, "currentPageCount");
+            logger.info("currentPageCountStrbeforesendingToNxt--->{}",currentPageCountStrbeforesendingToNxt);
+            if(currentPageCountStr.equals("14")){
+            logger.info("bibsize--->{} first bib holding size--->{} first bib item size--->{}",bibliographicEntities.size(),bibliographicEntities.get(0).getHoldingsEntities().size()
+            ,bibliographicEntities.get(0).getItemEntities().size());
+        }
             FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
             fluentProducerTemplate
                     .to(RecapConstants.BIB_ENTITY_FOR_DATA_EXPORT_Q)
