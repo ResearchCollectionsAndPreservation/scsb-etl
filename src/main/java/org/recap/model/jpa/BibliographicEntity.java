@@ -69,6 +69,8 @@ public class BibliographicEntity implements Serializable {
                     @JoinColumn(name="ITEM_INST_ID", referencedColumnName = "OWNING_INST_ID") })
     private List<ItemEntity> itemEntities;
 
+    @Transient
+    private List<Integer> nonOrphanHoldingsIdList;
     /**
      * Instantiates a new Bibliographic entity.
      */
@@ -308,6 +310,14 @@ public class BibliographicEntity implements Serializable {
      */
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public List<Integer> getNonOrphanHoldingsIdList() {
+        return nonOrphanHoldingsIdList;
+    }
+
+    public void setNonOrphanHoldingsIdList(List<Integer> nonOrphanHoldingsIdList) {
+        this.nonOrphanHoldingsIdList = nonOrphanHoldingsIdList;
     }
 }
 

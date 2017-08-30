@@ -39,27 +39,19 @@ public class BibEntityPreparerCallable implements Callable {
     public BibliographicEntity call() throws Exception {
         List<ItemEntity> itemEntities =  bibliographicEntity.getItemEntities();
         List<ItemEntity> filteredItems = new ArrayList<>();
+        List<Integer> requiredHoldingsIdsList = new ArrayList<>();
         for (Iterator<ItemEntity> itemEntityIterator = itemEntities.iterator(); itemEntityIterator.hasNext(); ) {
             ItemEntity itemEntity = itemEntityIterator.next();
             if(itemIds.contains(itemEntity.getItemId())){
+                if (!requiredHoldingsIdsList.contains(itemEntity.getHoldingsEntities().get(0).getHoldingsId())) {
+                    requiredHoldingsIdsList.add(itemEntity.getHoldingsEntities().get(0).getHoldingsId());
+                }
                 filteredItems.add(itemEntity);
             }
         }
         bibliographicEntity.setItemEntities(filteredItems);
-        filterUnwantedHoldings(bibliographicEntity);
+        bibliographicEntity.setNonOrphanHoldingsIdList(requiredHoldingsIdsList);
         return bibliographicEntity;
     }
 
-    private BibliographicEntity filterUnwantedHoldings(BibliographicEntity bibliographicEntity){
-        Set<HoldingsEntity> holdingsEntitySet = new HashSet<>();
-        List<HoldingsEntity> holdingsEntityList = new ArrayList<>();
-        for(ItemEntity itemEntity:bibliographicEntity.getItemEntities()){
-            holdingsEntitySet.add(itemEntity.getHoldingsEntities().get(0));
-        }
-        for(HoldingsEntity holdingsEntity:holdingsEntitySet){
-            holdingsEntityList.add(holdingsEntity);
-        }
-        bibliographicEntity.setHoldingsEntities(holdingsEntityList);
-        return bibliographicEntity;
-    }
 }

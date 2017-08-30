@@ -48,7 +48,9 @@ public class MarcRecordFormatActiveMQConsumer {
      */
     public void processRecords(Exchange exchange) throws Exception {
         FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
-
+        String batchHeaders = (String) exchange.getIn().getHeader(RecapConstants.BATCH_HEADERS);
+        String currentPageCountStr = new DataExportHeaderUtil().getValueFor(batchHeaders, "currentPageCount");
+        logger.info("Current page in MarcRecordFormatActiveMQConsumer--->{}",currentPageCountStr);
 
         List<Record> records = new ArrayList<>();
 
@@ -99,7 +101,6 @@ public class MarcRecordFormatActiveMQConsumer {
         for (Integer itemCount : itemExportedCountList) {
             itemExportedCount = itemExportedCount + itemCount;
         }
-        String batchHeaders = (String) exchange.getIn().getHeader(RecapConstants.BATCH_HEADERS);
         String requestId = getDataExportHeaderUtil().getValueFor(batchHeaders, "requestId");
         processFailures(exchange, failures, batchHeaders, requestId);
 

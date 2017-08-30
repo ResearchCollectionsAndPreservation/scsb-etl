@@ -4,6 +4,8 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.recap.RecapConstants;
 import org.recap.util.datadump.DataExportHeaderUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
@@ -15,6 +17,8 @@ import java.util.Map;
 @Component
 public class FileNameProcessorForDataExport implements Processor {
 
+    private static final Logger logger = LoggerFactory.getLogger(FileNameProcessorForDataExport.class);
+
     /**
      * This method is invoked by route to set the data dump file name, report type and institution name in headers for failure data dump.
      *
@@ -25,6 +29,7 @@ public class FileNameProcessorForDataExport implements Processor {
     public void process(Exchange exchange) throws Exception {
         String batchHeaders = (String) exchange.getIn().getHeader("batchHeaders");
         String fileName = getValueFor(batchHeaders, "fileName");
+        logger.info("fileName for data export--->{}",fileName);
         String exportFormat = getValueFor(batchHeaders,"exportFormat");
         if (exportFormat.equals(RecapConstants.DATADUMP_DELETED_JSON_FORMAT)) {
             exchange.getOut().setHeader(Exchange.FILE_NAME, fileName+".json");

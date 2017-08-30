@@ -8,6 +8,7 @@ import org.recap.RecapConstants;
 import org.recap.camel.datadump.callable.BibEntityPreparerCallable;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.repository.BibliographicDetailsRepository;
+import org.recap.util.datadump.DataExportHeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,8 +48,9 @@ public class BibEntityGeneratorActiveMQConsumer {
         Map results = (Map) exchange.getIn().getBody();
         List<HashMap> dataDumpSearchResults = (List<HashMap>) results.get("dataDumpSearchResults");
 
-
-
+        String batchHeaders = (String) exchange.getIn().getHeader("batchHeaders");
+        String currentPageCountStr = new DataExportHeaderUtil().getValueFor(batchHeaders, "currentPageCount");
+        logger.info("Current page in BibEntityGeneratorActiveMQConsumer--->{}",currentPageCountStr);
         List<BibliographicEntity> bibliographicEntities = new ArrayList<>();
 
         List<Integer> bibIdList = new ArrayList<>();
@@ -93,7 +95,13 @@ public class BibEntityGeneratorActiveMQConsumer {
         logger.info("Time taken to prepare {} bib entities is : {} seconds, solr result size {}" , bibliographicEntities.size() , (endTime - startTime) / 1000,dataDumpSearchResults.size());
 
             getExecutorService().shutdown();
-
+        logger.info("sending page count {} to marcrecord formatter route",currentPageCountStr);
+            String currentPageCountStrbeforesendingToNxt = new DataExportHeaderUtil().getValueFor(batchHeaders, "currentPageCount");
+            logger.info("currentPageCountStrbeforesendingToNxt--->{}",currentPageCountStrbeforesendingToNxt);
+            if(currentPageCountStr.equals("14")){
+            logger.info("bibsize--->{} first bib holding size--->{} first bib item size--->{}",bibliographicEntities.size(),bibliographicEntities.get(0).getHoldingsEntities().size()
+            ,bibliographicEntities.get(0).getItemEntities().size());
+        }
             FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
             fluentProducerTemplate
                     .to(RecapConstants.BIB_ENTITY_FOR_DATA_EXPORT_Q)
