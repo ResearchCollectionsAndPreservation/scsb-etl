@@ -182,7 +182,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
         try {
             Bib bib = getBib(bibliographicEntity,matchingBibInfoDetailList);
             List<Integer> itemIds = getItemIds(bibliographicEntity);
-            List<Holdings> holdings = getHoldings(bibliographicEntity.getHoldingsEntities(),itemIds);
+            List<Holdings> holdings = getHoldings(bibliographicEntity.getHoldingsEntities(),itemIds,bibliographicEntity.getNonOrphanHoldingsIdList());
             bibRecord = new BibRecord();
             bibRecord.setBib(bib);
             bibRecord.setHoldings(holdings);
@@ -257,26 +257,28 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
      * @return
      * @throws Exception
      */
-    private List<Holdings> getHoldings(List<HoldingsEntity> holdingsEntityList,List<Integer> itemIds) throws Exception{
+    private List<Holdings> getHoldings(List<HoldingsEntity> holdingsEntityList,List<Integer> itemIds,List<Integer> nonOrphanHoldingsIdList) throws Exception{
         List<Holdings> holdingsList = new ArrayList<>();
         if (holdingsEntityList!=null && !CollectionUtils.isEmpty(holdingsEntityList)) {
             for (HoldingsEntity holdingsEntity : holdingsEntityList) {
-                Holdings holdings = new Holdings();
-                Holding holding = new Holding();
-                holding.setOwningInstitutionHoldingsId(holdingsEntity.getOwningInstitutionHoldingsId());
-                ContentType contentType = getContentType(holdingsEntity.getContent());
-                holding.setContent(contentType);
-                List<ItemEntity> itemEntityList = new ArrayList<>();
-                if(holdingsEntity.getItemEntities()!=null) {
-                    for(ItemEntity itemEntity:holdingsEntity.getItemEntities()){
-                        if(itemIds.contains(itemEntity.getItemId())) {
-                            itemEntityList.add(itemEntity);
+                if (nonOrphanHoldingsIdList !=null && nonOrphanHoldingsIdList.contains(holdingsEntity.getHoldingsId())) {
+                    Holdings holdings = new Holdings();
+                    Holding holding = new Holding();
+                    holding.setOwningInstitutionHoldingsId(holdingsEntity.getOwningInstitutionHoldingsId());
+                    ContentType contentType = getContentType(holdingsEntity.getContent());
+                    holding.setContent(contentType);
+                    List<ItemEntity> itemEntityList = new ArrayList<>();
+                    if(holdingsEntity.getItemEntities()!=null) {
+                        for(ItemEntity itemEntity:holdingsEntity.getItemEntities()){
+                            if(itemIds.contains(itemEntity.getItemId())) {
+                                itemEntityList.add(itemEntity);
+                            }
                         }
+                        Items items = getItems(itemEntityList);
+                        holding.setItems(Arrays.asList(items));
+                        holdings.setHolding(Arrays.asList(holding));
+                        holdingsList.add(holdings);
                     }
-                    Items items = getItems(itemEntityList);
-                    holding.setItems(Arrays.asList(items));
-                    holdings.setHolding(Arrays.asList(holding));
-                    holdingsList.add(holdings);
                 }
             }
         }

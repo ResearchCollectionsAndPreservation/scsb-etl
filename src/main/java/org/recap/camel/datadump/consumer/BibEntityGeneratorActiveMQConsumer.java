@@ -8,6 +8,7 @@ import org.recap.RecapConstants;
 import org.recap.camel.datadump.callable.BibEntityPreparerCallable;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.repository.BibliographicDetailsRepository;
+import org.recap.util.datadump.DataExportHeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,8 +48,9 @@ public class BibEntityGeneratorActiveMQConsumer {
         Map results = (Map) exchange.getIn().getBody();
         List<HashMap> dataDumpSearchResults = (List<HashMap>) results.get("dataDumpSearchResults");
 
-
-
+        String batchHeaders = (String) exchange.getIn().getHeader("batchHeaders");
+        String currentPageCountStr = new DataExportHeaderUtil().getValueFor(batchHeaders, "currentPageCount");
+        logger.info("Current page in BibEntityGeneratorActiveMQConsumer--->{}",currentPageCountStr);
         List<BibliographicEntity> bibliographicEntities = new ArrayList<>();
 
         List<Integer> bibIdList = new ArrayList<>();

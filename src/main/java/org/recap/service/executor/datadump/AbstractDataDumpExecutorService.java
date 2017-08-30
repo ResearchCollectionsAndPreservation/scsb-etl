@@ -102,6 +102,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
                 BatchCounter.setCurrentPage(pageNum + 1);
                 Map results1 = dataDumpSolrService.getResults(searchRecordsRequest);
                 fileName = getFileName(dataDumpRequest, pageNum + 1);
+                logger.info("Solr fetch page num--->{}",pageNum+1);
                 headerString = dataExportHeaderUtil.getBatchHeaderString(totalPageCount, pageNum + 1, folderName, fileName, dataDumpRequest);
                 sendBodyAndHeader(results1, headerString);
             }

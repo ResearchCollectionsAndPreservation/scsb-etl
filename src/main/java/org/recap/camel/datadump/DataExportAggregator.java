@@ -4,6 +4,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.impl.DefaultExchange;
 import org.apache.camel.processor.aggregate.AggregationStrategy;
 import org.recap.RecapConstants;
+import org.recap.util.datadump.DataExportHeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,6 +69,9 @@ public class DataExportAggregator implements AggregationStrategy {
             for (String key : newExchange.getProperties().keySet()) {
                 oldExchange.setProperty(key, newExchange.getProperty(key));
             }
+            String batchHeaders = (String) oldExchange.getIn().getHeader(RecapConstants.BATCH_HEADERS);
+            String currentPageCountStr = new DataExportHeaderUtil().getValueFor(batchHeaders, "currentPageCount");
+            logger.info("Current page in DataExportAggregator--->{}",currentPageCountStr);
         }
 
         return oldExchange;

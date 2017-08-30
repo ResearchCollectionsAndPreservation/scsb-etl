@@ -102,9 +102,10 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
             stripTagsFromBib(record,Arrays.asList(RecapConstants.MarcFields.DF_852,RecapConstants.MarcFields.DF_876));
             add009Field(record, bibliographicEntity);
             List<Integer> itemIds = getItemIds(bibliographicEntity);
-            record = addHoldingInfo(record, bibliographicEntity.getHoldingsEntities(),itemIds);
+            record = addHoldingInfo(record, bibliographicEntity.getHoldingsEntities(),itemIds,bibliographicEntity.getNonOrphanHoldingsIdList());
             results.put(RecapConstants.SUCCESS, record);
         } catch (Exception e) {
+            logger.info("failed bib own ins bib id--->{}",bibliographicEntity.getOwningInstitutionBibId());
             logger.error(RecapConstants.ERROR,e);
             results.put(RecapConstants.FAILURE, String.valueOf(e.getCause()));
 
@@ -188,31 +189,33 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
      * Adds holdings information tags to the marc record.
      * @param record
      * @param holdingsEntityList
-     * @param itemIds
+     * @param nonOrphanHoldingsIdList
      * @return
      */
-    private Record addHoldingInfo(Record record, List<HoldingsEntity> holdingsEntityList,List<Integer> itemIds) {
+    private Record addHoldingInfo(Record record, List<HoldingsEntity> holdingsEntityList,List<Integer> itemIds,List<Integer> nonOrphanHoldingsIdList) {
         Record holdingRecord;
         for (HoldingsEntity holdingsEntity : holdingsEntityList) {
-            holdingRecord = getRecordFromContent(holdingsEntity.getContent());
-            for (DataField dataField : holdingRecord.getDataFields()) {
-                if (RecapConstants.MarcFields.DF_852.equals(dataField.getTag())) {
-                    addOrUpdateDatafield852Subfield0(dataField,holdingsEntity);
-                    update852bField(dataField, holdingsEntity);
-                    record.addVariableField(dataField);
-                }
-                if (RecapConstants.MarcFields.DF_866.equals(dataField.getTag())) {
-                    if(dataField.getSubfield('a')!=null && (dataField.getSubfield('a').getData()==null || "".equals(dataField.getSubfield('a').getData()))){
-                        continue;
-                    }else {
+            if (nonOrphanHoldingsIdList !=null && nonOrphanHoldingsIdList.contains(holdingsEntity.getHoldingsId())) {
+                holdingRecord = getRecordFromContent(holdingsEntity.getContent());
+                for (DataField dataField : holdingRecord.getDataFields()) {
+                    if (RecapConstants.MarcFields.DF_852.equals(dataField.getTag())) {
                         addOrUpdateDatafield852Subfield0(dataField,holdingsEntity);
+                        update852bField(dataField, holdingsEntity);
                         record.addVariableField(dataField);
                     }
+                    if (RecapConstants.MarcFields.DF_866.equals(dataField.getTag())) {
+                        if(dataField.getSubfield('a')!=null && (dataField.getSubfield('a').getData()==null || "".equals(dataField.getSubfield('a').getData()))){
+                            continue;
+                        }else {
+                            addOrUpdateDatafield852Subfield0(dataField,holdingsEntity);
+                            record.addVariableField(dataField);
+                        }
+                    }
                 }
-            }
-            for(ItemEntity itemEntity : holdingsEntity.getItemEntities()){
-                if(itemIds.contains(itemEntity.getItemId())) {
-                    record = addItemInfo(record, itemEntity, holdingsEntity);
+                for(ItemEntity itemEntity : holdingsEntity.getItemEntities()){
+                    if(itemIds.contains(itemEntity.getItemId())) {
+                        record = addItemInfo(record, itemEntity, holdingsEntity);
+                    }
                 }
             }
         }
