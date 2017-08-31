@@ -34,5 +34,6 @@ public class IncrementalDataDumpExecutorService extends AbstractDataDumpExecutor
     public void populateSearchRequest(SearchRecordsRequest searchRecordsRequest, DataDumpRequest dataDumpRequest) {
         searchRecordsRequest.setFieldName(RecapConstants.BIBITEM_LASTUPDATED_DATE);
         searchRecordsRequest.setFieldValue(getFormattedDateString(dataDumpRequest.getDate()));
+        searchRecordsRequest.setRequestingInstitution(dataDumpRequest.getRequestingInstitutionCode());
     }
 }
