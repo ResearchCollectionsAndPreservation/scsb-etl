@@ -208,7 +208,7 @@ public class DataDumpExportService {
      * @param toEmailAddress            the to email address
      * @param outputFormat              the output format
      */
-    public void setDataDumpRequest(DataDumpRequest dataDumpRequest, String fetchType, String institutionCodes, String date, String collectionGroupIds,
+    public void setDataDumpRequest(DataDumpRequest dataDumpRequest, String fetchType, String institutionCodes, String date, String toDate, String collectionGroupIds,
                                    String transmissionType, String requestingInstitutionCode, String toEmailAddress, String outputFormat) {
         if (fetchType != null) {
             dataDumpRequest.setFetchType(fetchType);
@@ -219,6 +219,9 @@ public class DataDumpExportService {
         }
         if (date != null && !"".equals(date)) {
             dataDumpRequest.setDate(date);
+        }
+        if (toDate != null && !"".equals(toDate)) {
+            dataDumpRequest.setToDate(toDate);
         }
         if (collectionGroupIds != null && !"".equals(collectionGroupIds)) {
             List<Integer> collectionGroupIdList = splitStringAndGetIntegerList(collectionGroupIds);

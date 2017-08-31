@@ -295,17 +295,25 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
      * @param inputDateString the input date string
      * @return the formatted date string
      */
-    public String getFormattedDateString(String inputDateString) {
+    public String getFormattedDateString(String inputDateString, String inputToDateString) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RecapConstants.DATE_FORMAT_YYYYMMDDHHMM);
-        String utcStr = null;
+        String dateString = null;
         try {
-            Date date = simpleDateFormat.parse(inputDateString);
             DateFormat format = new SimpleDateFormat(RecapConstants.UTC_DATE_FORMAT);
             format.setTimeZone(TimeZone.getTimeZone(RecapConstants.UTC));
-            utcStr = format.format(date);
+
+            Date fromDate = simpleDateFormat.parse(inputDateString);
+            String fromDateStr = format.format(fromDate);
+            dateString = fromDateStr + RecapConstants.SOLR_DATE_RANGE_TO_NOW;
+            if (StringUtils.isNotBlank(inputToDateString)) {
+                Date toDate = simpleDateFormat.parse(inputToDateString);
+                String toDateStr = format.format(toDate);
+                dateString = fromDateStr + " TO " + toDateStr;
+            }
+            logger.info("Incremental export date range for solr : " + dateString);
         } catch (ParseException e) {
             logger.error(e.getMessage());
         }
-        return utcStr + RecapConstants.SOLR_DATE_RANGE_TO_NOW;
+        return dateString;
     }
 }

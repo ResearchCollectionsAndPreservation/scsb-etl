@@ -42,10 +42,10 @@ public class DeletedDataDumpExecutorService extends AbstractDataDumpExecutorServ
         searchRecordsRequest.setDeleted(true);
         if(StringUtils.isNotBlank(dataDumpRequest.getDate()) && !onlyOrphan) {
             searchRecordsRequest.setFieldName(RecapConstants.ITEM_LASTUPDATED_DATE);
-            searchRecordsRequest.setFieldValue(getFormattedDateString(dataDumpRequest.getDate()));
+            searchRecordsRequest.setFieldValue(getFormattedDateString(dataDumpRequest.getDate(), dataDumpRequest.getToDate()));
         } else if(StringUtils.isNotBlank(dataDumpRequest.getDate()) && onlyOrphan){
             searchRecordsRequest.setFieldName(RecapConstants.BIB_LASTUPDATED_DATE);
-            searchRecordsRequest.setFieldValue(getFormattedDateString(dataDumpRequest.getDate()));
+            searchRecordsRequest.setFieldValue(getFormattedDateString(dataDumpRequest.getDate(), dataDumpRequest.getToDate()));
         }
         searchRecordsRequest.setRequestingInstitution(dataDumpRequest.getRequestingInstitutionCode());
     }
