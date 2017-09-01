@@ -197,8 +197,9 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
     private List<Integer> getNonOrphanHoldingsIdList(List<ItemEntity> itemEntityList){
         Set<Integer> holdingsIdSet = new HashSet<>();
         for(ItemEntity itemEntity:itemEntityList){
-            holdingsIdSet.add(itemEntity.getHoldingsEntities().get(0).getHoldingsId());
-        }
+            for(HoldingsEntity holdingsEntity:itemEntity.getHoldingsEntities()){
+                holdingsIdSet.add(holdingsEntity.getHoldingsId());
+            }        }
         return new ArrayList<>(holdingsIdSet);
     }
 
