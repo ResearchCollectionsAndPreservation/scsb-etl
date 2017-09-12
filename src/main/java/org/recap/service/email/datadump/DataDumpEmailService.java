@@ -66,7 +66,7 @@ public class DataDumpEmailService {
             emailPayLoad.setTo(toEmailAddress);
             emailPayLoad.setCc(mailForCc(requestingInstitutionCode));
             emailPayLoad.setSubject(RecapConstants.SUBJECT_INCREMENTAL_DATA_DUMP);
-            producer.sendBodyAndHeader(RecapConstants.EMAIL_Q, emailPayLoad, RecapConstants.DATADUMP_EMAILBODY_FOR, RecapConstants.EMAIL_INCREMENTAL_DATA_DUMP);
+            producer.sendBodyAndHeader(RecapConstants.EMAIL_Q, emailPayLoad, RecapConstants.DATADUMP_EMAILBODY_FOR, emailBodyFor.equals(RecapConstants.DATADUMP_NO_DATA_AVAILABLE)?emailBodyFor:RecapConstants.EMAIL_INCREMENTAL_DATA_DUMP);
         }
         else if(fetchType.equals(RecapConstants.DATADUMP_DELETED_JSON_FORMAT)){
             EmailPayLoad emailPayLoad = new EmailPayLoad();
@@ -74,7 +74,7 @@ public class DataDumpEmailService {
             emailPayLoad.setTo(toEmailAddress);
             emailPayLoad.setCc(mailForCc(requestingInstitutionCode));
             emailPayLoad.setSubject(RecapConstants.SUBJECT_DELETION_DATA_DUMP);
-            producer.sendBodyAndHeader(RecapConstants.EMAIL_Q, emailPayLoad, RecapConstants.DATADUMP_EMAILBODY_FOR, RecapConstants.EMAIL_DELETION_DATA_DUMP);
+            producer.sendBodyAndHeader(RecapConstants.EMAIL_Q, emailPayLoad, RecapConstants.DATADUMP_EMAILBODY_FOR, emailBodyFor.equals(RecapConstants.DATADUMP_NO_DATA_AVAILABLE)?emailBodyFor:RecapConstants.EMAIL_DELETION_DATA_DUMP);
         }
 
     }
