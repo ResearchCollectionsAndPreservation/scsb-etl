@@ -56,6 +56,7 @@ public class DataExportReportActiveMQConsumerTest {
         values.put(RecapConstants.NUM_BIBS_EXPORTED, "NoOfBibsExported");
         values.put(RecapConstants.BATCH_EXPORT, RecapConstants.BATCH_EXPORT_SUCCESS);
         values.put(RecapConstants.REQUEST_ID, "PUL-2017-12-12 11");
+        values.put(RecapConstants.ITEM_EXPORTED_COUNT,1);
         dataExportReportActiveMQConsumer.setReportDetailRepository(mockReportDetailsRepository);
 
         ReportEntity savedReportEntity = dataExportReportActiveMQConsumer.saveSuccessReportEntity(values);
