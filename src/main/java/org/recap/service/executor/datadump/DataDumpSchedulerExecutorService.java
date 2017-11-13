@@ -65,7 +65,7 @@ public class DataDumpSchedulerExecutorService {
         logger.info("Export data dump for {} from {}", requestingInstitutionCode, date);
         DataDumpRequest dataDumpRequest = new DataDumpRequest();
 
-        Map<String, String> requestParameterMap = getJobDataParameterUtil().buildJobRequestParameterMap(getExportJobNameByInstitution(requestingInstitutionCode));
+        Map<String, String> requestParameterMap = getJobDataParameterUtil().buildJobRequestParameterMap(RecapConstants.EXPORT_FETCH_TYPE_INSTITUTION);
         if (StringUtils.isBlank(fetchType)) {
             fetchType = requestParameterMap.get(RecapConstants.FETCH_TYPE);
         }

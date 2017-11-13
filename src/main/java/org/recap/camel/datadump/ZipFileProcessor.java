@@ -99,15 +99,20 @@ public class ZipFileProcessor implements Processor {
         exchange.getContext().addRoutes(new RouteBuilder() {
             @Override
             public void configure() throws Exception {
+                onCompletion()
+                        .choice()
+                        .when(exchangeProperty(RecapConstants.CAMEL_BATCH_COMPLETE))
+                        .log("Sending Email After FTP Zipping")
+                        .process(dataExportEmailProcessor)
+                        .log("Data dump zipping completed.")
+                        .bean(new ZipFileProcessor(exchange.getContext().createProducerTemplate(), exchange), "ftpOnCompletion")
+                        .end();
                 from("file:" + ftpStagingDir + File.separator + folderName + "?noop=true&antInclude=*.xml,*.json")
                         .routeId(RecapConstants.FTP_ROUTE)
-                        .onCompletion().bean(new ZipFileProcessor(exchange.getContext().createProducerTemplate(), exchange), "ftpOnCompletion")
-                        .end()
                         .aggregate(new ZipAggregationStrategy(true, true))
                         .constant(true)
                         .completionFromBatchConsumer()
                         .eagerCheckCompletion()
-                        .process(dataExportEmailProcessor)
                         .to("sftp://" + ftpUserName + "@" + ftpDataDumpRemoteServer + File.separator + "?fileName=" + folderName + ".zip"
                                 + "&privateKeyFile=" + ftpPrivateKey + "&knownHostsFile=" + ftpKnownHost);
             }
