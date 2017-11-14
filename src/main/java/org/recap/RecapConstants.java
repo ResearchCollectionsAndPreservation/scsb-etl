@@ -245,6 +245,7 @@ public class RecapConstants {
 
     //scsb-api-key
     public static final String API_KEY = "api_key";
+    public static final String CAMEL_BATCH_COMPLETE = "CamelBatchComplete";
 
     public class MarcFields {
         public static final String CF_001 = "001";
