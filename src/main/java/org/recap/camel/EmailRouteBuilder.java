@@ -64,6 +64,7 @@ public class EmailRouteBuilder {
                                         .setBody(simple(emailBodyForNoData))
                                         .setHeader("from", simple(from))
                                         .setHeader("to", simple("${header.emailPayLoad.to}"))
+                                        .setHeader("cc", simple("${header.emailPayLoad.cc}"))
                                         .log("email body for no data available")
                                         .to("smtps://" + smtpServer + "?username=" + username + "&password=" + emailPassword)
                                     .when(header("emailBodyFor").isEqualTo(RecapConstants.EMAIL_INCREMENTAL_DATA_DUMP))
