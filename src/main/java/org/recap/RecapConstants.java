@@ -68,7 +68,7 @@ public class RecapConstants {
     public static final String DATA_DUMP_COMPLETION_TOPIC_STATUS_PUL = "scsbactivemq:topic:PUL.ExportProcessCompletion";
     public static final String DATA_DUMP_COMPLETION_TOPIC_STATUS_NYPL = "scsbactivemq:topic:NYPL.ExportProcessCompletion";
 
-    public static final String DATA_DUMP_COMPLETION_TOPIC_MESSAGE = "Incremental datadump is compeleted";
+    public static final String DATA_DUMP_COMPLETION_TOPIC_MESSAGE = "Incremental datadump is completed";
 
     //Camel Route Ids
     public static final String REPORT_ROUTE_ID = "reportQRoute";
@@ -246,6 +246,12 @@ public class RecapConstants {
     //scsb-api-key
     public static final String API_KEY = "api_key";
     public static final String CAMEL_BATCH_COMPLETE = "CamelBatchComplete";
+    public static final String DELETED_DATA_DUMP_COMPLETION_TOPIC_MESSAGE = "Deleted datadump is completed";
+    public static final String FULL_DATA_DUMP_COMPLETION_TOPIC_MESSAGE = "Full datadump is completed";
+    public static final String DATA_DUMP_TYPE = "dataDumpType";
+    public static final String MESSAGE = "message";
+    public static final String EXPORTED_DATE = "exportedDate";
+    public static final String INSTITUTION = "institution";
 
     public class MarcFields {
         public static final String CF_001 = "001";
