@@ -146,35 +146,39 @@ public class ZipFileProcessor implements Processor {
         if (RecapConstants.EXPORT_SCHEDULER_CALL) {
             producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_FROM, reqestingInst);
         }
+        String dataDumpTypeCompletionMessage = getDataDumpTypeCompletionMessage(batchHeaders);
         if(reqestingInst.equalsIgnoreCase(RecapConstants.PRINCETON)){
-            producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_PUL,buildJsonResponseForTopics(batchHeaders,reqestingInst));
+            producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_PUL,buildJsonResponseForTopics(batchHeaders,reqestingInst,dataDumpTypeCompletionMessage));
         }else if(reqestingInst.equalsIgnoreCase(RecapConstants.COLUMBIA)){
-            producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_CUL, RecapConstants.DATA_DUMP_COMPLETION_TOPIC_MESSAGE);
+            producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_CUL, dataDumpTypeCompletionMessage.split("-")[1]);
         }else if(reqestingInst.equalsIgnoreCase(RecapConstants.NYPL)){
-            producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_NYPL, RecapConstants.DATA_DUMP_COMPLETION_TOPIC_MESSAGE);
+            producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_NYPL,dataDumpTypeCompletionMessage.split("-")[1] );
         }
     }
 
 
-    private JSONObject buildJsonResponseForTopics(String batchHeaders,String requestingInstitutionCode) throws JSONException {
+    private JSONObject buildJsonResponseForTopics(String batchHeaders, String requestingInstitutionCode, String dataDumpTypeCompletionMessage) throws JSONException {
         JSONObject jsonObject = new JSONObject();
+        String[] messageSplit = dataDumpTypeCompletionMessage.split("-");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String fileNameWithPath = getValueFor(batchHeaders, RecapConstants.FILENAME);
-        Integer fetchType = Integer.valueOf(getValueFor(batchHeaders, RecapConstants.FETCH_TYPE));
         String fileName = fileNameWithPath.split("/")[2].concat(RecapConstants.ZIP_FILE_FORMAT);
         jsonObject.put(RecapConstants.INSTITUTION,requestingInstitutionCode);
         jsonObject.put(RecapConstants.FILENAME,fileName);
         jsonObject.put(RecapConstants.EXPORTED_DATE,simpleDateFormat.format(new Date()));
-        if (fetchType == 1){
-            jsonObject.put(RecapConstants.DATA_DUMP_TYPE,"IncrementalDataDump");
-            jsonObject.put(RecapConstants.MESSAGE,RecapConstants.DATA_DUMP_COMPLETION_TOPIC_MESSAGE);
-        }else if (fetchType == 2){
-            jsonObject.put(RecapConstants.DATA_DUMP_TYPE,"DeletedDataDump");
-            jsonObject.put(RecapConstants.MESSAGE,RecapConstants.DELETED_DATA_DUMP_COMPLETION_TOPIC_MESSAGE);
-        }else {
-            jsonObject.put(RecapConstants.DATA_DUMP_TYPE,"FullDataDump");
-            jsonObject.put(RecapConstants.MESSAGE,RecapConstants.FULL_DATA_DUMP_COMPLETION_TOPIC_MESSAGE);
-        }
+        jsonObject.put(RecapConstants.DATA_DUMP_TYPE,messageSplit[0]);
+        jsonObject.put(RecapConstants.MESSAGE,messageSplit[1]);
         return jsonObject;
+    }
+
+    private String getDataDumpTypeCompletionMessage(String batchHeaders) {
+        Integer fetchType = Integer.valueOf(getValueFor(batchHeaders, RecapConstants.FETCH_TYPE));
+        if (fetchType == 1){
+            return "IncrementalDataDump-"+RecapConstants.DATA_DUMP_COMPLETION_TOPIC_MESSAGE;
+        }else if (fetchType == 2){
+            return "DeletedDataDump-"+RecapConstants.DELETED_DATA_DUMP_COMPLETION_TOPIC_MESSAGE;
+        }else {
+            return "FullDataDump-"+RecapConstants.FULL_DATA_DUMP_COMPLETION_TOPIC_MESSAGE;
+        }
     }
 }
