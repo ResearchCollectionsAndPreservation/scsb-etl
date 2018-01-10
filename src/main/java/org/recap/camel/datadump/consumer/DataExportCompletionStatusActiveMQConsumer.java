@@ -14,14 +14,14 @@ public class DataExportCompletionStatusActiveMQConsumer {
     private static final Logger logger = LoggerFactory.getLogger(DataExportCompletionStatusActiveMQConsumer.class);
 
     public void pulOnCompletionTopicOnMessage(@Body String body){
-        logger.info("PUL Topic - Completion Message");
+        logger.info("PUL Topic - Completion Message {}",body);
     }
 
     public void culOnCompletionTopicOnMessage(@Body String body){
-        logger.info("CUL Topic - Completion Message");
+        logger.info("CUL Topic - Completion Message {}",body);
     }
 
     public void nyplOnCompletionTopicOnMessage(@Body String body){
-        logger.info("NYPL Topic - Completion Message");
+        logger.info("NYPL Topic - Completion Message {}",body);
     }
 }
