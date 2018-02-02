@@ -162,7 +162,7 @@ public class ZipFileProcessor implements Processor {
         String[] messageSplit = dataDumpTypeCompletionMessage.split("-");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String fileNameWithPath = getValueFor(batchHeaders, RecapConstants.FILENAME);
-        String fileName = fileNameWithPath.split("/")[2].concat(RecapConstants.ZIP_FILE_FORMAT);
+        String fileName = "DeletedDataDump".equalsIgnoreCase(messageSplit[0]) ? fileNameWithPath.split("/")[2].concat(RecapConstants.ZIP_FILE_FORMAT) : fileNameWithPath.split("/")[3].concat(RecapConstants.ZIP_FILE_FORMAT);
         jsonObject.put(RecapConstants.INSTITUTION,requestingInstitutionCode);
         jsonObject.put(RecapConstants.FILENAME,fileName);
         jsonObject.put(RecapConstants.EXPORTED_DATE,simpleDateFormat.format(new Date()));
