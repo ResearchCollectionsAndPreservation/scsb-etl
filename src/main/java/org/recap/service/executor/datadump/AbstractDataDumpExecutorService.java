@@ -196,6 +196,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
                 + File.separator
                 + getOutputFormat(dataDumpRequest)
                 + File.separator
+                + getFullOrIncrementalDirectory(dataDumpRequest.getFetchType())
                 + institutions
                 + "_"
                 + formattedDate
@@ -239,11 +240,28 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
                 + File.separator
                 + getOutputFormat(dataDumpRequest)
                 + File.separator
+                + getFullOrIncrementalDirectory(dataDumpRequest.getFetchType())
                 + institutions
                 + "_"
                 + formattedDate;
 
         return folderName;
+    }
+
+    /**
+     * Get directory for full and incremental export.
+     *
+     * @param fetchType
+     * @return
+     */
+    private String getFullOrIncrementalDirectory(String fetchType) {
+        if (RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL.equalsIgnoreCase(fetchType)) {
+            return RecapConstants.INCREMENTAL + File.separator;
+        } else if (RecapConstants.DATADUMP_FETCHTYPE_DELETED.equalsIgnoreCase(fetchType)) {
+            return StringUtils.EMPTY;
+        } else {
+            return RecapConstants.EXPORT_TYPE_FULL + File.separator;
+        }
     }
 
     /**

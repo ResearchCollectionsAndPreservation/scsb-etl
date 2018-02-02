@@ -143,14 +143,14 @@ public class DataExportEmailProcessor implements Processor {
             if(reportDataEntity.getHeaderName().equals(RecapConstants.HEADER_FETCH_TYPE)){
                 if (reportDataEntity.getHeaderValue().equals(RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL)) {
                     String[] split = folderName.split("/");
-                    reportFileName =split[0]+File.separator+split[1]+File.separator+RecapConstants.EXPORT_DATA_DUMP_INCREMENTAL+split[2];
+                    reportFileName =split[0]+File.separator+split[1]+File.separator+split[2]+File.separator+RecapConstants.EXPORT_DATA_DUMP_INCREMENTAL+split[3];
                 } else if(reportDataEntity.getHeaderValue().equals(RecapConstants.DATADUMP_FETCHTYPE_DELETED)) {
                     String[] split = folderName.split("/");
                     reportFileName = split[0]+File.separator+split[1]+File.separator+RecapConstants.EXPORT_DATA_DUMP_DELETIONS+split[2];
                 }
                 else{
                     String[] split = folderName.split("/");
-                    reportFileName =split[0]+File.separator+split[1]+File.separator+RecapConstants.EXPORT_DATA_DUMP_FULL+split[2];
+                    reportFileName =split[0]+File.separator+split[1]+File.separator+split[2]+File.separator+RecapConstants.EXPORT_DATA_DUMP_FULL+split[3];
                 }
             }
         }
