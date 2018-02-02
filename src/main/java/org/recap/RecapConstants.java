@@ -277,5 +277,6 @@ public class RecapConstants {
 
     public static final String CGD_CHANGE_LOG_SHARED_TO_PRIVATE = "SharedToPrivate";
     public static final String CGD_CHANGE_LOG_OPEN_TO_PRIVATE = "OpenToPrivate";
+    public static final String EXPORT_TYPE_FULL = "Full";
 
 }
