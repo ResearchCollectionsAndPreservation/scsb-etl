@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class MatchingBibInfoDetail implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "MATCHING_BIB_INFO_DATA_DUMP_ID")
     private Integer matchingBibInfoDetailId;
 

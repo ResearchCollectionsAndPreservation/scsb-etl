@@ -1,6 +1,6 @@
 package org.recap.service.formatter.datadump;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.recap.RecapConstants;
 import org.recap.model.export.Bib;
 import org.recap.model.export.DeletedRecord;

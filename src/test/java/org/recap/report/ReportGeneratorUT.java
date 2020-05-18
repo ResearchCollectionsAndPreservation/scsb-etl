@@ -461,7 +461,7 @@ public class ReportGeneratorUT extends BaseTestCase {
         return generatedFileName;
     }
 
-    class CustomArgumentMatcher extends ArgumentMatcher {
+    class CustomArgumentMatcher implements ArgumentMatcher {
         @Override
         public boolean matches(Object argument) {
             return false;

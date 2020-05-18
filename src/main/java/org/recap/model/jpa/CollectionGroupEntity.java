@@ -11,7 +11,7 @@ import java.util.Date;
 @Table(name = "collection_group_t", schema = "recap", catalog = "")
 public class CollectionGroupEntity implements Serializable{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "COLLECTION_GROUP_ID")
     private Integer collectionGroupId;
 

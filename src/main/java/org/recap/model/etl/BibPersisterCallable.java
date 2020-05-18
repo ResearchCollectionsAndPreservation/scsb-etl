@@ -1,6 +1,7 @@
 package org.recap.model.etl;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.recap.RecapConstants;
 import org.recap.model.jaxb.*;
 import org.recap.model.jaxb.marc.CollectionType;
@@ -259,7 +260,7 @@ public class BibPersisterCallable implements Callable {
         itemEntity.setCallNumberType(holdingsCallNumberType);
         itemEntity.setItemAvailabilityStatusId((Integer) itemStatusMap.get("Available"));
         String copyNumber = getMarcUtil().getDataFieldValue(itemRecordType, "876", null, null, "t");
-        if (StringUtils.isNoneBlank(copyNumber) && org.apache.commons.lang3.math.NumberUtils.isNumber(copyNumber)) {
+        if (StringUtils.isNoneBlank(copyNumber) && NumberUtils.isCreatable(copyNumber)) {
             itemEntity.setCopyNumber(Integer.valueOf(copyNumber));
         }
         if (owningInstitutionId != null) {

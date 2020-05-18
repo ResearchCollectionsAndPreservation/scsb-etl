@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Table(name = "institution_t", schema = "recap", catalog = "")
 public class InstitutionEntity implements Serializable{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "INSTITUTION_ID")
     private Integer institutionId;
 

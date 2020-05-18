@@ -5,6 +5,8 @@ import org.recap.BaseTestCase;
 import org.recap.model.jpa.InstitutionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -48,8 +50,8 @@ public class InstitutionDetailsRepositoryUT extends BaseTestCase {
 
         institutionDetailsRepository.save(institutionEntity);
 
-        InstitutionEntity savedInstitutionEntity = institutionDetailsRepository.findOne(1);
-        assertEquals(savedInstitutionEntity.getInstitutionName(), institutionEntity.getInstitutionName());
+        Optional<InstitutionEntity> savedInstitutionEntity = institutionDetailsRepository.findById(1);
+        assertEquals(savedInstitutionEntity.get().getInstitutionName(), institutionEntity.getInstitutionName());
     }
 
 }

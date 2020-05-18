@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -108,37 +109,37 @@ public class ItemDetailsRepositoryUT extends BaseTestCase {
         ItemEntity byOwningInstitutionItemId = itemDetailsRepository.findByOwningInstitutionItemId(owningInstitutionItemId);
         assertNotNull(byOwningInstitutionItemId);
 
-        Page<ItemEntity> pageByOwningInstitutionId = itemDetailsRepository.findByOwningInstitutionId(new PageRequest(0, 10), owningInstitutionId);
+        Page<ItemEntity> pageByOwningInstitutionId = itemDetailsRepository.findByOwningInstitutionId(PageRequest.of(0, 10), owningInstitutionId);
         assertNotNull(pageByOwningInstitutionId);
         assertTrue(countAfterAdd == pageByOwningInstitutionId.getTotalElements());
 
         ItemPK itemPK1 = new ItemPK(owningInstitutionId, owningInstitutionItemId);
-        ItemEntity byItemEntityPK = itemDetailsRepository.findOne(itemPK1);
+        Optional<ItemEntity> byItemEntityPK = itemDetailsRepository.findById(itemPK1);
         assertNotNull(byItemEntityPK);
-        assertEquals(byItemEntityPK.getOwningInstitutionId(), itemPK1.getOwningInstitutionId());
-        assertEquals(byItemEntityPK.getOwningInstitutionItemId(), itemPK1.getOwningInstitutionItemId());
+        assertEquals(byItemEntityPK.get().getOwningInstitutionId(), itemPK1.getOwningInstitutionId());
+        assertEquals(byItemEntityPK.get().getOwningInstitutionItemId(), itemPK1.getOwningInstitutionItemId());
 
         ItemPK itemPK2 = new ItemPK();
         itemPK2.setOwningInstitutionId(owningInstitutionId);
         itemPK2.setOwningInstitutionItemId(owningInstitutionItemId);
-        ItemEntity itemEntityPK = itemDetailsRepository.findOne(itemPK2);
+        Optional<ItemEntity> itemEntityPK = itemDetailsRepository.findById(itemPK2);
         assertNotNull(itemEntityPK);
 
-        assertEquals(itemEntityPK.getCallNumberType(), "0");
-        assertEquals(itemEntityPK.getCallNumber(), "callNum");
-        assertEquals(itemEntityPK.getCreatedBy(), "etl");
-        assertEquals(itemEntityPK.getLastUpdatedBy(), "etl");
-        assertEquals(itemEntityPK.getBarcode(), "1231");
-        assertEquals(itemEntityPK.getOwningInstitutionItemId(), owningInstitutionItemId);
-        assertEquals(itemEntityPK.getItemAvailabilityStatusId(), itemEntity.getItemAvailabilityStatusId());
-        assertEquals(itemEntityPK.getCopyNumber(), itemEntity.getCopyNumber());
-        assertEquals(itemEntityPK.getVolumePartYear(), itemEntity.getVolumePartYear());
-        assertEquals(itemEntityPK.getUseRestrictions(), itemEntity.getUseRestrictions());
-        assertEquals(itemEntityPK.getCustomerCode(), "PA");
-        assertNotNull(itemEntityPK.getHoldingsEntities());
-        assertNotNull(itemEntityPK.getInstitutionEntity());
-        assertNotNull(itemEntityPK.getCollectionGroupEntity());
-        assertNotNull(itemEntityPK.getItemStatusEntity());
+        assertEquals(itemEntityPK.get().getCallNumberType(), "0");
+        assertEquals(itemEntityPK.get().getCallNumber(), "callNum");
+        assertEquals(itemEntityPK.get().getCreatedBy(), "etl");
+        assertEquals(itemEntityPK.get().getLastUpdatedBy(), "etl");
+        assertEquals(itemEntityPK.get().getBarcode(), "1231");
+        assertEquals(itemEntityPK.get().getOwningInstitutionItemId(), owningInstitutionItemId);
+        assertEquals(itemEntityPK.get().getItemAvailabilityStatusId(), itemEntity.getItemAvailabilityStatusId());
+        assertEquals(itemEntityPK.get().getCopyNumber(), itemEntity.getCopyNumber());
+        assertEquals(itemEntityPK.get().getVolumePartYear(), itemEntity.getVolumePartYear());
+        assertEquals(itemEntityPK.get().getUseRestrictions(), itemEntity.getUseRestrictions());
+        assertEquals(itemEntityPK.get().getCustomerCode(), "PA");
+        assertNotNull(itemEntityPK.get().getHoldingsEntities());
+        assertNotNull(itemEntityPK.get().getInstitutionEntity());
+        assertNotNull(itemEntityPK.get().getCollectionGroupEntity());
+        assertNotNull(itemEntityPK.get().getItemStatusEntity());
         assertTrue(savedItemEntity.getOwningInstitutionId() == owningInstitutionId);
         assertTrue(savedItemEntity.getCollectionGroupId() == 1);
     }

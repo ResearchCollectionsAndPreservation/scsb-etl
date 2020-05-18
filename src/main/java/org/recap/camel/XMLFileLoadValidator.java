@@ -2,7 +2,7 @@ package org.recap.camel;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.apache.camel.impl.DefaultMessage;
+import org.apache.camel.support.DefaultMessage;
 import org.recap.model.jpa.ReportEntity;
 import org.recap.repository.ReportDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +37,10 @@ public class XMLFileLoadValidator implements Processor {
                 reportDetailRepository.findByFileName(camelFileName);
 
         if(!CollectionUtils.isEmpty(reportEntity)){
-            DefaultMessage defaultMessage = new DefaultMessage();
+            DefaultMessage defaultMessage = new DefaultMessage(exchange);
             defaultMessage.setBody("");
             exchange.setIn(defaultMessage);
-            exchange.setOut(defaultMessage);
+            exchange.setMessage(defaultMessage);
         }
     }
 }

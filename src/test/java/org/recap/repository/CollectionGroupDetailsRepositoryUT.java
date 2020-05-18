@@ -6,6 +6,7 @@ import org.recap.model.jpa.CollectionGroupEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -54,9 +55,9 @@ public class CollectionGroupDetailsRepositoryUT extends BaseTestCase {
 
         collectionGroupDetailsRepository.save(collectionGroupEntity);
 
-        CollectionGroupEntity savedCollectionGroupEntity = collectionGroupDetailsRepository.findOne(1);
-        assertEquals(savedCollectionGroupEntity.getCreatedDate(), collectionGroupEntity.getCreatedDate());
-        assertEquals(savedCollectionGroupEntity.getLastUpdatedDate(), collectionGroupEntity.getLastUpdatedDate());
+        Optional<CollectionGroupEntity> savedCollectionGroupEntity = collectionGroupDetailsRepository.findById(1);
+        assertEquals(savedCollectionGroupEntity.get().getCreatedDate(), collectionGroupEntity.getCreatedDate());
+        assertEquals(savedCollectionGroupEntity.get().getLastUpdatedDate(), collectionGroupEntity.getLastUpdatedDate());
     }
 
 }

@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class ReportDataEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "REPORT_DATA_ID")
     private Integer reportDataId;
 

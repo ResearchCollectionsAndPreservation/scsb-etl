@@ -32,17 +32,17 @@ public class FileNameProcessorForDataExport implements Processor {
         logger.info("fileName for data export--->{}",fileName);
         String exportFormat = getValueFor(batchHeaders,"exportFormat");
         if (exportFormat.equals(RecapConstants.DATADUMP_DELETED_JSON_FORMAT)) {
-            exchange.getOut().setHeader(Exchange.FILE_NAME, fileName+".json");
+            exchange.getMessage().setHeader(Exchange.FILE_NAME, fileName+".json");
         } else {
-            exchange.getOut().setHeader(Exchange.FILE_NAME, fileName+".xml");
+            exchange.getMessage().setHeader(Exchange.FILE_NAME, fileName+".xml");
         }
         Object body = exchange.getIn().getBody();
-        exchange.getOut().setBody(body);
+        exchange.getMessage().setBody(body);
 
         Map<String, Object> headersForNewExchange = exchange.getIn().getHeaders();
         for (Iterator<String> iterator = headersForNewExchange.keySet().iterator(); iterator.hasNext(); ) {
             String header = iterator.next();
-            exchange.getOut().setHeader(header, headersForNewExchange.get(header));
+            exchange.getMessage().setHeader(header, headersForNewExchange.get(header));
         }
     }
 

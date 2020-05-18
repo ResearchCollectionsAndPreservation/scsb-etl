@@ -366,10 +366,10 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
     @Test
     public void generatedFormattedString() throws Exception {
         saveBibSingleHoldingsSingleItem("100","330033001");
-        BibliographicEntity bibliographicEntity = bibliographicDetailsRepository.findOne(new BibliographicPK(1, "100"));
+        Optional<BibliographicEntity> bibliographicEntity = bibliographicDetailsRepository.findById(new BibliographicPK(1, "100"));
 
         ArrayList<Record> recordList = new ArrayList<>();
-        Map<String, Object> recordMap = marcXmlFormatterService.prepareMarcRecord(bibliographicEntity);
+        Map<String, Object> recordMap = marcXmlFormatterService.prepareMarcRecord(bibliographicEntity.get());
         Record record = (Record) recordMap.get(RecapConstants.SUCCESS);
         assertNotNull(record);
 
@@ -377,10 +377,10 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
         MarcWriter writer = new MarcXmlWriter(out, "UTF-8", true);
         writeMarcXml(recordList, writer);
         saveBibSingleHoldingsSingleItem("10002","33003302");
-        BibliographicEntity bibliographicEntity1 = bibliographicDetailsRepository.findOne(new BibliographicPK(1, "10002"));
+        Optional<BibliographicEntity> bibliographicEntity1 = bibliographicDetailsRepository.findById(new BibliographicPK(1, "10002"));
 
         ArrayList<Record> recordList1 = new ArrayList<>();
-        Map<String, Object> recordMap1 = marcXmlFormatterService.prepareMarcRecord(bibliographicEntity1);
+        Map<String, Object> recordMap1 = marcXmlFormatterService.prepareMarcRecord(bibliographicEntity1.get());
         Record record1 = (Record) recordMap.get(RecapConstants.SUCCESS);
         assertNotNull(record1);
 

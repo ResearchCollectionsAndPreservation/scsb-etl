@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by peris on 7/17/16.
@@ -53,7 +54,7 @@ public interface XmlRecordRepository extends PagingAndSortingRepository<XmlRecor
      * @param id the id
      * @return the xml record entity
      */
-    XmlRecordEntity findById(Integer id);
+    Optional<XmlRecordEntity> findById(Integer id);
 
     /**
      * Find distinct file names list.
