@@ -47,7 +47,7 @@ public class BibliographicDetailsRepositoryUT extends BaseTestCase {
         String owningInstitutionBibId = String.valueOf(random.nextInt());
         int owningInstitutionId = 1;
 
-        Page<BibliographicEntity> byOwningInstitutionId = bibliographicDetailsRepository.findByOwningInstitutionId(new PageRequest(0, 10), owningInstitutionId);
+        Page<BibliographicEntity> byOwningInstitutionId = bibliographicDetailsRepository.findByOwningInstitutionId(PageRequest.of(0, 10), owningInstitutionId);
 
         BibliographicEntity bibliographicEntity = new BibliographicEntity();
         bibliographicEntity.setContent("Mock Bib Content".getBytes());
@@ -480,7 +480,7 @@ public class BibliographicDetailsRepositoryUT extends BaseTestCase {
         List<String> institutionCodes = new ArrayList<>();
         institutionCodes.add("PUL");
         Date inputDate = DateUtil.getDateFromString("2016-09-02 12:00", RecapConstants.DATE_FORMAT_YYYYMMDDHHMM);
-        Page<BibliographicEntity> bibliographicEntities = bibliographicDetailsRepository.getRecordsForIncrementalDump(new PageRequest(0, 10),cgIds,institutionCodes,inputDate);
+        Page<BibliographicEntity> bibliographicEntities = bibliographicDetailsRepository.getRecordsForIncrementalDump(PageRequest.of(0, 10),cgIds,institutionCodes,inputDate);
         List<BibliographicEntity> bibliographicEntityList = bibliographicEntities.getContent();
         assertNotNull(bibliographicEntityList);
         assertEquals(1,bibliographicEntityList.size());
@@ -541,7 +541,7 @@ public class BibliographicDetailsRepositoryUT extends BaseTestCase {
         cgIds.add(1);
         List<String> institutionCodes = new ArrayList<>();
         institutionCodes.add("PUL");
-        Page<BibliographicEntity> bibliographicEntities = bibliographicDetailsRepository.getRecordsForFullDump(new PageRequest(0, 10),cgIds,institutionCodes);
+        Page<BibliographicEntity> bibliographicEntities = bibliographicDetailsRepository.getRecordsForFullDump(PageRequest.of(0, 10),cgIds,institutionCodes);
         List<BibliographicEntity> bibliographicEntityList = bibliographicEntities.getContent();
         assertNotNull(bibliographicEntityList);
         assertEquals(1,bibliographicEntityList.size());
@@ -602,7 +602,7 @@ public class BibliographicDetailsRepositoryUT extends BaseTestCase {
         cgIds.add(1);
         List<String> institutionCodes = new ArrayList<>();
         institutionCodes.add("PUL");
-        Page<BibliographicEntity> bibliographicEntities = bibliographicDetailsRepository.getDeletedRecordsForFullDump(new PageRequest(0, 10),cgIds,institutionCodes);
+        Page<BibliographicEntity> bibliographicEntities = bibliographicDetailsRepository.getDeletedRecordsForFullDump(PageRequest.of(0, 10),cgIds,institutionCodes);
         List<BibliographicEntity> bibliographicEntityList = bibliographicEntities.getContent();
         assertNotNull(bibliographicEntityList);
         assertEquals(1,bibliographicEntityList.size());
@@ -664,7 +664,7 @@ public class BibliographicDetailsRepositoryUT extends BaseTestCase {
         List<String> institutionCodes = new ArrayList<>();
         institutionCodes.add("PUL");
         Date inputDate = DateUtil.getDateFromString("2016-09-02 12:00", RecapConstants.DATE_FORMAT_YYYYMMDDHHMM);
-        Page<BibliographicEntity> bibliographicEntities = bibliographicDetailsRepository.getDeletedRecordsForIncrementalDump(new PageRequest(0, 10),cgIds,institutionCodes,inputDate);
+        Page<BibliographicEntity> bibliographicEntities = bibliographicDetailsRepository.getDeletedRecordsForIncrementalDump(PageRequest.of(0, 10),cgIds,institutionCodes,inputDate);
         List<BibliographicEntity> bibliographicEntityList = bibliographicEntities.getContent();
         assertNotNull(bibliographicEntityList);
         assertEquals(1,bibliographicEntityList.size());

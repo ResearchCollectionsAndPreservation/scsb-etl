@@ -72,7 +72,7 @@ public class EtlDataLoadProcessor {
                     Page<XmlRecordEntity> xmlRecordEntities = null;
                     for (int iteration = 0; iteration < loopCount; iteration++) {
                         long startTime = System.currentTimeMillis();
-                        xmlRecordEntities = xmlRecordRepository.findByXmlFileName(new PageRequest(iteration, batchSize), distinctFileName);
+                        xmlRecordEntities = xmlRecordRepository.findByXmlFileName(PageRequest.of(iteration, batchSize), distinctFileName);
                         recordProcessor.setXmlFileName(distinctFileName);
                         recordProcessor.setInstitutionName(institutionName);
                         recordProcessor.process(xmlRecordEntities);

@@ -3,7 +3,7 @@ package org.recap.camel.datadump.routebuilder;
 import org.apache.camel.Exchange;
 import org.apache.camel.FluentProducerTemplate;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.builder.DefaultFluentProducerTemplate;
+import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
 
 /**
  * Created by peris on 11/20/16.

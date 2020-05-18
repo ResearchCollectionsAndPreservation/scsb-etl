@@ -21,14 +21,14 @@ public class FileFormatProcessorForDataExport implements Processor {
     public void process(Exchange exchange) throws Exception {
         String batchHeaders = (String) exchange.getIn().getHeader("batchHeaders");
         String exportFormat = getValueFor(batchHeaders, "exportFormat");
-        exchange.getOut().setHeader("exportFormat", exportFormat);
+        exchange.getMessage().setHeader("exportFormat", exportFormat);
         Object body = exchange.getIn().getBody();
-        exchange.getOut().setBody(body);
+        exchange.getMessage().setBody(body);
 
         Map<String, Object> headersForNewExchange = exchange.getIn().getHeaders();
         for (Iterator<String> iterator = headersForNewExchange.keySet().iterator(); iterator.hasNext(); ) {
             String header = iterator.next();
-            exchange.getOut().setHeader(header, headersForNewExchange.get(header));
+            exchange.getMessage().setHeader(header, headersForNewExchange.get(header));
         }
     }
 

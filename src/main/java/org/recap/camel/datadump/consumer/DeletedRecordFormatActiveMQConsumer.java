@@ -3,7 +3,7 @@ package org.recap.camel.datadump.consumer;
 import com.google.common.collect.Lists;
 import org.apache.camel.Exchange;
 import org.apache.camel.FluentProducerTemplate;
-import org.apache.camel.builder.DefaultFluentProducerTemplate;
+import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
 import org.apache.commons.collections.CollectionUtils;
 import org.recap.RecapConstants;
 import org.recap.util.datadump.DataExportHeaderUtil;

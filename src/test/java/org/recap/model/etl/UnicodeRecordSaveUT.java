@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Random;
 
 import static junit.framework.TestCase.assertEquals;
@@ -80,11 +81,11 @@ public class UnicodeRecordSaveUT extends BaseTestCase {
         entityManager.refresh(savedXmlRecordEntity);
         assertNotNull(savedXmlRecordEntity);
 
-        XmlRecordEntity fetchedXmlRecordEntity = xmlRecordRepository.findById(savedXmlRecordEntity.getId());
-        assertNotNull(fetchedXmlRecordEntity);
-        assertNotNull(fetchedXmlRecordEntity.getXml());
+        Optional<XmlRecordEntity> fetchedXmlRecordEntity = xmlRecordRepository.findById(savedXmlRecordEntity.getId());
+        assertNotNull(fetchedXmlRecordEntity.get());
+        assertNotNull(fetchedXmlRecordEntity.get().getXml());
 
-        String fetchedBibXml = new String(fetchedXmlRecordEntity.getXml(), Charset.forName("UTF-8"));
+        String fetchedBibXml = new String(fetchedXmlRecordEntity.get().getXml(), Charset.forName("UTF-8"));
         assertEquals(sourceBibXml, fetchedBibXml);
     }
 

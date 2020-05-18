@@ -69,20 +69,20 @@ public class BibliographicEntityUT extends BaseTestCase {
         entityManager.refresh(savedEntity);
 
         BibliographicPK bibliographicPK = new BibliographicPK(1, owningInstitutionBibId);
-        BibliographicEntity byBibliographicPK = bibliographicDetailsRepository.findOne(bibliographicPK);
-        assertEquals(bibliographicPK.getOwningInstitutionId(), byBibliographicPK.getOwningInstitutionId());
-        assertEquals(bibliographicPK.getOwningInstitutionBibId(), byBibliographicPK.getOwningInstitutionBibId());
+        Optional<BibliographicEntity> byBibliographicPK = bibliographicDetailsRepository.findById(bibliographicPK);
+        assertEquals(bibliographicPK.getOwningInstitutionId(), byBibliographicPK.get().getOwningInstitutionId());
+        assertEquals(bibliographicPK.getOwningInstitutionBibId(), byBibliographicPK.get().getOwningInstitutionBibId());
 
         assertNotNull(byBibliographicPK);
-        assertNotNull(byBibliographicPK.getBibliographicId());
-        assertNotNull(byBibliographicPK.getLastUpdatedBy());
-        assertNotNull(byBibliographicPK.getCreatedBy());
-        assertEquals(byBibliographicPK.getContent(), savedEntity.getContent());
-        assertEquals(byBibliographicPK.getCreatedDate(), savedEntity.getCreatedDate());
-        assertEquals(byBibliographicPK.getLastUpdatedDate(), savedEntity.getLastUpdatedDate());
-        assertNotNull(byBibliographicPK.getInstitutionEntity());
-        assertNotNull(byBibliographicPK.getHoldingsEntities().get(0).getHoldingsId());
-        List<ItemEntity> itemEntities = byBibliographicPK.getItemEntities();
+        assertNotNull(byBibliographicPK.get().getBibliographicId());
+        assertNotNull(byBibliographicPK.get().getLastUpdatedBy());
+        assertNotNull(byBibliographicPK.get().getCreatedBy());
+        assertEquals(byBibliographicPK.get().getContent(), savedEntity.getContent());
+        assertEquals(byBibliographicPK.get().getCreatedDate(), savedEntity.getCreatedDate());
+        assertEquals(byBibliographicPK.get().getLastUpdatedDate(), savedEntity.getLastUpdatedDate());
+        assertNotNull(byBibliographicPK.get().getInstitutionEntity());
+        assertNotNull(byBibliographicPK.get().getHoldingsEntities().get(0).getHoldingsId());
+        List<ItemEntity> itemEntities = byBibliographicPK.get().getItemEntities();
         assertNotNull(itemEntities);
         assertNotNull(itemEntities.get(0).getItemId());
         assertNotNull(itemEntities.get(0).getBibliographicEntities());

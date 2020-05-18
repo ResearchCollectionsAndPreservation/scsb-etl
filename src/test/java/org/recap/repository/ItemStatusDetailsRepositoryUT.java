@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.model.jpa.ItemStatusEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -45,8 +46,8 @@ public class ItemStatusDetailsRepositoryUT extends BaseTestCase {
 
         itemStatusDetailsRepository.save(itemStatusEntity);
 
-        ItemStatusEntity savedItemStatusEntity = itemStatusDetailsRepository.findOne(1);
-        assertEquals(savedItemStatusEntity.getStatusDescription(), itemStatusEntity.getStatusDescription());
+        Optional<ItemStatusEntity> savedItemStatusEntity = itemStatusDetailsRepository.findById(1);
+        assertEquals(savedItemStatusEntity.get().getStatusDescription(), itemStatusEntity.getStatusDescription());
     }
 
 }

@@ -4,7 +4,7 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.ConsumerTemplate;
 import org.apache.camel.FluentProducerTemplate;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.builder.DefaultFluentProducerTemplate;
+import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
 import org.junit.Test;
 import org.recap.BaseTestCase;

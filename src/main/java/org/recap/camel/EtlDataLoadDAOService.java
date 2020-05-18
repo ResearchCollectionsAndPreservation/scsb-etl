@@ -50,7 +50,7 @@ public class EtlDataLoadDAOService {
      */
     @Transactional
     public void saveBibliographicEntityList(List<BibliographicEntity> bibliographicEntityList) {
-        bibliographicDetailsRepository.save(bibliographicEntityList);
+        bibliographicDetailsRepository.saveAll(bibliographicEntityList);
         flushAndClearSession();
     }
 

@@ -1,8 +1,8 @@
 package org.recap.camel.datadump;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.impl.DefaultExchange;
-import org.apache.camel.processor.aggregate.AggregationStrategy;
+import org.apache.camel.support.DefaultExchange;
+import org.apache.camel.AggregationStrategy;
 import org.recap.RecapConstants;
 import org.recap.util.datadump.DataExportHeaderUtil;
 import org.slf4j.Logger;

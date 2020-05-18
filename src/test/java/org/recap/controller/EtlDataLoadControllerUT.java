@@ -92,7 +92,7 @@ public class EtlDataLoadControllerUT extends BaseTestCase {
 
         Thread.sleep(1000);
 
-        Page<XmlRecordEntity> xmlRecordEntities = xmlRecordRepository.findByXmlFileName(new PageRequest(0, 10), "SampleRecord.xml");
+        Page<XmlRecordEntity> xmlRecordEntities = xmlRecordRepository.findByXmlFileName(PageRequest.of(0, 10), "SampleRecord.xml");
         assertNotNull(xmlRecordEntities);
         List<XmlRecordEntity> xmlRecordEntityList = xmlRecordEntities.getContent();
         assertNotNull(xmlRecordEntityList);

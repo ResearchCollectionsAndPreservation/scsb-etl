@@ -93,7 +93,7 @@ public class XMLProcessorUT extends BaseTestCase {
     public void loadSampleData() throws Exception {
         String fileName = "sampleRecordForEtlLoadTest.xml";
         saveXmlRecordEntity(fileName, ".b100006279");
-        Page<XmlRecordEntity> xmlRecordEntities = xmlRecordRepository.findByXmlFileName(new PageRequest(0,10), fileName);
+        Page<XmlRecordEntity> xmlRecordEntities = xmlRecordRepository.findByXmlFileName(PageRequest.of(0,10), fileName);
         recordProcessor.process(xmlRecordEntities);
     }
 

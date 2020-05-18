@@ -2,7 +2,7 @@ package org.recap.camel.datadump.consumer;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.FluentProducerTemplate;
-import org.apache.camel.builder.DefaultFluentProducerTemplate;
+import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
 import org.recap.RecapConstants;
 import org.recap.model.export.DeletedRecord;
 import org.recap.service.formatter.datadump.DeletedJsonFormatterService;
