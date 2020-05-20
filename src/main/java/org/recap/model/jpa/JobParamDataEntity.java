@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class JobParamDataEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "JOB_PARAM_DATA_ID")
     private Integer jobParamDataId;
 

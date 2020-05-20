@@ -12,7 +12,7 @@ import java.util.List;
 public class JobParamEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RECORD_NUM")
     private Integer recordNumber;
 
