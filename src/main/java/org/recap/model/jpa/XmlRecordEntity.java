@@ -11,7 +11,7 @@ import java.util.Date;
 @Table(name = "xml_records_t", schema = "recap", catalog = "")
 public class XmlRecordEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
