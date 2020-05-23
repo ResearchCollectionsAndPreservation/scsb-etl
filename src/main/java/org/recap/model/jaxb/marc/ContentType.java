@@ -1,5 +1,6 @@
 package org.recap.model.jaxb.marc;
 
+import org.recap.RecapConstants;
 import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 
@@ -16,7 +17,7 @@ public class ContentType implements Serializable {
     /**
      * The Collection.
      */
-    @XmlElement(required = true, nillable = true)
+    @XmlElement(required = true, nillable = true, namespace= RecapConstants.ETL_DATA_LOAD_NAMESPACE)
     protected CollectionType collection;
 
     /**
