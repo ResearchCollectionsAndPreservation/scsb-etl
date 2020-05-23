@@ -1,5 +1,6 @@
 package org.recap.model.jaxb.marc;
 
+import org.recap.RecapConstants;
 import org.slf4j.Logger;
 import org.recap.model.jaxb.JAXBContextHandler;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class CollectionType implements Serializable {
     /**
      * The Record.
      */
-    @XmlElement(nillable = true)
+    @XmlElement(nillable = true, namespace= RecapConstants.ETL_DATA_LOAD_NAMESPACE)
     protected List<RecordType> record;
     /**
      * The Id.

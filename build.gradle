@@ -93,8 +93,7 @@ dependencies {
     implementation('commons-beanutils:commons-beanutils:1.9.4')
     implementation('info.freelibrary:freelib-marc4j:2.6.12')
 
-    implementation('mysql:mysql-connector-java:8.0.16')
-
+    implementation('mysql:mysql-connector-java')
     implementation('io.springfox:springfox-swagger-ui:2.9.2')
     implementation('io.springfox:springfox-swagger2:2.9.2')
     implementation('org.codehaus.jettison:jettison:1.4.1')

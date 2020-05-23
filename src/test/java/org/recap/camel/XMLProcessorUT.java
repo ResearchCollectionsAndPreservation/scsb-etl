@@ -79,7 +79,7 @@ public class XMLProcessorUT extends BaseTestCase {
     public void parseXPath() throws Exception {
         File file = getInputFileEndPoint();
 
-        String fileToString = FileUtils.readFileToString(file);
+        String fileToString = FileUtils.readFileToString(file,"UTF-8");
 
         String owningInstitutionId = StringUtils.substringBetween(fileToString, "<owningInstitutionId>", "</owningInstitutionId>");
         System.out.println(owningInstitutionId);

@@ -279,4 +279,6 @@ public class RecapConstants {
     public static final String CGD_CHANGE_LOG_OPEN_TO_PRIVATE = "OpenToPrivate";
     public static final String EXPORT_TYPE_FULL = "Full";
 
+    public static final String ETL_DATA_LOAD_NAMESPACE = "http://www.loc.gov/MARC21/slim";
+
 }

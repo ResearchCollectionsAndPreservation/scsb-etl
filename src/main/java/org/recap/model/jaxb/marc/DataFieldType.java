@@ -1,5 +1,6 @@
 package org.recap.model.jaxb.marc;
 
+import org.recap.RecapConstants;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -40,7 +41,7 @@ public class DataFieldType implements Serializable {
     /**
      * The Subfield.
      */
-    @XmlElement(required = true)
+    @XmlElement(required = true, namespace= RecapConstants.ETL_DATA_LOAD_NAMESPACE)
     protected List<SubfieldatafieldType> subfield;
     /**
      * The Id.
