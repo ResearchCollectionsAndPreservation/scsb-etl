@@ -1,6 +1,5 @@
 package org.recap.model.csv;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
 import org.apache.camel.dataformat.bindy.annotation.DataField;
 import org.apache.camel.dataformat.bindy.annotation.OneToMany;
@@ -39,13 +38,10 @@ public class ReCAPCSVFailureRecord implements Serializable{
     @DataField(pos = 12, columnName = "Error Description")
     private String errorDescription;
 
-    @Ignore
     private String fileName;
 
-    @Ignore
     private String reportType;
 
-    @Ignore
     private String institutionName;
 
     /**
