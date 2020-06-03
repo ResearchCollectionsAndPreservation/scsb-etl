@@ -1,5 +1,6 @@
 package org.recap.model.csv;
 
+import lombok.Data;
 import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
 import org.apache.camel.dataformat.bindy.annotation.DataField;
 import org.apache.camel.dataformat.bindy.annotation.OneToMany;
@@ -11,8 +12,9 @@ import java.util.List;
 /**
  * Created by peris on 7/21/16.
  */
+@Data
 @CsvRecord(generateHeaderColumns = true, separator = ",", quoting = true, crlf = "UNIX", skipFirstLine = true)
-public class ReCAPCSVFailureRecord implements Serializable{
+public class ReCAPCSVFailureRecord implements Serializable {
     @DataField(pos = 1, columnName = "Owning Institution")
     private String owningInstitution;
     @DataField(pos = 2, columnName = "Owning Institution Bib Id")
@@ -39,9 +41,7 @@ public class ReCAPCSVFailureRecord implements Serializable{
     private String errorDescription;
 
     private String fileName;
-
     private String reportType;
-
     private String institutionName;
 
     /**
@@ -49,76 +49,4 @@ public class ReCAPCSVFailureRecord implements Serializable{
      */
     @OneToMany(mappedTo = "org.recap.model.csv.FailureReportReCAPCSVRecord")
     List<FailureReportReCAPCSVRecord> failureReportReCAPCSVRecordList;
-
-    /**
-     * Gets failure report re capcsv record list.
-     *
-     * @return the failure report re capcsv record list
-     */
-    public List<FailureReportReCAPCSVRecord> getFailureReportReCAPCSVRecordList() {
-        return failureReportReCAPCSVRecordList;
-    }
-
-    /**
-     * Sets failure report re capcsv record list.
-     *
-     * @param failureReportReCAPCSVRecordList the failure report re capcsv record list
-     */
-    public void setFailureReportReCAPCSVRecordList(List<FailureReportReCAPCSVRecord> failureReportReCAPCSVRecordList) {
-        this.failureReportReCAPCSVRecordList = failureReportReCAPCSVRecordList;
-    }
-
-    /**
-     * Gets file name.
-     *
-     * @return the file name
-     */
-    public String getFileName() {
-        return fileName;
-    }
-
-    /**
-     * Sets file name.
-     *
-     * @param fileName the file name
-     */
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    /**
-     * Gets report type.
-     *
-     * @return the report type
-     */
-    public String getReportType() {
-        return reportType;
-    }
-
-    /**
-     * Sets report type.
-     *
-     * @param reportType the report type
-     */
-    public void setReportType(String reportType) {
-        this.reportType = reportType;
-    }
-
-    /**
-     * Gets institution name.
-     *
-     * @return the institution name
-     */
-    public String getInstitutionName() {
-        return institutionName;
-    }
-
-    /**
-     * Sets institution name.
-     *
-     * @param institutionName the institution name
-     */
-    public void setInstitutionName(String institutionName) {
-        this.institutionName = institutionName;
-    }
 }
