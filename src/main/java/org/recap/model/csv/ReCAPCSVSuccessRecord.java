@@ -1,5 +1,6 @@
 package org.recap.model.csv;
 
+import lombok.Data;
 import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
 import org.apache.camel.dataformat.bindy.annotation.DataField;
 import org.apache.camel.dataformat.bindy.annotation.OneToMany;
@@ -10,9 +11,9 @@ import java.util.List;
 /**
  * Created by angelind on 18/8/16.
  */
+@Data
 @CsvRecord(generateHeaderColumns = true, separator = ",", quoting = true, crlf = "UNIX", skipFirstLine = true)
-public class ReCAPCSVSuccessRecord implements Serializable{
-
+public class ReCAPCSVSuccessRecord implements Serializable {
     @DataField(pos = 1, columnName = "File Name")
     private String fileName;
     @DataField(pos = 2, columnName = "Total Records In File")
@@ -29,9 +30,7 @@ public class ReCAPCSVSuccessRecord implements Serializable{
     private Integer totalBibItemsLoaded;
 
     private String reportFileName;
-
     private String reportType;
-
     private String institutionName;
 
     /**
@@ -39,76 +38,4 @@ public class ReCAPCSVSuccessRecord implements Serializable{
      */
     @OneToMany(mappedTo = "org.recap.model.csv.SuccessReportReCAPCSVRecord")
     List<SuccessReportReCAPCSVRecord> successReportReCAPCSVRecordList;
-
-    /**
-     * Gets report file name.
-     *
-     * @return the report file name
-     */
-    public String getReportFileName() {
-        return reportFileName;
-    }
-
-    /**
-     * Sets report file name.
-     *
-     * @param reportFileName the report file name
-     */
-    public void setReportFileName(String reportFileName) {
-        this.reportFileName = reportFileName;
-    }
-
-    /**
-     * Gets report type.
-     *
-     * @return the report type
-     */
-    public String getReportType() {
-        return reportType;
-    }
-
-    /**
-     * Sets report type.
-     *
-     * @param reportType the report type
-     */
-    public void setReportType(String reportType) {
-        this.reportType = reportType;
-    }
-
-    /**
-     * Gets institution name.
-     *
-     * @return the institution name
-     */
-    public String getInstitutionName() {
-        return institutionName;
-    }
-
-    /**
-     * Sets institution name.
-     *
-     * @param institutionName the institution name
-     */
-    public void setInstitutionName(String institutionName) {
-        this.institutionName = institutionName;
-    }
-
-    /**
-     * Gets success report re capcsv record list.
-     *
-     * @return the success report re capcsv record list
-     */
-    public List<SuccessReportReCAPCSVRecord> getSuccessReportReCAPCSVRecordList() {
-        return successReportReCAPCSVRecordList;
-    }
-
-    /**
-     * Sets success report re capcsv record list.
-     *
-     * @param successReportReCAPCSVRecordList the success report re capcsv record list
-     */
-    public void setSuccessReportReCAPCSVRecordList(List<SuccessReportReCAPCSVRecord> successReportReCAPCSVRecordList) {
-        this.successReportReCAPCSVRecordList = successReportReCAPCSVRecordList;
-    }
 }
