@@ -1,12 +1,12 @@
 package org.recap.repository;
 
 import org.recap.model.jpa.InstitutionEntity;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.recap.repository.jpa.BaseRepository;
 
 /**
  * Created by chenchulakshmig on 6/13/16.
  */
-public interface InstitutionDetailsRepository extends PagingAndSortingRepository<InstitutionEntity, Integer> {
+public interface InstitutionDetailsRepository extends BaseRepository<InstitutionEntity> {
 
     /**
      * Find by institution code institution entity.

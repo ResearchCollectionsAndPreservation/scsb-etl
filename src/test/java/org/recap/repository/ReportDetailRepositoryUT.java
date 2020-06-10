@@ -3,8 +3,6 @@ package org.recap.repository;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
-import org.recap.model.jpa.ReportDataEntity;
-import org.recap.model.jpa.ReportEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
@@ -25,7 +23,7 @@ public class ReportDetailRepositoryUT extends BaseTestCase {
         ReportEntity savedReportEntity = saveReportEntity();
 
         assertNotNull(savedReportEntity);
-        assertNotNull(savedReportEntity.getRecordNumber());
+        assertNotNull(savedReportEntity.getId());
         List<ReportDataEntity> savedReportDataEntities = savedReportEntity.getReportDataEntities();
         for (Iterator<ReportDataEntity> iterator = savedReportDataEntities.iterator(); iterator.hasNext(); ) {
             ReportDataEntity savedReportDataEntity = iterator.next();

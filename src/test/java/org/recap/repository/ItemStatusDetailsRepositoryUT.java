@@ -2,7 +2,6 @@ package org.recap.repository;
 
 import org.junit.Test;
 import org.recap.BaseTestCase;
-import org.recap.model.jpa.ItemStatusEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 
@@ -27,7 +26,7 @@ public class ItemStatusDetailsRepositoryUT extends BaseTestCase {
 
         ItemStatusEntity savedItemStatusEntity = itemStatusDetailsRepository.save(itemStatusEntity);
         assertNotNull(savedItemStatusEntity);
-        assertNotNull(savedItemStatusEntity.getItemStatusId());
+        assertNotNull(savedItemStatusEntity.getId());
         assertEquals(itemStatusEntity.getStatusCode(), "test");
         assertEquals(itemStatusEntity.getStatusDescription(), "test");
 

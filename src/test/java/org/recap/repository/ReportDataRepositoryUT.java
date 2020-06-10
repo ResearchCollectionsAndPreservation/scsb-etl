@@ -3,7 +3,6 @@ package org.recap.repository;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
-import org.recap.model.jpa.ReportDataEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class ReportDataRepositoryUT extends BaseTestCase {
 
     private void saveReportDataEntity(){
         ReportDataEntity reportDataEntity = new ReportDataEntity();
-        reportDataEntity.setReportDataId(100);
+        reportDataEntity.setId(100);
         reportDataEntity.setHeaderName(RecapConstants.BIB_ID);
         reportDataEntity.setHeaderValue("10,20");
         reportDataEntity.setRecordNum("50");

@@ -6,9 +6,9 @@ import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.recap.RecapConstants;
+import org.recap.model.jpa.CollectionGroupEntity;
 import org.recap.util.datadump.DataExportHeaderUtil;
 import org.recap.model.export.DataDumpRequest;
-import org.recap.model.jpa.CollectionGroupEntity;
 import org.recap.model.search.SearchRecordsRequest;
 import org.recap.repository.CollectionGroupDetailsRepository;
 import org.recap.service.DataDumpSolrService;
@@ -292,7 +292,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
 
         for (Iterator<CollectionGroupEntity> iterator = all.iterator(); iterator.hasNext(); ) {
             CollectionGroupEntity collectionGroupEntity = iterator.next();
-            if (collectionGroupIds.contains(collectionGroupEntity.getCollectionGroupId())) {
+            if (collectionGroupIds.contains(collectionGroupEntity.getId())) {
                 codes.add(collectionGroupEntity.getCollectionGroupCode());
             }
         }

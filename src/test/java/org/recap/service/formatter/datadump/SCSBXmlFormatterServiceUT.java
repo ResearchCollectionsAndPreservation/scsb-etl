@@ -174,26 +174,26 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCase {
 
     private void generateMatchinInfo(){
         ReportEntity reportEntity = new ReportEntity();
-        reportEntity.setRecordNumber(15);
+        reportEntity.setId(15);
         reportEntity.setFileName("OCLC,ISBN");
         reportEntity.setType("MultiMatch");
         reportEntity.setCreatedDate(new Date());
         reportEntity.setInstitutionName("ALL");
         List<ReportDataEntity> reportDataEntityList = new ArrayList<>();
         ReportDataEntity reportDataEntity = new ReportDataEntity();
-        reportDataEntity.setReportDataId(400);
+        reportDataEntity.setId(400);
         reportDataEntity.setHeaderName("BibId");
         reportDataEntity.setHeaderValue("11,100,12,1,2,3,4,5,6");
         reportDataEntity.setRecordNum("50");
         reportDataEntityList.add(reportDataEntity);
         ReportDataEntity reportDataEntity1 = new ReportDataEntity();
-        reportDataEntity1.setReportDataId(401);
+        reportDataEntity1.setId(401);
         reportDataEntity1.setHeaderName("OwningInstitution");
         reportDataEntity1.setHeaderValue("PUL,NYPL,CUL,CUL,CUL,PUL,PUL,NYPL,NYPL");
         reportDataEntity1.setRecordNum("50");
         reportDataEntityList.add(reportDataEntity1);
         ReportDataEntity reportDataEntity2 = new ReportDataEntity();
-        reportDataEntity2.setReportDataId(402);
+        reportDataEntity2.setId(402);
         reportDataEntity2.setHeaderName("OwningInstitutionBibId");
         reportDataEntity2.setHeaderValue("3214,20,17980,200,201,202,203,204,205");
         reportDataEntity2.setRecordNum("50");
@@ -214,7 +214,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCase {
         bibliographicEntity.setOwningInstitutionBibId("20");
         bibliographicEntity.setOwningInstitutionId(3);
         InstitutionEntity institutionEntity = new InstitutionEntity();
-        institutionEntity.setInstitutionId(1);
+        institutionEntity.setId(1);
         institutionEntity.setInstitutionCode("NYPL");
         institutionEntity.setInstitutionName("New York Public Library");
         bibliographicEntity.setInstitutionEntity(institutionEntity);

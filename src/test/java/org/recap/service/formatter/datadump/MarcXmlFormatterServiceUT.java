@@ -250,7 +250,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
         bibliographicEntity.setOwningInstitutionBibId("1");
         bibliographicEntity.setOwningInstitutionId(3);
         InstitutionEntity institutionEntity = new InstitutionEntity();
-        institutionEntity.setInstitutionId(1);
+        institutionEntity.setId(1);
         institutionEntity.setInstitutionCode("NYPL");
         institutionEntity.setInstitutionName("New York Public Library");
         bibliographicEntity.setInstitutionEntity(institutionEntity);
@@ -305,7 +305,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
         bibliographicEntity.setOwningInstitutionBibId("1");
         bibliographicEntity.setOwningInstitutionId(3);
         InstitutionEntity institutionEntity = new InstitutionEntity();
-        institutionEntity.setInstitutionId(1);
+        institutionEntity.setId(1);
         institutionEntity.setInstitutionCode("NYPL");
         institutionEntity.setInstitutionName("New York Public Library");
         bibliographicEntity.setInstitutionEntity(institutionEntity);

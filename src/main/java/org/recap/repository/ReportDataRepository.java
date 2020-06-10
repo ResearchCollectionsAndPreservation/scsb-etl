@@ -1,7 +1,7 @@
 package org.recap.repository;
 
 import org.recap.model.jpa.ReportDataEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.recap.repository.jpa.BaseRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by premkb on 24/1/17.
  */
-public interface ReportDataRepository extends JpaRepository<ReportDataEntity, Integer> {
+public interface ReportDataRepository extends BaseRepository<ReportDataEntity> {
 
     /**
      * Gets report data for matching institution bib.

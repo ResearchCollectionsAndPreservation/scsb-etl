@@ -6,8 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
-import org.recap.model.jpa.ReportDataEntity;
-import org.recap.model.jpa.ReportEntity;
 import org.recap.model.jpa.XmlRecordEntity;
 import org.recap.repository.ReportDetailRepository;
 import org.recap.repository.XmlRecordRepository;

@@ -7,8 +7,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.recap.RecapConstants;
 import org.recap.camel.datadump.consumer.DataExportReportActiveMQConsumer;
-import org.recap.model.jpa.ReportDataEntity;
-import org.recap.model.jpa.ReportEntity;
 import org.recap.repository.ReportDetailRepository;
 
 import java.util.*;

@@ -1,6 +1,7 @@
 package org.recap.repository;
 
 import org.recap.model.jpa.EtlGfaEntity;
+import org.recap.repository.jpa.BaseRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

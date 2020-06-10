@@ -1,12 +1,13 @@
 package org.recap.repository;
 
 import org.recap.model.jpa.JobParamEntity;
+import org.recap.repository.jpa.BaseRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Created by rajeshbabuk on 7/7/17.
  */
-public interface JobParamDetailRepository extends JpaRepository<JobParamEntity, Integer> {
+public interface JobParamDetailRepository extends BaseRepository<JobParamEntity> {
 
     /**
      * Finds job param entity by using job name.
