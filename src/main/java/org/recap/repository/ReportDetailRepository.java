@@ -1,7 +1,7 @@
 package org.recap.repository;
 
 import org.recap.model.jpa.ReportEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.recap.repository.jpa.BaseRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by SheikS on 8/8/2016.
  */
-public interface ReportDetailRepository extends JpaRepository<ReportEntity, Integer> {
+public interface ReportDetailRepository extends BaseRepository<ReportEntity> {
 
     /**
      * Find by file name list.

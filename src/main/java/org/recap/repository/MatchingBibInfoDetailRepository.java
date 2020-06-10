@@ -1,6 +1,7 @@
 package org.recap.repository;
 
 import org.recap.model.jpa.MatchingBibInfoDetail;
+import org.recap.repository.jpa.BaseRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Created by premkb on 29/1/17.
  */
-public interface MatchingBibInfoDetailRepository extends JpaRepository<MatchingBibInfoDetail, Integer> {
+public interface MatchingBibInfoDetailRepository extends BaseRepository<MatchingBibInfoDetail> {
 
     /**
      * Gets record num.

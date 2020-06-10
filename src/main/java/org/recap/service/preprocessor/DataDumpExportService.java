@@ -229,9 +229,9 @@ public class DataDumpExportService {
         } else {
             List<Integer> collectionGroupIdList = new ArrayList<>();
             CollectionGroupEntity collectionGroupEntityShared = collectionGroupDetailsRepository.findByCollectionGroupCode(RecapConstants.COLLECTION_GROUP_SHARED);
-            collectionGroupIdList.add(collectionGroupEntityShared.getCollectionGroupId());
+            collectionGroupIdList.add(collectionGroupEntityShared.getId());
             CollectionGroupEntity collectionGroupEntityOpen = collectionGroupDetailsRepository.findByCollectionGroupCode(RecapConstants.COLLECTION_GROUP_OPEN);
-            collectionGroupIdList.add(collectionGroupEntityOpen.getCollectionGroupId());
+            collectionGroupIdList.add(collectionGroupEntityOpen.getId());
             dataDumpRequest.setCollectionGroupIds(collectionGroupIdList);
         }
         if (transmissionType != null && !"".equals(transmissionType)) {

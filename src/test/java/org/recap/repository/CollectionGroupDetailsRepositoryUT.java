@@ -2,7 +2,6 @@ package org.recap.repository;
 
 import org.junit.Test;
 import org.recap.BaseTestCase;
-import org.recap.model.jpa.CollectionGroupEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -32,7 +31,7 @@ public class CollectionGroupDetailsRepositoryUT extends BaseTestCase {
 
         CollectionGroupEntity savedCollectionGroupEntity = collectionGroupDetailsRepository.save(collectionGroupEntity);
         assertNotNull(savedCollectionGroupEntity);
-        assertNotNull(savedCollectionGroupEntity.getCollectionGroupId());
+        assertNotNull(savedCollectionGroupEntity.getId());
         assertEquals(savedCollectionGroupEntity.getCollectionGroupCode(), "test");
         assertEquals(savedCollectionGroupEntity.getCollectionGroupDescription(), "test");
         assertEquals(savedCollectionGroupEntity.getCreatedDate(), date);
@@ -47,7 +46,7 @@ public class CollectionGroupDetailsRepositoryUT extends BaseTestCase {
         assertNotNull(collectionGroupDetailsRepository);
 
         CollectionGroupEntity collectionGroupEntity = new CollectionGroupEntity();
-        collectionGroupEntity.setCollectionGroupId(1);
+        collectionGroupEntity.setId(1);
         collectionGroupEntity.setCollectionGroupCode("Shared");
         collectionGroupEntity.setCollectionGroupDescription("Shared");
         collectionGroupEntity.setCreatedDate(new Date());

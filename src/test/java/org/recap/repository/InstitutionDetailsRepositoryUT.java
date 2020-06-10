@@ -2,7 +2,6 @@ package org.recap.repository;
 
 import org.junit.Test;
 import org.recap.BaseTestCase;
-import org.recap.model.jpa.InstitutionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
@@ -28,7 +27,7 @@ public class InstitutionDetailsRepositoryUT extends BaseTestCase {
 
         InstitutionEntity savedInstitutionEntity = institutionDetailsRepository.save(institutionEntity);
         assertNotNull(savedInstitutionEntity);
-        assertNotNull(savedInstitutionEntity.getInstitutionId());
+        assertNotNull(savedInstitutionEntity.getId());
         assertEquals(savedInstitutionEntity.getInstitutionCode(), "test");
         assertEquals(savedInstitutionEntity.getInstitutionName(), "test");
 
@@ -44,7 +43,7 @@ public class InstitutionDetailsRepositoryUT extends BaseTestCase {
         assertNotNull(institutionDetailsRepository);
 
         InstitutionEntity institutionEntity = new InstitutionEntity();
-        institutionEntity.setInstitutionId(1);
+        institutionEntity.setId(1);
         institutionEntity.setInstitutionCode("PUL");
         institutionEntity.setInstitutionName("Princetonn");
 

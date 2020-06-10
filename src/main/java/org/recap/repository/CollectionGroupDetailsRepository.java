@@ -1,12 +1,12 @@
 package org.recap.repository;
 
 import org.recap.model.jpa.CollectionGroupEntity;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.recap.repository.jpa.BaseRepository;
 
 /**
  * Created by angelind on 27/6/16.
  */
-public interface CollectionGroupDetailsRepository extends PagingAndSortingRepository<CollectionGroupEntity, Integer> {
+public interface CollectionGroupDetailsRepository extends BaseRepository<CollectionGroupEntity> {
 
     /**
      * Find by collection group code collection group entity.

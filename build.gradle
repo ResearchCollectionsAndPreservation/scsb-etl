@@ -64,6 +64,12 @@ repositories {
 
 
 dependencies {
+    /*implementation('org.recap:phase4-scsb-common:1.0') {
+		version {
+			branch = 'development'
+		}
+	}*/
+    compile fileTree(dir: 'lib', include: '*.jar')
     implementation('org.apache.camel.springboot:camel-spring-boot-starter:3.2.0')
     implementation('org.apache.camel.springboot:camel-spring-boot-dependencies:3.2.0')
     implementation('org.apache.camel:camel-activemq:3.2.0')
