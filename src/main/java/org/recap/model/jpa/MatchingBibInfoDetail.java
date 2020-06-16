@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AttributeOverride(name = "id", column = @Column(name = "MATCHING_BIB_INFO_DATA_DUMP_ID"))
 @Getter
 @Setter
-public class MatchingBibInfoDetail extends IdentifiableBase<Integer> {
+public class MatchingBibInfoDetail extends AbstractEntity<Integer> {
 
     @Column(name = "BIB_ID")
     private String bibId;

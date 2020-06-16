@@ -2,6 +2,7 @@ package org.recap.repository;
 
 import org.junit.Test;
 import org.recap.BaseTestCase;
+import org.recap.model.jpa.ItemStatusEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 
@@ -39,7 +40,7 @@ public class ItemStatusDetailsRepositoryUT extends BaseTestCase {
         assertNotNull(itemStatusDetailsRepository);
 
         ItemStatusEntity itemStatusEntity = new ItemStatusEntity();
-        itemStatusEntity.setItemStatusId(1);
+        itemStatusEntity.setId(1);
         itemStatusEntity.setStatusCode("Available");
         itemStatusEntity.setStatusDescription("Test Available");
 

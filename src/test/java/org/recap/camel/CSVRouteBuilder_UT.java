@@ -8,6 +8,8 @@ import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
 import org.recap.model.csv.FailureReportReCAPCSVRecord;
 import org.recap.model.csv.ReCAPCSVFailureRecord;
+import org.recap.model.jpa.ReportDataEntity;
+import org.recap.model.jpa.ReportEntity;
 import org.recap.repository.ReportDetailRepository;
 import org.recap.util.ReCAPCSVFailureRecordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
