@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(name = "xml_records_t", schema = "recap", catalog = "")
 @Getter
 @Setter
-public class XmlRecordEntity extends IdentifiableBase<Integer> {
+public class XmlRecordEntity extends AbstractEntity<Integer> {
     @Lob
     @Column(name = "xml_record")
     private byte[] xml;

@@ -27,7 +27,7 @@ public class EtlGfaEntityUT extends BaseTestCase {
     @Test
     public void testSaveAndFetchEtlGfa(){
         EtlGfaEntity etlGfaEntity = new EtlGfaEntity();
-        etlGfaEntity.setId("3210457796");
+        etlGfaEntity.setItemBarcode("3210457796");
         etlGfaEntity.setCustomer("GP");
         etlGfaEntity.setStatus("Out on Ret WO: 387966 09/29/15 To PA");
 
@@ -42,7 +42,7 @@ public class EtlGfaEntityUT extends BaseTestCase {
         assertEquals(savedEtlGfaEntity.getStatus(),"Out on Ret WO: 387966 09/29/15 To PA");
         assertEquals(savedEtlGfaEntity.getCustomer(), etlGfaEntity.getCustomer());
         assertNotNull(etlGfaEntityListByBarcode);
-        assertEquals(etlGfaEntityListByBarcode.get(0).getId(),"3210457796");
+        assertEquals(etlGfaEntityListByBarcode.get(0).getItemBarcode(),"3210457796");
 
     }
 

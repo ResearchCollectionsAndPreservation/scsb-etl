@@ -2,6 +2,7 @@ package org.recap.repository;
 
 import org.junit.Test;
 import org.recap.BaseTestCase;
+import org.recap.model.jpa.CollectionGroupEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;

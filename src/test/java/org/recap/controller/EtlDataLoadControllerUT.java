@@ -10,6 +10,8 @@ import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
 import org.recap.model.etl.EtlLoadRequest;
 import org.recap.model.jpa.BibliographicEntity;
+import org.recap.model.jpa.ReportDataEntity;
+import org.recap.model.jpa.ReportEntity;
 import org.recap.model.jpa.XmlRecordEntity;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.repository.ReportDetailRepository;
