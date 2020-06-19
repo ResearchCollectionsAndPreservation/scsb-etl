@@ -5,7 +5,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.recap.RecapConstants;
 import org.recap.model.jaxb.marc.CollectionType;
 import org.recap.model.jaxb.marc.RecordType;
-import org.recap.model.jpa.*;
+import org.recap.model.jpa.BibliographicEntity;
+import org.recap.model.jpa.HoldingsEntity;
+import org.recap.model.jpa.ItemEntity;
+import org.recap.model.jpa.ReportDataEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 

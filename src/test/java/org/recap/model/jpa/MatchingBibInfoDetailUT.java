@@ -3,7 +3,7 @@ package org.recap.model.jpa;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by hemalathas on 20/4/17.

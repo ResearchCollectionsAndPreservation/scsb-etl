@@ -1,8 +1,20 @@
 package org.recap.service.formatter.datadump;
 
 import org.recap.RecapConstants;
-import org.recap.model.jaxb.*;
-import org.recap.model.jaxb.marc.*;
+import org.recap.model.jaxb.Bib;
+import org.recap.model.jaxb.BibRecord;
+import org.recap.model.jaxb.Holding;
+import org.recap.model.jaxb.Holdings;
+import org.recap.model.jaxb.Items;
+import org.recap.model.jaxb.JAXBContextHandler;
+import org.recap.model.jaxb.JAXBHandler;
+import org.recap.model.jaxb.MatchingInstitutionBibIdType;
+import org.recap.model.jaxb.marc.BibRecords;
+import org.recap.model.jaxb.marc.CollectionType;
+import org.recap.model.jaxb.marc.ContentType;
+import org.recap.model.jaxb.marc.DataFieldType;
+import org.recap.model.jaxb.marc.RecordType;
+import org.recap.model.jaxb.marc.SubfieldatafieldType;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.ItemEntity;
@@ -17,7 +29,14 @@ import org.apache.commons.collections.CollectionUtils;
 import javax.xml.bind.Marshaller;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by premkb on 28/9/16.
@@ -54,7 +73,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
     public String getSCSBXmlForBibRecords(List<BibRecord> bibRecords) throws Exception{
         String formattedString;
         BibRecords bibRecords1 = new BibRecords();
-        bibRecords1.setBibRecords(bibRecords);
+        bibRecords1.setBibRecordList(bibRecords);
         formattedString = convertToXml(bibRecords1);
 
         return formattedString;
