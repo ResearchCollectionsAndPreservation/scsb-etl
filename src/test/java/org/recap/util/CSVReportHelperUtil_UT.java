@@ -9,7 +9,7 @@ import org.recap.model.jpa.ReportEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by peris on 8/16/16.
