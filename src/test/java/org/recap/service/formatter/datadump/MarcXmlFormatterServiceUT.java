@@ -9,6 +9,7 @@ import org.marc4j.MarcXmlReader;
 import org.marc4j.MarcXmlWriter;
 import org.marc4j.marc.Record;
 import org.recap.BaseTestCase;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.BibliographicPK;
@@ -232,7 +233,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
     public void generateMarcXml() throws Exception {
         BibliographicEntity bibliographicEntity = getBibliographicEntity();
         Map<String, Object> successAndFailureFormattedList = marcXmlFormatterService.prepareMarcRecords(Arrays.asList(bibliographicEntity));
-        String marcXmlString = marcXmlFormatterService.covertToMarcXmlString((List<Record>)successAndFailureFormattedList.get(RecapConstants.SUCCESS));
+        String marcXmlString = marcXmlFormatterService.covertToMarcXmlString((List<Record>)successAndFailureFormattedList.get(RecapCommonConstants.SUCCESS));
         System.out.println(marcXmlString);
         List<Record> recordList = readMarcXml(marcXmlString);
         assertNotNull(recordList);
@@ -248,9 +249,9 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
     public void generateMarcXmlForMalformedBibContent() throws IOException, URISyntaxException {
         BibliographicEntity bibliographicEntity = getMalformedBibliographicEntity();
         Map<String, Object> successAndFailureFormattedList = marcXmlFormatterService.prepareMarcRecords(Arrays.asList(bibliographicEntity));
-        List<String> marcXmlString = (List<String>) successAndFailureFormattedList.get(RecapConstants.SUCCESS);
+        List<String> marcXmlString = (List<String>) successAndFailureFormattedList.get(RecapCommonConstants.SUCCESS);
         assertEquals(marcXmlString.size(),0);
-        List<String> failures = (List<String>) successAndFailureFormattedList.get(RecapConstants.FAILURE);
+        List<String> failures = (List<String>) successAndFailureFormattedList.get(RecapCommonConstants.FAILURE);
         String failureMessage = failures.get(0);
         assertNotNull(failureMessage);
         System.out.println(failureMessage);
@@ -387,7 +388,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
 
         ArrayList<Record> recordList = new ArrayList<>();
         Map<String, Object> recordMap = marcXmlFormatterService.prepareMarcRecord(bibliographicEntity.get());
-        Record record = (Record) recordMap.get(RecapConstants.SUCCESS);
+        Record record = (Record) recordMap.get(RecapCommonConstants.SUCCESS);
         assertNotNull(record);
 
         OutputStream out = new ByteArrayOutputStream();
@@ -398,7 +399,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
 
         ArrayList<Record> recordList1 = new ArrayList<>();
         Map<String, Object> recordMap1 = marcXmlFormatterService.prepareMarcRecord(bibliographicEntity1.get());
-        Record record1 = (Record) recordMap.get(RecapConstants.SUCCESS);
+        Record record1 = (Record) recordMap.get(RecapCommonConstants.SUCCESS);
         assertNotNull(record1);
 
         writeMarcXml(recordList1, writer);

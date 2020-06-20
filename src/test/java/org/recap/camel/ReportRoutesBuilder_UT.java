@@ -3,6 +3,7 @@ package org.recap.camel;
 import org.apache.camel.ProducerTemplate;
 import org.junit.Test;
 import org.recap.BaseTestCase;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jpa.ReportDataEntity;
 import org.recap.model.jpa.ReportEntity;
@@ -29,7 +30,7 @@ public class ReportRoutesBuilder_UT extends BaseTestCase {
     @Test
     public void failureReportEntity() throws Exception {
         ReportEntity reportEntity = new ReportEntity();
-        reportEntity.setType(RecapConstants.FAILURE);
+        reportEntity.setType(RecapCommonConstants.FAILURE);
         reportEntity.setFileName("test.xml");
         reportEntity.setCreatedDate(new Date());
         reportEntity.setInstitutionName("CUL");
@@ -42,7 +43,7 @@ public class ReportRoutesBuilder_UT extends BaseTestCase {
         reportDataEntities.add(reportDataEntity1);
         reportEntity.setReportDataEntities(reportDataEntities);
 
-        producer.sendBody(RecapConstants.REPORT_Q, reportEntity);
+        producer.sendBody(RecapCommonConstants.REPORT_Q, reportEntity);
 
         Thread.sleep(1000);
 

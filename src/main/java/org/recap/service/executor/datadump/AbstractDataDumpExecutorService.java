@@ -5,6 +5,7 @@ import org.apache.camel.FluentProducerTemplate;
 import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jpa.CollectionGroupEntity;
 import org.recap.util.datadump.DataExportHeaderUtil;
@@ -320,15 +321,15 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
      * @return the formatted date string
      */
     public String getFormattedDateString(String inputDateString, String inputToDateString) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RecapConstants.DATE_FORMAT_YYYYMMDDHHMM);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RecapCommonConstants.DATE_FORMAT_YYYYMMDDHHMM);
         String dateString = null;
         try {
-            DateFormat format = new SimpleDateFormat(RecapConstants.UTC_DATE_FORMAT);
-            format.setTimeZone(TimeZone.getTimeZone(RecapConstants.UTC));
+            DateFormat format = new SimpleDateFormat(RecapCommonConstants.UTC_DATE_FORMAT);
+            format.setTimeZone(TimeZone.getTimeZone(RecapCommonConstants.UTC));
 
             Date fromDate = simpleDateFormat.parse(inputDateString);
             String fromDateStr = format.format(fromDate);
-            dateString = fromDateStr + RecapConstants.SOLR_DATE_RANGE_TO_NOW;
+            dateString = fromDateStr + RecapCommonConstants.SOLR_DATE_RANGE_TO_NOW;
             if (StringUtils.isNotBlank(inputToDateString)) {
                 Date toDate = simpleDateFormat.parse(inputToDateString);
                 String toDateStr = format.format(toDate);

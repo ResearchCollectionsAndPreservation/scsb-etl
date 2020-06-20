@@ -2,6 +2,7 @@ package org.recap.repository;
 
 import org.junit.Test;
 import org.recap.BaseTestCase;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jpa.ReportDataEntity;
 import org.recap.model.jpa.ReportEntity;
@@ -55,7 +56,7 @@ public class ReportDetailRepositoryUT extends BaseTestCase {
         ReportEntity reportEntity = new ReportEntity();
         reportEntity.setFileName("test.xml");
         reportEntity.setCreatedDate(new Date());
-        reportEntity.setType(RecapConstants.FAILURE);
+        reportEntity.setType(RecapCommonConstants.FAILURE);
         reportEntity.setInstitutionName("CUL");
 
         ReportDataEntity reportDataEntity = new ReportDataEntity();

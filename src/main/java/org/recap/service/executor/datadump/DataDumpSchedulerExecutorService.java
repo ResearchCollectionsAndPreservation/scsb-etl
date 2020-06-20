@@ -1,6 +1,7 @@
 package org.recap.service.executor.datadump;
 
 import org.apache.commons.lang3.StringUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.export.DataDumpRequest;
 import org.recap.service.preprocessor.DataDumpExportService;
@@ -87,11 +88,11 @@ public class DataDumpSchedulerExecutorService {
      * @return
      */
     private String getExportJobNameByInstitution(String requestingInstitutionCode) {
-        if (RecapConstants.PRINCETON.equals(requestingInstitutionCode)) {
+        if (RecapCommonConstants.PRINCETON.equals(requestingInstitutionCode)) {
             return RecapConstants.EXPORT_INCREMENTAL_PUL;
-        } else if (RecapConstants.COLUMBIA.equals(requestingInstitutionCode)) {
+        } else if (RecapCommonConstants.COLUMBIA.equals(requestingInstitutionCode)) {
             return RecapConstants.EXPORT_INCREMENTAL_CUL;
-        } else if (RecapConstants.NYPL.equals(requestingInstitutionCode)) {
+        } else if (RecapCommonConstants.NYPL.equals(requestingInstitutionCode)) {
             return RecapConstants.EXPORT_INCREMENTAL_NYPL;
         }
         return null;
@@ -103,11 +104,11 @@ public class DataDumpSchedulerExecutorService {
      * @return
      */
     private String getToEmailAddress(String requestingInstitutionCode) {
-        if (RecapConstants.PRINCETON.equals(requestingInstitutionCode)) {
+        if (RecapCommonConstants.PRINCETON.equals(requestingInstitutionCode)) {
             return dataDumpEmailPulTo;
-        } else if (RecapConstants.COLUMBIA.equals(requestingInstitutionCode)) {
+        } else if (RecapCommonConstants.COLUMBIA.equals(requestingInstitutionCode)) {
             return dataDumpEmailCulTo;
-        } else if (RecapConstants.NYPL.equals(requestingInstitutionCode)) {
+        } else if (RecapCommonConstants.NYPL.equals(requestingInstitutionCode)) {
             return dataDumpEmailNyplTo;
         }
         return null;

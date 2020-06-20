@@ -2,6 +2,7 @@ package org.recap.camel;
 
 import org.apache.camel.ProducerTemplate;
 import org.apache.commons.lang3.StringUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.etl.BibPersisterCallable;
 import org.recap.model.jaxb.BibRecord;
@@ -117,7 +118,7 @@ public class RecordProcessor {
 
         if (!CollectionUtils.isEmpty(reportEntities)) {
             for(ReportEntity reportEntity : reportEntities) {
-                producer.sendBody(RecapConstants.REPORT_Q, reportEntity);
+                producer.sendBody(RecapCommonConstants.REPORT_Q, reportEntity);
             }
         }
 
@@ -185,20 +186,20 @@ public class RecordProcessor {
                 List<ReportDataEntity> reportDataEntities = new ArrayList<>();
                 String owningInst = xmlRecordEntity.getOwningInst();
                 reportEntity.setCreatedDate(new Date());
-                reportEntity.setType(RecapConstants.FAILURE);
+                reportEntity.setType(RecapCommonConstants.FAILURE);
                 reportEntity.setFileName(xmlRecordEntity.getXmlFileName());
                 reportEntity.setInstitutionName(owningInst);
 
                 if(StringUtils.isNotBlank(owningInst)) {
                     ReportDataEntity reportDataEntity = new ReportDataEntity();
-                    reportDataEntity.setHeaderName(RecapConstants.OWNING_INSTITUTION);
+                    reportDataEntity.setHeaderName(RecapCommonConstants.OWNING_INSTITUTION);
                     reportDataEntity.setHeaderValue(String.valueOf(getInstitutionEntityMap().get(owningInst)));
                     reportDataEntities.add(reportDataEntity);
                 }
 
                 if(StringUtils.isNotBlank(xmlRecordEntity.getOwningInstBibId())) {
                     ReportDataEntity reportDataEntity = new ReportDataEntity();
-                    reportDataEntity.setHeaderName(RecapConstants.OWNING_INSTITUTION_BIB_ID);
+                    reportDataEntity.setHeaderName(RecapCommonConstants.OWNING_INSTITUTION_BIB_ID);
                     reportDataEntity.setHeaderValue(xmlRecordEntity.getOwningInstBibId());
                     reportDataEntities.add(reportDataEntity);
                 }
@@ -247,20 +248,20 @@ public class RecordProcessor {
         List<ReportDataEntity> reportDataEntities = new ArrayList<>();
         String owningInst = xmlRecordEntity.getOwningInst();
         reportEntity.setCreatedDate(new Date());
-        reportEntity.setType(RecapConstants.FAILURE);
+        reportEntity.setType(RecapCommonConstants.FAILURE);
         reportEntity.setFileName(xmlRecordEntity.getXmlFileName());
         reportEntity.setInstitutionName(owningInst);
 
         if(StringUtils.isNotBlank(owningInst)) {
             ReportDataEntity reportDataEntity = new ReportDataEntity();
-            reportDataEntity.setHeaderName(RecapConstants.OWNING_INSTITUTION);
+            reportDataEntity.setHeaderName(RecapCommonConstants.OWNING_INSTITUTION);
             reportDataEntity.setHeaderValue(String.valueOf(getInstitutionEntityMap().get(owningInst)));
             reportDataEntities.add(reportDataEntity);
         }
 
         if(StringUtils.isNotBlank(xmlRecordEntity.getOwningInstBibId())) {
             ReportDataEntity reportDataEntity = new ReportDataEntity();
-            reportDataEntity.setHeaderName(RecapConstants.OWNING_INSTITUTION_BIB_ID);
+            reportDataEntity.setHeaderName(RecapCommonConstants.OWNING_INSTITUTION_BIB_ID);
             reportDataEntity.setHeaderValue(xmlRecordEntity.getOwningInstBibId());
             reportDataEntities.add(reportDataEntity);
         }

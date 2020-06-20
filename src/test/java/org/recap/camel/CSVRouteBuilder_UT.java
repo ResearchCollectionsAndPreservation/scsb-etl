@@ -5,6 +5,7 @@ import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.recap.BaseTestCase;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.FailureReportReCAPCSVRecord;
 import org.recap.model.csv.ReCAPCSVFailureRecord;
@@ -49,31 +50,31 @@ public class CSVRouteBuilder_UT extends BaseTestCase {
         ReportEntity reportEntity = new ReportEntity();
         reportEntity.setFileName("test.xml");
         reportEntity.setCreatedDate(new Date());
-        reportEntity.setType(RecapConstants.FAILURE);
+        reportEntity.setType(RecapCommonConstants.FAILURE);
         reportEntity.setInstitutionName("PUL");
 
         ReportDataEntity reportDataEntity = new ReportDataEntity();
-        reportDataEntity.setHeaderName(RecapConstants.ITEM_BARCODE);
+        reportDataEntity.setHeaderName(RecapCommonConstants.ITEM_BARCODE);
         reportDataEntity.setHeaderValue("103");
         reportDataEntities.add(reportDataEntity);
 
         ReportDataEntity reportDataEntity2 = new ReportDataEntity();
-        reportDataEntity2.setHeaderName(RecapConstants.CUSTOMER_CODE);
+        reportDataEntity2.setHeaderName(RecapCommonConstants.CUSTOMER_CODE);
         reportDataEntity2.setHeaderValue("PA");
         reportDataEntities.add(reportDataEntity2);
 
         ReportDataEntity reportDataEntity3 = new ReportDataEntity();
-        reportDataEntity3.setHeaderName(RecapConstants.LOCAL_ITEM_ID);
+        reportDataEntity3.setHeaderName(RecapCommonConstants.LOCAL_ITEM_ID);
         reportDataEntity3.setHeaderValue("10412");
         reportDataEntities.add(reportDataEntity3);
 
         ReportDataEntity reportDataEntity4 = new ReportDataEntity();
-        reportDataEntity4.setHeaderName(RecapConstants.OWNING_INSTITUTION);
+        reportDataEntity4.setHeaderName(RecapCommonConstants.OWNING_INSTITUTION);
         reportDataEntity4.setHeaderValue("PUL");
         reportDataEntities.add(reportDataEntity4);
 
         ReportDataEntity reportDataEntity5 = new ReportDataEntity();
-        reportDataEntity5.setHeaderName(RecapConstants.ERROR_DESCRIPTION);
+        reportDataEntity5.setHeaderName(RecapCommonConstants.ERROR_DESCRIPTION);
         reportDataEntity5.setHeaderValue("At least one $245 must be present.");
         reportDataEntities.add(reportDataEntity5);
 
@@ -90,14 +91,14 @@ public class CSVRouteBuilder_UT extends BaseTestCase {
         reCAPCSVFailureRecord.setFailureReportReCAPCSVRecordList(Arrays.asList(failureReportReCAPCSVRecord));
         reCAPCSVFailureRecord.setFileName("test.xml");
         reCAPCSVFailureRecord.setInstitutionName("PUL");
-        reCAPCSVFailureRecord.setReportType(RecapConstants.FAILURE);
+        reCAPCSVFailureRecord.setReportType(RecapCommonConstants.FAILURE);
 
 
         producer.sendBody(RecapConstants.CSV_FAILURE_Q, reCAPCSVFailureRecord);
 
         Thread.sleep(1000);
 
-        String ddMMMyyyy = new SimpleDateFormat(RecapConstants.DATE_FORMAT_FOR_FILE_NAME).format(new Date());
+        String ddMMMyyyy = new SimpleDateFormat(RecapCommonConstants.DATE_FORMAT_FOR_FILE_NAME).format(new Date());
         String expectedGeneratedFileName = "test"+"-Failure"+"-"+ddMMMyyyy+".csv";
 
         File directory = new File(reportDirectory);

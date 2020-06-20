@@ -10,6 +10,7 @@ import org.marc4j.marc.DataField;
 import org.marc4j.marc.MarcFactory;
 import org.marc4j.marc.Record;
 import org.marc4j.marc.Subfield;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.HoldingsEntity;
@@ -79,20 +80,20 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
             BibliographicEntity bibliographicEntity = iterator.next();
             if(CollectionUtils.isNotEmpty(bibliographicEntity.getItemEntities())) {
                 Map<String, Object> stringObjectMap = prepareMarcRecord(bibliographicEntity);
-                Record record = (Record) stringObjectMap.get(RecapConstants.SUCCESS);
+                Record record = (Record) stringObjectMap.get(RecapCommonConstants.SUCCESS);
                 if (null != record) {
                     records.add(record);
                     itemExportedCount = itemExportedCount + bibliographicEntity.getItemEntities().size();
                 }
-                String failureMsg = (String) stringObjectMap.get(RecapConstants.FAILURE);
+                String failureMsg = (String) stringObjectMap.get(RecapCommonConstants.FAILURE);
                 if (null != failureMsg) {
                     errors.add(failureMsg);
                 }
             }
         }
 
-        resultsMap.put(RecapConstants.SUCCESS, records);
-        resultsMap.put(RecapConstants.FAILURE, errors);
+        resultsMap.put(RecapCommonConstants.SUCCESS, records);
+        resultsMap.put(RecapCommonConstants.FAILURE, errors);
         resultsMap.put(RecapConstants.ITEM_EXPORTED_COUNT, itemExportedCount);
 
         return resultsMap;
@@ -114,11 +115,11 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
             add009Field(record, bibliographicEntity);
             List<Integer> itemIds = getItemIds(bibliographicEntity);
             record = addHoldingInfo(record, bibliographicEntity.getHoldingsEntities(),itemIds,getNonOrphanHoldingsIdList(bibliographicEntity.getItemEntities()));
-            results.put(RecapConstants.SUCCESS, record);
+            results.put(RecapCommonConstants.SUCCESS, record);
         } catch (Exception e) {
             logger.info("failed bib own ins bib id--->{}",bibliographicEntity.getOwningInstitutionBibId());
             logger.error(RecapConstants.ERROR,e);
-            results.put(RecapConstants.FAILURE, String.valueOf(e.getCause()));
+            results.put(RecapCommonConstants.FAILURE, String.valueOf(e.getCause()));
 
         }
         return results;
@@ -288,11 +289,11 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
                 dataField.removeSubfield(subfield);
             }
         }
-        if (holdingEntity.getInstitutionEntity().getInstitutionCode().equals(RecapConstants.PRINCETON)) {
+        if (holdingEntity.getInstitutionEntity().getInstitutionCode().equals(RecapCommonConstants.PRINCETON)) {
             partnerInfo = holdingPUL;
-        } else if (holdingEntity.getInstitutionEntity().getInstitutionCode().equals(RecapConstants.COLUMBIA)) {
+        } else if (holdingEntity.getInstitutionEntity().getInstitutionCode().equals(RecapCommonConstants.COLUMBIA)) {
             partnerInfo = holdingCUL;
-        } else if (holdingEntity.getInstitutionEntity().getInstitutionCode().equals(RecapConstants.NYPL)) {
+        } else if (holdingEntity.getInstitutionEntity().getInstitutionCode().equals(RecapCommonConstants.NYPL)) {
             partnerInfo = holdingNYPL;
         }
         Subfield subfield = factory.newSubfield('b', partnerInfo);

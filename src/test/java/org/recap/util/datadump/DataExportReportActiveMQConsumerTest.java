@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.camel.datadump.consumer.DataExportReportActiveMQConsumer;
 import org.recap.model.jpa.ReportDataEntity;
@@ -40,7 +41,7 @@ public class DataExportReportActiveMQConsumerTest {
         values.put(RecapConstants.NUM_RECORDS, "12");
         values.put(RecapConstants.NUM_BIBS_EXPORTED, "Num Bibs Exported");
         values.put(RecapConstants.BATCH_EXPORT, "Batch Export");
-        values.put(RecapConstants.REQUEST_ID, "PUL-2017-12-12 11");
+        values.put(RecapCommonConstants.REQUEST_ID, "PUL-2017-12-12 11");
 
         dataExportReportActiveMQConsumer.setReportDetailRepository(mockReportDetailsRepository);
 
@@ -59,7 +60,7 @@ public class DataExportReportActiveMQConsumerTest {
         values.put(RecapConstants.NUM_RECORDS, "12");
         values.put(RecapConstants.NUM_BIBS_EXPORTED, "NoOfBibsExported");
         values.put(RecapConstants.BATCH_EXPORT, RecapConstants.BATCH_EXPORT_SUCCESS);
-        values.put(RecapConstants.REQUEST_ID, "PUL-2017-12-12 11");
+        values.put(RecapCommonConstants.REQUEST_ID, "PUL-2017-12-12 11");
         values.put(RecapConstants.ITEM_EXPORTED_COUNT,1);
         dataExportReportActiveMQConsumer.setReportDetailRepository(mockReportDetailsRepository);
 
@@ -87,7 +88,7 @@ public class DataExportReportActiveMQConsumerTest {
         values.put(RecapConstants.FAILED_BIBS, "2");
         values.put(RecapConstants.FAILURE_CAUSE, "Bad happened");
         values.put(RecapConstants.BATCH_EXPORT, "Batch Export");
-        values.put(RecapConstants.REQUEST_ID, "PUL-2017-12-12 11");
+        values.put(RecapCommonConstants.REQUEST_ID, "PUL-2017-12-12 11");
         dataExportReportActiveMQConsumer.setReportDetailRepository(mockReportDetailsRepository);
 
         ReportEntity savedReportEntity = dataExportReportActiveMQConsumer.saveFailureReportEntity(values);
@@ -102,7 +103,7 @@ public class DataExportReportActiveMQConsumerTest {
         values.put(RecapConstants.FAILED_BIBS, "2");
         values.put(RecapConstants.FAILURE_CAUSE, "Bad happened");
         values.put(RecapConstants.BATCH_EXPORT, "Batch Export");
-        values.put(RecapConstants.REQUEST_ID, "PUL-2017-12-12 11");
+        values.put(RecapCommonConstants.REQUEST_ID, "PUL-2017-12-12 11");
         dataExportReportActiveMQConsumer.setReportDetailRepository(mockReportDetailsRepository);
 
         ReportEntity savedReportEntity = dataExportReportActiveMQConsumer.saveFailureReportEntity(values);

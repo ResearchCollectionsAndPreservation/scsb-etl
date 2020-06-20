@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCase;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.camel.BibDataProcessor;
 import org.recap.model.jaxb.BibRecord;
@@ -177,7 +178,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCase {
         BibliographicEntity bibliographicEntity = getBibliographicEntity();
         generateMatchinInfo();
         Map<String, Object> resultMap = scsbXmlFormatterService.prepareBibRecords(Arrays.asList(bibliographicEntity));
-        List<BibRecord> bibRecords = (List<BibRecord>)resultMap.get(RecapConstants.SUCCESS);
+        List<BibRecord> bibRecords = (List<BibRecord>)resultMap.get(RecapCommonConstants.SUCCESS);
         String formattedOutput = scsbXmlFormatterService.getSCSBXmlForBibRecords(bibRecords);
 
         System.out.println(xmlFormatter.prettyPrint(formattedOutput));

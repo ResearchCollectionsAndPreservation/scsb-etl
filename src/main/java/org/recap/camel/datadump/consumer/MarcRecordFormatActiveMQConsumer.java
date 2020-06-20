@@ -5,6 +5,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.FluentProducerTemplate;
 import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
 import org.marc4j.marc.Record;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.util.datadump.DataExportHeaderUtil;
 import org.recap.camel.datadump.callable.MarcRecordPreparerCallable;
@@ -93,11 +94,11 @@ public class MarcRecordFormatActiveMQConsumer {
         List failures = new ArrayList();
         for (Future future : futureList) {
             Map<String, Object> results = (Map<String, Object>) future.get();
-            Collection<? extends Record> successRecords = (Collection<? extends Record>) results.get(RecapConstants.SUCCESS);
+            Collection<? extends Record> successRecords = (Collection<? extends Record>) results.get(RecapCommonConstants.SUCCESS);
             if (!CollectionUtils.isEmpty(successRecords)) {
                 records.addAll(successRecords);
             }
-            Collection failureRecords = (Collection) results.get(RecapConstants.FAILURE);
+            Collection failureRecords = (Collection) results.get(RecapCommonConstants.FAILURE);
             if (!CollectionUtils.isEmpty(failureRecords)) {
                 failures.addAll(failureRecords);
             }
@@ -149,7 +150,7 @@ public class MarcRecordFormatActiveMQConsumer {
             values.put(RecapConstants.FAILURE_CAUSE, failures.get(0));
             values.put(RecapConstants.FAILED_BIBS, RecapConstants.FAILED_BIBS);
             values.put(RecapConstants.BATCH_EXPORT, RecapConstants.BATCH_EXPORT_FAILURE);
-            values.put(RecapConstants.REQUEST_ID, requestId);
+            values.put(RecapCommonConstants.REQUEST_ID, requestId);
 
             FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
             fluentProducerTemplate

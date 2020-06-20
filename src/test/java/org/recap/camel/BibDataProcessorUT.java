@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCase;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.etl.BibPersisterCallable;
 import org.recap.model.jaxb.BibRecord;
@@ -271,7 +272,7 @@ public class BibDataProcessorUT extends BaseTestCase {
         assertNotNull(savedBibliographicEntity.getItemEntities());
         java.lang.Thread.sleep(500);
 
-        List<ReportEntity> reportEntities = reportDetailRepository.findByFileNameAndInstitutionNameAndType(bibDataProcessor.getXmlFileName(), bibDataProcessor.getInstitutionName(), RecapConstants.FAILURE);
+        List<ReportEntity> reportEntities = reportDetailRepository.findByFileNameAndInstitutionNameAndType(bibDataProcessor.getXmlFileName(), bibDataProcessor.getInstitutionName(), RecapCommonConstants.FAILURE);
         assertNotNull(reportEntities);
     }
 

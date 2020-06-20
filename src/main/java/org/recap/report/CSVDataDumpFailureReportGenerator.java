@@ -2,6 +2,7 @@ package org.recap.report;
 
 import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.FilenameUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.DataDumpFailureReport;
 import org.recap.model.jpa.ReportEntity;
@@ -44,7 +45,7 @@ public class CSVDataDumpFailureReportGenerator implements ReportGeneratorInterfa
      */
     @Override
     public boolean isTransmitted(String transmissionType) {
-        return transmissionType.equalsIgnoreCase(RecapConstants.FILE_SYSTEM) ? true : false;
+        return transmissionType.equalsIgnoreCase(RecapCommonConstants.FILE_SYSTEM) ? true : false;
     }
 
     /**
@@ -79,7 +80,7 @@ public class CSVDataDumpFailureReportGenerator implements ReportGeneratorInterfa
             dataDumpFailureReport.setInstitutionName(reportEntity.getInstitutionName());
             dataDumpFailureReport.setFileName(fileName);
             dataDumpFailureReport.setDataDumpFailureReportRecordList(dataDumpFailureReportList);
-            DateFormat df = new SimpleDateFormat(RecapConstants.DATE_FORMAT_FOR_FILE_NAME);
+            DateFormat df = new SimpleDateFormat(RecapCommonConstants.DATE_FORMAT_FOR_FILE_NAME);
             String generatedFileName = FilenameUtils.removeExtension(dataDumpFailureReport.getFileName()) + "-" + dataDumpFailureReport.getReportType() + "-" + df.format(new Date()) + ".csv";
             producerTemplate.sendBody(RecapConstants.DATADUMP_FAILURE_REPORT_CSV_Q, dataDumpFailureReport);
 

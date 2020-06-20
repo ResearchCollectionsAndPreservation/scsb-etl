@@ -1,6 +1,7 @@
 package org.recap.service.executor.datadump;
 
 import org.apache.commons.lang3.StringUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.export.DataDumpRequest;
 import org.recap.model.search.SearchRecordsRequest;
@@ -41,10 +42,10 @@ public class DeletedDataDumpExecutorService extends AbstractDataDumpExecutorServ
         boolean onlyOrphan = isDeletedOnlyOrphanInstitution(dataDumpRequest);
         searchRecordsRequest.setDeleted(true);
         if(StringUtils.isNotBlank(dataDumpRequest.getDate()) && !onlyOrphan) {
-            searchRecordsRequest.setFieldName(RecapConstants.ITEM_LASTUPDATED_DATE);
+            searchRecordsRequest.setFieldName(RecapCommonConstants.ITEM_LASTUPDATED_DATE);
             searchRecordsRequest.setFieldValue(getFormattedDateString(dataDumpRequest.getDate(), dataDumpRequest.getToDate()));
         } else if(StringUtils.isNotBlank(dataDumpRequest.getDate()) && onlyOrphan){
-            searchRecordsRequest.setFieldName(RecapConstants.BIB_LASTUPDATED_DATE);
+            searchRecordsRequest.setFieldName(RecapCommonConstants.BIB_LASTUPDATED_DATE);
             searchRecordsRequest.setFieldValue(getFormattedDateString(dataDumpRequest.getDate(), dataDumpRequest.getToDate()));
         }
         searchRecordsRequest.setRequestingInstitution(dataDumpRequest.getRequestingInstitutionCode());

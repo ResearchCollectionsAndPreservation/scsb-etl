@@ -1,5 +1,6 @@
 package org.recap.service.formatter.datadump;
 
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jaxb.Bib;
 import org.recap.model.jaxb.BibRecord;
@@ -127,19 +128,19 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
                     matchingBibInfoDetailListForSingleBib = recordNumMatchingBibInfoDetailMap.get(rowNum);
                 }
                 Map<String, Object> stringObjectMap = prepareBibRecord(bibliographicEntity,matchingBibInfoDetailListForSingleBib);
-                BibRecord bibRecord = (BibRecord) stringObjectMap.get(RecapConstants.SUCCESS);
+                BibRecord bibRecord = (BibRecord) stringObjectMap.get(RecapCommonConstants.SUCCESS);
                 if (null != bibRecord) {
                     records.add(bibRecord);
                     itemExportedCount = itemExportedCount + bibliographicEntity.getItemEntities().size();
                 }
-                String failureMsg = (String) stringObjectMap.get(RecapConstants.FAILURE);
+                String failureMsg = (String) stringObjectMap.get(RecapCommonConstants.FAILURE);
                 if (null != failureMsg) {
                     errors.add(failureMsg);
                 }
             }
         }
-        resultsMap.put(RecapConstants.SUCCESS, records);
-        resultsMap.put(RecapConstants.FAILURE, errors);
+        resultsMap.put(RecapCommonConstants.SUCCESS, records);
+        resultsMap.put(RecapCommonConstants.FAILURE, errors);
         resultsMap.put(RecapConstants.ITEM_EXPORTED_COUNT, itemExportedCount);
         return resultsMap;
     }
@@ -205,10 +206,10 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
             bibRecord = new BibRecord();
             bibRecord.setBib(bib);
             bibRecord.setHoldings(holdings);
-            results.put(RecapConstants.SUCCESS, bibRecord);
+            results.put(RecapCommonConstants.SUCCESS, bibRecord);
         } catch (Exception e) {
             logger.error(RecapConstants.ERROR,e);
-            results.put(RecapConstants.FAILURE, String.valueOf(e.getCause()));
+            results.put(RecapCommonConstants.FAILURE, String.valueOf(e.getCause()));
         }
         return results;
     }

@@ -2,6 +2,7 @@ package org.recap.model.etl;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jaxb.Bib;
 import org.recap.model.jaxb.BibRecord;
@@ -141,7 +142,7 @@ public class BibPersisterCallable implements Callable {
         ReportEntity reportEntity = new ReportEntity();
         reportEntity.setFileName(xmlRecordEntity.getXmlFileName());
         reportEntity.setInstitutionName(institutionName);
-        reportEntity.setType(RecapConstants.FAILURE);
+        reportEntity.setType(RecapCommonConstants.FAILURE);
         reportEntity.setCreatedDate(new Date());
 
         Bib bib = bibRecord.getBib();
@@ -189,7 +190,7 @@ public class BibPersisterCallable implements Callable {
         if (errorMessage.toString().length() > 1) {
             reportDataEntities = getDbReportUtil().generateBibFailureReportEntity(bibliographicEntity);
             ReportDataEntity errorReportDataEntity = new ReportDataEntity();
-            errorReportDataEntity.setHeaderName(RecapConstants.ERROR_DESCRIPTION);
+            errorReportDataEntity.setHeaderName(RecapCommonConstants.ERROR_DESCRIPTION);
             errorReportDataEntity.setHeaderValue(errorMessage.toString());
             reportDataEntities.add(errorReportDataEntity);
         }
@@ -209,7 +210,7 @@ public class BibPersisterCallable implements Callable {
         ReportEntity reportEntity = new ReportEntity();
         reportEntity.setFileName(xmlRecordEntity.getXmlFileName());
         reportEntity.setInstitutionName(institutionName);
-        reportEntity.setType(RecapConstants.FAILURE);
+        reportEntity.setType(RecapCommonConstants.FAILURE);
         reportEntity.setCreatedDate(new Date());
 
         String holdingsContent = holdingContentCollection.serialize(holdingContentCollection);
@@ -235,7 +236,7 @@ public class BibPersisterCallable implements Callable {
         if (errorMessage.toString().length() > 1) {
             getDbReportUtil().generateBibHoldingsFailureReportEntity(bibliographicEntity, holdingsEntity);
             ReportDataEntity errorReportDataEntity = new ReportDataEntity();
-            errorReportDataEntity.setHeaderName(RecapConstants.ERROR_DESCRIPTION);
+            errorReportDataEntity.setHeaderName(RecapCommonConstants.ERROR_DESCRIPTION);
             errorReportDataEntity.setHeaderValue(errorMessage.toString());
             reportDataEntities.add(errorReportDataEntity);
         }
@@ -256,7 +257,7 @@ public class BibPersisterCallable implements Callable {
         ReportEntity reportEntity = new ReportEntity();
         reportEntity.setFileName(xmlRecordEntity.getXmlFileName());
         reportEntity.setInstitutionName(institutionName);
-        reportEntity.setType(RecapConstants.FAILURE);
+        reportEntity.setType(RecapCommonConstants.FAILURE);
         reportEntity.setCreatedDate(new Date());
 
         String itemBarcode = getMarcUtil().getDataFieldValue(itemRecordType, "876", null, null, "p");
@@ -316,7 +317,7 @@ public class BibPersisterCallable implements Callable {
         if (errorMessage.toString().length() > 1) {
             reportDataEntities = getDbReportUtil().generateBibHoldingsAndItemsFailureReportEntities(bibliographicEntity, holdingsEntity, itemEntity);
             ReportDataEntity errorReportDataEntity = new ReportDataEntity();
-            errorReportDataEntity.setHeaderName(RecapConstants.ERROR_DESCRIPTION);
+            errorReportDataEntity.setHeaderName(RecapCommonConstants.ERROR_DESCRIPTION);
             errorReportDataEntity.setHeaderValue(errorMessage.toString());
             reportDataEntities.add(errorReportDataEntity);
         }

@@ -1,6 +1,7 @@
 package org.recap.camel;
 
 import org.apache.camel.ProducerTemplate;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.HoldingsEntity;
@@ -83,7 +84,7 @@ public class BibDataProcessor {
                 }
             }
             if (null != reportEntity) {
-                producer.sendBody(RecapConstants.REPORT_Q, reportEntity);
+                producer.sendBody(RecapCommonConstants.REPORT_Q, reportEntity);
             }
         }
     }
@@ -94,7 +95,7 @@ public class BibDataProcessor {
         for(BibliographicEntity bibliographicEntity:bibliographicEntityList){
             List<ReportEntity> reportEntityList = processDuplicatedRecord(bibliographicEntity);
             for(ReportEntity reportEntity1:reportEntityList){
-                producer.sendBody(RecapConstants.REPORT_Q, reportEntity1);
+                producer.sendBody(RecapCommonConstants.REPORT_Q, reportEntity1);
             }
         }
     }
@@ -237,7 +238,7 @@ public class BibDataProcessor {
                     reportDataEntities.add(exceptionReportDataEntity);
                     reportEntity.setFileName(xmlFileName);
                     reportEntity.setCreatedDate(new Date());
-                    reportEntity.setType(RecapConstants.FAILURE);
+                    reportEntity.setType(RecapCommonConstants.FAILURE);
                     reportEntity.setInstitutionName(institutionName);
                 }
             }
@@ -260,7 +261,7 @@ public class BibDataProcessor {
             reportDataEntities.add(exceptionReportDataEntity);
             reportEntity.setFileName(xmlFileName);
             reportEntity.setCreatedDate(new Date());
-            reportEntity.setType(RecapConstants.FAILURE);
+            reportEntity.setType(RecapCommonConstants.FAILURE);
             reportEntity.setInstitutionName(institutionName);
         }
         return reportEntity;
@@ -271,7 +272,7 @@ public class BibDataProcessor {
         List<ReportDataEntity> reportDataEntities = dbReportUtil.generateBibHoldingsAndItemsFailureReportEntities(bibliographicEntity, holdingsEntity, itemEntity);
         ReportDataEntity exceptionReportDataEntity = new ReportDataEntity();
         if (failureMessage!=null) {
-            exceptionReportDataEntity.setHeaderName(RecapConstants.ERROR_DESCRIPTION);
+            exceptionReportDataEntity.setHeaderName(RecapCommonConstants.ERROR_DESCRIPTION);
             exceptionReportDataEntity.setHeaderValue(failureMessage);
         } else {
             exceptionReportDataEntity.setHeaderName(RecapConstants.EXCEPTION_MESSAGE);
@@ -281,7 +282,7 @@ public class BibDataProcessor {
         reportEntity.setReportDataEntities(reportDataEntities);
         reportEntity.setFileName(xmlFileName);
         reportEntity.setCreatedDate(new Date());
-        reportEntity.setType(RecapConstants.FAILURE);
+        reportEntity.setType(RecapCommonConstants.FAILURE);
         reportEntity.setInstitutionName(institutionName);
     }
 
