@@ -1,6 +1,7 @@
 package org.recap.camel;
 
 import org.apache.camel.ProducerTemplate;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jpa.ReportDataEntity;
 import org.recap.model.jpa.ReportEntity;
@@ -151,17 +152,17 @@ public class EtlDataLoadProcessor {
         reportDataEntities.add(totalBiBItemsLoadedEntity);
 
         ReportDataEntity fileNameEntity = new ReportDataEntity();
-        fileNameEntity.setHeaderName(RecapConstants.FILE_NAME);
+        fileNameEntity.setHeaderName(RecapCommonConstants.FILE_NAME);
         fileNameEntity.setHeaderValue(fileName);
         reportDataEntities.add(fileNameEntity);
 
         reportEntity.setFileName(fileName);
         reportEntity.setCreatedDate(new Date());
-        reportEntity.setType(RecapConstants.SUCCESS);
+        reportEntity.setType(RecapCommonConstants.SUCCESS);
         reportEntity.setReportDataEntities(reportDataEntities);
         reportEntity.setInstitutionName(institutionName);
 
-        producer.sendBody(RecapConstants.REPORT_Q, reportEntity);
+        producer.sendBody(RecapCommonConstants.REPORT_Q, reportEntity);
     }
 
     /**

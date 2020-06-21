@@ -3,6 +3,7 @@ package org.recap.camel.datadump.consumer;
 import org.apache.camel.Exchange;
 import org.apache.camel.FluentProducerTemplate;
 import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jaxb.BibRecord;
 import org.recap.service.formatter.datadump.SCSBXmlFormatterService;
@@ -92,7 +93,7 @@ public class SCSBXMLFormatActiveMQConsumer {
         values.put(RecapConstants.NUM_RECORDS, String.valueOf(size));
         values.put(RecapConstants.NUM_BIBS_EXPORTED, RecapConstants.NUM_BIBS_EXPORTED);
         values.put(RecapConstants.BATCH_EXPORT, RecapConstants.BATCH_EXPORT_SUCCESS);
-        values.put(RecapConstants.REQUEST_ID, requestId);
+        values.put(RecapCommonConstants.REQUEST_ID, requestId);
         values.put(RecapConstants.ITEM_EXPORTED_COUNT,exchange.getIn().getHeader("itemExportedCount"));
 
         FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
@@ -129,7 +130,7 @@ public class SCSBXMLFormatActiveMQConsumer {
         values.put(RecapConstants.FAILURE_CAUSE, String.valueOf(e.getCause()));
         values.put(RecapConstants.FAILED_BIBS, RecapConstants.FAILED_BIBS);
         values.put(RecapConstants.BATCH_EXPORT, RecapConstants.BATCH_EXPORT_FAILURE);
-        values.put(RecapConstants.REQUEST_ID, requestId);
+        values.put(RecapCommonConstants.REQUEST_ID, requestId);
 
         FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
         fluentProducerTemplate

@@ -4,6 +4,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.FluentProducerTemplate;
 import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
 import org.marc4j.marc.Record;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.service.formatter.datadump.MarcXmlFormatterService;
 import org.recap.util.datadump.DataExportHeaderUtil;
@@ -82,7 +83,7 @@ public class MarcXMLFormatActiveMQConsumer {
         values.put(RecapConstants.NUM_RECORDS, String.valueOf(records.size()));
         values.put(RecapConstants.NUM_BIBS_EXPORTED, RecapConstants.NUM_BIBS_EXPORTED);
         values.put(RecapConstants.BATCH_EXPORT, RecapConstants.BATCH_EXPORT_SUCCESS);
-        values.put(RecapConstants.REQUEST_ID, requestId);
+        values.put(RecapCommonConstants.REQUEST_ID, requestId);
         values.put(RecapConstants.ITEM_EXPORTED_COUNT,exchange.getIn().getHeader(RecapConstants.ITEM_EXPORTED_COUNT));
 
         FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
@@ -118,7 +119,7 @@ public class MarcXMLFormatActiveMQConsumer {
         values.put(RecapConstants.FAILURE_CAUSE, String.valueOf(e.getCause()));
         values.put(RecapConstants.FAILED_BIBS, RecapConstants.FAILED_BIBS);
         values.put(RecapConstants.BATCH_EXPORT, RecapConstants.BATCH_EXPORT_FAILURE);
-        values.put(RecapConstants.REQUEST_ID, requestId);
+        values.put(RecapCommonConstants.REQUEST_ID, requestId);
 
         FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
         fluentProducerTemplate

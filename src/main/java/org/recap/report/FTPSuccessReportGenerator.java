@@ -2,6 +2,7 @@ package org.recap.report;
 
 import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.FilenameUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.ReCAPCSVSuccessRecord;
 import org.recap.model.csv.SuccessReportReCAPCSVRecord;
@@ -37,7 +38,7 @@ public class FTPSuccessReportGenerator implements ReportGeneratorInterface {
      */
     @Override
     public boolean isInterested(String reportType) {
-        return reportType.equalsIgnoreCase(RecapConstants.SUCCESS) ? true : false;
+        return reportType.equalsIgnoreCase(RecapCommonConstants.SUCCESS) ? true : false;
     }
 
     /**
@@ -48,7 +49,7 @@ public class FTPSuccessReportGenerator implements ReportGeneratorInterface {
      */
     @Override
     public boolean isTransmitted(String transmissionType) {
-        return transmissionType.equalsIgnoreCase(RecapConstants.FTP) ? true : false;
+        return transmissionType.equalsIgnoreCase(RecapCommonConstants.FTP) ? true : false;
     }
 
     /**
@@ -85,7 +86,7 @@ public class FTPSuccessReportGenerator implements ReportGeneratorInterface {
             reCAPCSVSuccessRecord.setReportFileName(fileName);
             reCAPCSVSuccessRecord.setSuccessReportReCAPCSVRecordList(successReportReCAPCSVRecords);
             producerTemplate.sendBody(RecapConstants.FTP_FAILURE_Q, reCAPCSVSuccessRecord);
-            DateFormat df = new SimpleDateFormat(RecapConstants.DATE_FORMAT_FOR_FILE_NAME);
+            DateFormat df = new SimpleDateFormat(RecapCommonConstants.DATE_FORMAT_FOR_FILE_NAME);
             return FilenameUtils.removeExtension(reCAPCSVSuccessRecord.getReportFileName()) + "-" + reCAPCSVSuccessRecord.getReportType() + "-" + df.format(new Date()) + ".csv";
         }
         return null;

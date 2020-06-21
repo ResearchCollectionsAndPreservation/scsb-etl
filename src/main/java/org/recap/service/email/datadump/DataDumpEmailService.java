@@ -1,6 +1,7 @@
 package org.recap.service.email.datadump;
 
 import org.apache.camel.ProducerTemplate;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.camel.EmailPayLoad;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,13 +81,13 @@ public class DataDumpEmailService {
     }
 
     private String mailForCc(String requestingInstitutionCode) {
-        if(requestingInstitutionCode.equalsIgnoreCase(RecapConstants.PRINCETON)){
+        if(requestingInstitutionCode.equalsIgnoreCase(RecapCommonConstants.PRINCETON)){
             return dataDumpCCForPul;
         }
-        else if (requestingInstitutionCode.equalsIgnoreCase(RecapConstants.COLUMBIA)){
+        else if (requestingInstitutionCode.equalsIgnoreCase(RecapCommonConstants.COLUMBIA)){
             return dataDumpCCForCul;
         }
-        else if (requestingInstitutionCode.equalsIgnoreCase(RecapConstants.NYPL)){
+        else if (requestingInstitutionCode.equalsIgnoreCase(RecapCommonConstants.NYPL)){
             return dataDumpCCForNypl;
         }
         return null;

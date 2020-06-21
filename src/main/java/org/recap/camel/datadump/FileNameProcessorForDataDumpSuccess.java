@@ -3,6 +3,7 @@ package org.recap.camel.datadump;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.commons.io.FilenameUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.DataDumpSuccessReport;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class FileNameProcessorForDataDumpSuccess implements Processor {
     public void process(Exchange exchange) throws Exception {
         DataDumpSuccessReport dataDumpSuccessReport = (DataDumpSuccessReport) exchange.getIn().getBody();
         String fileName = FilenameUtils.removeExtension(dataDumpSuccessReport.getFileName());
-        exchange.getIn().setHeader(RecapConstants.REPORT_FILE_NAME, fileName);
+        exchange.getIn().setHeader(RecapCommonConstants.REPORT_FILE_NAME, fileName);
         exchange.getIn().setHeader(RecapConstants.REPORT_TYPE, dataDumpSuccessReport.getReportType());
         exchange.getIn().setHeader(RecapConstants.DIRECTORY_NAME, dataDumpSuccessReport.getInstitutionName());
     }

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.apache.camel.Exchange;
 import org.apache.camel.FluentProducerTemplate;
 import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.camel.datadump.callable.BibRecordPreparerCallable;
 import org.recap.model.jaxb.BibRecord;
@@ -89,11 +90,11 @@ public class SCSBRecordFormatActiveMQConsumer {
         List failures = new ArrayList();
         for (Future future : futureList) {
             Map<String, Object> results = (Map<String, Object>) future.get();
-            Collection<? extends BibRecord> successRecords = (Collection<? extends BibRecord>) results.get(RecapConstants.SUCCESS);
+            Collection<? extends BibRecord> successRecords = (Collection<? extends BibRecord>) results.get(RecapCommonConstants.SUCCESS);
             if (!CollectionUtils.isEmpty(successRecords)) {
                 records.addAll(successRecords);
             }
-            Collection failureRecords = (Collection) results.get(RecapConstants.FAILURE);
+            Collection failureRecords = (Collection) results.get(RecapCommonConstants.FAILURE);
             if (!CollectionUtils.isEmpty(failureRecords)) {
                 failures.addAll(failureRecords);
             }
@@ -148,7 +149,7 @@ public class SCSBRecordFormatActiveMQConsumer {
             values.put(RecapConstants.FAILURE_CAUSE, failures.get(0));
             values.put(RecapConstants.FAILED_BIBS, RecapConstants.FAILED_BIBS);
             values.put(RecapConstants.BATCH_EXPORT, RecapConstants.BATCH_EXPORT_FAILURE);
-            values.put(RecapConstants.REQUEST_ID, requestId);
+            values.put(RecapCommonConstants.REQUEST_ID, requestId);
 
             fluentProducerTemplate
                     .to(RecapConstants.DATADUMP_FAILURE_REPORT_Q)

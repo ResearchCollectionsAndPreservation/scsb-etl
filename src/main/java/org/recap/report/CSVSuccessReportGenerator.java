@@ -2,6 +2,7 @@ package org.recap.report;
 
 import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.FilenameUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.ReCAPCSVSuccessRecord;
 import org.recap.model.csv.SuccessReportReCAPCSVRecord;
@@ -37,7 +38,7 @@ public class CSVSuccessReportGenerator implements ReportGeneratorInterface{
      */
     @Override
     public boolean isInterested(String reportType) {
-        return reportType.equalsIgnoreCase(RecapConstants.SUCCESS) ? true : false;
+        return reportType.equalsIgnoreCase(RecapCommonConstants.SUCCESS) ? true : false;
     }
 
     /**
@@ -48,7 +49,7 @@ public class CSVSuccessReportGenerator implements ReportGeneratorInterface{
      */
     @Override
     public boolean isTransmitted(String transmissionType) {
-        return transmissionType.equalsIgnoreCase(RecapConstants.FILE_SYSTEM) ? true : false;
+        return transmissionType.equalsIgnoreCase(RecapCommonConstants.FILE_SYSTEM) ? true : false;
     }
 
     /**
@@ -85,7 +86,7 @@ public class CSVSuccessReportGenerator implements ReportGeneratorInterface{
             reCAPCSVSuccessRecord.setReportFileName(fileName);
             reCAPCSVSuccessRecord.setSuccessReportReCAPCSVRecordList(successReportReCAPCSVRecords);
             producerTemplate.sendBody(RecapConstants.CSV_SUCCESS_Q, reCAPCSVSuccessRecord);
-            DateFormat df = new SimpleDateFormat(RecapConstants.DATE_FORMAT_FOR_FILE_NAME);
+            DateFormat df = new SimpleDateFormat(RecapCommonConstants.DATE_FORMAT_FOR_FILE_NAME);
             return FilenameUtils.removeExtension(reCAPCSVSuccessRecord.getReportFileName()) + "-" + reCAPCSVSuccessRecord.getReportType() + "-" + df.format(new Date()) + ".csv";
         }
         return null;

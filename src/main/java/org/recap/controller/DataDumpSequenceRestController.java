@@ -1,5 +1,6 @@
 package org.recap.controller;
 
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.camel.dynamicrouter.DynamicRouteBuilder;
 import org.recap.service.executor.datadump.DataDumpSchedulerExecutorService;
@@ -45,6 +46,6 @@ public class DataDumpSequenceRestController {
         RecapConstants.EXPORT_DATE_SCHEDULER = date;
         RecapConstants.EXPORT_FETCH_TYPE_INSTITUTION = RecapConstants.EXPORT_INCREMENTAL_PUL;
         getDynamicRouteBuilder().addDataDumpExportRoutes();
-        return dataDumpSchedulerExecutorService.initiateDataDumpForScheduler(date, RecapConstants.PRINCETON, null);
+        return dataDumpSchedulerExecutorService.initiateDataDumpForScheduler(date, RecapCommonConstants.PRINCETON, null);
     }
 }

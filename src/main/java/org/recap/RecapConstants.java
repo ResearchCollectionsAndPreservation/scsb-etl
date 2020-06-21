@@ -18,9 +18,6 @@ public class RecapConstants {
     public static final String JSON_FILE_FORMAT = ".json";
     public static final String FILE_FORMAT = "fileFormat";
 
-    public static final String COLUMBIA = "CUL";
-    public static final String PRINCETON = "PUL";
-    public static final String NYPL = "NYPL";
     public static final String SCSB = "SCSB";
 
     //General Constants
@@ -36,7 +33,6 @@ public class RecapConstants {
 
 
     //Camel Queue Constants
-    public static final String REPORT_Q= "scsbactivemq:queue:reportQ";
     public static final String CSV_SUCCESS_Q = "scsbactivemq:queue:csvSuccessQ";
     public static final String CSV_FAILURE_Q = "scsbactivemq:queue:csvFailureQ";
     public static final String FTP_SUCCESS_Q = "scsbactivemq:queue:ftpFailureQ";
@@ -71,7 +67,6 @@ public class RecapConstants {
     public static final String DATA_DUMP_COMPLETION_TOPIC_MESSAGE = "Incremental datadump is completed";
 
     //Camel Route Ids
-    public static final String REPORT_ROUTE_ID = "reportQRoute";
     public static final String CSV_SUCCESS_ROUTE_ID = "csvSuccessQ";
     public static final String CSV_FAILURE_ROUTE_ID = "csvFailureQ";
     public static final String FTP_SUCCESS_ROUTE_ID = "ftpFailureQ";
@@ -80,36 +75,16 @@ public class RecapConstants {
     public static final String DATADUMP_ZIP_FILESYSTEM_ROUTE_ID = "zipDataDumpQ";
     public static final String DATADUMP_ZIPFTP_ROUTE_ID = "zipDataDumpRoute";
 
-
-    public static final String DATE_FORMAT_FOR_FILE_NAME = "ddMMMyyyy";
     public static final String DATE_FORMAT_FOR_REPORT_NAME="yyyyMMdd_HHmmss";
     public static final String DATE_FORMAT_FROM_API="ddMMMyyyyHHmm";
-    public static final String FAILURE = "Failure";
-    public static final String SUCCESS = "Success";
 
     //CSV Generator Constants
-    public static final String FILE_SYSTEM = "FileSystem";
     public static final String OPERATION_TYPE_ETL = "ETL";
 
-    //FTP Generator Constants
-    public static final String FTP = "FTP";
-
     //Failure Report Record Constants
-    public static final String OWNING_INSTITUTION = "OwningInstitution";
-    public static final String OWNING_INSTITUTION_BIB_ID = "OwningInstitutionBibId";
-    public static final String OWNING_INSTITUTION_HOLDINGS_ID = "OwningInstitutionHoldingsId";
-    public static final String LOCAL_ITEM_ID = "LocalItemId";
-    public static final String ITEM_BARCODE = "ItemBarcode";
-    public static final String CUSTOMER_CODE = "CustomerCode";
-    public static final String TITLE = "Title";
-    public static final String COLLECTION_GROUP_DESIGNATION = "CollectionGroupDesignation";
-    public static final String CREATE_DATE_ITEM = "CreateDateItem";
-    public static final String LAST_UPDATED_DATE_ITEM = "LastUpdatedDateItem";
     public static final String EXCEPTION_MESSAGE = "ExceptionMessage";
-    public static final String ERROR_DESCRIPTION = "ErrorDescription";
 
     //Success Report Record Constants
-    public static final String FILE_NAME = "FileName";
     public static final String TOTAL_RECORDS_IN_FILE = "TotalRecordsInFile";
     public static final String TOTAL_BIBS_LOADED = "TotalBibsLoaded";
     public static final String TOTAL_HOLDINGS_LOADED = "TotalHoldingsLoaded";
@@ -118,18 +93,13 @@ public class RecapConstants {
     public static final String TOTAL_BIB_ITEMS_LOADED = "TotalBibItemsLoaded";
 
     //File Name Processor Constants
-    public static final String REPORT_FILE_NAME = "fileName";
     public static final String REPORT_TYPE = "reportType";
     public static final String DIRECTORY_NAME = "directoryName";
 
     //Date Util
     public static final String DATE_FORMAT_MMDDYYY = "MM-dd-yyyy";
-    public static final String DATE_FORMAT_YYYYMMDDHHMM = "yyyy-MM-dd HH:mm";
     public static final String DATE_FORMAT_YYYYMMDD = "yyyy-MM-dd";
     public static final String DATE_FORMAT_DDMMMYYYYHHMM = "ddMMMyyyyHHmm";
-    public static final String UTC = "UTC";
-    public static final String UTC_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    public static final String SOLR_DATE_RANGE_TO_NOW = " TO NOW";
 
     //Data Dump
     public static final String DATADUMP_EXPORT_FAILURE = "Data dump export failed, please check with the support team.";
@@ -148,7 +118,6 @@ public class RecapConstants {
     public static final String DATADUMP_EMAIL_TO_ADDRESS_REQUIRED = "Please enter a valid email address";
     public static final String INVALID_EMAIL_ADDRESS = "Email address is invalid.";
     public static final String INVALID_DATE_FORMAT = "Please enter the date in \"{0}\" format.";
-    public static final String REGEX_FOR_EMAIL_ADDRESS = "^[A-Za-z0-9+_.-]+@(.+)$";
     public static final String DATADUMP_FETCHTYPE_FULL = "0";
     public static final String DATADUMP_FETCHTYPE_INCREMENTAL = "1";
     public static final String DATADUMP_FETCHTYPE_DELETED = "2";
@@ -174,15 +143,9 @@ public class RecapConstants {
     public static final String DATADUMP_DAYS_LIMIT_EXCEEDED_ERROR_MSG = "The date used for incremental data dump cannot be older than {0} days from the date of request. Please contact HTC Support {1} for assistance.";
     public static final String RESTRICT_FULLDUMP_VIA_INCREMENTAL_ERROR_MSG = "The date used for incremental data dump precedes (or) is the date on which records for the institution {0} were created. Kindly use a later date or contact HTC Support {1} for assistance.";
 
-    public static final String  BIB_LASTUPDATED_DATE = "BibLastUpdatedDate";
-    public static final String  BIBITEM_LASTUPDATED_DATE = "BibItemLastUpdatedDate";
-    public static final String  ITEM_LASTUPDATED_DATE = "ItemLastUpdatedDate";
-
     public static final String COLLECTION_GROUP_SHARED = "Shared";
     public static final String COLLECTION_GROUP_OPEN = "Open";
     public static final String COLLECTION_GROUP_PRIVATE = "Private";
-
-    public static final String RESPONSE_DATE = "Date";
 
     public static final String SOLR_INPUT_FOR_DATA_EXPORT_Q = "scsbactivemq:queue:SolrInputForDataExportQ";
     public static final String BIB_ENTITY_FOR_DATA_EXPORT_Q = "scsbactivemq:queue:BibEntityForDataExportQ";
@@ -204,7 +167,6 @@ public class RecapConstants {
     public static final String BATCH_EXPORT = "BatchExport";
     public static final String BATCH_EXPORT_SUCCESS = "BatchExportSuccess";
     public static final String BATCH_EXPORT_FAILURE = "BatchExportFailure";
-    public static final String REQUEST_ID = "requestId";
     public static final String FAILURE_CAUSE = "FailureCause";
     public static final String FAILED_BIBS = "FailedBibs";
     public static final String COLLECTION_GROUP_IDS = "collectionGroupIds";
@@ -226,7 +188,6 @@ public class RecapConstants {
 
     public static final String COMPLETE_STATUS = "Complete";
 
-    public static final String BIB_ID = "BibId";
     public static final String EXCEPTION = "Exception->";
 
     public static final String BATCH_HEADERS="batchHeaders";
@@ -245,13 +206,11 @@ public class RecapConstants {
 
     //scsb-api-key
     public static final String API_KEY = "api_key";
-    public static final String CAMEL_BATCH_COMPLETE = "CamelBatchComplete";
     public static final String DELETED_DATA_DUMP_COMPLETION_TOPIC_MESSAGE = "Deleted datadump is completed";
     public static final String FULL_DATA_DUMP_COMPLETION_TOPIC_MESSAGE = "Full datadump is completed";
     public static final String DATA_DUMP_TYPE = "dataDumpType";
     public static final String MESSAGE = "message";
     public static final String EXPORTED_DATE = "exportedDate";
-    public static final String INSTITUTION = "institution";
 
     public class MarcFields {
         public static final String CF_001 = "001";
@@ -275,8 +234,6 @@ public class RecapConstants {
     public static final String EXPORT_DELETED_CUL = "DeletedRecordsExportCul";
     public static final String EXPORT_DELETED_NYPL = "DeletedRecordsExportNypl";
 
-    public static final String CGD_CHANGE_LOG_SHARED_TO_PRIVATE = "SharedToPrivate";
-    public static final String CGD_CHANGE_LOG_OPEN_TO_PRIVATE = "OpenToPrivate";
     public static final String EXPORT_TYPE_FULL = "Full";
 
     public static final String ETL_DATA_LOAD_NAMESPACE = "http://www.loc.gov/MARC21/slim";

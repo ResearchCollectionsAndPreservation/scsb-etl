@@ -8,6 +8,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.processor.aggregate.zipfile.ZipAggregationStrategy;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.util.datadump.DataExportHeaderUtil;
 import org.slf4j.Logger;
@@ -107,7 +108,7 @@ public class ZipFileProcessor implements Processor {
             public void configure() throws Exception {
                 onCompletion()
                         .choice()
-                        .when(exchangeProperty(RecapConstants.CAMEL_BATCH_COMPLETE))
+                        .when(exchangeProperty(RecapCommonConstants.CAMEL_BATCH_COMPLETE))
                         .log("Sending Email After FTP Zipping")
                         .process(dataExportEmailProcessor)
                         .log("Data dump zipping completed.")
@@ -147,11 +148,11 @@ public class ZipFileProcessor implements Processor {
             producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_FROM, reqestingInst);
         }
         String dataDumpTypeCompletionMessage = getDataDumpTypeCompletionMessage(batchHeaders);
-        if(reqestingInst.equalsIgnoreCase(RecapConstants.PRINCETON)){
+        if(reqestingInst.equalsIgnoreCase(RecapCommonConstants.PRINCETON)){
             producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_PUL,buildJsonResponseForTopics(batchHeaders,reqestingInst,dataDumpTypeCompletionMessage));
-        }else if(reqestingInst.equalsIgnoreCase(RecapConstants.COLUMBIA)){
+        }else if(reqestingInst.equalsIgnoreCase(RecapCommonConstants.COLUMBIA)){
             producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_CUL, dataDumpTypeCompletionMessage.split("-")[1]);
-        }else if(reqestingInst.equalsIgnoreCase(RecapConstants.NYPL)){
+        }else if(reqestingInst.equalsIgnoreCase(RecapCommonConstants.NYPL)){
             producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_NYPL,dataDumpTypeCompletionMessage.split("-")[1] );
         }
     }
@@ -163,7 +164,7 @@ public class ZipFileProcessor implements Processor {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String fileNameWithPath = getValueFor(batchHeaders, RecapConstants.FILENAME);
         String fileName = "DeletedDataDump".equalsIgnoreCase(messageSplit[0]) ? fileNameWithPath.split("/")[2].concat(RecapConstants.ZIP_FILE_FORMAT) : fileNameWithPath.split("/")[3].concat(RecapConstants.ZIP_FILE_FORMAT);
-        jsonObject.put(RecapConstants.INSTITUTION,requestingInstitutionCode);
+        jsonObject.put(RecapCommonConstants.INSTITUTION,requestingInstitutionCode);
         jsonObject.put(RecapConstants.FILENAME,fileName);
         jsonObject.put(RecapConstants.EXPORTED_DATE,simpleDateFormat.format(new Date()));
         jsonObject.put(RecapConstants.DATA_DUMP_TYPE,messageSplit[0]);

@@ -2,6 +2,7 @@ package org.recap.camel;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +28,8 @@ public class ReportsRouteBuilder {
             camelContext.addRoutes(new RouteBuilder() {
                 @Override
                 public void configure() throws Exception {
-                    from(RecapConstants.REPORT_Q)
-                            .routeId(RecapConstants.REPORT_ROUTE_ID)
+                    from(RecapCommonConstants.REPORT_Q)
+                            .routeId(RecapCommonConstants.REPORT_ROUTE_ID)
                             .process(reportProcessor);
                 }
             });

@@ -10,6 +10,7 @@ import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 import org.recap.BaseTestCase;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.FailureReportReCAPCSVRecord;
 import org.recap.model.csv.ReCAPCSVFailureRecord;
@@ -82,7 +83,7 @@ public class JMSUT extends BaseTestCase {
 
         ReCAPCSVFailureRecord reCAPCSVFailureRecord = new ReCAPCSVFailureRecord();
         reCAPCSVFailureRecord.setFileName("test.xml");
-        reCAPCSVFailureRecord.setReportType(RecapConstants.FAILURE);
+        reCAPCSVFailureRecord.setReportType(RecapCommonConstants.FAILURE);
         reCAPCSVFailureRecord.setInstitutionName("PUL");
         assertNotNull(failureReportReCAPCSVRecord.getCreateDateItem());
         assertNotNull(failureReportReCAPCSVRecord.getLastUpdatedDateItem());
@@ -92,7 +93,7 @@ public class JMSUT extends BaseTestCase {
 
         Thread.sleep(1000);
 
-        DateFormat df = new SimpleDateFormat(RecapConstants.DATE_FORMAT_FOR_FILE_NAME);
+        DateFormat df = new SimpleDateFormat(RecapCommonConstants.DATE_FORMAT_FOR_FILE_NAME);
         String fileName = FilenameUtils.removeExtension(reCAPCSVFailureRecord.getFileName()) + "-Failure-" + df.format(new Date());
         File file = new File(reportDirectoryPath + File.separator + fileName + ".csv");
         assertTrue(file.exists());
@@ -157,10 +158,10 @@ public class JMSUT extends BaseTestCase {
 
         reportEntity.setFileName("TestSuccessReport.xml");
         reportEntity.setCreatedDate(new Date());
-        reportEntity.setType(RecapConstants.SUCCESS);
+        reportEntity.setType(RecapCommonConstants.SUCCESS);
         reportEntity.setReportDataEntities(reportDataEntities);
         reportEntity.setInstitutionName("NYPL");
-        producer.sendBody(RecapConstants.REPORT_Q, reportEntity);
+        producer.sendBody(RecapCommonConstants.REPORT_Q, reportEntity);
         Thread.sleep(1000);
 
         List<ReportEntity> byFileName = reportDetailRepository.findByFileName("TestSuccessReport.xml");

@@ -1,5 +1,6 @@
 package org.recap.service.executor.datadump;
 
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.export.DataDumpRequest;
 import org.recap.model.search.SearchRecordsRequest;
@@ -32,7 +33,7 @@ public class IncrementalDataDumpExecutorService extends AbstractDataDumpExecutor
      */
     @Override
     public void populateSearchRequest(SearchRecordsRequest searchRecordsRequest, DataDumpRequest dataDumpRequest) {
-        searchRecordsRequest.setFieldName(RecapConstants.BIBITEM_LASTUPDATED_DATE);
+        searchRecordsRequest.setFieldName(RecapCommonConstants.BIBITEM_LASTUPDATED_DATE);
         searchRecordsRequest.setFieldValue(getFormattedDateString(dataDumpRequest.getDate(), dataDumpRequest.getToDate()));
         searchRecordsRequest.setRequestingInstitution(dataDumpRequest.getRequestingInstitutionCode());
     }

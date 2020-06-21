@@ -4,6 +4,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
 import org.apache.commons.collections.CollectionUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.DataDumpFailureReport;
 import org.recap.model.csv.DataDumpSuccessReport;
@@ -123,8 +124,8 @@ public class DataExportEmailProcessor implements Processor {
                 failureReportEntities.add(reportEntity);
             }
         }
-        sendBatchExportReportToFTP(successReportEntities, RecapConstants.SUCCESS);
-        sendBatchExportReportToFTP(failureReportEntities, RecapConstants.FAILURE);
+        sendBatchExportReportToFTP(successReportEntities, RecapCommonConstants.SUCCESS);
+        sendBatchExportReportToFTP(failureReportEntities, RecapCommonConstants.FAILURE);
 
         if(fetchType.equals(fetchTypeFull)) {
             processEmail(totalRecordCount,failedBibs,exportedItemCount,fetchType,requestingInstitutionCode);
@@ -163,11 +164,11 @@ public class DataExportEmailProcessor implements Processor {
      */
     private void sendBatchExportReportToFTP(List<ReportEntity> reportEntities, String type) {
         if(CollectionUtils.isNotEmpty(reportEntities)) {
-            if(type.equalsIgnoreCase(RecapConstants.SUCCESS)) {
+            if(type.equalsIgnoreCase(RecapCommonConstants.SUCCESS)) {
                 DataDumpSuccessReport dataDumpSuccessReport = ftpDataDumpSuccessReportGenerator.getDataDumpSuccessReport(reportEntities, reportFileName);
                 producerTemplate.sendBody(RecapConstants.DATAEXPORT_WITH_SUCCESS_REPORT_FTP_Q, dataDumpSuccessReport);
                 logger.info("The Success Report folder : {}", folderName);
-            } else if (type.equalsIgnoreCase(RecapConstants.FAILURE)) {
+            } else if (type.equalsIgnoreCase(RecapCommonConstants.FAILURE)) {
                 DataDumpFailureReport dataDumpFailureReport = ftpDataDumpFailureReportGenerator.getDataDumpFailureReport(reportEntities, reportFileName);
                 producerTemplate.sendBody(RecapConstants.DATAEXPORT_WITH_FAILURE_REPORT_FTP_Q, dataDumpFailureReport);
                 logger.info("The Failure Report folder : {}", folderName);

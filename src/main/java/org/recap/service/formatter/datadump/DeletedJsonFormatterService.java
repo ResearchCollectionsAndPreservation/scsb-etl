@@ -1,6 +1,7 @@
 package org.recap.service.formatter.datadump;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.export.Bib;
 import org.recap.model.export.DeletedRecord;
@@ -82,8 +83,8 @@ public class DeletedJsonFormatterService implements DataDumpFormatterInterface {
             }
         }
 
-        resultsMap.put(RecapConstants.SUCCESS, deletedRecords);
-        resultsMap.put(RecapConstants.FAILURE, errors);
+        resultsMap.put(RecapCommonConstants.SUCCESS, deletedRecords);
+        resultsMap.put(RecapCommonConstants.FAILURE, errors);
         resultsMap.put(RecapConstants.ITEM_EXPORTED_COUNT, itemExportedCount);
 
         return resultsMap;
@@ -111,8 +112,8 @@ public class DeletedJsonFormatterService implements DataDumpFormatterInterface {
 
     private boolean isChangedToPrivateCGD(ItemEntity fetchedItemEntity){
         if(fetchedItemEntity.getCgdChangeLog()!=null){
-            if(fetchedItemEntity.getCgdChangeLog().equals(RecapConstants.CGD_CHANGE_LOG_SHARED_TO_PRIVATE) ||
-                    fetchedItemEntity.getCgdChangeLog().equals(RecapConstants.CGD_CHANGE_LOG_OPEN_TO_PRIVATE)){
+            if(fetchedItemEntity.getCgdChangeLog().equals(RecapCommonConstants.CGD_CHANGE_LOG_SHARED_TO_PRIVATE) ||
+                    fetchedItemEntity.getCgdChangeLog().equals(RecapCommonConstants.CGD_CHANGE_LOG_OPEN_TO_PRIVATE)){
                 return true;
             }
         }

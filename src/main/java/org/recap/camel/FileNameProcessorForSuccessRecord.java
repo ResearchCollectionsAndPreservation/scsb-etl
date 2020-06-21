@@ -3,6 +3,7 @@ package org.recap.camel;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.commons.io.FilenameUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.ReCAPCSVSuccessRecord;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class FileNameProcessorForSuccessRecord implements Processor {
     public void process(Exchange exchange) throws Exception {
         ReCAPCSVSuccessRecord reCAPCSVSuccessRecord = (ReCAPCSVSuccessRecord) exchange.getIn().getBody();
         String fileName = FilenameUtils.removeExtension(reCAPCSVSuccessRecord.getReportFileName());
-        exchange.getIn().setHeader(RecapConstants.REPORT_FILE_NAME, fileName);
+        exchange.getIn().setHeader(RecapCommonConstants.REPORT_FILE_NAME, fileName);
         exchange.getIn().setHeader(RecapConstants.REPORT_TYPE, reCAPCSVSuccessRecord.getReportType());
         exchange.getIn().setHeader(RecapConstants.DIRECTORY_NAME, reCAPCSVSuccessRecord.getInstitutionName());
     }

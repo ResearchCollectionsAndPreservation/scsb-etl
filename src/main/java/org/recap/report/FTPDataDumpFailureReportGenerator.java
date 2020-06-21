@@ -2,6 +2,7 @@ package org.recap.report;
 
 import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.FilenameUtils;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.DataDumpFailureReport;
 import org.recap.model.jpa.ReportEntity;
@@ -41,7 +42,7 @@ public class FTPDataDumpFailureReportGenerator implements ReportGeneratorInterfa
      */
     @Override
     public boolean isTransmitted(String transmissionType) {
-        return transmissionType.equalsIgnoreCase(RecapConstants.FTP) ? true : false;
+        return transmissionType.equalsIgnoreCase(RecapCommonConstants.FTP) ? true : false;
     }
 
     /**
@@ -68,7 +69,7 @@ public class FTPDataDumpFailureReportGenerator implements ReportGeneratorInterfa
         if(!CollectionUtils.isEmpty(reportEntities)) {
             DataDumpFailureReport dataDumpFailureReport = getDataDumpFailureReport(reportEntities, fileName);
             producerTemplate.sendBody(RecapConstants.DATADUMP_FAILURE_REPORT_FTP_Q, dataDumpFailureReport);
-            DateFormat df = new SimpleDateFormat(RecapConstants.DATE_FORMAT_FOR_FILE_NAME);
+            DateFormat df = new SimpleDateFormat(RecapCommonConstants.DATE_FORMAT_FOR_FILE_NAME);
             return FilenameUtils.removeExtension(dataDumpFailureReport.getFileName()) + "-" + dataDumpFailureReport.getReportType() + "-" + df.format(new Date()) + ".csv";
         }
         return null;

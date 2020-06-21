@@ -2,6 +2,7 @@ package org.recap.service.formatter.datadump;
 
 import org.junit.Test;
 import org.recap.BaseTestCase;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.export.DeletedRecord;
 import org.recap.model.jpa.BibliographicEntity;
@@ -39,7 +40,7 @@ public class DeletedJsonFormatterServiceUT extends BaseTestCase{
     @Test
     public void getFormattedOutput() throws Exception {
         Map<String,Object> successAndFailureFormattedList = deletedJsonFormatterService.prepareDeletedRecords(getBibliographicEntityList());
-        List<DeletedRecord> deletedRecordList = (List<DeletedRecord>)successAndFailureFormattedList.get(RecapConstants.SUCCESS);
+        List<DeletedRecord> deletedRecordList = (List<DeletedRecord>)successAndFailureFormattedList.get(RecapCommonConstants.SUCCESS);
         String outputString = (String) deletedJsonFormatterService.getJsonForDeletedRecords(deletedRecordList);
         assertNotNull(outputString);
     }

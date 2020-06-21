@@ -1,6 +1,7 @@
 package org.recap.util;
 
 import org.junit.Test;
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.FailureReportReCAPCSVRecord;
 import org.recap.model.jpa.ReportDataEntity;
@@ -24,17 +25,17 @@ public class CSVReportHelperUtil_UT {
         List dataEntities = new ArrayList<>();
 
         ReportDataEntity barcodeReportDataEntity = new ReportDataEntity();
-        barcodeReportDataEntity.setHeaderName(RecapConstants.ITEM_BARCODE);
+        barcodeReportDataEntity.setHeaderName(RecapCommonConstants.ITEM_BARCODE);
         barcodeReportDataEntity.setHeaderValue("1231");
         dataEntities.add(barcodeReportDataEntity);
 
         ReportDataEntity callNumberReportDataEntity = new ReportDataEntity();
-        callNumberReportDataEntity.setHeaderName(RecapConstants.LOCAL_ITEM_ID);
+        callNumberReportDataEntity.setHeaderName(RecapCommonConstants.LOCAL_ITEM_ID);
         callNumberReportDataEntity.setHeaderValue("1231");
         dataEntities.add(callNumberReportDataEntity);
 
         ReportDataEntity errrorDescriptionDataEntity = new ReportDataEntity();
-        errrorDescriptionDataEntity.setHeaderName(RecapConstants.ERROR_DESCRIPTION);
+        errrorDescriptionDataEntity.setHeaderName(RecapCommonConstants.ERROR_DESCRIPTION);
         errrorDescriptionDataEntity.setHeaderValue("At least on subfield should be there for $245");
         dataEntities.add(errrorDescriptionDataEntity);
 

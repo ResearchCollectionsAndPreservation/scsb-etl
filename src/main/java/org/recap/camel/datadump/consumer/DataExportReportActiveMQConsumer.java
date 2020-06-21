@@ -1,5 +1,6 @@
 package org.recap.camel.datadump.consumer;
 
+import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jpa.ReportDataEntity;
 import org.recap.model.jpa.ReportEntity;
@@ -45,7 +46,7 @@ public class DataExportReportActiveMQConsumer {
         String fromDate = body.get(RecapConstants.EXPORT_FROM_DATE) != null ? (String) body.get(RecapConstants.EXPORT_FROM_DATE) :"";
         String toEmailId = (String) body.get(RecapConstants.TO_EMAIL_ID);
         String type = (String) body.get(RecapConstants.BATCH_EXPORT);
-        String requestId = (String) (body.get(RecapConstants.REQUEST_ID));
+        String requestId = (String) (body.get(RecapCommonConstants.REQUEST_ID));
         String numBibsExported = (String) body.get(RecapConstants.NUM_BIBS_EXPORTED);
         String numRecords = (String) body.get(RecapConstants.NUM_RECORDS);
         Integer exportedItemCount = (Integer) body.get(RecapConstants.ITEM_EXPORTED_COUNT);
@@ -153,7 +154,7 @@ public class DataExportReportActiveMQConsumer {
         String fromDate = body.get(RecapConstants.EXPORT_FROM_DATE) != null ? (String) body.get(RecapConstants.EXPORT_FROM_DATE) :"";
         String toEmailId = (String) body.get(RecapConstants.TO_EMAIL_ID);
         String type = (String) body.get(RecapConstants.BATCH_EXPORT);
-        String requestId = (String) (body.get(RecapConstants.REQUEST_ID));
+        String requestId = (String) (body.get(RecapCommonConstants.REQUEST_ID));
         String failedBibs = (String) body.get(RecapConstants.FAILED_BIBS);
         String numRecords = (String) body.get(RecapConstants.NUM_RECORDS);
         String failureCause = (String) body.get(RecapConstants.FAILURE_CAUSE);
