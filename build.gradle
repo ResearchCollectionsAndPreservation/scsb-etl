@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.2.6.RELEASE'
+        springBootVersion = '2.3.0.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -23,7 +23,7 @@ buildscript {
 
 plugins {
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'org.springframework.boot' version '2.3.0.RELEASE'
     id "org.sonarqube" version "2.8"
 }
 
@@ -98,6 +98,8 @@ dependencies {
     implementation('commons-io:commons-io:2.6')
     implementation('commons-beanutils:commons-beanutils:1.9.4')
     implementation('info.freelibrary:freelib-marc4j:2.6.12')
+    implementation('javax.validation:validation-api:2.0.1.Final')
+
 
     implementation 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'

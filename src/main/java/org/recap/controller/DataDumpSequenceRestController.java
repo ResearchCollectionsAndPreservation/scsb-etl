@@ -5,8 +5,8 @@ import org.recap.RecapConstants;
 import org.recap.camel.dynamicrouter.DynamicRouteBuilder;
 import org.recap.service.executor.datadump.DataDumpSchedulerExecutorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +39,7 @@ public class DataDumpSequenceRestController {
      * @param date the date
      * @return string
      */
-    @RequestMapping(value = "/exportDataDumpSequence", method = RequestMethod.GET)
+    @GetMapping(value = "/exportDataDumpSequence")
     @ResponseBody
     public String exportDataDump(@RequestParam String date) {
         RecapConstants.EXPORT_SCHEDULER_CALL = true;

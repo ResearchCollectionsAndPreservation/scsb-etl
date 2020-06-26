@@ -1,13 +1,11 @@
 package org.recap.report;
 
-import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.FilenameUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.DataDumpSuccessReport;
 import org.recap.model.jpa.ReportEntity;
 import org.recap.util.datadump.DataDumpSuccessReportGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -21,23 +19,10 @@ import java.util.List;
  * Created by premkb on 29/9/16.
  */
 @Component
-public class FTPDataDumpSuccessReportGenerator implements ReportGeneratorInterface {
+public class FTPDataDumpSuccessReportGenerator extends CommonReportGenerator implements ReportGeneratorInterface {
 
-    /**
-     * The Producer template.
-     */
-    @Autowired
-    ProducerTemplate producerTemplate;
-
-    /**
-     * Returns true if report type is 'BatchExportSuccess'.
-     *
-     * @param reportType the report type
-     * @return
-     */
-    @Override
     public boolean isInterested(String reportType) {
-        return reportType.equalsIgnoreCase(RecapConstants.BATCH_EXPORT_SUCCESS) ? true : false;
+        return reportType.equalsIgnoreCase(RecapConstants.BATCH_EXPORT_SUCCESS);
     }
 
     /**
@@ -48,7 +33,7 @@ public class FTPDataDumpSuccessReportGenerator implements ReportGeneratorInterfa
      */
     @Override
     public boolean isTransmitted(String transmissionType) {
-        return transmissionType.equalsIgnoreCase(RecapCommonConstants.FTP) ? true : false;
+        return transmissionType.equalsIgnoreCase(RecapCommonConstants.FTP);
     }
 
     /**
@@ -59,7 +44,7 @@ public class FTPDataDumpSuccessReportGenerator implements ReportGeneratorInterfa
      */
     @Override
     public boolean isOperationType(String operationType) {
-        return operationType.equalsIgnoreCase(RecapConstants.BATCH_EXPORT) ? true : false;
+        return operationType.equalsIgnoreCase(RecapConstants.BATCH_EXPORT);
     }
 
     /**

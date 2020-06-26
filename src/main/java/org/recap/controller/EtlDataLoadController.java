@@ -21,7 +21,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -115,7 +116,7 @@ public class EtlDataLoadController {
      * @return the string
      */
     @ResponseBody
-    @RequestMapping(value = "/etlDataLoader/bulkIngest", method = RequestMethod.POST)
+    @PostMapping(value = "/etlDataLoader/bulkIngest")
     public String bulkIngest(@Valid @ModelAttribute("etlLoadRequest") EtlLoadRequest etlLoadRequest,
                             BindingResult result,
                             Model model) {
@@ -141,7 +142,7 @@ public class EtlDataLoadController {
      * @return the string
      */
     @ResponseBody
-    @RequestMapping(value = "/etlDataLoader/status", method = RequestMethod.GET)
+    @GetMapping(value = "/etlDataLoader/status")
     public String report() {
         String status = "Process Started";
         if (camelContext.getStatus().isStarted()) {
@@ -164,7 +165,7 @@ public class EtlDataLoadController {
      * @throws IOException the io exception
      */
     @ResponseBody
-    @RequestMapping(value = "/etlDataLoader/uploadFiles", method = RequestMethod.POST)
+    @PostMapping(value = "/etlDataLoader/uploadFiles")
     public String uploadFiles(@Valid @ModelAttribute("etlLoadRequest") EtlLoadRequest etlLoadRequest,
                              BindingResult result,
                              Model model) throws IOException {
@@ -188,7 +189,7 @@ public class EtlDataLoadController {
      * @return the string
      */
     @ResponseBody
-    @RequestMapping(value = "/etlDataLoader/reports", method = RequestMethod.POST)
+    @PostMapping(value = "/etlDataLoader/reports")
     public String generateReport(@Valid @ModelAttribute("etlLoadRequest") EtlLoadRequest etlLoadRequest,
                              BindingResult result,
                              Model model) {

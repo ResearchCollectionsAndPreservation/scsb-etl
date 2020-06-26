@@ -32,6 +32,7 @@ public class BibEntityGeneratorActiveMQConsumer {
 
     private BibliographicDetailsRepository bibliographicDetailsRepository;
     private ExecutorService executorService;
+    private static String batchHeaderName = "batchHeaders";
 
     /**
      * Instantiates a new Bib entity generator active mq consumer.
@@ -56,7 +57,7 @@ public class BibEntityGeneratorActiveMQConsumer {
         Map results = (Map) exchange.getIn().getBody();
         List<HashMap> dataDumpSearchResults = (List<HashMap>) results.get("dataDumpSearchResults");
 
-        String batchHeaders = (String) exchange.getIn().getHeader("batchHeaders");
+        String batchHeaders = (String) exchange.getIn().getHeader(batchHeaderName);
         String currentPageCountStr = new DataExportHeaderUtil().getValueFor(batchHeaders, "currentPageCount");
         logger.info("Current page in BibEntityGeneratorActiveMQConsumer--->{}",currentPageCountStr);
         List<BibliographicEntity> bibliographicEntities = new ArrayList<>();
@@ -110,7 +111,7 @@ public class BibEntityGeneratorActiveMQConsumer {
             fluentProducerTemplate
                     .to(RecapConstants.BIB_ENTITY_FOR_DATA_EXPORT_Q)
                     .withBody(bibliographicEntities)
-                    .withHeader("batchHeaders", exchange.getIn().getHeader("batchHeaders"))
+                    .withHeader(batchHeaderName, exchange.getIn().getHeader(batchHeaderName))
                     .withHeader("exportFormat", exchange.getIn().getHeader("exportFormat"))
                     .withHeader("transmissionType", exchange.getIn().getHeader("transmissionType"));
             fluentProducerTemplate.send();

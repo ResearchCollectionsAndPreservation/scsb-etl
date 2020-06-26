@@ -22,7 +22,7 @@ public class IncrementalDataDumpExecutorService extends AbstractDataDumpExecutor
      */
     @Override
     public boolean isInterested(String fetchType) {
-        return fetchType.equals(RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL) ? true:false;
+        return fetchType.equals(RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL);
     }
 
     /**

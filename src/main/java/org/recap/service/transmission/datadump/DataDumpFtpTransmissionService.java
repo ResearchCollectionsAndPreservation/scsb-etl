@@ -55,7 +55,7 @@ public class DataDumpFtpTransmissionService implements DataDumpTransmissionInter
      */
     @Override
     public boolean isInterested(DataDumpRequest dataDumpRequest) {
-        return dataDumpRequest.getTransmissionType().equals(RecapConstants.DATADUMP_TRANSMISSION_TYPE_FTP) ? true : false;
+        return dataDumpRequest.getTransmissionType().equals(RecapConstants.DATADUMP_TRANSMISSION_TYPE_FTP);
     }
 
     /**

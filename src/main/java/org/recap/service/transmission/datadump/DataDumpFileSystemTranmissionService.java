@@ -31,7 +31,7 @@ public class DataDumpFileSystemTranmissionService implements DataDumpTransmissio
      */
     @Override
     public boolean isInterested(DataDumpRequest dataDumpRequest) {
-        return dataDumpRequest.getTransmissionType().equals(RecapConstants.DATADUMP_TRANSMISSION_TYPE_FILESYSTEM) ? true : false;
+        return dataDumpRequest.getTransmissionType().equals(RecapConstants.DATADUMP_TRANSMISSION_TYPE_FILESYSTEM);
     }
 
     /**

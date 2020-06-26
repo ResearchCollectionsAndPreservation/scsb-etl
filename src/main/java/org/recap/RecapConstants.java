@@ -186,8 +186,6 @@ public class RecapConstants {
     public static final String DATADUMP_SUCCESS_REPORT_ROUTE_ID = "dataExportSuccessReportRouteId";
     public static final String DATADUMP_FAILURE_REPORT_ROUTE_ID = "dataExportFailureReportRouteId";
 
-    public static final String COMPLETE_STATUS = "Complete";
-
     public static final String EXCEPTION = "Exception->";
 
     public static final String BATCH_HEADERS="batchHeaders";
@@ -205,7 +203,6 @@ public class RecapConstants {
     public static final String ITEM_EXPORTED_COUNT = "itemExportedCount";
 
     //scsb-api-key
-    public static final String API_KEY = "api_key";
     public static final String DELETED_DATA_DUMP_COMPLETION_TOPIC_MESSAGE = "Deleted datadump is completed";
     public static final String FULL_DATA_DUMP_COMPLETION_TOPIC_MESSAGE = "Full datadump is completed";
     public static final String DATA_DUMP_TYPE = "dataDumpType";

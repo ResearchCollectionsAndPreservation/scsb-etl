@@ -18,6 +18,8 @@ public class DateUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
 
+    private DateUtil() {}
+
     /**
      * Get date from string date.
      *

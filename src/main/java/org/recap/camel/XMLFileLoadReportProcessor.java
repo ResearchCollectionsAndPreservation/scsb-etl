@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.recap.RecapConstants;
 import org.recap.model.jpa.ReportDataEntity;
 import org.recap.model.jpa.ReportEntity;
+import org.recap.report.CommonReportGenerator;
 import org.recap.repository.ReportDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,23 +34,7 @@ public class XMLFileLoadReportProcessor implements Processor {
      */
     @Override
     public void process(Exchange exchange) throws Exception {
-        String institutionName = (String) exchange.getProperty(RecapConstants.INST_NAME);
-        if (StringUtils.isNotEmpty(institutionName)) {
-            ReportEntity reportEntity = new ReportEntity();
-            reportEntity.setCreatedDate(new Date());
-            GenericFile camelFileExchangeFile = (GenericFile) exchange.getProperty(RecapConstants.CAMEL_EXCHANGE_FILE);
-            reportEntity.setFileName(camelFileExchangeFile.getFileName());
-            reportEntity.setType(RecapConstants.XML_LOAD);
-            reportEntity.setInstitutionName(institutionName);
-
-            ReportDataEntity reportDataEntity = new ReportDataEntity();
-            reportDataEntity.setHeaderName(RecapConstants.FILE_LOAD_STATUS);
-            reportDataEntity.setHeaderValue(RecapConstants.FILE_LOADED);
-
-            reportEntity.setReportDataEntities(Arrays.asList(reportDataEntity));
-
-            reportDetailRepository.save(reportEntity);
-        }
-
+        CommonReportGenerator commonReportGenerator = new CommonReportGenerator();
+        commonReportGenerator.process(exchange, RecapConstants.FILE_LOADED, reportDetailRepository);
     }
 }

@@ -23,7 +23,7 @@ public class DataExportReportRouteBuilder {
      * @param camelContext the camel context
      */
     @Autowired
-    public DataExportReportRouteBuilder(CamelContext camelContext) {
+    private DataExportReportRouteBuilder(CamelContext camelContext) {
         try {
             camelContext.addRoutes(new RouteBuilder() {
                 @Override

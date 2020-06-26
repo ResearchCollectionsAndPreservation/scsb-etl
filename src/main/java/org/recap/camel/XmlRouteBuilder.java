@@ -22,7 +22,7 @@ import java.io.File;
 @Component
 public class XmlRouteBuilder {
 
-    private static final Logger logger = LoggerFactory.getLogger(ReportsRouteBuilder.class);
+    private static final Logger logger = LoggerFactory.getLogger(XmlRouteBuilder.class);
 
     /**
      * Instantiates a new Xml route builder.

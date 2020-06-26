@@ -1,7 +1,6 @@
 package org.recap.model.export;
 
 import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.util.DateUtil;

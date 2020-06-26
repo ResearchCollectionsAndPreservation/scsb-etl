@@ -3,7 +3,6 @@ package org.recap.model.etl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
 import org.recap.model.jaxb.Bib;
 import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jaxb.Holding;
@@ -42,13 +41,14 @@ public class BibPersisterCallable implements Callable {
     private MarcUtil marcUtil;
     private BibRecord bibRecord;
     private XmlRecordEntity xmlRecordEntity;
-    private Map institutionEntitiesMap;
+    private Map<String, Integer> institutionEntitiesMap;
     private String institutionName;
 
     private Map itemStatusMap;
     private Map collectionGroupMap;
 
     private DBReportUtil dbReportUtil;
+    private static final String bibliographicEntityname = "bibliographicEntity";
 
     @Override
     public Object call() {
@@ -62,10 +62,10 @@ public class BibPersisterCallable implements Callable {
         getDbReportUtil().setInstitutionEntitiesMap(institutionEntitiesMap);
         getDbReportUtil().setCollectionGroupMap(collectionGroupMap);
 
-        Integer owningInstitutionId = (Integer) institutionEntitiesMap.get(bibRecord.getBib().getOwningInstitutionId());
+        Integer owningInstitutionId = institutionEntitiesMap.get(bibRecord.getBib().getOwningInstitutionId());
         Date currentDate = new Date();
         Map<String, Object> bibMap = processAndValidateBibliographicEntity(owningInstitutionId,currentDate);
-        BibliographicEntity bibliographicEntity = (BibliographicEntity) bibMap.get("bibliographicEntity");
+        BibliographicEntity bibliographicEntity = (BibliographicEntity) bibMap.get(bibliographicEntityname);
         ReportEntity bibReportEntity = (ReportEntity) bibMap.get("bibReportEntity");
         if (bibReportEntity != null) {
             reportEntities.add(bibReportEntity);
@@ -129,7 +129,7 @@ public class BibPersisterCallable implements Callable {
             map.put("reportEntities", reportEntities);
         }
         if (processBib) {
-            map.put("bibliographicEntity", bibliographicEntity);
+            map.put(bibliographicEntityname, bibliographicEntity);
         }
         return map;
     }
@@ -162,7 +162,7 @@ public class BibPersisterCallable implements Callable {
         bibliographicEntity.setCreatedBy("etl");
         bibliographicEntity.setLastUpdatedDate(currentDate);
         bibliographicEntity.setLastUpdatedBy("etl");
-        bibliographicEntity.setCatalogingStatus(RecapConstants.COMPLETE_STATUS);
+        bibliographicEntity.setCatalogingStatus(RecapCommonConstants.COMPLETE_STATUS);
 
         ContentType bibContent = bib.getContent();
         CollectionType bibContentCollection = bibContent.getCollection();
@@ -198,7 +198,7 @@ public class BibPersisterCallable implements Callable {
             reportEntity.addAll(reportDataEntities);
             map.put("bibReportEntity", reportEntity);
         }
-        map.put("bibliographicEntity", bibliographicEntity);
+        map.put(bibliographicEntityname, bibliographicEntity);
         return map;
     }
 
@@ -226,13 +226,11 @@ public class BibPersisterCallable implements Callable {
         Integer owningInstitutionId = bibliographicEntity.getOwningInstitutionId();
         holdingsEntity.setOwningInstitutionId(owningInstitutionId);
         String owningInstitutionHoldingsId = holdingEnt.getOwningInstitutionHoldingsId();
-        if (StringUtils.isBlank(owningInstitutionHoldingsId)) {
-            owningInstitutionHoldingsId = UUID.randomUUID().toString();
-        } else if (owningInstitutionHoldingsId.length() > 100) {
+        if (StringUtils.isBlank(owningInstitutionHoldingsId) || owningInstitutionHoldingsId.length() > 100) {
             owningInstitutionHoldingsId = UUID.randomUUID().toString();
         }
         holdingsEntity.setOwningInstitutionHoldingsId(owningInstitutionHoldingsId);
-        List<ReportDataEntity> reportDataEntities = null;
+        List<ReportDataEntity> reportDataEntities = new ArrayList<>();
         if (errorMessage.toString().length() > 1) {
             getDbReportUtil().generateBibHoldingsFailureReportEntity(bibliographicEntity, holdingsEntity);
             ReportDataEntity errorReportDataEntity = new ReportDataEntity();
@@ -241,7 +239,7 @@ public class BibPersisterCallable implements Callable {
             reportDataEntities.add(errorReportDataEntity);
         }
 
-        if(!CollectionUtils.isEmpty(reportDataEntities)) {
+        if(!(CollectionUtils.isEmpty(reportDataEntities))) {
             reportEntity.addAll(reportDataEntities);
             map.put("holdingsReportEntity", reportEntity);
         }
@@ -296,7 +294,7 @@ public class BibPersisterCallable implements Callable {
         itemEntity.setCreatedBy("etl");
         itemEntity.setLastUpdatedDate(currentDate);
         itemEntity.setLastUpdatedBy("etl");
-        itemEntity.setCatalogingStatus(RecapConstants.COMPLETE_STATUS);
+        itemEntity.setCatalogingStatus(RecapCommonConstants.COMPLETE_STATUS);
 
         String useRestrictions = getMarcUtil().getDataFieldValue(itemRecordType, "876", null, null, "h");
         if (StringUtils.isNotBlank(useRestrictions) && ("In Library Use".equalsIgnoreCase(useRestrictions) || "Supervised Use".equalsIgnoreCase(useRestrictions))) {
@@ -361,7 +359,7 @@ public class BibPersisterCallable implements Callable {
      *
      * @return the institution entities map
      */
-    public Map getInstitutionEntitiesMap() {
+    public Map<String, Integer> getInstitutionEntitiesMap() {
         return institutionEntitiesMap;
     }
 

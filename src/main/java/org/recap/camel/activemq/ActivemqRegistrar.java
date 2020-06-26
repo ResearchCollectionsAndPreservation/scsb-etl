@@ -26,7 +26,7 @@ public class ActivemqRegistrar {
      * @throws JMSException
      */
     @Autowired
-    public ActivemqRegistrar(CamelContext camelContext , @Value("${activemq.broker.url}") String defaultBrokerURL) throws JMSException {
+    public ActivemqRegistrar(CamelContext camelContext , @Value("${activemq.broker.url}") String defaultBrokerURL) {
         ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(defaultBrokerURL);
         ActiveMQComponent activeMQComponent = new ActiveMQComponent();
         activeMQComponent.setConnectionFactory(connectionFactory);

@@ -142,15 +142,7 @@ public class DataDumpExportService {
      * @return
      */
     private String getMessageFromHttpQ(){
-        String outputString;
-        Exchange receive = consumerTemplate.receive(RecapConstants.DATADUMP_HTTP_Q);
-        Object body = receive.getIn().getBody();
-        while (null == body) {
-            receive = consumerTemplate.receive(RecapConstants.DATADUMP_HTTP_Q);
-            body = receive.getIn().getBody();
-        }
-        outputString = (String) receive.getIn().getBody();
-        return outputString;
+        return getMessageFrom(consumerTemplate, RecapConstants.DATADUMP_HTTP_Q);
     }
 
     /**
@@ -158,15 +150,7 @@ public class DataDumpExportService {
      * @return
      */
     private String getMessageFromIsRecordAvailableQ(){
-        String outputString;
-        Exchange receive = consumerTemplate.receive(RecapConstants.DATADUMP_IS_RECORD_AVAILABLE_Q);
-        Object body = receive.getIn().getBody();
-        while (null == body) {
-            receive = consumerTemplate.receive(RecapConstants.DATADUMP_IS_RECORD_AVAILABLE_Q);
-            body = receive.getIn().getBody();
-        }
-        outputString = (String) receive.getIn().getBody();
-        return outputString;
+        return getMessageFrom(consumerTemplate, RecapConstants.DATADUMP_IS_RECORD_AVAILABLE_Q);
     }
 
     /**
@@ -393,7 +377,7 @@ public class DataDumpExportService {
         return errorcount;
     }
 
-    private Integer checkToRestrictFullDumpViaIncremental(Map<Integer, String> errorMessageMap, Integer errorcount, String dataDumpRequestDateString, String initialDataLoadDateString, String institutionCode) throws ParseException {
+    private Integer checkToRestrictFullDumpViaIncremental(Map<Integer, String> errorMessageMap, Integer errorcount, String dataDumpRequestDateString, String initialDataLoadDateString, String institutionCode) {
         if(StringUtils.isBlank(initialDataLoadDateString)) {
             errorMessageMap.put(errorcount, MessageFormat.format(RecapConstants.INITIAL_DATA_LOAD_DATE_MISSING_ERR_MSG, institutionCode, recapAssistEmailAddress));
             errorcount++;
@@ -533,6 +517,19 @@ public class DataDumpExportService {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat(RecapConstants.DATE_FORMAT_DDMMMYYYYHHMM);
         return sdf.format(date);
+    }
+
+    public String getMessageFrom(ConsumerTemplate consumerTemplate, String queue)
+    {
+        String outputString;
+        Exchange receive = consumerTemplate.receive(queue);
+        Object body = receive.getIn().getBody();
+        while (null == body) {
+            receive = consumerTemplate.receive(queue);
+            body = receive.getIn().getBody();
+        }
+        outputString = (String) receive.getIn().getBody();
+        return outputString;
     }
 
 }
