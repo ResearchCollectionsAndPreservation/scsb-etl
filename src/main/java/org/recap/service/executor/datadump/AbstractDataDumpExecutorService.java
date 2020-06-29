@@ -88,7 +88,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
         logger.info("totalBibsCount--->{}",totalBibsCount);
         logger.info("solrFetchDelay--->{}",solrFetchDelay);
 
-        boolean isRecordsToProcess = totalBibsCount > 0 ? true : false;
+        boolean isRecordsToProcess = totalBibsCount > 0;
         boolean canProcess = canProcessRecords(totalBibsCount, dataDumpRequest.getTransmissionType());
         boolean bibHasItems = bibHasItems(results);
         boolean isDeleted = dataDumpRequest.getFetchType().equals(RecapConstants.DATADUMP_FETCHTYPE_DELETED);
@@ -165,13 +165,13 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
      *
      * @param outputString
      */
-    private void sendBodyForHttp(String outputString) {
+    /*private void sendBodyForHttp(String outputString) {
         FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(camelContext);
         fluentProducerTemplate
                 .to(RecapConstants.DATADUMP_HTTP_Q)
                 .withBody(outputString);
         fluentProducerTemplate.send();
-    }
+    }*/
 
     /**
      * Send appropriate message to queue for records availability.
@@ -199,7 +199,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
         SimpleDateFormat dateFomatFromApi=new SimpleDateFormat(RecapConstants.DATE_FORMAT_FROM_API);
         Date parsedDate = dateFomatFromApi.parse(dataDumpRequest.getDateTimeString());
         String formattedDate = dateFormatForReport.format(parsedDate);
-        String fileName=dataDumpRequest.getRequestingInstitutionCode()
+        return dataDumpRequest.getRequestingInstitutionCode()
                 + File.separator
                 + getOutputFormat(dataDumpRequest)
                 + File.separator
@@ -209,7 +209,6 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
                 + formattedDate
                 + File.separator
                 + pageNum;
-        return fileName;
     }
 
     /**
@@ -243,7 +242,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
         SimpleDateFormat dateFomatFromApi=new SimpleDateFormat(RecapConstants.DATE_FORMAT_FROM_API);
         Date parsedDate = dateFomatFromApi.parse(dataDumpRequest.getDateTimeString());
         String formattedDate = dateFormatForReport.format(parsedDate);
-        String folderName=dataDumpRequest.getRequestingInstitutionCode()
+        return dataDumpRequest.getRequestingInstitutionCode()
                 + File.separator
                 + getOutputFormat(dataDumpRequest)
                 + File.separator
@@ -252,7 +251,6 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
                 + "_"
                 + formattedDate;
 
-        return folderName;
     }
 
     /**

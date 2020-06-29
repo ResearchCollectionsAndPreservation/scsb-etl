@@ -37,7 +37,7 @@ public class DeletedJsonFormatterService implements DataDumpFormatterInterface {
      */
     @Override
     public boolean isInterested(String formatType) {
-        return formatType.equals(RecapConstants.DATADUMP_DELETED_JSON_FORMAT) ? true:false;
+        return formatType.equals(RecapConstants.DATADUMP_DELETED_JSON_FORMAT);
     }
 
     /**
@@ -103,7 +103,7 @@ public class DeletedJsonFormatterService implements DataDumpFormatterInterface {
                         break;
                     }
                 }
-                if(isDeleted == true){
+                if(isDeleted){
                     bibliographicEntity.setDeleted(true);
                 }
             }
@@ -111,13 +111,9 @@ public class DeletedJsonFormatterService implements DataDumpFormatterInterface {
     }
 
     private boolean isChangedToPrivateCGD(ItemEntity fetchedItemEntity){
-        if(fetchedItemEntity.getCgdChangeLog()!=null){
-            if(fetchedItemEntity.getCgdChangeLog().equals(RecapCommonConstants.CGD_CHANGE_LOG_SHARED_TO_PRIVATE) ||
-                    fetchedItemEntity.getCgdChangeLog().equals(RecapCommonConstants.CGD_CHANGE_LOG_OPEN_TO_PRIVATE)){
-                return true;
-            }
-        }
-        return false;
+        return ((fetchedItemEntity.getCgdChangeLog()!=null) &&
+            (fetchedItemEntity.getCgdChangeLog().equals(RecapCommonConstants.CGD_CHANGE_LOG_SHARED_TO_PRIVATE) ||
+                    fetchedItemEntity.getCgdChangeLog().equals(RecapCommonConstants.CGD_CHANGE_LOG_OPEN_TO_PRIVATE)));
     }
 
     /**

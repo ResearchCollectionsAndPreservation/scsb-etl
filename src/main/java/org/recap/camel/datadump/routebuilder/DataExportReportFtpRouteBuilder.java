@@ -21,6 +21,9 @@ import org.springframework.stereotype.Component;
 public class DataExportReportFtpRouteBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(DataExportReportFtpRouteBuilder.class);
+    private static final String SFTP = "sftp://";
+    private static final String PRIVATE_KEY_FILE = "?privateKeyFile=";
+    private static final String KNOWN_HOSTS_FILE = "&knownHostsFile=";
 
     /**
      * Instantiates a new Data export report ftp route builder.
@@ -45,7 +48,7 @@ public class DataExportReportFtpRouteBuilder {
                             .routeId(RecapConstants.DATADUMP_SUCCESS_REPORT_FTP_ROUTE_ID)
                             .process(new FileNameProcessorForDataDumpSuccess())
                             .marshal().bindy(BindyType.Csv, DataDumpSuccessReport.class)
-                            .to("sftp://" + ftpUserName + "@" + ftpOnlyReportRemoteServer + "?privateKeyFile=" + ftpPrivateKey + "&knownHostsFile=" + ftpKnownHost + "&fileName=${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv&fileExist=append");
+                            .to(SFTP + ftpUserName + "@" + ftpOnlyReportRemoteServer + PRIVATE_KEY_FILE + ftpPrivateKey + KNOWN_HOSTS_FILE + ftpKnownHost + "&fileName=${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv&fileExist=append");
                 }
             });
 
@@ -56,7 +59,7 @@ public class DataExportReportFtpRouteBuilder {
                             .routeId(RecapConstants.DATADUMP_FAILURE_REPORT_FTP_ROUTE_ID)
                             .process(new FileNameProcessorForDataDumpFailure())
                             .marshal().bindy(BindyType.Csv, DataDumpFailureReport.class)
-                            .to("sftp://" + ftpUserName + "@" + ftpOnlyReportRemoteServer + "?privateKeyFile=" + ftpPrivateKey + "&knownHostsFile=" + ftpKnownHost + "&fileName=${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv&fileExist=append");
+                            .to(SFTP + ftpUserName + "@" + ftpOnlyReportRemoteServer + PRIVATE_KEY_FILE + ftpPrivateKey + KNOWN_HOSTS_FILE + ftpKnownHost + "&fileName=${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv&fileExist=append");
                 }
             });
 
@@ -67,7 +70,7 @@ public class DataExportReportFtpRouteBuilder {
                             .routeId(RecapConstants.DATAEXPORT_WITH_SUCCESS_REPORT_FTP_ROUTE_ID)
                             .process(new FileNameProcessorForDataDumpSuccess())
                             .marshal().bindy(BindyType.Csv, DataDumpSuccessReport.class)
-                            .to("sftp://" + ftpUserName + "@" + ftpDumpWithReportRemoteServer + "?privateKeyFile=" + ftpPrivateKey + "&knownHostsFile=" + ftpKnownHost + "&fileName=${in.header.fileName}.csv&fileExist=append");
+                            .to(SFTP + ftpUserName + "@" + ftpDumpWithReportRemoteServer + PRIVATE_KEY_FILE + ftpPrivateKey + KNOWN_HOSTS_FILE + ftpKnownHost + "&fileName=${in.header.fileName}.csv&fileExist=append");
                 }
             });
 
@@ -78,7 +81,7 @@ public class DataExportReportFtpRouteBuilder {
                             .routeId(RecapConstants.DATAEXPORT_WITH_FAILURE_REPORT_FTP_ROUTE_ID)
                             .process(new FileNameProcessorForDataDumpFailure())
                             .marshal().bindy(BindyType.Csv, DataDumpFailureReport.class)
-                            .to("sftp://" + ftpUserName + "@" + ftpDumpWithReportRemoteServer + "?privateKeyFile=" + ftpPrivateKey + "&knownHostsFile=" + ftpKnownHost + "&fileName=${in.header.fileName}.csv&fileExist=append");
+                            .to(SFTP + ftpUserName + "@" + ftpDumpWithReportRemoteServer + PRIVATE_KEY_FILE + ftpPrivateKey + KNOWN_HOSTS_FILE + ftpKnownHost + "&fileName=${in.header.fileName}.csv&fileExist=append");
                 }
             });
         } catch (Exception e) {

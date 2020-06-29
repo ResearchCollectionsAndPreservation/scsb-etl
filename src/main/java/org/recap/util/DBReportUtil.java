@@ -3,7 +3,6 @@ package org.recap.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
 import org.recap.model.jaxb.marc.CollectionType;
 import org.recap.model.jaxb.marc.RecordType;
 import org.recap.model.jpa.BibliographicEntity;
@@ -99,7 +98,7 @@ public class DBReportUtil {
 
             if (itemEntity.getCollectionGroupId() != null) {
                 for (Map.Entry<String, Integer> entry : collectionGroupMap.entrySet()) {
-                    if (entry.getValue() == itemEntity.getCollectionGroupId()) {
+                    if (entry.getValue().equals(itemEntity.getCollectionGroupId())) {
                         ReportDataEntity collectionGroupDesignationEntity = new ReportDataEntity();
                         collectionGroupDesignationEntity.setHeaderName(RecapCommonConstants.COLLECTION_GROUP_DESIGNATION);
                         collectionGroupDesignationEntity.setHeaderValue(entry.getKey());
@@ -160,7 +159,7 @@ public class DBReportUtil {
 
         if (bibliographicEntity.getOwningInstitutionId() != null) {
             for (Map.Entry<String, Integer> entry : institutionEntitiesMap.entrySet()) {
-                if (entry.getValue() == bibliographicEntity.getOwningInstitutionId()) {
+                if (entry.getValue().equals(bibliographicEntity.getOwningInstitutionId())) {
                     owningInstitutionReportDataEntity.setHeaderName(RecapCommonConstants.OWNING_INSTITUTION);
                     owningInstitutionReportDataEntity.setHeaderValue(entry.getKey());
                     reportDataEntities.add(owningInstitutionReportDataEntity);

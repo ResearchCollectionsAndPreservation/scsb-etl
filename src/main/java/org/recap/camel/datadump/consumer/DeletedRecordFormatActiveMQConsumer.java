@@ -7,6 +7,7 @@ import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
 import org.apache.commons.collections.CollectionUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
+import org.recap.report.CommonReportGenerator;
 import org.recap.util.datadump.DataExportHeaderUtil;
 import org.recap.camel.datadump.callable.DeletedRecordPreparerCallable;
 import org.recap.model.export.DeletedRecord;
@@ -17,7 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +30,7 @@ import java.util.concurrent.Future;
 /**
  * Created by peris on 11/1/16.
  */
-public class DeletedRecordFormatActiveMQConsumer {
+public class DeletedRecordFormatActiveMQConsumer extends CommonReportGenerator {
     private static final Logger logger = LoggerFactory.getLogger(DeletedRecordFormatActiveMQConsumer.class);
 
     /**
@@ -89,7 +89,7 @@ public class DeletedRecordFormatActiveMQConsumer {
                     }
                 });
         List<Integer> itemExportedCountList = new ArrayList<>();
-        List failures = new ArrayList();
+        List failures = new ArrayList<>();
         for (Future future : futureList) {
             Map<String, Object> results = (Map<String, Object>) future.get();
             Collection<? extends DeletedRecord> successRecords = (Collection<? extends DeletedRecord>) results.get(RecapCommonConstants.SUCCESS);
@@ -137,29 +137,7 @@ public class DeletedRecordFormatActiveMQConsumer {
      * @param requestId
      */
     private void processFailures(Exchange exchange, List failures, String batchHeaders, String requestId) {
-        HashMap values = new HashMap();
-        values.put(RecapConstants.REQUESTING_INST_CODE, getDataExportHeaderUtil().getValueFor(batchHeaders, RecapConstants.REQUESTING_INST_CODE));
-        values.put(RecapConstants.INSTITUTION_CODES, getDataExportHeaderUtil().getValueFor(batchHeaders, RecapConstants.INSTITUTION_CODES));
-        values.put(RecapConstants.FETCH_TYPE, getDataExportHeaderUtil().getValueFor(batchHeaders, RecapConstants.FETCH_TYPE));
-        values.put(RecapConstants.COLLECTION_GROUP_IDS, getDataExportHeaderUtil().getValueFor(batchHeaders, RecapConstants.COLLECTION_GROUP_IDS));
-        values.put(RecapConstants.TRANSMISSION_TYPE, getDataExportHeaderUtil().getValueFor(batchHeaders, RecapConstants.TRANSMISSION_TYPE));
-        values.put(RecapConstants.EXPORT_FROM_DATE, getDataExportHeaderUtil().getValueFor(batchHeaders, RecapConstants.EXPORT_FROM_DATE));
-        values.put(RecapConstants.EXPORT_FORMAT, getDataExportHeaderUtil().getValueFor(batchHeaders, RecapConstants.EXPORT_FORMAT));
-        values.put(RecapConstants.TO_EMAIL_ID, getDataExportHeaderUtil().getValueFor(batchHeaders, RecapConstants.TO_EMAIL_ID));
-        values.put(RecapConstants.NUM_RECORDS, String.valueOf(failures.size()));
-        values.put(RecapConstants.FAILURE_CAUSE, failures.get(0));
-        values.put(RecapConstants.FAILED_BIBS, RecapConstants.FAILED_BIBS);
-        values.put(RecapConstants.BATCH_EXPORT, RecapConstants.BATCH_EXPORT_FAILURE);
-        values.put(RecapCommonConstants.REQUEST_ID, requestId);
-
-        FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
-        fluentProducerTemplate
-                .to(RecapConstants.DATADUMP_FAILURE_REPORT_Q)
-                .withBody(values)
-                .withHeader(RecapConstants.BATCH_HEADERS, exchange.getIn().getHeader(RecapConstants.BATCH_HEADERS))
-                .withHeader(RecapConstants.EXPORT_FORMAT, exchange.getIn().getHeader(RecapConstants.EXPORT_FORMAT))
-                .withHeader(RecapConstants.TRANSMISSION_TYPE, exchange.getIn().getHeader(RecapConstants.TRANSMISSION_TYPE));
-        fluentProducerTemplate.send();
+        processRecordFailures(exchange, failures, batchHeaders, requestId, getDataExportHeaderUtil());
     }
 
     /**

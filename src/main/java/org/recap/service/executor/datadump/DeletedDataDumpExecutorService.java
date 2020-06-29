@@ -28,7 +28,7 @@ public class DeletedDataDumpExecutorService extends AbstractDataDumpExecutorServ
      */
     @Override
     public boolean isInterested(String fetchType) {
-        return fetchType.equals(RecapConstants.DATADUMP_FETCHTYPE_DELETED) ? true:false;
+        return fetchType.equals(RecapConstants.DATADUMP_FETCHTYPE_DELETED);
     }
 
     /**
@@ -54,15 +54,10 @@ public class DeletedDataDumpExecutorService extends AbstractDataDumpExecutorServ
     private boolean isDeletedOnlyOrphanInstitution(DataDumpRequest dataDumpRequest){
         String requestingInstitution = dataDumpRequest.getRequestingInstitutionCode();
         List<String> deleteOnlyOrphanInstitutionList = getInstitutionList(deletedOnlyOrphanInstitution);
-        if(deleteOnlyOrphanInstitutionList.contains(requestingInstitution)){
-            return true;
-        } else {
-            return false;
-        }
+        return deleteOnlyOrphanInstitutionList.contains(requestingInstitution);
     }
 
     private List<String> getInstitutionList(String institutionString){
-        List<String> institutionList = Arrays.asList(institutionString.split("\\s*,\\s*"));
-        return institutionList;
+        return Arrays.asList(institutionString.split("\\s*,\\s*"));
     }
 }

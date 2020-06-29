@@ -25,7 +25,7 @@ public class FullDataDumpExecutorService extends AbstractDataDumpExecutorService
      */
     @Override
     public boolean isInterested(String fetchType) {
-        return fetchType.equals(fetchTypeFull) ? true:false;
+        return fetchType.equals(fetchTypeFull);
     }
 
     /**

@@ -61,7 +61,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
      */
     @Override
     public boolean isInterested(String formatType) {
-        return formatType.equals(RecapConstants.DATADUMP_XML_FORMAT_MARC) ? true : false;
+        return formatType.equals(RecapConstants.DATADUMP_XML_FORMAT_MARC);
     }
 
 
@@ -231,8 +231,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
                     }
                     if (RecapConstants.MarcFields.DF_866.equals(dataField.getTag())) {
                         if(dataField.getSubfield('a')!=null && (dataField.getSubfield('a').getData()==null || "".equals(dataField.getSubfield('a').getData()))){
-                            continue;
-                        }else {
+                        } else {
                             addOrUpdateDatafield852Subfield0(dataField,holdingsEntity);
                             record.addVariableField(dataField);
                         }

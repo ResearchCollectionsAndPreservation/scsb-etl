@@ -62,22 +62,13 @@ public class DataDumpEmailService {
             producer.sendBodyAndHeader(RecapConstants.EMAIL_Q, emailPayLoad, RecapConstants.DATADUMP_EMAILBODY_FOR, emailBodyFor);
         }
         else if(fetchType.equals(RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL)){
-            EmailPayLoad emailPayLoad = new EmailPayLoad();
-            emailPayLoad.setLocation(getLocation(transmissionType, dateTimeStringForFolder));
-            emailPayLoad.setTo(toEmailAddress);
-            emailPayLoad.setCc(mailForCc(requestingInstitutionCode));
-            emailPayLoad.setSubject(RecapConstants.SUBJECT_INCREMENTAL_DATA_DUMP);
-            producer.sendBodyAndHeader(RecapConstants.EMAIL_Q, emailPayLoad, RecapConstants.DATADUMP_EMAILBODY_FOR, emailBodyFor.equals(RecapConstants.DATADUMP_NO_DATA_AVAILABLE)?emailBodyFor:RecapConstants.EMAIL_INCREMENTAL_DATA_DUMP);
+            setEmailForDatadump(transmissionType, emailBodyFor, dateTimeStringForFolder, toEmailAddress,
+                    requestingInstitutionCode, RecapConstants.SUBJECT_INCREMENTAL_DATA_DUMP, RecapConstants.EMAIL_INCREMENTAL_DATA_DUMP);
         }
         else if(fetchType.equals(RecapConstants.DATADUMP_DELETED_JSON_FORMAT)){
-            EmailPayLoad emailPayLoad = new EmailPayLoad();
-            emailPayLoad.setLocation(getLocation(transmissionType, dateTimeStringForFolder));
-            emailPayLoad.setTo(toEmailAddress);
-            emailPayLoad.setCc(mailForCc(requestingInstitutionCode));
-            emailPayLoad.setSubject(RecapConstants.SUBJECT_DELETION_DATA_DUMP);
-            producer.sendBodyAndHeader(RecapConstants.EMAIL_Q, emailPayLoad, RecapConstants.DATADUMP_EMAILBODY_FOR, emailBodyFor.equals(RecapConstants.DATADUMP_NO_DATA_AVAILABLE)?emailBodyFor:RecapConstants.EMAIL_DELETION_DATA_DUMP);
+            setEmailForDatadump(transmissionType, emailBodyFor, dateTimeStringForFolder, toEmailAddress,
+                    requestingInstitutionCode, RecapConstants.SUBJECT_DELETION_DATA_DUMP, RecapConstants.EMAIL_DELETION_DATA_DUMP);
         }
-
     }
 
     private String mailForCc(String requestingInstitutionCode) {
@@ -119,4 +110,19 @@ public class DataDumpEmailService {
         }
     }
 
+    private void setEmailForDatadump(String transmissionType,String emailBodyFor, String dateTimeStringForFolder, String toEmailAddress,
+                                     String requestingInstitutionCode, String subject, String emailBody)
+
+    {
+        EmailPayLoad emailPayLoad = new EmailPayLoad();
+        emailPayLoad.setLocation(getLocation(transmissionType, dateTimeStringForFolder));
+        emailPayLoad.setTo(toEmailAddress);
+        emailPayLoad.setCc(mailForCc(requestingInstitutionCode));
+        emailPayLoad.setSubject(subject);
+        producer.sendBodyAndHeader(RecapConstants.EMAIL_Q, emailPayLoad, RecapConstants.DATADUMP_EMAILBODY_FOR, emailBodyFor.equals(RecapConstants.DATADUMP_NO_DATA_AVAILABLE)?emailBodyFor:emailBody);
+
+    }
+
 }
+
+

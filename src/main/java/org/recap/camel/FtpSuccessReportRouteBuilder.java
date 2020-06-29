@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class FtpSuccessReportRouteBuilder {
-    private static final Logger logger = LoggerFactory.getLogger(FtpFailureReportRouteBuilder.class);
+    private static final Logger logger = LoggerFactory.getLogger(FtpSuccessReportRouteBuilder.class);
 
     /**
      * Instantiates a new Ftp success report route builder.

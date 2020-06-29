@@ -77,9 +77,6 @@ public class BibliographicPK implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         BibliographicPK bibliographicPK  = (BibliographicPK) obj;
-        if(bibliographicPK.getOwningInstitutionId().equals(owningInstitutionId) && bibliographicPK.getOwningInstitutionBibId().equals(owningInstitutionBibId)){
-            return true;
-        }
-        return false;
+        return (bibliographicPK.getOwningInstitutionId().equals(owningInstitutionId) && bibliographicPK.getOwningInstitutionBibId().equals(owningInstitutionBibId));
     }
 }

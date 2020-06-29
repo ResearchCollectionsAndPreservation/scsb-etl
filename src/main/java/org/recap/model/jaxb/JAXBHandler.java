@@ -1,6 +1,6 @@
 package org.recap.model.jaxb;
 
-import org.recap.RecapConstants;
+import org.recap.RecapCommonConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +53,7 @@ public class JAXBHandler {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(object, stringWriter);
         } catch (JAXBException e) {
-            logger.error(RecapConstants.ERROR,e);
+            logger.error(RecapCommonConstants.LOG_ERROR,e);
         }
         return stringWriter.toString();
     }
