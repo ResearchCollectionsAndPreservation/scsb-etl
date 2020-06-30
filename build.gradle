@@ -1,6 +1,7 @@
 buildscript {
     ext {
-        springBootVersion = '2.3.0.RELEASE'
+        springBootVersion = '2.3.1.RELEASE'
+		set('springCloudVersion', "Hoxton.SR5")
     }
     repositories {
         mavenCentral()
@@ -23,7 +24,7 @@ buildscript {
 
 plugins {
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-    id 'org.springframework.boot' version '2.3.0.RELEASE'
+    id 'org.springframework.boot' version '2.3.1.RELEASE'
     id "org.sonarqube" version "2.8"
 }
 
@@ -113,11 +114,23 @@ dependencies {
     
     implementation 'io.micrometer:micrometer-registry-prometheus'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+	implementation 'org.springframework.cloud:spring-cloud-starter-zipkin'
+	implementation 'org.springframework.amqp:spring-rabbit'
+	implementation 'net.logstash.logback:logstash-logback-encoder:6.1'
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+ 
+ 	compile group: 'javax.validation', name: 'validation-api', version: '2.0.0.Final'
 }
 
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
 
 eclipse {
     classpath {
@@ -146,4 +159,8 @@ task scsbEtlJavadocs(type: Javadoc) {
     options.addStringOption('Xdoclint:none', '-quiet')
     String home = System.getProperty("user.home");
     destinationDir=new File(home+"/scsb-javadocs/scsb-etl");
+}
+
+bootJar {
+	layered()
 }
