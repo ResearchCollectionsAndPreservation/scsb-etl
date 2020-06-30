@@ -374,8 +374,8 @@ public class BibliographicEntityUT extends BaseTestCase {
 
     }
 
-    @Ignore
-    @Test
+   // @Ignore
+   // @Test
     public void duplicateBibsWithDifferentItems() throws Exception {
         Random random = new Random();
         BibliographicEntity bibliographicEntity1 = new BibliographicEntity();

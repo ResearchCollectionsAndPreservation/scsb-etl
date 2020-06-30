@@ -2,10 +2,14 @@ package org.recap.service.transmission.datadump;
 
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
+import org.recap.model.export.DataDumpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -25,7 +27,7 @@ import static org.junit.Assert.assertNotNull;
 @Ignore
 public class DataDumpFtpTransmissionServiceUT extends BaseTestCase {
 
-    private static final Logger logger = LoggerFactory.getLogger(DataDumpFtpTransmissionServiceUT.class);
+    /*private static final Logger logger = LoggerFactory.getLogger(DataDumpFtpTransmissionServiceUT.class);
 
     @Autowired
     private ProducerTemplate producer;
@@ -45,8 +47,8 @@ public class DataDumpFtpTransmissionServiceUT extends BaseTestCase {
     @Value("${ftp.datadump.remote.server}")
     private String ftpDataDumpRemoteServer;
 
-    @Autowired
-    private DataDumpFtpTransmissionService dataDumpFtpTransmissionService;
+    @Spy
+    DataDumpFtpTransmissionService dataDumpFtpTransmissionService;
 
     private String requestingInstitutionCode = "NYPL";
 
@@ -55,42 +57,70 @@ public class DataDumpFtpTransmissionServiceUT extends BaseTestCase {
     private String xmlString = "<marcxml:collection xmlns:marcxml=\"http://www.loc.gov/MARC21/slim\">\n" +
             "  <marcxml:record></marcxml:record>\n" +
             "</marcxml:collection>";
+
+    @Before
+    public void beforeTest() {
+        dataDumpFtpTransmissionService = Mockito.spy(DataDumpFtpTransmissionService.class);
+    }
+
     @Test
-    public void transmitFtpDataDump() throws Exception {
+    public void testMethod() throws Exception {
         dateTimeString = getDateTimeString();
-        producer.sendBodyAndHeader(RecapConstants.DATADUMP_FILE_SYSTEM_Q,  xmlString, "routeMap", getRouteMap());
+        producer.sendBodyAndHeader(RecapConstants.DATADUMP_FILE_SYSTEM_Q, xmlString, "routeMap", getRouteMap());
         dataDumpFtpTransmissionService.transmitDataDump(getRouteMap());
         String dateTimeString = getDateTimeString();
-        String ftpFileName = RecapConstants.DATA_DUMP_FILE_NAME+ requestingInstitutionCode + RecapConstants.ZIP_FILE_FORMAT;
-        logger.info("ftpFileName---->"+ftpFileName);
-        ftpDataDumpRemoteServer = ftpDataDumpRemoteServer+ File.separator+ requestingInstitutionCode +File.separator+dateTimeString;
-        System.out.println("ftpDataDumpRemoteServer--->"+ftpDataDumpRemoteServer);
+        String ftpFileName = RecapConstants.DATA_DUMP_FILE_NAME + requestingInstitutionCode + RecapConstants.ZIP_FILE_FORMAT;
+        logger.info("ftpFileName---->" + ftpFileName);
+        ftpDataDumpRemoteServer = ftpDataDumpRemoteServer + File.separator + requestingInstitutionCode + File.separator + dateTimeString;
+        System.out.println("ftpDataDumpRemoteServer--->" + ftpDataDumpRemoteServer);
         camelContext.addRoutes(new RouteBuilder() {
             @Override
             public void configure() throws Exception {
                 from("seda:testDataDumpFtp")
-                        .pollEnrich("sftp://" +ftpUserName + "@" + ftpDataDumpRemoteServer + "?privateKeyFile="+ ftpPrivateKey + "&knownHostsFile=" + ftpKnownHost + "&fileName="+ftpFileName);
+                        .pollEnrich("sftp://" + ftpUserName + "@" + ftpDataDumpRemoteServer + "?privateKeyFile=" + ftpPrivateKey + "&knownHostsFile=" + ftpKnownHost + "&fileName=" + ftpFileName);
             }
         });
         String response = producer.requestBody("seda:testDataDumpFtp", "", String.class);
         Thread.sleep(1000);
         assertNotNull(response);
     }
-
-    public Map<String,String> getRouteMap(){
-        Map<String,String> routeMap = new HashMap<>();
-        String fileName = RecapConstants.DATA_DUMP_FILE_NAME+ requestingInstitutionCode;
-        routeMap.put(RecapConstants.FILENAME,fileName);
+    private Map<String, String> getRouteMap() {
+        Map<String, String> routeMap = new HashMap<>();
+        String fileName = RecapConstants.DATA_DUMP_FILE_NAME + requestingInstitutionCode;
+        routeMap.put(RecapConstants.FILENAME, fileName);
         routeMap.put(RecapConstants.DATETIME_FOLDER, dateTimeString);
         routeMap.put(RecapConstants.REQUESTING_INST_CODE, requestingInstitutionCode);
         routeMap.put(RecapConstants.FILE_FORMAT, RecapConstants.XML_FILE_FORMAT);
         return routeMap;
-    }
+    }*/
 
-    private String getDateTimeString(){
+    private String getDateTimeString() {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat(RecapConstants.DATE_FORMAT_DDMMMYYYYHHMM);
         return sdf.format(date);
     }
-
+    @Spy
+    DataDumpFtpTransmissionService dataDumpFtpTransmissionService;
+    @Before
+    public void beforeTest() {
+        dataDumpFtpTransmissionService = Mockito.spy(DataDumpFtpTransmissionService.class);
+    }
+    @Test
+    public void testIsInterested() {
+        DataDumpRequest dataDumpRequest = new DataDumpRequest();
+        dataDumpRequest.setFetchType("0");
+        dataDumpRequest.setRequestingInstitutionCode("NYPL");
+        List<Integer> cgIds = new ArrayList<>();
+        cgIds.add(1);
+        cgIds.add(2);
+        dataDumpRequest.setCollectionGroupIds(cgIds);
+        List<String> institutionCodes = new ArrayList<>();
+        institutionCodes.add("CUL");
+        institutionCodes.add("NYPL");
+        dataDumpRequest.setInstitutionCodes(institutionCodes);
+        dataDumpRequest.setTransmissionType("2");
+        dataDumpRequest.setOutputFileFormat(RecapConstants.XML_FILE_FORMAT);
+        dataDumpRequest.setDateTimeString(getDateTimeString());
+        dataDumpFtpTransmissionService.isInterested(dataDumpRequest);
+    }
 }

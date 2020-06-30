@@ -58,7 +58,7 @@ public class SCSBRecordFormatActiveMQConsumer extends CommonReportGenerator {
      * @throws Exception the exception
      */
     public void processRecords(Exchange exchange) throws Exception {
-        FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
+
 
         List<BibRecord> records = new ArrayList<>();
 
@@ -110,6 +110,7 @@ public class SCSBRecordFormatActiveMQConsumer extends CommonReportGenerator {
         }
         String batchHeaders = (String) exchange.getIn().getHeader(RecapConstants.BATCH_HEADERS);
         String requestId = getDataExportHeaderUtil().getValueFor(batchHeaders, "requestId");
+        FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
         processFailures(failures, batchHeaders, requestId, fluentProducerTemplate);
 
         long endTime = System.currentTimeMillis();
@@ -129,6 +130,7 @@ public class SCSBRecordFormatActiveMQConsumer extends CommonReportGenerator {
 
     /**
      * Process the failure records for bib records export.
+     * @param exchange
      * @param failures
      * @param batchHeaders
      * @param requestId

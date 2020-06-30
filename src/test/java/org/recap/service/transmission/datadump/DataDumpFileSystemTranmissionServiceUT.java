@@ -42,7 +42,7 @@ public class DataDumpFileSystemTranmissionServiceUT extends BaseTestCase {
     private String xmlString = "<marcxml:collection xmlns:marcxml=\"http://www.loc.gov/MARC21/slim\">\n" +
             "  <marcxml:record></marcxml:record>\n" +
             "</marcxml:collection>";
-    @Test
+   // @Test
     public void transmitFileSystemDataDump() throws Exception {
         dateTimeString = getDateTimeString();
         producer.sendBodyAndHeader(RecapConstants.DATADUMP_FILE_SYSTEM_Q,  xmlString, "routeMap", getRouteMap());

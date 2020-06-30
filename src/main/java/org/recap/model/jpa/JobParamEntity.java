@@ -23,7 +23,7 @@ import java.util.List;
 @Setter
 public class JobParamEntity extends AbstractEntity<Integer> {
 
-    @Column(name = "JOB_NAME")
+    @Column(name = "")
     private String jobName;
 
     @OneToMany(cascade = CascadeType.ALL)
