@@ -1,7 +1,0 @@
-Files containing bibliographic records of ${header.emailPayLoad.institutions} have been exported successfully to the ${header.emailPayLoad.location}.
-
-Total count of bibliographic records exported: ${header.emailPayLoad.count}
-
-Total count of item records exported: ${header.emailPayLoad.itemCount}
-
-Total count of failed bibliographic records: ${header.emailPayLoad.failedCount}
