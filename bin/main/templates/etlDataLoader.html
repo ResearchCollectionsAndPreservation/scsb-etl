@@ -1,0 +1,298 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>SCSB ETL</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" th:href="@{../lib/Bootstrap/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{../css/datepicker.css}"/>
+    <script type="text/javascript" th:src="@{../lib/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{../lib/Bootstrap/js/bootstrap.js}"></script>
+    <script th:src="@{../js/bootstrap-datepicker.js}"></script>
+    <script type="text/javascript" th:src="@{../js/etlDataLoader.js}"></script>
+    <div class="col-md-12" style="text-align:right;font-weight:bold">
+        <div th:replace="recapHeader :: #recapPageHeaderId"></div>
+    </div>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h1 align="center">SCSB ETL</h1>
+    </div>
+
+    <ul class="nav nav-tabs nav-justified">
+        <li class="active"><a data-toggle="tab" href="#etl">ETL</a></li>
+        <li><a data-toggle="tab" href="#uploadFiles">Upload Files</a></li>
+        <li><a data-toggle="tab" href="#reports">Reports</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="etl" class="tab-pane fade in active">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div id="bulkIngestingDiv">
+                            <br/><br/>
+                            <div class="container">
+                                <!-- Horizonatal Form -->
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <div th:fragment="bulkingest-form" xmlns:th="http://www.thymeleaf.org" th:remove="tag">
+                                            <form id="bulkingest-form" name="bulkingest-form" class="form-horizontal" action="#"
+                                                  th:action="@{/etlDataLoader/bulkIngest}"
+                                                  th:object="${etlLoadRequest}" method="post">
+
+                                                <fieldset>
+                                                    <div class="form-group">
+                                                        <label for="fileName" class="col-sm-4">File Name</label>
+
+                                                        <div class="col-sm-8">
+                                                            <input type="text" th:field="*{fileName}"
+                                                                   class="form-control bfh-number"
+                                                                   id="fileName"
+                                                                   placeholder="File Name"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="batchSize" class="col-sm-4">Batch Size</label>
+
+                                                        <div class="col-sm-4">
+                                                            <input type="text" th:field="*{batchSize}" class="form-control"
+                                                                   id="batchSize"
+                                                                   placeholder="Batch Size"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="institutionName" class="col-sm-4">Institution</label>
+
+                                                        <div class="col-sm-4">
+                                                            <select id="institutionName"
+                                                                    class="form-control"
+                                                                    style="width: 160px;"
+                                                                    th:field="*{owningInstitutionName}">
+                                                                <option value="PUL">PUL</option>
+                                                                <option value="CUL">CUL</option>
+                                                                <option value="NYPL">NYPL</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-sm-4">
+                                                            <label for="autoRefresh">Auto Refresh</label> &nbsp;&nbsp;
+                                                            <input type="checkbox" id="autoRefresh" name="autoRefresh"
+                                                                   value="autoRefresh" onclick="refresh();"/>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <button id="submit" type="submit" name="loadXMLRecords"
+                                                                    class="btn btn-info active  pull-right">ETL
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="bulkIngestStatus" class="col-sm-4">ETL Status</label>
+
+                                        <textarea class="form-control" id="bulkIngestStatus" rows="5"
+                                                  placeholder="ETL Bulk Ingesting Status" readonly="true"></textarea>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="uploadFiles" class="tab-pane fade">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div id="uploadFilesDiv">
+                            <br/><br/>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <div th:fragment="uploadFiles-form" xmlns:th="http://www.thymeleaf.org" th:remove="tag">
+                                            <form id="uploadFiles-form" name="uploadFiles-form" class="form-horizontal" action="#"
+                                                  th:action="@{/etlDataLoader/uploadFiles}"
+                                                  th:object="${etlLoadRequest}" method="post" enctype="multipart/form-data">
+
+                                                <fieldset>
+                                                    <div class="form-group">
+                                                        <label for="file" class="col-sm-4">Upload File</label>
+
+                                                        <div class="col-sm-8">
+                                                            <input type="file" th:field="*{file}"
+
+                                                                   id="file"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="userName" class="col-sm-4">Username</label>
+
+                                                        <div class="col-sm-4">
+                                                            <input type="text" th:field="*{userName}" class="form-control"
+                                                                   id="userName"
+                                                                   placeholder="Name of the user"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-sm-4">
+                                                            <button id="upload" type="submit" name="upload"
+                                                                    class="btn btn-info active  pull-right">Upload
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="reports" class="tab-pane fade">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div id="reportsDiv">
+                            <br/><br/>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <div th:fragment="reports-form" xmlns:th="http://www.thymeleaf.org" th:remove="tag">
+                                            <form id="reports-form" name="reports-form" class="form-horizontal" action="#"
+                                                  th:action="@{/etlDataLoader/reports}"
+                                                  th:object="${etlLoadRequest}" method="post" enctype="multipart/form-data">
+
+                                                <fieldset>
+                                                    <div class="form-group">
+                                                        <label for="reportFileName" class="col-sm-4">File Name</label>
+
+                                                        <div class="col-sm-8">
+                                                            <input type="text" th:field="*{reportFileName}"
+                                                                   class="form-control bfh-number"
+                                                                   id="reportFileName"
+                                                                   placeholder="File Name"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="reportType" class="col-sm-4">Operation Type</label>
+
+                                                        <div class="col-sm-4">
+                                                            <select id="operationType"
+                                                                    class="form-control"
+                                                                    style="width: 160px;"
+                                                                    th:field="*{operationType}">
+                                                                <option value="BatchExport">Batch Export</option>
+                                                                <option value="ETL">ETL</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="reportType" class="col-sm-4">Report Type</label>
+
+                                                        <div class="col-sm-4">
+                                                            <select id="reportType"
+                                                                    class="form-control"
+                                                                    style="width: 160px;"
+                                                                    th:field="*{reportType}">
+                                                                <option value="Success">Success</option>
+                                                                <option value="Failure">Failure</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="reportInstitutionName" class="col-sm-4">Institution</label>
+
+                                                        <div class="col-sm-4">
+                                                            <select id="reportInstitutionName"
+                                                                    class="form-control"
+                                                                    style="width: 160px;"
+                                                                    th:field="*{reportInstitutionName}">
+                                                                <option value="PUL">PUL</option>
+                                                                <option value="CUL">CUL</option>
+                                                                <option value="NYPL">NYPL</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="transmissionType" class="col-sm-4">Transmission Type</label>
+
+                                                        <div class="col-sm-4">
+                                                            <select id="transmissionType"
+                                                                    class="form-control"
+                                                                    style="width: 160px;"
+                                                                    th:field="*{transmissionType}">
+                                                                <option value="FileSystem">File System</option>
+                                                                <option value="FTP">FTP</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="dateFrom" class="col-sm-4">Date From</label>
+
+                                                        <div class="col-sm-4">
+                                                            <input type="text" th:field="*{dateFrom}"
+                                                                   class="form-control bfh-number"
+                                                                   id="dateFrom"
+                                                                   placeholder="Date From"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="dateTo" class="col-sm-4">Date To</label>
+
+                                                        <div class="col-sm-4">
+                                                            <input type="text" th:field="*{dateTo}"
+                                                                   class="form-control bfh-number"
+                                                                   id="dateTo"
+                                                                   placeholder="Date To"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-4"></label>
+                                                        <div class="col-sm-4">
+                                                            <button id="report" type="submit" name="report"
+                                                                    class="btn btn-info active">Generate Report
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                </fieldset>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+</body>
+</html>

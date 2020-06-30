@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by peris on 10/26/16.
@@ -48,75 +49,38 @@ public class DataDumpSolrServiceUT extends BaseTestCase {
     }
 
     @Test
-    public void fetchResultsFromSolrForDataDump() throws Exception {
-
-        SearchRecordsRequest searchRecordsRequest = new SearchRecordsRequest();
-        searchRecordsRequest.setOwningInstitutions(Arrays.asList("PUL","CUL"));
-        searchRecordsRequest.setCollectionGroupDesignations(Arrays.asList("Shared"));
-        searchRecordsRequest.setTotalRecordsCount("1");
-        searchRecordsRequest.setTotalPageCount(1);
-        searchRecordsRequest.setPageSize(10);
-
-        String url = solrClientUrl + "searchService/searchRecords";
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("api_key","recap");
-        HttpEntity<SearchRecordsRequest> requestEntity = new HttpEntity<>(searchRecordsRequest,headers);
-        List<Integer> itemIds = new ArrayList<>();
-        itemIds.add(311);
-        List<LinkedHashMap<String, Object>> mapList = new ArrayList<>();
-        LinkedHashMap<String,Object> linkedHashMap = new LinkedHashMap<>();
-        linkedHashMap.put("bibId",95);
-        linkedHashMap.put("itemIds",itemIds);
-        mapList.add(linkedHashMap);
-        Map<String,Object> map = new HashMap<>();
-        map.put("totalPageCount",1);
-        map.put("dataDumpSearchResults",mapList);
-        map.put("totalRecordsCount","2");
-
-        ResponseEntity<Map> responseEntity = new ResponseEntity<Map>(map, HttpStatus.OK);
-        Mockito.when(mockRestTemplate.postForEntity(url, requestEntity, Map.class)).thenReturn(responseEntity);
-        Mockito.when(mockedDataDumpSolrService.getRestTemplate()).thenReturn(mockRestTemplate);
-        Mockito.when(mockedDataDumpSolrService.getSolrClientUrl()).thenReturn(solrClientUrl);
-        Mockito.when(mockedDataDumpSolrService.getResults(searchRecordsRequest)).thenCallRealMethod();
-        Map results = mockedDataDumpSolrService.getResults(searchRecordsRequest);
-
-
-        Integer totalPageCount = (Integer) results.get("totalPageCount");
-        String totalBibsCount = (String)results.get("totalRecordsCount");
-        List dataDumpSearchResults = (List) results.get("dataDumpSearchResults");
-        assertNotNull(totalPageCount);
-        assertNotNull(totalBibsCount);
-        assertNotNull(dataDumpSearchResults);
-        System.out.println("Total Pages : " + totalPageCount);
-        System.out.println("Total Bibs : " + totalBibsCount);
+    public void testCase() {
+        DataDumpSolrService dataDumpSolrService = new DataDumpSolrService();
+        String data = dataDumpSolrService.getSolrClientUrl();
+        RestTemplate restTemplate = dataDumpSolrService.getRestTemplate();
+        assertTrue(true);
     }
 
     @Test
-    public void fetchResultsFromSolrForIncrementalDataDump() throws Exception{
+    public void fetchResultsFromSolrForDataDump() throws Exception {
+
         SearchRecordsRequest searchRecordsRequest = new SearchRecordsRequest();
-        searchRecordsRequest.setOwningInstitutions(Arrays.asList("PUL","CUL"));
+        searchRecordsRequest.setOwningInstitutions(Arrays.asList("PUL", "CUL"));
         searchRecordsRequest.setCollectionGroupDesignations(Arrays.asList("Shared"));
-        searchRecordsRequest.setFieldName("BibLastUpdatedDate");
         searchRecordsRequest.setTotalRecordsCount("1");
         searchRecordsRequest.setTotalPageCount(1);
-        searchRecordsRequest.setFieldValue(getFormattedString("2016-10-21 10:30"));
         searchRecordsRequest.setPageSize(10);
 
         String url = solrClientUrl + "searchService/searchRecords";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("api_key","recap");
-        HttpEntity<SearchRecordsRequest> requestEntity = new HttpEntity<>(searchRecordsRequest,headers);
+        headers.set("api_key", "recap");
+        HttpEntity<SearchRecordsRequest> requestEntity = new HttpEntity<>(searchRecordsRequest, headers);
         List<Integer> itemIds = new ArrayList<>();
         itemIds.add(311);
         List<LinkedHashMap<String, Object>> mapList = new ArrayList<>();
-        LinkedHashMap<String,Object> linkedHashMap = new LinkedHashMap<>();
-        linkedHashMap.put("bibId",95);
-        linkedHashMap.put("itemIds",itemIds);
+        LinkedHashMap<String, Object> linkedHashMap = new LinkedHashMap<>();
+        linkedHashMap.put("bibId", 95);
+        linkedHashMap.put("itemIds", itemIds);
         mapList.add(linkedHashMap);
-        Map<String,Object> map = new HashMap<>();
-        map.put("totalPageCount",1);
-        map.put("dataDumpSearchResults",mapList);
-        map.put("totalRecordsCount","2");
+        Map<String, Object> map = new HashMap<>();
+        map.put("totalPageCount", 1);
+        map.put("dataDumpSearchResults", mapList);
+        map.put("totalRecordsCount", "2");
 
         ResponseEntity<Map> responseEntity = new ResponseEntity<Map>(map, HttpStatus.OK);
         Mockito.when(mockRestTemplate.postForEntity(url, requestEntity, Map.class)).thenReturn(responseEntity);
@@ -124,6 +88,7 @@ public class DataDumpSolrServiceUT extends BaseTestCase {
         Mockito.when(mockedDataDumpSolrService.getSolrClientUrl()).thenReturn(solrClientUrl);
         Mockito.when(mockedDataDumpSolrService.getResults(searchRecordsRequest)).thenCallRealMethod();
         Map results = mockedDataDumpSolrService.getResults(searchRecordsRequest);
+
 
         Integer totalPageCount = (Integer) results.get("totalPageCount");
         String totalBibsCount = (String) results.get("totalRecordsCount");
@@ -135,8 +100,53 @@ public class DataDumpSolrServiceUT extends BaseTestCase {
         System.out.println("Total Bibs : " + totalBibsCount);
     }
 
-    public String getFormattedString(String dateStr){
-        String formattedString = dateStr.substring(0,10)+"T"+dateStr.substring(11,16)+":00Z TO NOW";
+    @Test
+    public void fetchResultsFromSolrForIncrementalDataDump() throws Exception {
+        SearchRecordsRequest searchRecordsRequest = new SearchRecordsRequest();
+        searchRecordsRequest.setOwningInstitutions(Arrays.asList("PUL", "CUL"));
+        searchRecordsRequest.setCollectionGroupDesignations(Arrays.asList("Shared"));
+        searchRecordsRequest.setFieldName("BibLastUpdatedDate");
+        searchRecordsRequest.setTotalRecordsCount("1");
+        searchRecordsRequest.setTotalPageCount(1);
+        searchRecordsRequest.setFieldValue(getFormattedString("2016-10-21 10:30"));
+        searchRecordsRequest.setPageSize(10);
+
+        String url = solrClientUrl + "searchService/searchRecords";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("api_key", "recap");
+        HttpEntity<SearchRecordsRequest> requestEntity = new HttpEntity<>(searchRecordsRequest, headers);
+        List<Integer> itemIds = new ArrayList<>();
+        itemIds.add(311);
+        List<LinkedHashMap<String, Object>> mapList = new ArrayList<>();
+        LinkedHashMap<String, Object> linkedHashMap = new LinkedHashMap<>();
+        linkedHashMap.put("bibId", 95);
+        linkedHashMap.put("itemIds", itemIds);
+        mapList.add(linkedHashMap);
+        Map<String, Object> map = new HashMap<>();
+        map.put("totalPageCount", 1);
+        map.put("dataDumpSearchResults", mapList);
+        map.put("totalRecordsCount", "2");
+
+        ResponseEntity<Map> responseEntity = new ResponseEntity<Map>(map, HttpStatus.OK);
+        Mockito.when(mockRestTemplate.postForEntity(url, requestEntity, Map.class)).thenReturn(responseEntity);
+        Mockito.when(mockedDataDumpSolrService.getRestTemplate()).thenReturn(mockRestTemplate);
+        Mockito.when(mockedDataDumpSolrService.getSolrClientUrl()).thenReturn(solrClientUrl);
+        Mockito.when(mockedDataDumpSolrService.getResults(searchRecordsRequest)).thenCallRealMethod();
+        Map results = mockedDataDumpSolrService.getResults(searchRecordsRequest);
+
+
+        Integer totalPageCount = (Integer) results.get("totalPageCount");
+        String totalBibsCount = (String) results.get("totalRecordsCount");
+        List dataDumpSearchResults = (List) results.get("dataDumpSearchResults");
+        assertNotNull(totalPageCount);
+        assertNotNull(totalBibsCount);
+        assertNotNull(dataDumpSearchResults);
+        System.out.println("Total Pages : " + totalPageCount);
+        System.out.println("Total Bibs : " + totalBibsCount);
+    }
+
+    public String getFormattedString(String dateStr) {
+        String formattedString = dateStr.substring(0, 10) + "T" + dateStr.substring(11, 16) + ":00Z TO NOW";
         return formattedString;
     }
 }

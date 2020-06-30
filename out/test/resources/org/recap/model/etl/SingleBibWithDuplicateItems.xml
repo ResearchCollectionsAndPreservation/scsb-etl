@@ -1,0 +1,249 @@
+<bibRecord>
+    <bib>
+        <owningInstitutionId>NYPL</owningInstitutionId>
+        <owningInstitutionBibId>.b100021074</owningInstitutionBibId>
+        <content>
+            <collection xmlns="http://www.loc.gov/MARC21/slim">
+                <record>
+                    <controlfield tag="001">NYPG002001550-B</controlfield>
+                    <controlfield tag="005">20001116192439.7</controlfield>
+                    <controlfield tag="008">850225s1881 er 000 0 est d</controlfield>
+                    <datafield ind1=" " ind2=" " tag="040">
+                        <subfield code="a">NN</subfield>
+                        <subfield code="c">NN</subfield>
+                        <subfield code="d">WaOLN</subfield>
+                    </datafield>
+                    <datafield ind1="0" ind2="0" tag="245">
+                        <subfield code="a">Wenemaa ajaloost.</subfield>
+                    </datafield>
+                    <datafield ind1=" " ind2=" " tag="260">
+                        <subfield code="a">Tartus:</subfield>
+                        <subfield code="b">H. Laakmann,</subfield>
+                        <subfield code="c">1881.</subfield>
+                    </datafield>
+                    <datafield ind1=" " ind2=" " tag="300">
+                        <subfield code="a">16 p. ;</subfield>
+                        <subfield code="c">13 cm</subfield>
+                    </datafield>
+                    <datafield ind1=" " ind2=" " tag="907">
+                        <subfield code="a">.b100021074</subfield>
+                        <subfield code="c">m</subfield>
+                        <subfield code="d">a</subfield>
+                        <subfield code="e">-</subfield>
+                        <subfield code="f">est</subfield>
+                        <subfield code="g">er</subfield>
+                        <subfield code="h">0</subfield>
+                        <subfield code="i">1</subfield>
+                    </datafield>
+                    <datafield ind1=" " ind2=" " tag="952">
+                        <subfield code="h">JFB 82-48 no. 4</subfield>
+                    </datafield>
+                    <leader>00549cam a2200181 a 4500</leader>
+                </record>
+            </collection>
+        </content>
+    </bib>
+    <holdings>
+        <holding>
+            <owningInstitutionHoldingsId/>
+            <content>
+                <collection xmlns="http://www.loc.gov/MARC21/slim">
+                    <record>
+                        <datafield ind1=" " ind2="8" tag="852">
+                            <subfield code="b">rc2ma</subfield>
+                            <subfield code="h">JFB 82-48 no. 1</subfield>
+                        </datafield>
+                        <datafield ind1=" " ind2=" " tag="866">
+                            <subfield code="a"/>
+                        </datafield>
+                    </record>
+                </collection>
+            </content>
+            <items>
+                <content>
+                    <collection xmlns="http://www.loc.gov/MARC21/slim">
+                        <record>
+                            <datafield ind1=" " ind2=" " tag="876">
+                                <subfield code="p">33433005146166</subfield>
+                                <subfield code="h">In Library Use</subfield>
+                                <subfield code="a">.i100014525</subfield>
+                                <subfield code="j">Available</subfield>
+                                <subfield code="t">1</subfield>
+                            </datafield>
+                            <datafield ind1=" " ind2=" " tag="900">
+                                <subfield code="a">Shared</subfield>
+                                <subfield code="b">NA</subfield>
+                            </datafield>
+                        </record>
+                    </collection>
+                </content>
+            </items>
+        </holding>
+    </holdings>
+</bibRecord>
+<bibRecord>
+<bib>
+    <owningInstitutionId>NYPL</owningInstitutionId>
+    <owningInstitutionBibId>.b100021086</owningInstitutionBibId>
+    <content>
+        <collection xmlns="http://www.loc.gov/MARC21/slim">
+            <record>
+                <controlfield tag="001">NYPG002001551-B</controlfield>
+                <controlfield tag="005">20001116192439.7</controlfield>
+                <controlfield tag="008">850225s1881 er 000 1 est d</controlfield>
+                <datafield ind1=" " ind2=" " tag="040">
+                    <subfield code="a">NN</subfield>
+                    <subfield code="c">NN</subfield>
+                    <subfield code="d">WaOLN</subfield>
+                </datafield>
+                <datafield ind1="0" ind2="0" tag="245">
+                    <subfield code="a">Rätsepp Kergepüks.</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="260">
+                    <subfield code="a">Tartus :</subfield>
+                    <subfield code="b">M. Laakmann,</subfield>
+                    <subfield code="c">1881.</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="300">
+                    <subfield code="a">16 p. ;</subfield>
+                    <subfield code="b">13 cm.</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="907">
+                    <subfield code="a">.b100021086</subfield>
+                    <subfield code="c">m</subfield>
+                    <subfield code="d">a</subfield>
+                    <subfield code="e">-</subfield>
+                    <subfield code="f">est</subfield>
+                    <subfield code="g">er</subfield>
+                    <subfield code="h">0</subfield>
+                    <subfield code="i">1</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="952">
+                    <subfield code="h">JFB 82-48 no. 3</subfield>
+                </datafield>
+                <leader>00554cam a2200181 a 4500</leader>
+            </record>
+        </collection>
+    </content>
+</bib>
+<holdings>
+    <holding>
+        <owningInstitutionHoldingsId/>
+        <content>
+            <collection xmlns="http://www.loc.gov/MARC21/slim">
+                <record>
+                    <datafield ind1=" " ind2="8" tag="852">
+                        <subfield code="b">rc2ma</subfield>
+                        <subfield code="h">JFB 82-48 no. 1</subfield>
+                    </datafield>
+                    <datafield ind1=" " ind2=" " tag="866">
+                        <subfield code="a"/>
+                    </datafield>
+                </record>
+            </collection>
+        </content>
+        <items>
+            <content>
+                <collection xmlns="http://www.loc.gov/MARC21/slim">
+                    <record>
+                        <datafield ind1=" " ind2=" " tag="876">
+                            <subfield code="p">33433005146166</subfield>
+                            <subfield code="h">In Library Use</subfield>
+                            <subfield code="a">.i100014525</subfield>
+                            <subfield code="j">Available</subfield>
+                            <subfield code="t">1</subfield>
+                        </datafield>
+                        <datafield ind1=" " ind2=" " tag="900">
+                            <subfield code="a">Shared</subfield>
+                            <subfield code="b">NA</subfield>
+                        </datafield>
+                    </record>
+                </collection>
+            </content>
+        </items>
+    </holding>
+</holdings>
+</bibRecord>
+<bibRecord>
+<bib>
+    <owningInstitutionId>NYPL</owningInstitutionId>
+    <owningInstitutionBibId>.b100021098</owningInstitutionBibId>
+    <content>
+        <collection xmlns="http://www.loc.gov/MARC21/slim">
+            <record>
+                <controlfield tag="001">NYPG002001552-B</controlfield>
+                <controlfield tag="005">20001116192439.7</controlfield>
+                <controlfield tag="008">850225s1881 er 000 1 est d</controlfield>
+                <datafield ind1=" " ind2=" " tag="040">
+                    <subfield code="a">NN</subfield>
+                    <subfield code="c">NN</subfield>
+                    <subfield code="d">WaOLN</subfield>
+                </datafield>
+                <datafield ind1="0" ind2="0" tag="245">
+                    <subfield code="a">Masajalg.</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="260">
+                    <subfield code="a">Tartus :</subfield>
+                    <subfield code="b">H. Laakmann,</subfield>
+                    <subfield code="c">1881.</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="300">
+                    <subfield code="a">16 p. ;</subfield>
+                    <subfield code="c">13 cm.</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="907">
+                    <subfield code="a">.b100021098</subfield>
+                    <subfield code="c">m</subfield>
+                    <subfield code="d">a</subfield>
+                    <subfield code="e">-</subfield>
+                    <subfield code="f">est</subfield>
+                    <subfield code="g">er</subfield>
+                    <subfield code="h">0</subfield>
+                    <subfield code="i">1</subfield>
+                </datafield>
+                <datafield ind1=" " ind2=" " tag="952">
+                    <subfield code="h">JFB 82-48 no. 1</subfield>
+                </datafield>
+                <leader>00543cam a2200181 a 4500</leader>
+            </record>
+        </collection>
+    </content>
+</bib>
+<holdings>
+    <holding>
+        <owningInstitutionHoldingsId/>
+        <content>
+            <collection xmlns="http://www.loc.gov/MARC21/slim">
+                <record>
+                    <datafield ind1=" " ind2="8" tag="852">
+                        <subfield code="b">rc2ma</subfield>
+                        <subfield code="h">JFB 82-48 no. 1</subfield>
+                    </datafield>
+                    <datafield ind1=" " ind2=" " tag="866">
+                        <subfield code="a"/>
+                    </datafield>
+                </record>
+            </collection>
+        </content>
+        <items>
+            <content>
+                <collection xmlns="http://www.loc.gov/MARC21/slim">
+                    <record>
+                        <datafield ind1=" " ind2=" " tag="876">
+                            <subfield code="p">33433005146166</subfield>
+                            <subfield code="h">In Library Use</subfield>
+                            <subfield code="a">.i100014525</subfield>
+                            <subfield code="j">Available</subfield>
+                            <subfield code="t">1</subfield>
+                        </datafield>
+                        <datafield ind1=" " ind2=" " tag="900">
+                            <subfield code="a">Shared</subfield>
+                            <subfield code="b">NA</subfield>
+                        </datafield>
+                    </record>
+                </collection>
+            </content>
+        </items>
+    </holding>
+</holdings>
+</bibRecord>

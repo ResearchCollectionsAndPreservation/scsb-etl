@@ -24,7 +24,7 @@ public class MultipleConsumers_UT extends BaseTestCase {
     String multipleConsumerQ2 = "seda:multipleConsumerQ2";
 
 
-    @Test
+    //@Test
     public void multipleConsumers() throws Exception {
         camelContext.addRoutes(new RouteBuilder() {
             @Override

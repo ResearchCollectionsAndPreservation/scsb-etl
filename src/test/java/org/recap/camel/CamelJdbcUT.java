@@ -99,8 +99,8 @@ public class CamelJdbcUT extends BaseTestCase {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Ignore
-    @Test
+    //@Ignore
+   // @Test
     public void parseXmlAndInsertIntoDb() throws Exception {
 
 

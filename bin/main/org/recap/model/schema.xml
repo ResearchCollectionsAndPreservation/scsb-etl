@@ -1,0 +1,72 @@
+<?xml version="1.0" standalone="yes"?>
+
+<bibRecord>
+    <bibRecord>
+        <owningInstitutionId>PUL</owningInstitutionId>
+        <content>
+            <collection>
+                <record>
+                    <leader>01233cas a2200373I  4500</leader>
+                    <controlfield tag="001">1</controlfield>
+                    <controlfield tag="005">20130405104912.0</controlfield>
+                    <controlfield tag="008">860123c19069999ii wr p      f0   a0eng d</controlfield>
+                    <datafield tag="245" ind1="0" ind2="0">
+                        <subfield code="a">Indian trade journal.</subfield>
+                    </datafield>
+                </record>
+            </collection>
+        </content>
+    </bibRecord>
+    <holdings>
+        <holding>
+            <owningInstitutionHoldingsId>1</owningInstitutionHoldingsId>
+            <content>
+                <collection>
+                    <record>
+                        <datafield tag="852" ind1="0" ind2="0">
+                            <subfield code="b">Location</subfield>
+                            <subfield code="h">Call Number</subfield>
+                        </datafield>
+                        <datafield tag="866" ind1="0" ind2="0">
+                            <subfield code="a">Textual holdings</subfield>
+                        </datafield>
+                    </record>
+                </collection>
+            </content>
+            <items>
+                <content>
+                    <collection>
+                        <record>
+                            <datafield tag="876" ind1="0" ind2="0">
+                                <subfield code="a">Local Item Id</subfield>
+                                <subfield code="h">Use Restrictions</subfield>
+                                <subfield code="j">Item status</subfield>
+                                <subfield code="p">Item Barcode</subfield>
+                                <subfield code="t">Copy Number</subfield>
+                                <subfield code="3">Volume/Part/Year</subfield>
+                            </datafield>
+
+                            <datafield tag="900" ind1="0" ind2="0">
+                                <subfield code="a">Open/Shared/Private</subfield>
+                            </datafield>
+                        </record>
+                        <record>
+                            <datafield tag="876" ind1="0" ind2="0">
+                                <subfield code="a">Local Item Id</subfield>
+                                <subfield code="h">Use Restrictions</subfield>
+                                <subfield code="j">Item status</subfield>
+                                <subfield code="p">Item Barcode</subfield>
+                                <subfield code="t">Copy Number</subfield>
+                                <subfield code="3">Volume/Part/Year</subfield>
+                            </datafield>
+                            <datafield tag="900" ind1="0" ind2="0">
+                                <subfield code="a">Open/Shared/Private</subfield>
+                                <subfield code="b">Customer Code</subfield>
+                            </datafield>
+                        </record>
+                    </collection>
+                </content>
+            </items>
+        </holding>
+    </holdings>
+</bibRecord>

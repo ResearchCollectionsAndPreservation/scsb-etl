@@ -33,7 +33,7 @@ public class DataDumpSuccessReport implements Serializable{
     @DataField(pos = 9, columnName = "No of Bibs Exported")
     private String noOfBibsExported;
     @DataField(pos = 10, columnName = "No of Items Exported")
-    private String exportedItemCount;
+    private String RecapConstants;
 
     private String fileName;
     private String reportType;
