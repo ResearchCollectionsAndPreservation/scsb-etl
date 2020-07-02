@@ -6,8 +6,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.ReCAPCSVSuccessRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Created by angelind on 18/8/16.

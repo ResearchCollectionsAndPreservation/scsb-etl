@@ -2,7 +2,6 @@ package org.recap.util;
 
 import org.junit.Test;
 import org.recap.BaseTestCase;
-import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 
 import java.text.DateFormat;
@@ -10,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static junit.framework.TestCase.*;
+import static junit.framework.TestCase.assertEquals;
 
 /**
  * Created by premkb on 20/8/16.

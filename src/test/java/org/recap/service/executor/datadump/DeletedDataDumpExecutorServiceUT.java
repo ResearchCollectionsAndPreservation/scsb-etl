@@ -5,14 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
 import org.recap.model.export.DataDumpRequest;
-import org.recap.model.search.SearchItemResultRow;
 import org.recap.model.search.SearchRecordsRequest;
-import org.recap.model.search.SearchResultRow;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +23,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.spy;
 
 /**

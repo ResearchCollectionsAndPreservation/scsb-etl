@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCase;
 import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
 import org.recap.camel.BibDataProcessor;
 import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jpa.BibliographicEntity;

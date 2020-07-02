@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.recap.BaseTestCase;
 import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
 import org.recap.model.jpa.ReportDataEntity;
 import org.recap.model.jpa.ReportEntity;
 import org.recap.repository.ReportDetailRepository;

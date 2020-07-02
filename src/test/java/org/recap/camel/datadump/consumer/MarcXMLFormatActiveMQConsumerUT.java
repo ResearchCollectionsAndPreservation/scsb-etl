@@ -8,10 +8,8 @@ import org.recap.service.formatter.datadump.MarcXmlFormatterService;
 import org.recap.util.datadump.DataExportHeaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class MarcXMLFormatActiveMQConsumerUT {
     MarcXmlFormatterService marcXmlFormatterService = new MarcXmlFormatterService();

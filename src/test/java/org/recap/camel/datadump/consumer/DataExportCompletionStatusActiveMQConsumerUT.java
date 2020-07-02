@@ -1,7 +1,6 @@
 package org.recap.camel.datadump.consumer;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertTrue;
 

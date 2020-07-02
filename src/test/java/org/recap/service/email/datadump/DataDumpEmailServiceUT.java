@@ -1,6 +1,5 @@
 package org.recap.service.email.datadump;
 
-import org.apache.camel.spi.AsEndpointUri;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
