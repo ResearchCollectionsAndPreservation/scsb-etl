@@ -2,7 +2,6 @@ package org.recap.camel;
 
 import org.apache.camel.ConsumerTemplate;
 import org.apache.camel.ProducerTemplate;
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.RecapCommonConstants;

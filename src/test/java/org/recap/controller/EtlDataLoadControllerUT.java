@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCase;
 import org.recap.RecapCommonConstants;
-import org.recap.RecapConstants;
 import org.recap.model.etl.EtlLoadRequest;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.ReportDataEntity;

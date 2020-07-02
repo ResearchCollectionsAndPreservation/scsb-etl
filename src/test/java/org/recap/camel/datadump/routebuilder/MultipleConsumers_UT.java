@@ -3,10 +3,8 @@ package org.recap.camel.datadump.routebuilder;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ConsumerTemplate;
 import org.apache.camel.FluentProducerTemplate;
-import org.apache.camel.ProducerTemplate;
-import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
-import org.junit.Test;
+import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
 import org.recap.BaseTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 

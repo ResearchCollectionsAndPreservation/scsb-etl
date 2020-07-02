@@ -1,22 +1,18 @@
 package org.recap.camel.datadump.consumer;
 
-import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.FluentProducerTemplate;
-import org.apache.camel.Message;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.recap.model.jpa.BibliographicEntity;
-import org.recap.service.formatter.datadump.DeletedJsonFormatterService;
 import org.recap.service.formatter.datadump.SCSBXmlFormatterService;
 import org.recap.util.datadump.DataExportHeaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class SCSBRecordFormatActiveMQConsumerUT {

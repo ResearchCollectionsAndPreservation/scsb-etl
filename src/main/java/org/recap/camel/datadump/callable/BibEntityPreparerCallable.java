@@ -1,7 +1,6 @@
 package org.recap.camel.datadump.callable;
 
 import org.recap.model.jpa.BibliographicEntity;
-import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.ItemEntity;
 
 import java.util.ArrayList;

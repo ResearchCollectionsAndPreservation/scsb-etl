@@ -2,7 +2,6 @@ package org.recap.service.transmission.datadump;
 
 import org.apache.camel.ProducerTemplate;
 import org.junit.Ignore;
-import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
 import org.slf4j.Logger;

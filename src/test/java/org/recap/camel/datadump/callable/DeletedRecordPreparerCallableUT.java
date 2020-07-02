@@ -5,9 +5,7 @@ import org.mockito.Mock;
 import org.recap.BaseTestCase;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.service.formatter.datadump.DeletedJsonFormatterService;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.MapKeyColumn;
 import java.util.List;
 import java.util.Map;
 

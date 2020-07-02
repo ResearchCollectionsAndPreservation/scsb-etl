@@ -1,6 +1,5 @@
 package org.recap.service.executor.datadump;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -8,15 +7,10 @@ import org.mockito.Mockito;
 import org.recap.model.export.DataDumpRequest;
 import org.recap.model.jpa.CollectionGroupEntity;
 import org.recap.repository.CollectionGroupDetailsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import static org.mockito.Mockito.when;
 
 public class AbstractDataDumpExecutorServiceUT {
     @Mock

@@ -1,6 +1,5 @@
 package org.recap.model.jpa;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.repository.BibliographicDetailsRepository;
