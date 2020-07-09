@@ -14,7 +14,6 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Main.class)
-@WebAppConfiguration
 @Transactional
 @Rollback()
 public class BaseTestCase {
