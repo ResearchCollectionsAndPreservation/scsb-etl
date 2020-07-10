@@ -4,10 +4,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.recap.BaseTestCase;
 import org.recap.spring.SwaggerAPIProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 public class RestHeaderServiceUT extends BaseTestCase {
 

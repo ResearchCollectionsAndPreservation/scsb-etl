@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class DataDumpFailureReportUtilUT extends BaseTestCase {
     @Autowired

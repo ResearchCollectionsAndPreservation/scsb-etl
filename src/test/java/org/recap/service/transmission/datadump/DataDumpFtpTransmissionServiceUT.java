@@ -1,7 +1,5 @@
 package org.recap.service.transmission.datadump;
 
-import org.apache.camel.ProducerTemplate;
-import org.apache.camel.builder.RouteBuilder;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -10,16 +8,11 @@ import org.mockito.Spy;
 import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
 import org.recap.model.export.DataDumpRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.*;
-
-import static org.junit.Assert.assertNotNull;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by premkb on 2/10/16.

@@ -7,12 +7,8 @@ import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.support.DefaultExchange;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.recap.BaseTestCase;
-import org.recap.camel.datadump.ZipFileProcessor;
 import org.recap.service.formatter.datadump.DeletedJsonFormatterService;
-
-import static org.mockito.Mockito.spy;
 
 public class DeletedJsonFormatActiveMQConsumerUT extends BaseTestCase {
 
