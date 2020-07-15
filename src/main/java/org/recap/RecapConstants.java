@@ -170,7 +170,7 @@ public class RecapConstants {
     public static final String FAILURE_CAUSE = "FailureCause";
     public static final String FAILED_BIBS = "FailedBibs";
     public static final String COLLECTION_GROUP_IDS = "collectionGroupIds";
-    public static final String FETCH_TYPE = "requestingInstitutionCode";
+    public static final String FETCH_TYPE = "fetchType";
     public static final String HEADER_FETCH_TYPE = "FetchType";
     public static final String EXPORT_DATA_DUMP_INCREMENTAL = "ExportDataDump_Incremental_";
     public static final String EXPORT_DATA_DUMP_DELETIONS = "ExportDataDump_Deletions_";
