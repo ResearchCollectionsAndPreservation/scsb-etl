@@ -220,7 +220,7 @@ public class RecapConstants {
     // Data export scheduler sequence job
     public static boolean EXPORT_SCHEDULER_CALL = false;
     public static String EXPORT_DATE_SCHEDULER = "";
-    public static String EXPORT_FETCH_TYPE_INSTITUTION = "DeletedRecordsExportPul";
+    public static String EXPORT_FETCH_TYPE_INSTITUTION = "";
 
     public static final String INCREMENTAL = "Incremental";
     public static final String DELETED = "Deleted";
