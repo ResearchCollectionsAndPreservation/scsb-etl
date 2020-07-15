@@ -8,16 +8,17 @@ import org.mockito.Spy;
 import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
 import org.recap.model.export.DataDumpRequest;
+import org.springframework.beans.factory.annotation.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by premkb on 2/10/16.
  */
-@Ignore
+
 public class DataDumpFtpTransmissionServiceUT extends BaseTestCase {
 
     /*private static final Logger logger = LoggerFactory.getLogger(DataDumpFtpTransmissionServiceUT.class);
@@ -85,21 +86,17 @@ public class DataDumpFtpTransmissionServiceUT extends BaseTestCase {
         routeMap.put(RecapConstants.REQUESTING_INST_CODE, requestingInstitutionCode);
         routeMap.put(RecapConstants.FILE_FORMAT, RecapConstants.XML_FILE_FORMAT);
         return routeMap;
-    }*/
+    }
 
-    private String getDateTimeString() {
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat(RecapConstants.DATE_FORMAT_DDMMMYYYYHHMM);
-        return sdf.format(date);
-    }
-    @Spy
+
+*/
+    String requestingInstitutionCode = "NYPL";
+    String dateTimeString = null;
+    @Autowired
     DataDumpFtpTransmissionService dataDumpFtpTransmissionService;
-    @Before
-    public void beforeTest() {
-        dataDumpFtpTransmissionService = Mockito.spy(DataDumpFtpTransmissionService.class);
-    }
+
     @Test
-    public void testIsInterested() {
+    public void testIsInterested() throws Exception {
         DataDumpRequest dataDumpRequest = new DataDumpRequest();
         dataDumpRequest.setFetchType("0");
         dataDumpRequest.setRequestingInstitutionCode("NYPL");
@@ -114,6 +111,30 @@ public class DataDumpFtpTransmissionServiceUT extends BaseTestCase {
         dataDumpRequest.setTransmissionType("2");
         dataDumpRequest.setOutputFileFormat(RecapConstants.XML_FILE_FORMAT);
         dataDumpRequest.setDateTimeString(getDateTimeString());
-        dataDumpFtpTransmissionService.isInterested(dataDumpRequest);
+        try {
+
+            dataDumpFtpTransmissionService.isInterested(dataDumpRequest);
+            dataDumpFtpTransmissionService.transmitDataDump(getRouteMap());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        assertTrue(true);
+    }
+
+    private String getDateTimeString() {
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat(RecapConstants.DATE_FORMAT_DDMMMYYYYHHMM);
+        return sdf.format(date);
+    }
+
+    private Map<String, String> getRouteMap() {
+        dateTimeString = getDateTimeString();
+        Map<String, String> routeMap = new HashMap<>();
+        String fileName = RecapConstants.DATA_DUMP_FILE_NAME + requestingInstitutionCode;
+        routeMap.put(RecapConstants.FILENAME, fileName);
+        routeMap.put(RecapConstants.DATETIME_FOLDER, dateTimeString);
+        routeMap.put(RecapConstants.REQUESTING_INST_CODE, requestingInstitutionCode);
+        routeMap.put(RecapConstants.FILE_FORMAT, RecapConstants.XML_FILE_FORMAT);
+        return routeMap;
     }
 }

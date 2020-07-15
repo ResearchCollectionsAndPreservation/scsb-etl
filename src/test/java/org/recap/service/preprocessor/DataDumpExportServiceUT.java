@@ -2,8 +2,7 @@ package org.recap.service.preprocessor;
 
 import org.apache.camel.ConsumerTemplate;
 import org.apache.camel.ProducerTemplate;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCase;
@@ -78,7 +77,6 @@ public class DataDumpExportServiceUT extends BaseTestCase {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
     }
-
     @Test
     public void teststartDataDumpProcess() {
         DataDumpRequest dataDumpRequest = new DataDumpRequest();

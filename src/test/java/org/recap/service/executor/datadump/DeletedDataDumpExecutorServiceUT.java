@@ -33,19 +33,8 @@ import static org.mockito.Mockito.spy;
 public class DeletedDataDumpExecutorServiceUT extends BaseTestCase {
     private static final Logger logger = LoggerFactory.getLogger(DeletedDataDumpExecutorServiceUT.class);
 
-    //DeletedDataDumpExecutorService deletedDataDumpExecutorService = new DeletedDataDumpExecutorService();
-
-    @Spy
-    DeletedDataDumpExecutorService mockedDeletedDataDumpExecutorService;
-
     @Autowired
-    BibliographicDetailsRepository bibliographicDetailsRepository;
-
-    @Mock
-    BibliographicDetailsRepository mockBibliographicDetailsRepository;
-
-    @Mock
-    AbstractDataDumpExecutorService abstractDataDumpExecutorService;
+    DeletedDataDumpExecutorService mockedDeletedDataDumpExecutorService;
 
     @Value("${ftp.userName}")
     String ftpUserName;
@@ -68,15 +57,14 @@ public class DeletedDataDumpExecutorServiceUT extends BaseTestCase {
     @Value("${datadump.batch.size}")
     private int batchSize;
 
-    @Autowired
-    ProducerTemplate producer;
-
     private String requestingInstitutionCode = "CUL";
 
+/*
     @Before
     public void setUp() throws Exception {
         mockedDeletedDataDumpExecutorService = spy(DeletedDataDumpExecutorService.class);
     }
+*/
 
     @Test
     public void getFullDumpForDeleteRecordFileSystem() throws Exception {
@@ -103,7 +91,6 @@ public class DeletedDataDumpExecutorServiceUT extends BaseTestCase {
 
         }
         assertNull(outputString);
-        //assertEquals(outputString, "Success");
     }
 
     @Test
@@ -225,7 +212,7 @@ public class DeletedDataDumpExecutorServiceUT extends BaseTestCase {
         try{
         mockedDeletedDataDumpExecutorService.populateSearchRequest(searchRecordsRequest, dataDumpRequest);
         } catch (Exception e) {
-
+        e.printStackTrace();
         }
         assertTrue(true);
     }

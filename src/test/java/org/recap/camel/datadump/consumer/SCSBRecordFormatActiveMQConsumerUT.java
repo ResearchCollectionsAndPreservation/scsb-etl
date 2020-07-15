@@ -1,14 +1,16 @@
 package org.recap.camel.datadump.consumer;
 
-import org.apache.camel.Exchange;
-import org.apache.camel.FluentProducerTemplate;
-import org.junit.Test;
-import org.mockito.Mock;
+import org.apache.camel.*;
+import org.apache.camel.impl.*;
+import org.apache.camel.support.*;
+import org.junit.*;
+import org.mockito.*;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.service.formatter.datadump.SCSBXmlFormatterService;
 import org.recap.util.datadump.DataExportHeaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 
 import static org.junit.Assert.assertNotNull;
@@ -21,7 +23,7 @@ public class SCSBRecordFormatActiveMQConsumerUT {
     @Autowired
     SCSBXmlFormatterService scsbXmlFormatterService;
 
-    SCSBRecordFormatActiveMQConsumer sCSBRecordFormatActiveMQConsumer = new SCSBRecordFormatActiveMQConsumer(scsbXmlFormatterService);
+    SCSBRecordFormatActiveMQConsumer sCSBRecordFormatActiveMQConsumer;
 
     @Autowired
     DataExportHeaderUtil dataExportHeaderUtil;
@@ -38,6 +40,11 @@ public class SCSBRecordFormatActiveMQConsumerUT {
     @Mock
     BibliographicEntity bibliographicEntity;
 
+    @Before
+    public void testSetup(){
+        scsbXmlFormatterService = Mockito.mock(SCSBXmlFormatterService.class);
+        sCSBRecordFormatActiveMQConsumer = new SCSBRecordFormatActiveMQConsumer(scsbXmlFormatterService);
+    }
     @Test
     public void testgetDataExportHeaderUtil() {
         sCSBRecordFormatActiveMQConsumer.getDataExportHeaderUtil();
@@ -52,9 +59,31 @@ public class SCSBRecordFormatActiveMQConsumerUT {
 
     @Test
     public void testprocessRecords() {
+        List<BibliographicEntity> bibliographicEntities = new ArrayList<>();
+        BibliographicEntity bibliographicEntity = new BibliographicEntity();
+        bibliographicEntity.setContent("bib content".getBytes());
+        bibliographicEntity.setOwningInstitutionId(1);
+        bibliographicEntity.setOwningInstitutionBibId("2");
+        bibliographicEntity.setCreatedDate(new Date());
+        bibliographicEntity.setCreatedBy("tst");
+        bibliographicEntity.setLastUpdatedDate(new Date());
+        bibliographicEntity.setLastUpdatedBy("tst");
+        bibliographicEntities.add(bibliographicEntity);
+
+        String dataHeader=";transmissionType#exportFormat";
+        CamelContext ctx = new DefaultCamelContext();
+        Exchange ex = new DefaultExchange(ctx);
+        Message in = ex.getIn();
+        ex.setMessage(in);
+        in.setBody(bibliographicEntities);
+        ex.setIn(in);
+        Map<String,Object> mapdata = new HashMap<>();
+        mapdata.put("batchHeaders",dataHeader);
+        in.setHeaders(mapdata);
         try {
-            sCSBRecordFormatActiveMQConsumer.processRecords(exchange);
+            sCSBRecordFormatActiveMQConsumer.processRecords(ex);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         assertTrue(true);
     }

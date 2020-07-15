@@ -7,13 +7,12 @@ import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.support.DefaultExchange;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.recap.model.jpa.BibliographicEntity;
+import org.recap.model.jpa.*;
 import org.recap.service.formatter.datadump.DeletedJsonFormatterService;
 import org.recap.util.datadump.DataExportHeaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 
 import static org.junit.Assert.assertNotNull;
@@ -32,6 +31,9 @@ public class DeletedRecordFormatActiveMQConsumerUT {
 
     @Mock
     ExecutorService executorService;
+
+    @Mock
+    BibliographicAbstractEntity bibliographicAbstractEntity;
 
     @Mock
     Exchange exchange;
@@ -62,11 +64,21 @@ public class DeletedRecordFormatActiveMQConsumerUT {
         CamelContext ctx = new DefaultCamelContext();
         Exchange ex = new DefaultExchange(ctx);
         Message in = ex.getIn();
-        in.setBody("CULKLALAL");
+        BibliographicEntity bibliographicEntity = new BibliographicEntity();
+        bibliographicEntity.setBibliographicId(100);
+        bibliographicEntity.setContent("bib content".getBytes());
+        bibliographicEntity.setOwningInstitutionId(1);
+        bibliographicEntity.setOwningInstitutionBibId("2");
+        bibliographicEntity.setCreatedDate(new Date());
+        bibliographicEntity.setCreatedBy("tst");
+        bibliographicEntity.setLastUpdatedDate(new Date());
+        bibliographicEntity.setLastUpdatedBy("tst");
+        in.setBody(bibliographicEntity);
         ex.setIn(in);
         try {
             deletedRecordFormatActiveMQConsumer.processRecords(ex);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         assertTrue(true);
     }

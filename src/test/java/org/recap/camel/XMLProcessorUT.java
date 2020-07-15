@@ -1,6 +1,9 @@
 package org.recap.camel;
 
-import org.apache.camel.CamelContext;
+import org.apache.camel.*;
+import org.apache.camel.impl.*;
+import org.apache.camel.processor.aggregate.*;
+import org.apache.camel.support.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -20,9 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -47,6 +48,8 @@ public class XMLProcessorUT extends BaseTestCase {
 
     @Autowired
     ReportDetailRepository reportDetailRepository;
+
+    XmlProcessor xmlProcessor;
 
     @Test
     public void process() throws Exception {
@@ -141,5 +144,25 @@ public class XMLProcessorUT extends BaseTestCase {
 
         Long countByXmlFileName = xmlRecordRepository.countByXmlFileName(fileName);
         assertEquals(new Long(1), Long.valueOf(countByXmlFileName));
+    }
+    @Test
+    public void testProcess() throws Exception {
+        xmlProcessor = new XmlProcessor(xmlRecordRepository);
+        String dataHeader="test";
+        CamelContext ctx = new DefaultCamelContext();
+        Exchange ex = new DefaultExchange(ctx);
+        UseOriginalAggregationStrategy useOriginalAggregationStrategy = new UseOriginalAggregationStrategy();
+        Map<String,Object> mapData= new HashMap<>();
+        mapData.put("Key",useOriginalAggregationStrategy);
+        ex.setProperty("CamelAggregationStrategy",mapData);
+        Message in = ex.getIn();
+        ex.setMessage(in);
+        in.setBody("<owningInstitutionId>CUL</owningInstitutionId>");
+        ex.setIn(in);
+        Map<String,Object> mapdata = new HashMap<>();
+        mapdata.put("CamelFileName",dataHeader);
+        in.setHeaders(mapdata);
+        xmlProcessor.process(ex);
+        assertTrue(true);
     }
 }
