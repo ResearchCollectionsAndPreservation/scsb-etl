@@ -371,7 +371,7 @@ public class BibliographicDetailsRepositoryUT extends BaseTestCase {
         List<String> institutionCodesCUL = new ArrayList<>();
         institutionCodesCUL.add("CUL");
         Long countCUL = bibliographicDetailsRepository.countRecordsForFullDump(cgIds,institutionCodesCUL);
-        assertEquals(new Long(1),countCUL);
+        assertEquals(new Long(3),countCUL);
 
         List<String> institutionCodesNYPL = new ArrayList<>();
         institutionCodesNYPL.add("NYPL");
