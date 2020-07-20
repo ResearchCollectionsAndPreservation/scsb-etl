@@ -42,51 +42,7 @@ import java.util.Map;
 public class SCSBXmlFormatterServiceUT extends BaseTestCase {
 
     private static final Logger logger = LoggerFactory.getLogger(SCSBXmlFormatterServiceUT.class);
-
-    @Autowired
-    BibDataProcessor bibDataProcessor;
-
-    @Autowired
-    ReportDetailRepository reportDetailRepository;
-
-    @Autowired
-    XmlFormatter xmlFormatter;
-
-    @Value("${etl.report.directory}")
-    private String reportDirectoryPath;
-    @Autowired
-    private ProducerTemplate producer;
-
-    @Mock
-    private Map itemStatusMap;
-
-    @Mock
-    private Map<String, Integer> institutionMap;
-
-    @Mock
-    private Map<String, Integer> collectionGroupMap;
-
-    @Autowired
-    BibliographicDetailsRepository bibliographicDetailsRepository;
-
-    @Value("${etl.dump.directory}")
-    private String dumpDirectoryPath;
-
-    @Autowired
-    DBReportUtil dbReportUtil;
-
-    @Autowired
-    SCSBXmlFormatterService scsbXmlFormatterService;
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
-
-    private String bibContent = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+    private final String bibContent = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
             "<collection>\n" +
             "    <record>\n" +
             "        <leader>00800cas a2200277 i 4500</leader>\n" +
@@ -157,8 +113,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCase {
             "        </datafield>\n" +
             "    </record>\n" +
             "</collection>\n";
-
-    private String holdingContent = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+    private final String holdingContent = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
             "<collection>\n" +
             "    <record>\n" +
             "        <datafield ind1=\"0\" ind2=\"1\" tag=\"852\">\n" +
@@ -170,20 +125,48 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCase {
             "        </datafield>\n" +
             "    </record>\n" +
             "</collection>\n";
+    @Autowired
+    BibDataProcessor bibDataProcessor;
+    @Autowired
+    ReportDetailRepository reportDetailRepository;
+    @Autowired
+    XmlFormatter xmlFormatter;
+    @Autowired
+    BibliographicDetailsRepository bibliographicDetailsRepository;
+    @Autowired
+    DBReportUtil dbReportUtil;
+    @Autowired
+    SCSBXmlFormatterService scsbXmlFormatterService;
+    @Value("${etl.report.directory}")
+    private String reportDirectoryPath;
+    @Autowired
+    private ProducerTemplate producer;
+    @Mock
+    private Map itemStatusMap;
+    @Mock
+    private Map<String, Integer> institutionMap;
+    @Mock
+    private Map<String, Integer> collectionGroupMap;
+    @Value("${etl.dump.directory}")
+    private String dumpDirectoryPath;
+    @PersistenceContext
+    private EntityManager entityManager;
 
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void verifySCSBXmlGeneration() throws Exception {
         BibliographicEntity bibliographicEntity = getBibliographicEntity();
         generateMatchinInfo();
         Map<String, Object> resultMap = scsbXmlFormatterService.prepareBibRecords(Arrays.asList(bibliographicEntity));
-        List<BibRecord> bibRecords = (List<BibRecord>)resultMap.get(RecapCommonConstants.SUCCESS);
-        String formattedOutput = scsbXmlFormatterService.getSCSBXmlForBibRecords(bibRecords);
-
-        System.out.println(xmlFormatter.prettyPrint(formattedOutput));
+        List<BibRecord> bibRecords = (List<BibRecord>) resultMap.get(RecapCommonConstants.SUCCESS);
+        scsbXmlFormatterService.getSCSBXmlForBibRecords(bibRecords);
     }
 
-    private void generateMatchinInfo(){
+    private void generateMatchinInfo() {
         ReportEntity reportEntity = new ReportEntity();
         reportEntity.setId(15);
         reportEntity.setFileName("OCLC,ISBN");

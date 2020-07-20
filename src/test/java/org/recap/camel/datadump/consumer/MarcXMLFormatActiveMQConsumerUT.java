@@ -1,90 +1,48 @@
 package org.recap.camel.datadump.consumer;
 
-import info.freelibrary.marc4j.impl.*;
-import org.apache.camel.*;
-import org.apache.camel.impl.*;
-import org.apache.camel.support.*;
+import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
+import org.apache.camel.Message;
+import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.camel.support.DefaultExchange;
+import org.junit.Before;
 import org.junit.Test;
-import org.marc4j.*;
+import org.marc4j.MarcReader;
+import org.marc4j.MarcXmlReader;
 import org.marc4j.marc.Record;
-import org.mockito.Mock;
-import org.recap.*;
-import org.recap.model.jpa.*;
+import org.recap.BaseTestCase;
+import org.recap.RecapCommonConstants;
+import org.recap.model.jpa.BibliographicEntity;
+import org.recap.model.jpa.CollectionGroupEntity;
+import org.recap.model.jpa.HoldingsEntity;
+import org.recap.model.jpa.InstitutionEntity;
+import org.recap.model.jpa.ItemEntity;
+import org.recap.model.jpa.ItemStatusEntity;
 import org.recap.service.formatter.datadump.MarcXmlFormatterService;
 import org.recap.util.datadump.DataExportHeaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class MarcXMLFormatActiveMQConsumerUT {
-    MarcXmlFormatterService marcXmlFormatterService = new MarcXmlFormatterService();
-    MarcXMLFormatActiveMQConsumer marcXMLFormatActiveMQConsumer = new MarcXMLFormatActiveMQConsumer(marcXmlFormatterService);
-
-    @Mock
-    Exchange exchange;
-
-    @Mock
-    Record record;
+public class MarcXMLFormatActiveMQConsumerUT extends BaseTestCase {
+    @Autowired
+    MarcXmlFormatterService marcXmlFormatterService;
+    MarcXMLFormatActiveMQConsumer marcXMLFormatActiveMQConsumer;
 
     @Autowired
     DataExportHeaderUtil dataExportHeaderUtil;
-
-    @Test
-    public void testprocessMarcXmlString() {
-        BibliographicEntity bibliographicEntity = null;
-        try {
-            bibliographicEntity = getBibliographicEntity();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Map<String, Object> successAndFailureFormattedList = marcXmlFormatterService.prepareMarcRecords(Arrays.asList(bibliographicEntity));
-        try {
-           String marcXmlString = marcXmlFormatterService.covertToMarcXmlString((List<Record>)successAndFailureFormattedList.get(RecapCommonConstants.SUCCESS));
-            List<Record> recordList = readMarcXml(marcXmlString);
-            String dataHeader=";requestId#1";
-            CamelContext ctx = new DefaultCamelContext();
-            Exchange ex = new DefaultExchange(ctx);
-            Message in = ex.getIn();
-            ex.setMessage(in);
-            in.setBody(recordList);
-            ex.setIn(in);
-            Map<String,Object> mapdata = new HashMap<>();
-            mapdata.put("batchHeaders",dataHeader);
-            in.setHeaders(mapdata);
-            marcXMLFormatActiveMQConsumer.processMarcXmlString(ex);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        assertTrue(true);
-    }
-    private List<Record> readMarcXml(String marcXmlString) {
-        List<Record> recordList = new ArrayList<>();
-        InputStream in = new ByteArrayInputStream(marcXmlString.getBytes());
-        MarcReader reader = new MarcXmlReader(in);
-        while (reader.hasNext()) {
-            Record record = reader.next();
-            recordList.add(record);
-        }
-        return recordList;
-    }
-    @Test
-    public void testsetDataExportHeaderUtil() {
-        marcXMLFormatActiveMQConsumer.setDataExportHeaderUtil(dataExportHeaderUtil);
-        assertTrue(true);
-    }
-    @Test
-    public void testgetDataExportHeaderUtil() {
-        marcXMLFormatActiveMQConsumer.getDataExportHeaderUtil();
-        assertNull(dataExportHeaderUtil);
-    }
-    private String bibContent = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+    private final String bibContent = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
             "<collection>\n" +
             "    <record>\n" +
             "        <leader>00800cas a2200277 i 4500</leader>\n" +
@@ -162,8 +120,7 @@ public class MarcXMLFormatActiveMQConsumerUT {
             "        </datafield>" +
             "    </record>\n" +
             "</collection>\n";
-
-    private String holdingContent = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+    private final String holdingContent = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
             "<collection>\n" +
             "    <record>\n" +
             "        <datafield ind1=\"0\" ind2=\"1\" tag=\"852\">\n" +
@@ -175,6 +132,60 @@ public class MarcXMLFormatActiveMQConsumerUT {
             "        </datafield>\n" +
             "    </record>\n" +
             "</collection>\n";
+
+    @Before
+    public void setUpBefore() {
+        marcXMLFormatActiveMQConsumer = new MarcXMLFormatActiveMQConsumer(marcXmlFormatterService);
+    }
+
+    @Test
+    public void testprocessMarcXmlString() {
+        BibliographicEntity bibliographicEntity = null;
+        try {
+            bibliographicEntity = getBibliographicEntity();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Map<String, Object> successAndFailureFormattedList = marcXmlFormatterService.prepareMarcRecords(Arrays.asList(bibliographicEntity));
+        try {
+            String marcXmlString = marcXmlFormatterService.covertToMarcXmlString((List<Record>) successAndFailureFormattedList.get(RecapCommonConstants.SUCCESS));
+            List<Record> recordList = readMarcXml(marcXmlString);
+            String dataHeader = ";requestId#1";
+            CamelContext ctx = new DefaultCamelContext();
+            Exchange ex = new DefaultExchange(ctx);
+            Message in = ex.getIn();
+            ex.setMessage(in);
+            in.setBody(recordList);
+            ex.setIn(in);
+            Map<String, Object> mapdata = new HashMap<>();
+            mapdata.put("batchHeaders", dataHeader);
+            in.setHeaders(mapdata);
+            marcXMLFormatActiveMQConsumer.processMarcXmlString(ex);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        assertTrue(true);
+    }
+
+    private List<Record> readMarcXml(String marcXmlString) {
+        List<Record> recordList = new ArrayList<>();
+        InputStream in = new ByteArrayInputStream(marcXmlString.getBytes());
+        MarcReader reader = new MarcXmlReader(in);
+        while (reader.hasNext()) {
+            Record record = reader.next();
+            recordList.add(record);
+        }
+        return recordList;
+    }
+
+    @Test
+    public void testsetDataExportHeaderUtil() {
+        marcXMLFormatActiveMQConsumer.setDataExportHeaderUtil(dataExportHeaderUtil);
+        assertTrue(true);
+    }
+
     private BibliographicEntity getBibliographicEntity() throws URISyntaxException, IOException {
         BibliographicEntity bibliographicEntity = new BibliographicEntity();
         bibliographicEntity.setBibliographicId(100);

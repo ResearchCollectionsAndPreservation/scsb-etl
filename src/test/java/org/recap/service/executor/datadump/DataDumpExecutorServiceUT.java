@@ -2,18 +2,16 @@ package org.recap.service.executor.datadump;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCase;
 import org.recap.model.export.DataDumpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 public class DataDumpExecutorServiceUT extends BaseTestCase {
     @Autowired
@@ -34,14 +32,15 @@ public class DataDumpExecutorServiceUT extends BaseTestCase {
         List<Integer> cgIds = new ArrayList<>();
         cgIds.add(1);
         cgIds.add(2);
-        LocalDate date = LocalDate.now();
         dataDumpRequest.setCollectionGroupIds(cgIds);
         String res = "test data";
         dataDumpRequest.setDate(new Date().toString());
         dataDumpRequest.setToDate(new Date().toString());
         try {
-                res = dataDumpExecutorService.generateDataDump(dataDumpRequest);
-        }catch(Exception e){e.printStackTrace();}
+            res = dataDumpExecutorService.generateDataDump(dataDumpRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         assertNotNull(res);
     }
 }

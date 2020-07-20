@@ -1,7 +1,5 @@
 package org.recap.camel;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ConsumerTemplate;
 import org.apache.camel.Exchange;
@@ -35,22 +33,18 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by pvsubrah on 6/24/16.
  */
-public class  JMSUT extends BaseTestCase {
-
-    @Autowired
-    private ProducerTemplate producer;
+public class JMSUT extends BaseTestCase {
 
     @Autowired
     ConsumerTemplate consumer;
-
     @Autowired
     CamelContext camelContext;
-
-    @Value("${etl.report.directory}")
-    private String reportDirectoryPath;
-
     @Autowired
     ReportDetailRepository reportDetailRepository;
+    @Autowired
+    private ProducerTemplate producer;
+    @Value("${etl.report.directory}")
+    private String reportDirectoryPath;
 
     @Test
     public void produceAndConsumeSEDA() throws Exception {
@@ -97,7 +91,7 @@ public class  JMSUT extends BaseTestCase {
         String fileName = FilenameUtils.removeExtension(reCAPCSVFailureRecord.getFileName()) + "-Failure-" + df.format(new Date());
         File file = new File(reportDirectoryPath + File.separator + fileName + ".csv");
         assertTrue(true);
-      //  String fileContents = Files.toString(file, Charsets.UTF_8);
+        //  String fileContents = Files.toString(file, Charsets.UTF_8);
       /*  assertNotNull(fileContents);
         assertTrue(fileContents.contains(failureReportReCAPCSVRecord.getOwningInstitution()));
         assertTrue(fileContents.contains(failureReportReCAPCSVRecord.getOwningInstitutionBibId()));
@@ -111,15 +105,6 @@ public class  JMSUT extends BaseTestCase {
         assertTrue(fileContents.contains(failureReportReCAPCSVRecord.getErrorDescription()));*/
         assertTrue(true);
     }
-
-   public class FileNameProcessor implements Processor {
-       @Override
-       public void process(Exchange exchange) throws Exception {
-           ReCAPCSVFailureRecord reCAPCSVFailureRecord = (ReCAPCSVFailureRecord) exchange.getIn().getBody();
-           String fileName = FilenameUtils.removeExtension(reCAPCSVFailureRecord.getFileName());
-           exchange.getIn().setHeader("reportFileName", fileName);
-       }
-   }
 
     @Test
     public void generateSuccessReport() throws Exception {
@@ -169,5 +154,14 @@ public class  JMSUT extends BaseTestCase {
         assertNotNull(byFileName);
         assertNotNull(byFileName.get(0));
 
+    }
+
+    public class FileNameProcessor implements Processor {
+        @Override
+        public void process(Exchange exchange) throws Exception {
+            ReCAPCSVFailureRecord reCAPCSVFailureRecord = (ReCAPCSVFailureRecord) exchange.getIn().getBody();
+            String fileName = FilenameUtils.removeExtension(reCAPCSVFailureRecord.getFileName());
+            exchange.getIn().setHeader("reportFileName", fileName);
+        }
     }
 }
