@@ -18,7 +18,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +81,12 @@ public class SCSBRecordFormatActiveMQConsumer extends CommonReportGenerator {
                 .map(future -> {
                     try {
                         return future.get();
-                    } catch (InterruptedException | ExecutionException e) {
+                    } catch (InterruptedException  e) {
+                        logger.error(RecapConstants.ERROR,e);
+                        Thread.currentThread().interrupt();
+                        throw new RuntimeException(e);
+                    }
+                    catch (ExecutionException e) {
                         logger.error(RecapConstants.ERROR,e);
                         throw new RuntimeException(e);
                     }
@@ -130,7 +134,6 @@ public class SCSBRecordFormatActiveMQConsumer extends CommonReportGenerator {
 
     /**
      * Process the failure records for bib records export.
-     * @param exchange
      * @param failures
      * @param batchHeaders
      * @param requestId
@@ -138,7 +141,7 @@ public class SCSBRecordFormatActiveMQConsumer extends CommonReportGenerator {
      */
     private void processFailures(List failures, String batchHeaders, String requestId, FluentProducerTemplate fluentProducerTemplate) {
         if (!CollectionUtils.isEmpty(failures)) {
-            DataExportHeaderUtil dataExportHeaderUtil = getDataExportHeaderUtil();
+            dataExportHeaderUtil = getDataExportHeaderUtil();
             Map values = processReport(batchHeaders, requestId, dataExportHeaderUtil);
             values.put(RecapConstants.NUM_RECORDS, String.valueOf(failures.size()));
             fluentProducerTemplate

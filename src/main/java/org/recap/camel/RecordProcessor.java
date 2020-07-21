@@ -86,7 +86,7 @@ public class RecordProcessor {
      * @param xmlRecordEntities the xml record entities
      */
     public void process(Page<XmlRecordEntity> xmlRecordEntities) {
-        logger.info("Processor: " + Thread.currentThread().getName());
+        logger.info("Processor: {}" , Thread.currentThread().getName());
 
         List<BibliographicEntity> bibliographicEntities = new ArrayList<>();
         List<ReportEntity> reportEntities = new ArrayList<>();
@@ -98,7 +98,10 @@ public class RecordProcessor {
             Object object = null;
             try {
                 object = future.get();
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (InterruptedException  e) {
+                Thread.currentThread().interrupt();
+                logger.error(RecapConstants.ERROR,e);
+            } catch  (ExecutionException e) {
                 logger.error(RecapConstants.ERROR,e);
             }
 
@@ -220,19 +223,20 @@ public class RecordProcessor {
         try {
             futures = getExecutorService().invokeAll(callables);
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             logger.error(RecapConstants.ERROR,e);
         }
-
-        futures
-                .stream()
-                .map(future -> {
-                    try {
-                        return future.get();
-                    } catch (Exception e) {
-                        throw new IllegalStateException(e);
-                    }
-                });
-
+        if(futures !=null) {
+            futures
+                    .stream()
+                    .map(future -> {
+                        try {
+                            return future.get();
+                        } catch (Exception e) {
+                            throw new IllegalStateException(e);
+                        }
+                    });
+        }
         return futures;
     }
 

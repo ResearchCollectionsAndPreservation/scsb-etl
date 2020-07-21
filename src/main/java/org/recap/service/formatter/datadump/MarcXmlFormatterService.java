@@ -76,9 +76,8 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
         List<Record> records = new ArrayList<>();
         List<String> errors = new ArrayList<>();
         int itemExportedCount = 0;
-        for (Iterator<BibliographicEntity> iterator = bibliographicEntities.iterator(); iterator.hasNext(); ) {
-            BibliographicEntity bibliographicEntity = iterator.next();
-            if(CollectionUtils.isNotEmpty(bibliographicEntity.getItemEntities())) {
+        for (BibliographicEntity bibliographicEntity : bibliographicEntities) {
+            if (CollectionUtils.isNotEmpty(bibliographicEntity.getItemEntities())) {
                 Map<String, Object> stringObjectMap = prepareMarcRecord(bibliographicEntity);
                 Record record = (Record) stringObjectMap.get(RecapCommonConstants.SUCCESS);
                 if (null != record) {
@@ -106,7 +105,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
      * @return the map
      */
     public Map<String, Object> prepareMarcRecord(BibliographicEntity bibliographicEntity) {
-        Record record = null;
+        Record record;
         Map results = new HashMap();
         try {
             record = getRecordFromContent(bibliographicEntity.getContent());
@@ -223,17 +222,18 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
         for (HoldingsEntity holdingsEntity : holdingsEntityList) {
             if (nonOrphanHoldingsIdList !=null && nonOrphanHoldingsIdList.contains(holdingsEntity.getHoldingsId())) {
                 holdingRecord = getRecordFromContent(holdingsEntity.getContent());
-                for (DataField dataField : holdingRecord.getDataFields()) {
-                    if (RecapConstants.MarcFields.DF_852.equals(dataField.getTag())) {
-                        addOrUpdateDatafield852Subfield0(dataField,holdingsEntity);
-                        update852bField(dataField, holdingsEntity);
-                        record.addVariableField(dataField);
-                    }
-                    if (RecapConstants.MarcFields.DF_866.equals(dataField.getTag())) {
-                        if(dataField.getSubfield('a')!=null && (dataField.getSubfield('a').getData()==null || "".equals(dataField.getSubfield('a').getData()))){
-                        } else {
-                            addOrUpdateDatafield852Subfield0(dataField,holdingsEntity);
+                if(holdingRecord != null) {
+                    for (DataField dataField : holdingRecord.getDataFields()) {
+                        if (RecapConstants.MarcFields.DF_852.equals(dataField.getTag())) {
+                            addOrUpdateDatafield852Subfield0(dataField, holdingsEntity);
+                            update852bField(dataField, holdingsEntity);
                             record.addVariableField(dataField);
+                        }
+                        if (RecapConstants.MarcFields.DF_866.equals(dataField.getTag())) {
+                            if(!(dataField.getSubfield('a') != null && (dataField.getSubfield('a').getData() == null || "".equals(dataField.getSubfield('a').getData())))) {
+                                addOrUpdateDatafield852Subfield0(dataField, holdingsEntity);
+                                record.addVariableField(dataField);
+                            }
                         }
                     }
                 }
@@ -288,12 +288,16 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
                 dataField.removeSubfield(subfield);
             }
         }
-        if (holdingEntity.getInstitutionEntity().getInstitutionCode().equals(RecapCommonConstants.PRINCETON)) {
-            partnerInfo = holdingPUL;
-        } else if (holdingEntity.getInstitutionEntity().getInstitutionCode().equals(RecapCommonConstants.COLUMBIA)) {
-            partnerInfo = holdingCUL;
-        } else if (holdingEntity.getInstitutionEntity().getInstitutionCode().equals(RecapCommonConstants.NYPL)) {
-            partnerInfo = holdingNYPL;
+        switch (holdingEntity.getInstitutionEntity().getInstitutionCode()) {
+            case RecapCommonConstants.PRINCETON:
+                partnerInfo = holdingPUL;
+                break;
+            case RecapCommonConstants.COLUMBIA:
+                partnerInfo = holdingCUL;
+                break;
+            case RecapCommonConstants.NYPL:
+                partnerInfo = holdingNYPL;
+                break;
         }
         Subfield subfield = factory.newSubfield('b', partnerInfo);
         dataField.addSubfield(subfield);

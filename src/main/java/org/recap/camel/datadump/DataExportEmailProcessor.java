@@ -183,15 +183,11 @@ public class DataExportEmailProcessor implements Processor {
      */
     private void writeFullDumpStatusToFile() throws IOException {
         File file = new File(dataDumpStatusFileName);
-        FileWriter fileWriter = new FileWriter(file, false);
-        try {
+        try (FileWriter fileWriter = new FileWriter(file, false)) {
             fileWriter.append(RecapConstants.COMPLETED);
             fileWriter.flush();
-            fileWriter.close();
         } catch (IOException e) {
-            logger.error(RecapConstants.EXCEPTION,e);
-        } finally {
-            fileWriter.close();
+            logger.error(RecapConstants.EXCEPTION, e);
         }
     }
 

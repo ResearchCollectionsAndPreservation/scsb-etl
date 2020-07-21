@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by rajeshbabuk on 22/6/16.
@@ -195,21 +196,13 @@ public class EtlDataLoadController {
                              Model model) {
         Calendar cal = Calendar.getInstance();
         Date dateFrom = etlLoadRequest.getDateFrom();
-        if(dateFrom != null) {
-            cal.setTime(dateFrom);
-        } else {
-            cal.setTime(new Date());
-        }
+        cal.setTime(Objects.requireNonNullElseGet(dateFrom, Date::new));
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         Date from = cal.getTime();
         Date dateTo = etlLoadRequest.getDateTo();
-        if(dateTo != null) {
-            cal.setTime(dateTo);
-        } else {
-            cal.setTime(new Date());
-        }
+        cal.setTime(Objects.requireNonNullElseGet(dateTo, Date::new));
         cal.set(Calendar.HOUR_OF_DAY, 23);
         cal.set(Calendar.MINUTE, 59);
         cal.set(Calendar.SECOND, 59);
