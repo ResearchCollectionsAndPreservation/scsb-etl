@@ -11,10 +11,10 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by hemalathas on 18/4/17.
  */
-public class SearchRecordsRequestUT extends BaseTestCase{
+public class SearchRecordsRequestUT extends BaseTestCase {
 
     @Test
-    public void testSearchRecordsRequest(){
+    public void testSearchRecordsRequest() {
         SearchRecordsRequest searchRecordsRequest = new SearchRecordsRequest();
         SearchResultRow searchResultRow = getSearchResultRow();
         SearchItemResultRow searchItemResultRow = getSearchItemResultRow();
@@ -85,11 +85,11 @@ public class SearchRecordsRequestUT extends BaseTestCase{
         assertNotNull(searchResultRow.isShowItems());
         assertNotNull(searchResultRow.getSearchItemResultRows());
         assertNotNull(searchResultRow.getSearchItemResultRows());
-
+        searchRecordsRequest.reset();
     }
 
 
-    public SearchResultRow getSearchResultRow(){
+    public SearchResultRow getSearchResultRow() {
         SearchResultRow searchResultRow = new SearchResultRow();
         searchResultRow.setBibId(1);
         searchResultRow.setTitle("test");
@@ -113,7 +113,7 @@ public class SearchRecordsRequestUT extends BaseTestCase{
     }
 
 
-    public SearchItemResultRow getSearchItemResultRow(){
+    public SearchItemResultRow getSearchItemResultRow() {
         SearchItemResultRow searchItemResultRow = new SearchItemResultRow();
         searchItemResultRow.setCallNumber("X");
         searchItemResultRow.setChronologyAndEnum("test");

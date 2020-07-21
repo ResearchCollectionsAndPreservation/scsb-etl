@@ -9,6 +9,7 @@ import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.ItemEntity;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -37,9 +38,17 @@ public class DeletedJsonFormatterServiceUT extends BaseTestCase{
 
     @Test
     public void getFormattedOutput() throws Exception {
+        ItemEntity itemEntity = new ItemEntity();
+        itemEntity.setBarcode("1234");
+        itemEntity.setItemId(1);
+        itemEntity.setCustomerCode("1234");
+        itemEntity.setCallNumber("1234");
+        itemEntity.setCallNumberType("land");
+        itemEntity.setItemAvailabilityStatusId(123);
         Map<String,Object> successAndFailureFormattedList = deletedJsonFormatterService.prepareDeletedRecords(getBibliographicEntityList());
         List<DeletedRecord> deletedRecordList = (List<DeletedRecord>)successAndFailureFormattedList.get(RecapCommonConstants.SUCCESS);
         String outputString = (String) deletedJsonFormatterService.getJsonForDeletedRecords(deletedRecordList);
+        ReflectionTestUtils.invokeMethod(deletedJsonFormatterService,"isChangedToPrivateCGD",itemEntity);
         assertNotNull(outputString);
     }
 

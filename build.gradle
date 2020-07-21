@@ -1,7 +1,7 @@
 buildscript {
     ext {
         springBootVersion = '2.3.1.RELEASE'
-		set('springCloudVersion', "Hoxton.SR5")
+        set('springCloudVersion', "Hoxton.SR5")
     }
     repositories {
         mavenCentral()
@@ -111,7 +111,7 @@ dependencies {
     implementation('io.springfox:springfox-swagger-ui:2.9.2')
     implementation('io.springfox:springfox-swagger2:2.9.2')
     implementation('org.codehaus.jettison:jettison:1.4.1')
-    
+
     implementation 'io.micrometer:micrometer-registry-prometheus'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -122,8 +122,9 @@ dependencies {
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
- 
- 	compile group: 'javax.validation', name: 'validation-api', version: '2.0.0.Final'
+    testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.7'
+    testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.7'
+    compile group: 'javax.validation', name: 'validation-api', version: '2.0.0.Final'
 }
 
 dependencyManagement {
@@ -157,10 +158,10 @@ task scsbEtlJavadocs(type: Javadoc) {
     source = sourceSets.main.java
     classpath = configurations.compile
     options.addStringOption('Xdoclint:none', '-quiet')
-    String home = System.getProperty("user.home");
-    destinationDir=new File(home+"/scsb-javadocs/scsb-etl");
+    String home = System.getProperty("user.home")
+    destinationDir = new File(home + "/scsb-javadocs/scsb-etl")
 }
 
 bootJar {
-	layered()
+    layered()
 }

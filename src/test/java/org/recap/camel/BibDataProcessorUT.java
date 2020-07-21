@@ -34,6 +34,7 @@ import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -80,11 +81,11 @@ public class BibDataProcessorUT extends BaseTestCase {
         bibliographicEntity.setContent("mock Content".getBytes());
         bibliographicEntity.setCreatedDate(new Date());
         bibliographicEntity.setCreatedBy("etl");
-        bibliographicEntity.setLastUpdatedBy("etl");
+        bibliographicEntity.setLastUpdatedBy("CUl");
         bibliographicEntity.setLastUpdatedDate(new Date());
         bibliographicEntity.setOwningInstitutionId(1);
         String owningInstitutionBibId = String.valueOf(random.nextInt());
-        bibliographicEntity.setOwningInstitutionBibId(owningInstitutionBibId);
+        bibliographicEntity.setOwningInstitutionBibId(null);
 
 
         HoldingsEntity holdingsEntity = new HoldingsEntity();
@@ -94,7 +95,7 @@ public class BibDataProcessorUT extends BaseTestCase {
         holdingsEntity.setLastUpdatedDate(new Date());
         holdingsEntity.setLastUpdatedBy("etl");
         holdingsEntity.setOwningInstitutionId(1);
-        holdingsEntity.setOwningInstitutionHoldingsId(String.valueOf(random.nextInt()));
+        holdingsEntity.setOwningInstitutionHoldingsId(null);
 
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setCallNumberType("0");
@@ -117,14 +118,18 @@ public class BibDataProcessorUT extends BaseTestCase {
         holdingsEntity.setItemEntities(Arrays.asList(itemEntity));
 
         ETLExchange etlExchange = new ETLExchange();
+        ETLExchange etlExchangeNew = new ETLExchange();
         etlExchange.setBibliographicEntities(Arrays.asList(bibliographicEntity));
         etlExchange.setInstitutionEntityMap(etlExchange.getInstitutionEntityMap() == null ? new HashMap() : etlExchange.getInstitutionEntityMap());
         etlExchange.setCollectionGroupMap(etlExchange.getCollectionGroupMap() == null ? new HashMap() : etlExchange.getCollectionGroupMap());
-
-        bibDataProcessor.processETLExchagneAndPersistToDB(etlExchange);
-
+        try {
+            bibDataProcessor.processETLExchagneAndPersistToDB(etlExchange);
+            bibDataProcessor.processETLExchagneAndPersistToDB(etlExchangeNew);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         BibliographicEntity savedBibliographicEntity = bibliographicDetailsRepository.findByOwningInstitutionIdAndOwningInstitutionBibId(1, owningInstitutionBibId);
-        assertNotNull(savedBibliographicEntity);
+        assertNull(savedBibliographicEntity);
     }
 
     @Test
@@ -163,7 +168,7 @@ public class BibDataProcessorUT extends BaseTestCase {
         bibliographicEntity.setLastUpdatedBy("etl");
         bibliographicEntity.setLastUpdatedDate(new Date());
         bibliographicEntity.setOwningInstitutionId(1);
-        String owningInstitutionBibId = String.valueOf("001");
+        String owningInstitutionBibId = "001";
         bibliographicEntity.setOwningInstitutionBibId(owningInstitutionBibId);
 
 
@@ -173,7 +178,7 @@ public class BibDataProcessorUT extends BaseTestCase {
         holdingsEntity.setCreatedBy("etl");
         holdingsEntity.setLastUpdatedDate(new Date());
         holdingsEntity.setLastUpdatedBy("etl");
-        holdingsEntity.setOwningInstitutionHoldingsId(String.valueOf("002"));
+        holdingsEntity.setOwningInstitutionHoldingsId("002");
 
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setCallNumberType("0");

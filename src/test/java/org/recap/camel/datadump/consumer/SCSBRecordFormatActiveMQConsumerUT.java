@@ -5,10 +5,12 @@ import org.apache.camel.impl.*;
 import org.apache.camel.support.*;
 import org.junit.*;
 import org.mockito.*;
+import org.recap.BaseTestCase;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.service.formatter.datadump.SCSBXmlFormatterService;
 import org.recap.util.datadump.DataExportHeaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -17,8 +19,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-public class SCSBRecordFormatActiveMQConsumerUT {
-
+public class SCSBRecordFormatActiveMQConsumerUT extends BaseTestCase {
 
     @Autowired
     SCSBXmlFormatterService scsbXmlFormatterService;
@@ -48,7 +49,7 @@ public class SCSBRecordFormatActiveMQConsumerUT {
     @Test
     public void testgetDataExportHeaderUtil() {
         sCSBRecordFormatActiveMQConsumer.getDataExportHeaderUtil();
-        assertNull(dataExportHeaderUtil);
+        assertNotNull(dataExportHeaderUtil);
     }
 
     @Test
@@ -80,6 +81,8 @@ public class SCSBRecordFormatActiveMQConsumerUT {
         Map<String,Object> mapdata = new HashMap<>();
         mapdata.put("batchHeaders",dataHeader);
         in.setHeaders(mapdata);
+        try{ReflectionTestUtils.invokeMethod(sCSBRecordFormatActiveMQConsumer,"processFailures",Arrays.asList("test"),"batchHeaders",
+                "requestId",fluentProducerTemplate);}catch (Exception e){e.printStackTrace();}
         try {
             sCSBRecordFormatActiveMQConsumer.processRecords(ex);
         } catch (Exception e) {
