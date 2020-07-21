@@ -14,7 +14,9 @@ import org.recap.RecapCommonConstants;
 import org.recap.model.jpa.ReportDataEntity;
 import org.recap.model.jpa.ReportEntity;
 import org.recap.repository.ReportDetailRepository;
+import org.recap.service.email.datadump.DataDumpEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,10 +36,13 @@ public class DataExportEmailProcessorUT extends BaseTestCase {
     DataExportEmailProcessor dataExportEmailProcessor;
     @Mock
     ReportDetailRepository reportDetailRepository;
+    @Mock
+    DataDumpEmailService dataDumpEmailService;
 
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
+        ReflectionTestUtils.setField(dataExportEmailProcessor,"dataDumpStatusFileName","${user.home}/data-dump/dataExportStatus.txt");
     }
 
     @Test
@@ -95,6 +100,18 @@ public class DataExportEmailProcessorUT extends BaseTestCase {
 
     @Test
     public void testProcess() {
+        ReportDataEntity reportDataEntity = new ReportDataEntity();
+        reportDataEntity.setHeaderName("FetchType");
+        reportDataEntity.setHeaderValue("3");
+        List<ReportEntity> reportEntities = new ArrayList<>();
+        ReportEntity reportEntity = new ReportEntity();
+        reportEntity.setCreatedDate(new Date());
+        reportEntity.setInstitutionName("CUL");
+        reportEntity.setType("BatchExport");
+        reportEntity.setFileName("requestId");
+        reportEntity.setReportDataEntities(Arrays.asList(reportDataEntity));
+
+        reportEntities.add(reportEntity);
         dataExportEmailProcessor.setRequestId("sampleRecordForEtlLoadTest.xml");
         String dataHeader = ";currentPageCount#1";
         CamelContext ctx = new DefaultCamelContext();
@@ -104,6 +121,19 @@ public class DataExportEmailProcessorUT extends BaseTestCase {
         ex.setIn(in);
         Map<String, Object> mapdata = new HashMap<>();
         mapdata.put("batchHeaders", dataHeader);
+        ReflectionTestUtils.setField(dataExportEmailProcessor,"toEmailId","temp");
+        ReflectionTestUtils.setField(dataExportEmailProcessor,"folderName","temp");
+        ReflectionTestUtils.setField(dataExportEmailProcessor,"institutionCodes",Arrays.asList("CUL"));
+        ReflectionTestUtils.setField(dataExportEmailProcessor,"transmissionType","0");
+        ReflectionTestUtils.setField(dataExportEmailProcessor,"dataDumpEmailService",dataDumpEmailService);
+        ReflectionTestUtils.invokeMethod(dataExportEmailProcessor,"writeFullDumpStatusToFile");
+        ReflectionTestUtils.invokeMethod(dataExportEmailProcessor,"sendBatchExportReportToFTP",reportEntities,"Failure");
+        try{ReflectionTestUtils.invokeMethod(dataExportEmailProcessor,"setReportFileName",reportEntity);}catch(Exception e){e.printStackTrace();}
+        reportDataEntity.setHeaderValue("2");
+        try{ReflectionTestUtils.invokeMethod(dataExportEmailProcessor,"setReportFileName",reportEntity);}catch(Exception e){e.printStackTrace();}
+        reportDataEntity.setHeaderValue("1");
+        try{ReflectionTestUtils.invokeMethod(dataExportEmailProcessor,"setReportFileName",reportEntity);}catch(Exception e){e.printStackTrace();}
+        ReflectionTestUtils.invokeMethod(dataExportEmailProcessor,"processEmail","2","2","2","1","CUL");
         try {
             dataExportEmailProcessor.process(ex);
         } catch (Exception exception) {

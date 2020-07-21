@@ -15,6 +15,7 @@ import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.InstitutionEntity;
 import org.recap.model.jpa.ItemEntity;
 import org.recap.model.jpa.ItemStatusEntity;
+import org.recap.model.jpa.MatchingBibInfoDetail;
 import org.recap.model.jpa.ReportDataEntity;
 import org.recap.model.jpa.ReportEntity;
 import org.recap.repository.BibliographicDetailsRepository;
@@ -25,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -35,6 +37,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by premkb on 23/8/16.
@@ -137,6 +142,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCase {
     DBReportUtil dbReportUtil;
     @Autowired
     SCSBXmlFormatterService scsbXmlFormatterService;
+
     @Value("${etl.report.directory}")
     private String reportDirectoryPath;
     @Autowired
@@ -251,5 +257,65 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCase {
         bibliographicEntity.setItemEntities(Arrays.asList(itemEntity));
 
         return bibliographicEntity;
+    }
+
+    @Test
+    public void testgetSubfieldatafieldType() {
+        BibliographicEntity bibliographicEntity = new BibliographicEntity();
+        bibliographicEntity.setBibliographicId(100);
+        bibliographicEntity.setContent(bibContent.getBytes());
+        bibliographicEntity.setCreatedDate(new Date());
+        bibliographicEntity.setLastUpdatedDate(new Date());
+        bibliographicEntity.setCreatedBy("tst");
+        bibliographicEntity.setLastUpdatedBy("tst");
+        bibliographicEntity.setOwningInstitutionBibId("20");
+        bibliographicEntity.setOwningInstitutionId(3);
+        CollectionGroupEntity collectionGroupEntity = new CollectionGroupEntity();
+        collectionGroupEntity.setCollectionGroupCode("SCSB");
+        HoldingsEntity holdingsEntity = new HoldingsEntity();
+        holdingsEntity.setContent("mock holdings".getBytes());
+        holdingsEntity.setCreatedDate(new Date());
+        holdingsEntity.setCreatedBy("etl");
+        holdingsEntity.setLastUpdatedDate(new Date());
+        holdingsEntity.setLastUpdatedBy("etl");
+        holdingsEntity.setOwningInstitutionId(1);
+        holdingsEntity.setOwningInstitutionHoldingsId(String.valueOf(new Random().nextInt()));
+        holdingsEntity.setHoldingsId(3);
+        ItemEntity itemEntity = new ItemEntity();
+        itemEntity.setCallNumberType("0");
+        itemEntity.setCallNumber("callNum");
+        itemEntity.setCreatedDate(new Date());
+        itemEntity.setCreatedBy("etl");
+        itemEntity.setLastUpdatedDate(new Date());
+        itemEntity.setLastUpdatedBy("etl");
+        itemEntity.setBarcode("1231");
+        itemEntity.setOwningInstitutionItemId(".i1231");
+        itemEntity.setOwningInstitutionId(1);
+        itemEntity.setCollectionGroupId(1);
+        itemEntity.setCustomerCode("PA");
+        itemEntity.setItemAvailabilityStatusId(1);
+        itemEntity.setCollectionGroupEntity(collectionGroupEntity);
+        itemEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
+        bibliographicEntity.setItemEntities(Arrays.asList(itemEntity));
+        MatchingBibInfoDetail matchingBibInfoDetail = new MatchingBibInfoDetail();
+        matchingBibInfoDetail.setId(1);
+        matchingBibInfoDetail.setBibId("1");
+        matchingBibInfoDetail.setOwningInstitutionBibId("565658565465");
+        matchingBibInfoDetail.setOwningInstitution("PUL");
+        matchingBibInfoDetail.setRecordNum(10);
+        InstitutionEntity institutionEntity = new InstitutionEntity();
+        institutionEntity.setInstitutionCode("CUL");
+        ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "getSubfieldatafieldType", "Test Code", "Test Value");
+        ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "build876DataField", itemEntity);
+        ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "build900DataField", itemEntity);
+        ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "buildRecordTypes", Arrays.asList(itemEntity));
+        ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "getItems", Arrays.asList(itemEntity));
+        try{ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "getHoldings", Arrays.asList(holdingsEntity), Arrays.asList(2), Arrays.asList(3));}catch (Exception e){e.printStackTrace();}
+        ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "getMatchingInstitutionBibId", "9751", Arrays.asList(matchingBibInfoDetail));
+        ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "getItemIds", bibliographicEntity);
+        ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "getNonOrphanHoldingsIdList", Arrays.asList(itemEntity));
+        ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "getBibIdRowNumMap", Arrays.asList(matchingBibInfoDetail));
+        ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "getRecordNumReportDataEntityMap", Arrays.asList(matchingBibInfoDetail));
+        assertTrue(true);
     }
 }
