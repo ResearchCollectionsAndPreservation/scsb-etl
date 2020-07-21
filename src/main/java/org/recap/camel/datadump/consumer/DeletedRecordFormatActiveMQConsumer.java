@@ -83,7 +83,12 @@ public class DeletedRecordFormatActiveMQConsumer extends CommonReportGenerator {
                 .map(future -> {
                     try {
                         return future.get();
-                    } catch (InterruptedException | ExecutionException e) {
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        logger.error(e.getMessage());
+                        throw new RuntimeException(e);
+                    }
+                    catch (ExecutionException e) {
                         logger.error(e.getMessage());
                         throw new RuntimeException(e);
                     }

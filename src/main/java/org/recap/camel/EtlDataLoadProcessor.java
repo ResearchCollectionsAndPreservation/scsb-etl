@@ -84,8 +84,13 @@ public class EtlDataLoadProcessor {
 
 
                     long totalEndTime = System.currentTimeMillis();
-                    logger.info("File name : {} , Total time taken to save: {} bibs and related data is: {} seconds." ,distinctFileName, xmlRecordEntities.getTotalElements() , (totalEndTime - totalStartTime) / 1000);
-                } else {
+                    if(xmlRecordEntities != null) {
+                        logger.info("File name : {} , Total time taken to save: {} bibs and related data is: {} seconds.", distinctFileName, xmlRecordEntities.getTotalElements(), (totalEndTime - totalStartTime) / 1000);
+                    }
+                    else {
+                        logger.info("File name : {} , Total time taken to save: zero bibs and related data is: {} seconds.", distinctFileName,  (totalEndTime - totalStartTime) / 1000);
+                    }
+                    } else {
                     logger.info("No records found to load into DB");
                 }
 

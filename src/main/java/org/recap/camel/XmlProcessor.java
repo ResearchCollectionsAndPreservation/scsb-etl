@@ -70,7 +70,7 @@ public class XmlProcessor implements Processor {
             try {
                 xmlRecordRepository.save(xmlRecordEntity);
             } catch (Exception e) {
-                logger.error("Exception " + e);
+                logger.error("Exception" , e);
             }
 
         }

@@ -88,7 +88,12 @@ public class BibEntityGeneratorActiveMQConsumer {
                     .map(future -> {
                         try {
                             return future.get();
-                        } catch (InterruptedException | ExecutionException e) {
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            logger.error(RecapConstants.ERROR,e);
+                            throw new RuntimeException(e);
+                        }
+                        catch (ExecutionException e) {
                             logger.error(RecapConstants.ERROR,e);
                             throw new RuntimeException(e);
                         }
@@ -115,8 +120,7 @@ public class BibEntityGeneratorActiveMQConsumer {
                     .withHeader("exportFormat", exchange.getIn().getHeader("exportFormat"))
                     .withHeader("transmissionType", exchange.getIn().getHeader("transmissionType"));
             fluentProducerTemplate.send();
-            bibliographicEntities  = null;
-        }
+         }
     }
 
     /**

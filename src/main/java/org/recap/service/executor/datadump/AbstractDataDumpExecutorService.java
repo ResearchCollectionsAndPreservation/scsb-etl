@@ -333,7 +333,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
                 String toDateStr = format.format(toDate);
                 dateString = fromDateStr + " TO " + toDateStr;
             }
-            logger.info("Incremental export date range for solr : " + dateString);
+            logger.info("Incremental export date range for solr : {} " , dateString);
         } catch (ParseException e) {
             logger.error(e.getMessage());
         }

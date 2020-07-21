@@ -85,7 +85,12 @@ public class MarcRecordFormatActiveMQConsumer extends CommonReportGenerator {
                 .map(future -> {
                     try {
                         return future.get();
-                    } catch (InterruptedException | ExecutionException e) {
+                    } catch (InterruptedException  e) {
+                        logger.error(e.getMessage());
+                        Thread.currentThread().interrupt();
+                        throw new RuntimeException(e);
+                    }
+                    catch (ExecutionException e) {
                         logger.error(e.getMessage());
                         throw new RuntimeException(e);
                     }
@@ -137,7 +142,7 @@ public class MarcRecordFormatActiveMQConsumer extends CommonReportGenerator {
      */
     private void processFailures(Exchange exchange, List failures, String batchHeaders, String requestId) {
         if (!CollectionUtils.isEmpty(failures)) {
-            DataExportHeaderUtil dataExportHeaderUtil = getDataExportHeaderUtil();
+            dataExportHeaderUtil = getDataExportHeaderUtil();
             processRecordFailures(exchange, failures, batchHeaders, requestId, dataExportHeaderUtil);
         }
     }

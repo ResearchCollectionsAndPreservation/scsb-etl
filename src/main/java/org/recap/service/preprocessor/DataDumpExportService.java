@@ -317,7 +317,7 @@ public class DataDumpExportService {
                         errorcount++;
                     }
                 } catch (Exception e) {
-                    logger.error("Exception : {}", e);
+                    logger.error("Exception : ", e);
                 }
             }
         }
@@ -397,7 +397,7 @@ public class DataDumpExportService {
         try {
             return simpleDateFormat.parse(dateString);
         } catch (ParseException e) {
-            logger.error("Exception while Parsing Date : {}", e);
+            logger.error("Exception while Parsing Date : ", e);
         }
         return null;
     }
@@ -452,15 +452,11 @@ public class DataDumpExportService {
      * @throws IOException
      */
     private void writeStatusToFile(File file, String status) throws IOException {
-        FileWriter fileWriter = new FileWriter(file, false);
-        try {
+        try (FileWriter fileWriter = new FileWriter(file, false)) {
             fileWriter.append(status);
             fileWriter.flush();
-            fileWriter.close();
         } catch (IOException e) {
-            logger.error(RecapConstants.EXCEPTION,e);
-        } finally {
-            fileWriter.close();
+            logger.error(RecapConstants.EXCEPTION, e);
         }
     }
 
@@ -471,7 +467,7 @@ public class DataDumpExportService {
      */
     private String buildErrorMessage(Map<Integer, String> erroMessageMap) {
         StringBuilder errorMessageBuilder = new StringBuilder();
-        erroMessageMap.entrySet().forEach(entry -> errorMessageBuilder.append(entry.getKey()).append(". ").append(entry.getValue()).append("\n"));
+        erroMessageMap.forEach((key, value) -> errorMessageBuilder.append(key).append(". ").append(value).append("\n"));
         return errorMessageBuilder.toString();
     }
 
