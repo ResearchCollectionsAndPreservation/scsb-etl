@@ -32,7 +32,9 @@ public class DataExportPredicate implements Predicate {
     @Override
     public boolean matches(Exchange exchange) {
         Integer batchSizeFromHeader = (Integer) exchange.getIn().getHeader("batchSize");
-
+        if (batchSizeFromHeader == null) {
+            batchSizeFromHeader = 0;
+        }
         Integer totalPageCount = BatchCounter.getTotalPages();
         Integer currentPageCount = BatchCounter.getCurrentPage();
 

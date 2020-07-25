@@ -42,7 +42,7 @@ public class MultipleConsumers_UT extends BaseTestCase {
             }
         });
 
-        FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(camelContext);
+        FluentProducerTemplate fluentProducerTemplate = DefaultFluentProducerTemplate.on(camelContext);
         for (int loop = 0; loop < 30; loop++) {
             fluentProducerTemplate
                     .to(multipleConsumerQ1)

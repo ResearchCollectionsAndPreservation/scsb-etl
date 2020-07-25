@@ -57,7 +57,7 @@ public class DeletedRecordFormatActiveMQConsumer extends CommonReportGenerator {
      * @throws Exception the exception
      */
     public void processRecords(Exchange exchange) throws Exception {
-        FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
+        FluentProducerTemplate fluentProducerTemplate = DefaultFluentProducerTemplate.on(exchange.getContext());
 
         List<DeletedRecord> deletedRecordList = new ArrayList<>();
 

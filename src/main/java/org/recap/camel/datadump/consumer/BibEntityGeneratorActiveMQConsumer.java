@@ -112,7 +112,7 @@ public class BibEntityGeneratorActiveMQConsumer {
         logger.info("sending page count {} to marcrecord formatter route",currentPageCountStr);
             String currentPageCountStrbeforesendingToNxt = new DataExportHeaderUtil().getValueFor(batchHeaders, "currentPageCount");
             logger.info("currentPageCountStrbeforesendingToNxt--->{}",currentPageCountStrbeforesendingToNxt);
-            FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
+            FluentProducerTemplate fluentProducerTemplate = DefaultFluentProducerTemplate.on(exchange.getContext());
             fluentProducerTemplate
                     .to(RecapConstants.BIB_ENTITY_FOR_DATA_EXPORT_Q)
                     .withBody(bibliographicEntities)

@@ -130,7 +130,7 @@ public class CommonReportGenerator {
     }
 
     public FluentProducerTemplate generateFluentProducerTemplate(Exchange exchange, HashMap values, String reportQ) {
-        FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
+        FluentProducerTemplate fluentProducerTemplate = DefaultFluentProducerTemplate.on(exchange.getContext());
         fluentProducerTemplate
                 .to(reportQ)
                 .withBody(values)

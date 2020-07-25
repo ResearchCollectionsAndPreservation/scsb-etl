@@ -114,7 +114,7 @@ public class SCSBRecordFormatActiveMQConsumer extends CommonReportGenerator {
         }
         String batchHeaders = (String) exchange.getIn().getHeader(RecapConstants.BATCH_HEADERS);
         String requestId = getDataExportHeaderUtil().getValueFor(batchHeaders, "requestId");
-        FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
+        FluentProducerTemplate fluentProducerTemplate = DefaultFluentProducerTemplate.on(exchange.getContext());
         processFailures(failures, batchHeaders, requestId, fluentProducerTemplate);
 
         long endTime = System.currentTimeMillis();
