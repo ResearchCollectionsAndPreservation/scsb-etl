@@ -152,7 +152,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
      * @param headerString
      */
     private void sendBodyAndHeader(Map results, String headerString) {
-        FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(camelContext);
+        FluentProducerTemplate fluentProducerTemplate = DefaultFluentProducerTemplate.on(camelContext);
         fluentProducerTemplate
                 .to(RecapConstants.SOLR_INPUT_FOR_DATA_EXPORT_Q)
                 .withBody(results)
@@ -179,7 +179,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
      * @param outputString
      */
     private void sendBodyForIsRecordAvailableMessage(String outputString) {
-        FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(camelContext);
+        FluentProducerTemplate fluentProducerTemplate = DefaultFluentProducerTemplate.on(camelContext);
         fluentProducerTemplate
                 .to(RecapConstants.DATADUMP_IS_RECORD_AVAILABLE_Q)
                 .withBody(outputString);

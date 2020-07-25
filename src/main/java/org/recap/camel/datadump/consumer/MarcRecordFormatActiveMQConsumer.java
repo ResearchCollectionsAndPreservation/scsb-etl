@@ -57,7 +57,7 @@ public class MarcRecordFormatActiveMQConsumer extends CommonReportGenerator {
      * @throws Exception the exception
      */
     public void processRecords(Exchange exchange) throws Exception {
-        FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
+        FluentProducerTemplate fluentProducerTemplate = DefaultFluentProducerTemplate.on(exchange.getContext());
         String batchHeaders = (String) exchange.getIn().getHeader(RecapConstants.BATCH_HEADERS);
         String currentPageCountStr = new DataExportHeaderUtil().getValueFor(batchHeaders, "currentPageCount");
         logger.info("Current page in MarcRecordFormatActiveMQConsumer--->{}",currentPageCountStr);

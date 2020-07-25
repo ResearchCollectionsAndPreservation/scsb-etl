@@ -18,7 +18,7 @@ public class MockConsumerForQ1 {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(exchange.getContext());
+        FluentProducerTemplate fluentProducerTemplate = DefaultFluentProducerTemplate.on(exchange.getContext());
         fluentProducerTemplate
                 .to("seda:multipleConsumerQ2")
                 .withBody("passing along "+message)
