@@ -42,6 +42,5 @@ public class DataDumpFailureReport implements Serializable{
     /**
      * The Data dump failure report record list.
      */
-    @OneToMany(mappedTo = "org.recap.model.csv.DataDumpFailureReport")
     List<DataDumpFailureReport> dataDumpFailureReportRecordList;
 }

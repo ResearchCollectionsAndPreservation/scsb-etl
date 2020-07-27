@@ -9,6 +9,9 @@ import org.recap.model.csv.DataDumpSuccessReport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by premkb on 01/10/16.
  */
@@ -25,9 +28,11 @@ public class FileNameProcessorForDataDumpSuccess implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
         DataDumpSuccessReport dataDumpSuccessReport = (DataDumpSuccessReport) exchange.getIn().getBody();
+        List<DataDumpSuccessReport> dataDumpSuccessReportList = dataDumpSuccessReport.getDataDumpSuccessReportList();
         String fileName = FilenameUtils.removeExtension(dataDumpSuccessReport.getFileName());
         exchange.getIn().setHeader(RecapCommonConstants.REPORT_FILE_NAME, fileName);
         exchange.getIn().setHeader(RecapConstants.REPORT_TYPE, dataDumpSuccessReport.getReportType());
         exchange.getIn().setHeader(RecapConstants.DIRECTORY_NAME, dataDumpSuccessReport.getInstitutionName());
+        exchange.getIn().setBody(dataDumpSuccessReportList);
     }
 }

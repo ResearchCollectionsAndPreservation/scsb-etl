@@ -35,6 +35,7 @@ public class DataDumpSuccessReport implements Serializable{
     @DataField(pos = 10, columnName = "No of Items Exported")
     private String exportedItemCount;
 
+
     private String fileName;
     private String reportType;
     private String institutionName;
@@ -42,6 +43,6 @@ public class DataDumpSuccessReport implements Serializable{
     /**
      * The Data dump success report list.
      */
-    @OneToMany(mappedTo = "org.recap.model.csv.DataDumpSuccessReport")
-    private List<DataDumpSuccessReport> dataDumpSuccessReportList;
+    List<DataDumpSuccessReport> dataDumpSuccessReportList;
+
 }
