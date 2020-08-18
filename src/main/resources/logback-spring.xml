@@ -10,7 +10,7 @@
 			class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
 			<providers>
 				<timestamp>
-					<timeZone>UTC</timeZone>
+					<timeZone>US/Eastern</timeZone>
 				</timestamp>
 				<version />
 				<logLevel />
@@ -58,9 +58,32 @@
 			</providers>
 		</encoder>
 	</appender>
+	
+    <appender name="FILE_ROLLER_DATE_SIZE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/recap-vol/logs/phase4-scsb-etl/phase4-scsb-etl.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>/recap-vol/logs/phase4-scsb-etl/phase4-scsb-etl-%d{yyyyMMMdd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <!-- or whenever the file size reaches 5MB -->
+            <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <charset>UTF-8</charset>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <Pattern>
+                    %d{yyyy-MM-dd HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg%n
+                </Pattern>
+            </layout>         
+        </encoder>
+    </appender>
 
 	<root level="INFO">
 		<appender-ref ref="jsonConsoleAppender" />
+		<appender-ref ref="FILE_ROLLER_DATE_SIZE" />
 	</root>
 
 </configuration>
