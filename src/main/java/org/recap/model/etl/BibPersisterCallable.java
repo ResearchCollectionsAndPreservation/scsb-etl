@@ -3,7 +3,11 @@ package org.recap.model.etl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.recap.RecapCommonConstants;
-import org.recap.model.jaxb.marc.*;
+import org.recap.model.jaxb.*;
+import org.recap.model.jaxb.marc.CollectionType;
+import org.recap.model.jaxb.marc.ContentType;
+import org.recap.model.jaxb.marc.LeaderFieldType;
+import org.recap.model.jaxb.marc.RecordType;
 import org.recap.model.jpa.*;
 import org.recap.util.DBReportUtil;
 import org.recap.util.MarcUtil;
@@ -182,7 +186,7 @@ public class BibPersisterCallable implements Callable {
         return map;
     }
 
-    private Map<String, Object> processAndValidateHoldingsEntity(BibliographicEntity bibliographicEntity, Holding holdingEnt, CollectionType holdingContentCollection,Date currentDate) {
+    private Map<String, Object> processAndValidateHoldingsEntity(BibliographicEntity bibliographicEntity, Holding holdingEnt, CollectionType holdingContentCollection, Date currentDate) {
         StringBuilder errorMessage = new StringBuilder();
         Map<String, Object> map = new HashMap<>();
         HoldingsEntity holdingsEntity = new HoldingsEntity();

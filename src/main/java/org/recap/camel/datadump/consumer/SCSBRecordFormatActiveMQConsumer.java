@@ -7,7 +7,7 @@ import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.camel.datadump.callable.BibRecordPreparerCallable;
-import org.recap.model.jaxb.marc.BibRecord;
+import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.report.CommonReportGenerator;
 import org.recap.service.formatter.datadump.SCSBXmlFormatterService;

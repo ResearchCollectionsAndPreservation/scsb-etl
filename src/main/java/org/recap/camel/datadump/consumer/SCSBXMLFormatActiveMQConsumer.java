@@ -3,7 +3,7 @@ package org.recap.camel.datadump.consumer;
 import org.apache.camel.Exchange;
 import org.apache.camel.FluentProducerTemplate;
 import org.recap.RecapConstants;
-import org.recap.model.jaxb.marc.BibRecord;
+import org.recap.model.jaxb.BibRecord;
 import org.recap.report.CommonReportGenerator;
 import org.recap.service.formatter.datadump.SCSBXmlFormatterService;
 import org.recap.util.XmlFormatter;
