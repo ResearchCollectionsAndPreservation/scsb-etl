@@ -1,21 +1,10 @@
 package org.recap.service.formatter.datadump;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
-import org.recap.model.jaxb.Bib;
-import org.recap.model.jaxb.BibRecord;
-import org.recap.model.jaxb.Holding;
-import org.recap.model.jaxb.Holdings;
-import org.recap.model.jaxb.Items;
 import org.recap.model.jaxb.JAXBContextHandler;
-import org.recap.model.jaxb.JAXBHandler;
-import org.recap.model.jaxb.MatchingInstitutionBibIdType;
-import org.recap.model.jaxb.marc.BibRecords;
-import org.recap.model.jaxb.marc.CollectionType;
-import org.recap.model.jaxb.marc.ContentType;
-import org.recap.model.jaxb.marc.DataFieldType;
-import org.recap.model.jaxb.marc.RecordType;
-import org.recap.model.jaxb.marc.SubfieldatafieldType;
+import org.recap.model.jaxb.marc.*;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.ItemEntity;
@@ -25,19 +14,18 @@ import org.recap.repository.ReportDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.apache.commons.collections.CollectionUtils;
 
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 /**
  * Created by premkb on 28/9/16.
@@ -88,10 +76,10 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
      */
     private String convertToXml(BibRecords bibRecords) throws Exception {
         StringWriter stringWriter = new StringWriter();
-            Marshaller jaxbMarshaller = JAXBContextHandler.getInstance().getJAXBContextForClass(BibRecords.class).createMarshaller();
-            synchronized (jaxbMarshaller) {
-                jaxbMarshaller.marshal(bibRecords, stringWriter);
-            }
+        Marshaller jaxbMarshaller = JAXBContextHandler.getInstance().getJAXBContextForClass(BibRecords.class).createMarshaller();
+        synchronized (jaxbMarshaller) {
+            jaxbMarshaller.marshal(bibRecords, stringWriter);
+        }
         return stringWriter.toString();
     }
 
@@ -244,7 +232,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
      * @return
      * @throws Exception
      */
-    private Bib getBib(BibliographicEntity bibliographicEntity,List<MatchingBibInfoDetail> matchingBibInfoDetailList) throws Exception{
+    private Bib getBib(BibliographicEntity bibliographicEntity, List<MatchingBibInfoDetail> matchingBibInfoDetailList) throws Exception{
         Bib bib = new Bib();
         bib.setOwningInstitutionBibId(bibliographicEntity.getOwningInstitutionBibId());
         bib.setOwningInstitutionId(bibliographicEntity.getInstitutionEntity().getInstitutionCode());
@@ -266,7 +254,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
      * @param matchingBibInfoDetailList
      * @return
      */
-    private List<MatchingInstitutionBibIdType> getMatchingInstitutionBibId(String bibId,List<MatchingBibInfoDetail> matchingBibInfoDetailList) {
+    private List<MatchingInstitutionBibIdType> getMatchingInstitutionBibId(String bibId, List<MatchingBibInfoDetail> matchingBibInfoDetailList) {
         List<MatchingInstitutionBibIdType> matchingInstitutionBibIdTypeList = new ArrayList<>();
         for(MatchingBibInfoDetail matchingBibInfoDetail:matchingBibInfoDetailList){
             if(!bibId.equals(matchingBibInfoDetail.getBibId())){
@@ -286,7 +274,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
      * @return
      * @throws Exception
      */
-    private List<Holdings> getHoldings(List<HoldingsEntity> holdingsEntityList,List<Integer> itemIds,List<Integer> nonOrphanHoldingsIdList) throws Exception{
+    private List<Holdings> getHoldings(List<HoldingsEntity> holdingsEntityList, List<Integer> itemIds, List<Integer> nonOrphanHoldingsIdList) throws Exception{
         List<Holdings> holdingsList = new ArrayList<>();
         if (holdingsEntityList!=null && !CollectionUtils.isEmpty(holdingsEntityList)) {
             for (HoldingsEntity holdingsEntity : holdingsEntityList) {
@@ -411,7 +399,13 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
     private ContentType getContentType(byte[] byteContent) throws Exception{
         String content = new String(byteContent, Charset.forName("UTF-8"));
         CollectionType collectionType;
-        collectionType = (CollectionType) JAXBHandler.getInstance().unmarshal(content, CollectionType.class);
+        JAXBContext context = JAXBContext.newInstance(CollectionType.class);
+        XMLInputFactory xif = XMLInputFactory.newFactory();
+        xif.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
+        InputStream stream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
+        XMLStreamReader xsr = xif.createXMLStreamReader(stream);
+        Unmarshaller um = context.createUnmarshaller();
+        collectionType = (CollectionType) um.unmarshal(xsr);
         ContentType contentType = new ContentType();
         contentType.setCollection(collectionType);
         return contentType;

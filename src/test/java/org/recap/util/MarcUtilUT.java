@@ -1,15 +1,8 @@
 package org.recap.util;
 
 import org.junit.Test;
-import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jaxb.JAXBHandler;
-import org.recap.model.jaxb.marc.CollectionType;
-import org.recap.model.jaxb.marc.ControlFieldType;
-import org.recap.model.jaxb.marc.DataFieldType;
-import org.recap.model.jaxb.marc.LeaderFieldType;
-import org.recap.model.jaxb.marc.RecordType;
-import org.recap.model.jaxb.marc.RecordTypeType;
-import org.recap.model.jaxb.marc.SubfieldatafieldType;
+import org.recap.model.jaxb.marc.*;
 
 import javax.xml.bind.JAXBException;
 import java.util.List;

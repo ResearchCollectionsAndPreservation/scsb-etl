@@ -7,7 +7,7 @@ import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.camel.datadump.callable.BibRecordPreparerCallable;
-import org.recap.model.jaxb.BibRecord;
+import org.recap.model.jaxb.marc.BibRecord;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.report.CommonReportGenerator;
 import org.recap.service.formatter.datadump.SCSBXmlFormatterService;
@@ -16,16 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * Created by peris on 11/1/16.
