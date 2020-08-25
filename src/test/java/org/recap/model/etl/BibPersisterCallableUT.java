@@ -7,13 +7,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCase;
+import org.recap.camel.BibDataProcessor;
 import org.recap.model.csv.FailureReportReCAPCSVRecord;
-import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jaxb.JAXBHandler;
+import org.recap.model.jaxb.marc.BibRecord;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.XmlRecordEntity;
 import org.recap.repository.BibliographicDetailsRepository;
-import org.recap.camel.BibDataProcessor;
 import org.recap.util.DBReportUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,9 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by chenchulakshmig on 1/7/16.

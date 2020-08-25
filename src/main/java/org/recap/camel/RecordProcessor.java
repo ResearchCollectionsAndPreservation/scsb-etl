@@ -5,17 +5,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.etl.BibPersisterCallable;
-import org.recap.model.jaxb.BibRecord;
-import org.recap.model.jaxb.Holding;
-import org.recap.model.jaxb.Holdings;
 import org.recap.model.jaxb.JAXBHandler;
-import org.recap.model.jpa.BibliographicEntity;
-import org.recap.model.jpa.CollectionGroupEntity;
-import org.recap.model.jpa.InstitutionEntity;
-import org.recap.model.jpa.ItemStatusEntity;
-import org.recap.model.jpa.ReportDataEntity;
-import org.recap.model.jpa.ReportEntity;
-import org.recap.model.jpa.XmlRecordEntity;
+import org.recap.model.jaxb.marc.BibRecord;
+import org.recap.model.jaxb.marc.Holding;
+import org.recap.model.jaxb.marc.Holdings;
+import org.recap.model.jpa.*;
 import org.recap.repository.CollectionGroupDetailsRepository;
 import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.repository.ItemStatusDetailsRepository;
@@ -27,17 +21,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * Created by pvsubrah on 6/21/16.
@@ -165,7 +157,13 @@ public class RecordProcessor {
             XmlRecordEntity xmlRecordEntity = iterator.next();
             String xml = new String(xmlRecordEntity.getXml());
             try {
-                bibRecord = (BibRecord) getJaxbHandler().unmarshal(xml, BibRecord.class);
+                JAXBContext context = JAXBContext.newInstance(BibRecord.class);
+                XMLInputFactory xif = XMLInputFactory.newFactory();
+                xif.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
+                InputStream stream = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+                XMLStreamReader xsr = xif.createXMLStreamReader(stream);
+                Unmarshaller um = context.createUnmarshaller();
+                bibRecord = (BibRecord) um.unmarshal(xsr);
                 boolean valid = validateHoldingsContent(bibRecord.getHoldings());
                 if (valid) {
                     BibPersisterCallable bibPersisterCallable = new BibPersisterCallable();

@@ -2,6 +2,7 @@ package org.recap.model.jaxb;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.recap.model.jaxb.marc.MatchingInstitutionBibIdType;
 
 import static org.junit.Assert.assertNotNull;
 

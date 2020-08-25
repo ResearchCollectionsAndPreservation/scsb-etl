@@ -1,19 +1,13 @@
 package org.recap.model.jaxb;
 
 import org.junit.Test;
-import org.recap.model.jaxb.marc.CollectionType;
-import org.recap.model.jaxb.marc.ContentType;
-import org.recap.model.jaxb.marc.DataFieldType;
-import org.recap.model.jaxb.marc.RecordType;
-import org.recap.model.jaxb.marc.SubfieldatafieldType;
+import org.recap.model.jaxb.marc.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by pvsubrah on 6/21/16.
