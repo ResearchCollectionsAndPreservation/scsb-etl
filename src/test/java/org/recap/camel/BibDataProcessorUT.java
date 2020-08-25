@@ -10,13 +10,9 @@ import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCase;
 import org.recap.RecapCommonConstants;
 import org.recap.model.etl.BibPersisterCallable;
-import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jaxb.JAXBHandler;
-import org.recap.model.jpa.BibliographicEntity;
-import org.recap.model.jpa.HoldingsEntity;
-import org.recap.model.jpa.ItemEntity;
-import org.recap.model.jpa.ReportEntity;
-import org.recap.model.jpa.XmlRecordEntity;
+import org.recap.model.jaxb.marc.BibRecord;
+import org.recap.model.jpa.*;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.repository.ReportDetailRepository;
 import org.recap.util.DBReportUtil;
@@ -25,17 +21,9 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by angelind on 26/7/16.
