@@ -3,7 +3,7 @@ package org.recap.service.formatter.datadump;
 import org.apache.commons.collections.CollectionUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
-import org.recap.model.jaxb.JAXBContextHandler;
+import org.recap.model.jaxb.*;
 import org.recap.model.jaxb.marc.*;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.HoldingsEntity;
