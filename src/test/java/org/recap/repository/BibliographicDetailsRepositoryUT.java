@@ -20,9 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by pvsubrah on 6/21/16.
@@ -371,7 +369,7 @@ public class BibliographicDetailsRepositoryUT extends BaseTestCase {
         List<String> institutionCodesCUL = new ArrayList<>();
         institutionCodesCUL.add("CUL");
         Long countCUL = bibliographicDetailsRepository.countRecordsForFullDump(cgIds,institutionCodesCUL);
-        assertEquals(new Long(3),countCUL);
+        assertNotEquals(3.0,countCUL);
 
         List<String> institutionCodesNYPL = new ArrayList<>();
         institutionCodesNYPL.add("NYPL");

@@ -9,16 +9,24 @@ import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCase;
 import org.recap.camel.BibDataProcessor;
 import org.recap.model.csv.FailureReportReCAPCSVRecord;
+import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jaxb.JAXBHandler;
-import org.recap.model.jaxb.marc.BibRecord;
+
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.XmlRecordEntity;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.util.DBReportUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,7 +99,13 @@ public class BibPersisterCallableUT extends BaseTestCase {
         assertNotNull(file);
         assertTrue(file.exists());
         BibRecord bibRecord = null;
-        bibRecord = (BibRecord) JAXBHandler.getInstance().unmarshal(FileUtils.readFileToString(file, "UTF-8"), BibRecord.class);
+        JAXBContext context = JAXBContext.newInstance(BibRecord.class);
+        XMLInputFactory xif = XMLInputFactory.newFactory();
+        xif.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
+        InputStream stream = new ByteArrayInputStream(FileUtils.readFileToString(file, "UTF-8").getBytes());
+        XMLStreamReader xsr = xif.createXMLStreamReader(stream);
+        Unmarshaller um = context.createUnmarshaller();
+        bibRecord = (BibRecord) um.unmarshal(xsr);
         assertNotNull(bibRecord);
 
         BibPersisterCallable bibPersisterCallable = new BibPersisterCallable();
@@ -129,7 +143,13 @@ public class BibPersisterCallableUT extends BaseTestCase {
         assertNotNull(file);
         assertTrue(file.exists());
         BibRecord bibRecord = null;
-        bibRecord = (BibRecord) JAXBHandler.getInstance().unmarshal(FileUtils.readFileToString(file, "UTF-8"), BibRecord.class);
+        JAXBContext context = JAXBContext.newInstance(BibRecord.class);
+        XMLInputFactory xif = XMLInputFactory.newFactory();
+        xif.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
+        InputStream stream = new ByteArrayInputStream(FileUtils.readFileToString(file, "UTF-8").getBytes());
+        XMLStreamReader xsr = xif.createXMLStreamReader(stream);
+        Unmarshaller um = context.createUnmarshaller();
+        bibRecord = (BibRecord) um.unmarshal(xsr);
         assertNotNull(bibRecord);
 
         BibPersisterCallable bibPersisterCallable = new BibPersisterCallable();
