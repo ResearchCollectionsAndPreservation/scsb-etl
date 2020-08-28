@@ -25,6 +25,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+
 import static org.mockito.Mockito.spy;
 
 /**
@@ -90,7 +92,7 @@ public class DeletedDataDumpExecutorServiceUT extends BaseTestCase {
         } catch (Exception e) {
 
         }
-        assertNull(outputString);
+        assertNotNull(outputString);
     }
 
     @Test
