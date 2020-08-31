@@ -14,6 +14,8 @@ import org.recap.model.jpa.ReportEntity;
 import org.recap.model.jpa.XmlRecordEntity;
 import org.recap.repository.ReportDetailRepository;
 import org.recap.repository.XmlRecordRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -34,6 +36,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class XMLProcessorUT extends BaseTestCase {
 
+    private static final Logger logger = LoggerFactory.getLogger(XMLProcessorUT.class);
     @Autowired
     CamelContext camelContext;
 
@@ -120,6 +123,8 @@ public class XMLProcessorUT extends BaseTestCase {
     public void testLoadReport() throws Exception {
         String fileName = "etlTestLoadReport.xml";
         File file = new File(getClass().getResource(fileName).toURI());
+        logger.info("File Path :"+file.getPath());
+        logger.info("ETL load Directory"+etlLoadDir);
         FileUtils.copyFileToDirectory(file, new File(etlLoadDir));
 
         Thread.sleep(2000);
