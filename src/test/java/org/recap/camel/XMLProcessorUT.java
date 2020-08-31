@@ -122,9 +122,9 @@ public class XMLProcessorUT extends BaseTestCase {
     @Test
     public void testLoadReport() throws Exception {
         String fileName = "etlTestLoadReport.xml";
+        logger.info("ETL load Directory"+etlLoadDir);
         File file = new File(getClass().getResource(fileName).toURI());
         logger.info("File Path :"+file.getPath());
-        logger.info("ETL load Directory"+etlLoadDir);
         FileUtils.copyFileToDirectory(file, new File(etlLoadDir));
 
         Thread.sleep(2000);
