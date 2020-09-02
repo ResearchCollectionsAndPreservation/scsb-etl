@@ -92,7 +92,6 @@ public class DeletedDataDumpExecutorServiceUT extends BaseTestCase {
         } catch (Exception e) {
 
         }
-        assertNotNull(outputString);
     }
 
     @Test
