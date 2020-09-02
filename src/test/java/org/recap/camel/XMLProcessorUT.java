@@ -73,8 +73,6 @@ public class XMLProcessorUT extends BaseTestCase {
         FileUtils.copyFileToDirectory(inputFileEndPoint, loadDir);
 
         Thread.sleep(10000);
-
-       // FileUtils.deleteDirectory(loadDir);
     }
 
     private File getInputFileEndPoint() throws URISyntaxException {
@@ -122,9 +120,7 @@ public class XMLProcessorUT extends BaseTestCase {
     @Test
     public void testLoadReport() throws Exception {
         String fileName = "etlTestLoadReport.xml";
-        logger.info("ETL load Directory"+etlLoadDir);
         File file = new File(getClass().getResource(fileName).toURI());
-        logger.info("File Path :"+file.getPath());
         FileUtils.copyFileToDirectory(file, new File(etlLoadDir));
 
         Thread.sleep(2000);
