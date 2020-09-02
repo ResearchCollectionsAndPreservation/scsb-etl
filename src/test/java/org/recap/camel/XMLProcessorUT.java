@@ -74,7 +74,7 @@ public class XMLProcessorUT extends BaseTestCase {
 
         Thread.sleep(10000);
 
-        FileUtils.deleteDirectory(loadDir);
+       // FileUtils.deleteDirectory(loadDir);
     }
 
     private File getInputFileEndPoint() throws URISyntaxException {
