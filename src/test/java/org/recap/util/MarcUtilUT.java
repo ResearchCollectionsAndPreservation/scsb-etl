@@ -2,6 +2,7 @@ package org.recap.util;
 
 import org.junit.Test;
 import org.recap.model.jaxb.JAXBHandler;
+import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jaxb.marc.*;
 
 import javax.xml.bind.JAXBException;
