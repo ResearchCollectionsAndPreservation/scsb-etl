@@ -10,7 +10,7 @@ import org.recap.BaseTestCase;
 import org.recap.camel.BibDataProcessor;
 import org.recap.model.csv.FailureReportReCAPCSVRecord;
 import org.recap.model.jaxb.JAXBHandler;
-import org.recap.model.jaxb.marc.BibRecord;
+import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.XmlRecordEntity;
 import org.recap.repository.BibliographicDetailsRepository;

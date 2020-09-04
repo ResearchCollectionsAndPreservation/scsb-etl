@@ -11,7 +11,7 @@ import org.recap.BaseTestCase;
 import org.recap.RecapCommonConstants;
 import org.recap.model.etl.BibPersisterCallable;
 import org.recap.model.jaxb.JAXBHandler;
-import org.recap.model.jaxb.marc.BibRecord;
+import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jpa.*;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.repository.ReportDetailRepository;
