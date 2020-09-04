@@ -235,7 +235,6 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
      */
     private Bib getBib(BibliographicEntity bibliographicEntity, List<MatchingBibInfoDetail> matchingBibInfoDetailList) throws Exception{
         Bib bib = new Bib();
-        logger.info("Preparing BIB Record for Owning inst id "+ bibliographicEntity.getOwningInstitutionBibId());
         bib.setOwningInstitutionBibId(bibliographicEntity.getOwningInstitutionBibId());
         bib.setOwningInstitutionId(bibliographicEntity.getInstitutionEntity().getInstitutionCode());
         if(matchingBibInfoDetailList!=null){
