@@ -234,15 +234,12 @@ public class DataExportReportActiveMQConsumer {
                 if(reportDataEntity.getHeaderName().equals(RecapConstants.FAILURE_CAUSE)){
                     String existingfailureCause = reportDataEntity.getHeaderValue();
                     failureCause = existingfailureCause +" * "+failureCause;
+                    reportDataEntity.setHeaderValue(failureCause);
                 }
             }
-            ReportDataEntity reportDataEntity1 = new ReportDataEntity();
-            reportDataEntity1.setHeaderName(RecapConstants.FAILURE_CAUSE);
-            reportDataEntity1.setHeaderValue(failureCause);
-            reportDataEntities.add(reportDataEntity1);
         }
 
-        getReportDetailRepository().save(reportEntity);
+        getReportDetailRepository().saveAndFlush(reportEntity);
 
         return reportEntity;
     }
