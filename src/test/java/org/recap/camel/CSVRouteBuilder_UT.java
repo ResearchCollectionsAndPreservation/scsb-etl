@@ -101,10 +101,10 @@ public class CSVRouteBuilder_UT extends BaseTestCase {
         String expectedGeneratedFileName = "test"+"-Failure"+"-"+ddMMMyyyy+".csv";
 
         File directory = new File(reportDirectory);
-        assertTrue(true);
+        assertTrue(directory.isDirectory());
 
         boolean directoryContains = new File(directory, expectedGeneratedFileName).exists();
-        assertTrue(true);
+        assertTrue(directory.isDirectory());
 
        // FileUtils.forceDelete(new File(reportDirectory+File.separator+expectedGeneratedFileName));
 
