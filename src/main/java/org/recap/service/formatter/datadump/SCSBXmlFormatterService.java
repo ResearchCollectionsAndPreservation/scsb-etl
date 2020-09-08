@@ -196,6 +196,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
             bibRecord.setHoldings(holdings);
             results.put(RecapCommonConstants.SUCCESS, bibRecord);
         } catch (Exception e) {
+            logger.info("Exception for BIB Record "+bibliographicEntity.getOwningInstitutionBibId());
             logger.error(RecapConstants.ERROR,e);
             results.put(RecapCommonConstants.FAILURE, String.valueOf(e.getCause()));
         }
