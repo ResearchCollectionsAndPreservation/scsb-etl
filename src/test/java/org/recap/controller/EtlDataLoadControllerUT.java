@@ -176,7 +176,7 @@ public class EtlDataLoadControllerUT extends BaseTestCase {
         assertTrue(directory.isDirectory());
 
         boolean directoryContains = new File(directory, reportFileName).exists();
-        assertTrue(true);
+        assertTrue(directory.isDirectory());
     }
 
     @Test
