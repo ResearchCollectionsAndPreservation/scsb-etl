@@ -116,10 +116,9 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
             record = addHoldingInfo(record, bibliographicEntity.getHoldingsEntities(),itemIds,getNonOrphanHoldingsIdList(bibliographicEntity.getItemEntities()));
             results.put(RecapCommonConstants.SUCCESS, record);
         } catch (Exception e) {
-            logger.info("failed bib own ins bib id--->{}",bibliographicEntity.getOwningInstitutionBibId());
+            logger.info("failed bib own ins bib id--->{}"+bibliographicEntity.getOwningInstitutionBibId());
             logger.error(RecapConstants.ERROR,e);
-            results.put(RecapCommonConstants.FAILURE, String.valueOf(e.getCause()));
-
+            results.put(RecapCommonConstants.FAILURE,bibliographicEntity.getOwningInstitutionBibId()+" * "+ String.valueOf(e));
         }
         return results;
     }

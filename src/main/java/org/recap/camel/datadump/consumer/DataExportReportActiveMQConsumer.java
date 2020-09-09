@@ -1,7 +1,9 @@
 package org.recap.camel.datadump.consumer;
 
+import org.apache.camel.ProducerTemplate;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
+import org.recap.model.csv.DataExportFailureReport;
 import org.recap.model.jpa.ReportDataEntity;
 import org.recap.model.jpa.ReportEntity;
 import org.recap.repository.ReportDetailRepository;
@@ -29,6 +31,9 @@ public class DataExportReportActiveMQConsumer {
      */
     @Autowired
     ReportDetailRepository reportDetailRepository;
+
+    @Autowired
+    ProducerTemplate producerTemplate;
 
     /**
      * This method is invoked by the route to save the success report entity for data export using the values in Map.
@@ -158,12 +163,14 @@ public class DataExportReportActiveMQConsumer {
         String failedBibs = (String) body.get(RecapConstants.FAILED_BIBS);
         String numRecords = (String) body.get(RecapConstants.NUM_RECORDS);
         String failureCause = (String) body.get(RecapConstants.FAILURE_CAUSE);
+        List<String> failureList = (List<String>) body.get(RecapConstants.FAILURE_LIST);
 
         List<ReportEntity> byFileName = getReportDetailRepository().findByFileNameAndType(requestId, RecapConstants.BATCH_EXPORT_FAILURE);
 
 
         ReportEntity reportEntity;
         if (CollectionUtils.isEmpty(byFileName)) {
+            exportFailureToReport(fetchType, requestId, failureList,requestingInstitutionCode);
             reportEntity = new ReportEntity();
             reportEntity.setCreatedDate(new Date());
             reportEntity.setInstitutionName(requestingInstitutionCode);
@@ -231,17 +238,53 @@ public class DataExportReportActiveMQConsumer {
                     Integer exitingRecords = Integer.valueOf(reportDataEntity.getHeaderValue());
                     reportDataEntity.setHeaderValue(String.valueOf(exitingRecords + Integer.valueOf(numRecords)));
                 }
-                if(reportDataEntity.getHeaderName().equals(RecapConstants.FAILURE_CAUSE)){
-                    String existingfailureCause = reportDataEntity.getHeaderValue();
-                    failureCause = existingfailureCause +" * "+failureCause;
-                    reportDataEntity.setHeaderValue(failureCause);
-                }
             }
+            exportFailureToReport(fetchType, requestId, failureList,requestingInstitutionCode);
         }
 
         getReportDetailRepository().saveAndFlush(reportEntity);
 
         return reportEntity;
+    }
+
+    public void exportFailureToReport(String fetchType, String requestId, List<String> failureList,String requestingInstitutionCode) {
+        List<DataExportFailureReport> dataExportFailureReportList = new ArrayList<>();
+        String fetchTypeValue = getFetchType(fetchType);
+        for (String failure : failureList) {
+            populateExportFailureRecords(requestId, dataExportFailureReportList, fetchTypeValue, failure,requestingInstitutionCode);
+        }
+
+        producerTemplate.sendBodyAndHeader(RecapConstants.DATADUMP_FAILURE_REPORT_SFTP_Q, dataExportFailureReportList, "FetchType", fetchTypeValue);
+    }
+
+    public void populateExportFailureRecords(String requestId, List<DataExportFailureReport> dataExportFailureReportList, String fetchTypeValue, String failure,String requestingInstitutionCode) {
+        String split[] = failure.split("\\*");
+        DataExportFailureReport dataExportFailureReport = new DataExportFailureReport();
+        dataExportFailureReport.setOwningInstitutionBibId(split[0]);
+        dataExportFailureReport.setFailureReason(split[1]);
+        dataExportFailureReport.setFilename(fetchTypeValue + "-FailureReport-" + requestId);
+        dataExportFailureReport.setReportType(fetchTypeValue);
+        dataExportFailureReport.setRequestingInstitutionCode(requestingInstitutionCode);
+        dataExportFailureReportList.add(dataExportFailureReport);
+    }
+
+    public String getFetchType(String fetchTypeNumber) {
+        String fetchType ="";
+        switch (fetchTypeNumber) {
+            case "10":
+                fetchType="Full Dump";
+                break;
+            case "1":
+                fetchType= "Incremental";
+                break;
+            case "2":
+                fetchType= "Deleted";
+                break;
+            default:
+                fetchType= "Export";
+
+        }
+        return fetchType;
     }
 
     /**
