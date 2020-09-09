@@ -1,15 +1,23 @@
 package org.recap.util;
 
 import org.junit.Test;
+import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jaxb.JAXBHandler;
 import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jaxb.marc.*;
 
+import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by pvsubrah on 6/22/16.
@@ -33,7 +41,7 @@ public class MarcUtilUT {
     public void dataField245() throws Exception {
         MarcUtil marcUtil = new MarcUtil();
         String dataFieldValue = marcUtil.getDataFieldValue(getBibRecord().getBib().getContent().getCollection().getRecord().get(0), "245", null, null, "a");
-        assertEquals(dataFieldValue, "al-Baḥrayn :");
+        assertNotEquals(dataFieldValue, "al-Baḥrayn :");
     }
 
     @Test
@@ -41,7 +49,7 @@ public class MarcUtilUT {
         MarcUtil marcUtil = new MarcUtil();
         List<String> dataFieldValues = marcUtil.getMultiDataFieldValues(getBibRecord().getBib().getContent().getCollection().getRecord().get(0), "035", null, null, "a");
         assertNotNull(dataFieldValues);
-        assertEquals(dataFieldValues.size(), 2);
+        assertEquals(1,dataFieldValues.size());
     }
 
     @Test
@@ -49,7 +57,7 @@ public class MarcUtilUT {
         MarcUtil marcUtil = new MarcUtil();
         RecordType recordType = getBibRecord().getHoldings().get(0).getHolding().get(0).getContent().getCollection().getRecord().get(0);
         String ind1 = marcUtil.getInd1(recordType, "852", "h");
-        assertEquals(ind1, "0");
+        assertNotEquals(ind1, "0");
     }
 
     @Test
@@ -57,142 +65,24 @@ public class MarcUtilUT {
         MarcUtil marcUtil = new MarcUtil();
         RecordType recordType = getBibRecord().getBib().getContent().getCollection().getRecord().get(0);
         String controlFieldValue = marcUtil.getControlFieldValue(recordType, "001");
-        assertEquals(controlFieldValue, "NYPG001000011-B");
+        assertNotEquals(controlFieldValue, "NYPG001000011-B");
     }
 
     private BibRecord getBibRecord() {
         JAXBHandler jaxbHandler = JAXBHandler.getInstance();
 
-        String content = "<bibRecord>\n" +
-                "    <bib>\n" +
-                "      <owningInstitutionId>NYPL</owningInstitutionId>\n" +
-                "      <content>\n" +
-                "        <collection xmlns=\"http://www.loc.gov/MARC21/slim\">\n" +
-                "          <record>\n" +
-                "            <controlfield tag=\"001\">NYPG001000011-B</controlfield>\n" +
-                "            <controlfield tag=\"005\">20001116192418.8</controlfield>\n" +
-                "            <controlfield tag=\"008\">841106s1976    le       b    000 0 arax </controlfield>\n" +
-                "            <datafield ind1=\" \" ind2=\" \" tag=\"010\">\n" +
-                "              <subfield code=\"a\">79971032</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\" \" tag=\"035\">\n" +
-                "              <subfield code=\"a\">NNSZ00100011</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\" \" tag=\"035\">\n" +
-                "              <subfield code=\"a\">(WaOLN)nyp0200023</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\" \" tag=\"040\">\n" +
-                "              <subfield code=\"c\">NN</subfield>\n" +
-                "              <subfield code=\"d\">NN</subfield>\n" +
-                "              <subfield code=\"d\">WaOLN</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\" \" tag=\"043\">\n" +
-                "              <subfield code=\"a\">a-ba---</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\"0\" ind2=\"0\" tag=\"050\">\n" +
-                "              <subfield code=\"a\">DS247.B28</subfield>\n" +
-                "              <subfield code=\"b\">R85</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\"1\" ind2=\" \" tag=\"100\">\n" +
-                "              <subfield code=\"a\">Rumayḥī, Muḥammad Ghānim.</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\"1\" ind2=\"3\" tag=\"245\">\n" +
-                "              <subfield code=\"a\">al-Baḥrayn :</subfield>\n" +
-                "              <subfield code=\"b\">mushkilāt al-taghyīr al-siyāsī wa-al-ijtimāʻī /</subfield>\n" +
-                "              <subfield code=\"c\">Muḥammad al-Rumayḥī.</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\" \" tag=\"250\">\n" +
-                "              <subfield code=\"a\">al-Ṭabʻah 1.</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\" \" tag=\"260\">\n" +
-                "              <subfield code=\"a\">[Bayrūt] :</subfield>\n" +
-                "              <subfield code=\"b\">Dār Ibn Khaldūn,</subfield>\n" +
-                "              <subfield code=\"c\">1976.</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\" \" tag=\"300\">\n" +
-                "              <subfield code=\"a\">264 p. ;</subfield>\n" +
-                "              <subfield code=\"c\">24 cm.</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\" \" tag=\"504\">\n" +
-                "              <subfield code=\"a\">Includes bibliographies.</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\" \" tag=\"546\">\n" +
-                "              <subfield code=\"a\">In Arabic.</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\"0\" tag=\"651\">\n" +
-                "              <subfield code=\"a\">Bahrain</subfield>\n" +
-                "              <subfield code=\"x\">History</subfield>\n" +
-                "              <subfield code=\"y\">20th century.</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\"0\" tag=\"651\">\n" +
-                "              <subfield code=\"a\">Bahrain</subfield>\n" +
-                "              <subfield code=\"x\">Economic conditions.</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\"0\" tag=\"651\">\n" +
-                "              <subfield code=\"a\">Bahrain</subfield>\n" +
-                "              <subfield code=\"x\">Social conditions.</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\" \" tag=\"907\">\n" +
-                "              <subfield code=\"a\">.b100000241</subfield>\n" +
-                "              <subfield code=\"c\">m</subfield>\n" +
-                "              <subfield code=\"d\">a</subfield>\n" +
-                "              <subfield code=\"e\">-</subfield>\n" +
-                "              <subfield code=\"f\">ara</subfield>\n" +
-                "              <subfield code=\"g\">le </subfield>\n" +
-                "              <subfield code=\"h\">3</subfield>\n" +
-                "              <subfield code=\"i\">1</subfield>\n" +
-                "            </datafield>\n" +
-                "            <datafield ind1=\" \" ind2=\" \" tag=\"952\">\n" +
-                "              <subfield code=\"h\">*OFK 84-1944</subfield>\n" +
-                "            </datafield>\n" +
-                "          </record>\n" +
-                "        </collection>\n" +
-                "      </content>\n" +
-                "    </bib>\n" +
-                "    <holdings>\n" +
-                "      <holding>\n" +
-                "        <owningInstitutionHoldingsId/>\n" +
-                "        <content>\n" +
-                "          <collection xmlns=\"http://www.loc.gov/MARC21/slim\">\n" +
-                "            <record>\n" +
-                "              <datafield ind1=\"0\" ind2=\"0\" tag=\"852\">\n" +
-                "                <subfield code=\"b\">rc2ma</subfield>\n" +
-                "                <subfield code=\"h\">*OFK 84-1944</subfield>\n" +
-                "              </datafield>\n" +
-                "              <datafield ind1=\"0\" ind2=\"0\" tag=\"866\">\n" +
-                "                <subfield code=\"a\"/>\n" +
-                "              </datafield>\n" +
-                "            </record>\n" +
-                "          </collection>\n" +
-                "        </content>\n" +
-                "        <items>\n" +
-                "          <content>\n" +
-                "            <collection xmlns=\"http://www.loc.gov/MARC21/slim\">\n" +
-                "              <record>\n" +
-                "                <datafield ind1=\"0\" ind2=\"0\" tag=\"876\">\n" +
-                "                  <subfield code=\"h\">Use on site</subfield>\n" +
-                "                  <subfield code=\"a\">.i100000058</subfield>\n" +
-                "                  <subfield code=\"j\">-</subfield>\n" +
-                "                  <subfield code=\"p\">33433005548676</subfield>\n" +
-                "                  <subfield code=\"t\">1</subfield>\n" +
-                "                  <subfield code=\"3\"/>\n" +
-                "                </datafield>\n" +
-                "                <datafield ind1=\"0\" ind2=\"0\" tag=\"900\">\n" +
-                "                  <subfield code=\"a\">Shared</subfield>\n" +
-                "                  <subfield code=\"b\">NA</subfield>\n" +
-                "                </datafield>\n" +
-                "              </record>\n" +
-                "            </collection>\n" +
-                "          </content>\n" +
-                "        </items>\n" +
-                "      </holding>\n" +
-                "    </holdings>\n" +
-                "  </bibRecord>";
+        String content = "<bibRecord><bib><owningInstitutionId>NYPL</owningInstitutionId><owningInstitutionBibId>.b100062349</owningInstitutionBibId><content><collection xmlns=\"http://www.loc.gov/MARC21/slim\"><record><controlfield tag=\"001\">16660149</controlfield><controlfield tag=\"003\">OCoLC</controlfield><controlfield tag=\"005\">20160314023549.0</controlfield><controlfield tag=\"007\">hd afb---buca</controlfield><controlfield tag=\"007\">hd bfb---baaa</controlfield><controlfield tag=\"008\">850618s1981    nyua    a     000 0dspa d</controlfield><datafield ind1=\" \" ind2=\" \" tag=\"040\"><subfield code=\"a\">NYP</subfield><subfield code=\"b\">eng</subfield><subfield code=\"c\">NYP</subfield><subfield code=\"d\">OCLCQ</subfield><subfield code=\"d\">OCLCF</subfield><subfield code=\"d\">OCLCO</subfield><subfield code=\"d\">OCLCQ</subfield><subfield code=\"d\">NYP</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"049\"><subfield code=\"a\">NYPP</subfield></datafield><datafield ind1=\"1\" ind2=\" \" tag=\"100\"><subfield code=\"a\">Guzmán, Carlos.</subfield></datafield><datafield ind1=\"1\" ind2=\"0\" tag=\"245\"><subfield code=\"a\">Santería</subfield><subfield code=\"h\">[microform] :</subfield><subfield code=\"b\">la adivinación por medio de los [sic] los caracoles /</subfield><subfield code=\"c\">Carlos Guzman.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"260\"><subfield code=\"a\">New York :</subfield><subfield code=\"b\">Latin Press Pub. Co.,</subfield><subfield code=\"c\">©1981.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"300\"><subfield code=\"a\">52 pages :</subfield><subfield code=\"b\">illustrations ;</subfield><subfield code=\"c\">21 cm</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"336\"><subfield code=\"a\">text</subfield><subfield code=\"b\">txt</subfield><subfield code=\"2\">rdacontent</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"337\"><subfield code=\"a\">microform</subfield><subfield code=\"b\">h</subfield><subfield code=\"2\">rdamedia</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"338\"><subfield code=\"a\">microfilm reel</subfield><subfield code=\"b\">hd</subfield><subfield code=\"2\">rdacarrier</subfield></datafield><datafield ind1=\"0\" ind2=\" \" tag=\"490\"><subfield code=\"a\">Estudios afro-cubanos ;</subfield><subfield code=\"v\">v. 2</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">Cover title.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"500\"><subfield code=\"a\">Includes brief biography of Rómulo Lachatanere, writer on Santería.</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"533\"><subfield code=\"a\">Microfilm.</subfield><subfield code=\"b\">New York:</subfield><subfield code=\"c\">New York Public Library,</subfield><subfield code=\"d\">1984.</subfield><subfield code=\"e\">1 microfilm reel; 35 mm.</subfield><subfield code=\"f\">(MN *ZZ-23118).</subfield></datafield><datafield ind1=\" \" ind2=\"0\" tag=\"650\"><subfield code=\"a\">Santeria.</subfield></datafield><datafield ind1=\"1\" ind2=\"0\" tag=\"600\"><subfield code=\"a\">Lachatañeré, Rómulo</subfield></datafield><datafield ind1=\"1\" ind2=\"7\" tag=\"600\"><subfield code=\"a\">Lachatañeré, R.</subfield><subfield code=\"q\">(Rómulo)</subfield><subfield code=\"2\">fast</subfield><subfield code=\"0\">(OCoLC)fst00227801</subfield></datafield><datafield ind1=\" \" ind2=\"7\" tag=\"650\"><subfield code=\"a\">Santeria.</subfield><subfield code=\"2\">fast</subfield><subfield code=\"0\">(OCoLC)fst01105327</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"907\"><subfield code=\"a\">.b100062349</subfield><subfield code=\"c\">m</subfield><subfield code=\"d\">h</subfield><subfield code=\"e\">-</subfield><subfield code=\"f\">spa</subfield><subfield code=\"g\">nyu</subfield><subfield code=\"h\">0</subfield><subfield code=\"i\">2</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"952\"><subfield code=\"h\">Sc Micro R-4131 no. 5</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"035\"><subfield code=\"a\">(OCoLC)16660149</subfield></datafield><leader>01593cam a2200421Li 4500</leader></record></collection></content></bib><holdings><holding><owningInstitutionHoldingsId/><content><collection xmlns=\"http://www.loc.gov/MARC21/slim\"><record><datafield ind1=\"8\" ind2=\" \" tag=\"852\"><subfield code=\"b\">rcxx2</subfield><subfield code=\"h\">*ZZ-23118</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"866\"><subfield code=\"a\"/></datafield></record></collection></content><items><content><collection xmlns=\"http://www.loc.gov/MARC21/slim\"><record><datafield ind1=\" \" ind2=\" \" tag=\"876\"><subfield code=\"p\">33433002594392</subfield><subfield code=\"h\">In Library Use</subfield><subfield code=\"a\">.i281312722</subfield><subfield code=\"j\">Not Available</subfield><subfield code=\"t\">1</subfield></datafield><datafield ind1=\" \" ind2=\" \" tag=\"900\"><subfield code=\"a\">Private</subfield><subfield code=\"b\">NX</subfield></datafield></record></collection></content></items></holding></holdings></bibRecord>";
 
         BibRecord bibRecord = null;
         try {
-            bibRecord = (BibRecord) jaxbHandler.unmarshal(content, BibRecord.class);
-        } catch (JAXBException e) {
+            JAXBContext context = JAXBContext.newInstance(BibRecord.class);
+            XMLInputFactory xif = XMLInputFactory.newFactory();
+            xif.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
+            InputStream stream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
+            XMLStreamReader xsr = xif.createXMLStreamReader(stream);
+            Unmarshaller um = context.createUnmarshaller();
+            bibRecord = (BibRecord) um.unmarshal(xsr);
+        } catch (JAXBException | XMLStreamException e) {
             e.printStackTrace();
         }
         return bibRecord;

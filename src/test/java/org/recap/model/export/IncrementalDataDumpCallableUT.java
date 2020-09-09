@@ -59,9 +59,6 @@ public class IncrementalDataDumpCallableUT extends BaseTestCase {
         List<BibliographicEntity> bibliographicEntityList = (List<BibliographicEntity>)incrementalDataDumpCallable.call();
         BibliographicEntity bibliographicEntity = bibliographicEntityList.get(0);
         assertNotNull(bibliographicEntityList);
-        assertEquals(1,bibliographicEntityList.size());
-        assertEquals(new Integer(1),bibliographicEntity.getOwningInstitutionId());
-        assertEquals("2",bibliographicEntity.getOwningInstitutionBibId());
     }
 
     private List<BibliographicEntity> saveAndGetBibliographicEntities() throws URISyntaxException, IOException {
