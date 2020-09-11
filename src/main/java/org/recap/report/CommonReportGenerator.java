@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommonReportGenerator {
 
@@ -69,12 +70,13 @@ public class CommonReportGenerator {
     }
 
     public void processRecordFailures(Exchange exchange, List failures, String batchHeaders, String requestId, DataExportHeaderUtil dataExportHeaderUtil) {
-        HashMap<String, String> values = getValues(batchHeaders, dataExportHeaderUtil);
+        Map values = getValues(batchHeaders, dataExportHeaderUtil);
         values.put(RecapConstants.NUM_RECORDS, String.valueOf(failures.size()));
         values.put(RecapConstants.FAILURE_CAUSE, (String) failures.get(0));
         values.put(RecapConstants.FAILED_BIBS, RecapConstants.FAILED_BIBS);
         values.put(RecapConstants.BATCH_EXPORT, RecapConstants.BATCH_EXPORT_FAILURE);
         values.put(RecapCommonConstants.REQUEST_ID, requestId);
+        values.put(RecapConstants.FAILURE_LIST, failures);
 
         FluentProducerTemplate fluentProducerTemplate = generateFluentProducerTemplate(exchange, values, RecapConstants.DATADUMP_FAILURE_REPORT_Q);
         fluentProducerTemplate.send();
@@ -129,7 +131,7 @@ public class CommonReportGenerator {
         return values;
     }
 
-    public FluentProducerTemplate generateFluentProducerTemplate(Exchange exchange, HashMap values, String reportQ) {
+    public FluentProducerTemplate generateFluentProducerTemplate(Exchange exchange, Map values, String reportQ) {
         FluentProducerTemplate fluentProducerTemplate = DefaultFluentProducerTemplate.on(exchange.getContext());
         fluentProducerTemplate
                 .to(reportQ)
