@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.recap.BaseTestCase;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.camel.datadump.consumer.DataExportReportActiveMQConsumer;
@@ -23,7 +24,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by peris on 11/11/16.
  */
-public class DataExportReportActiveMQConsumerTest {
+public class DataExportReportActiveMQConsumerTest extends BaseTestCase {
 
     @Mock
     ReportDetailRepository mockReportDetailsRepository;
