@@ -1,11 +1,12 @@
 package org.recap.util.datadump;
 
+import org.apache.camel.ProducerTemplate;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.recap.BaseTestCase;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.camel.datadump.consumer.DataExportReportActiveMQConsumer;
@@ -24,10 +25,14 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by peris on 11/11/16.
  */
-public class DataExportReportActiveMQConsumerTest extends BaseTestCase {
+public class DataExportReportActiveMQConsumerTest{
 
+    @InjectMocks
+    DataExportReportActiveMQConsumer dataExportReportActiveMQConsumer;
     @Mock
     ReportDetailRepository mockReportDetailsRepository;
+    @Mock
+    ProducerTemplate producerTemplate;
 
     @Before
     public void setUp() throws Exception {
@@ -83,10 +88,12 @@ public class DataExportReportActiveMQConsumerTest extends BaseTestCase {
 
     @Test
     public void processNewFailureReportEntity() throws  Exception {
-       DataExportReportActiveMQConsumer dataExportReportActiveMQConsumer = new DataExportReportActiveMQConsumer();
         HashMap values = new HashMap();
         values.put(RecapConstants.REQUESTING_INST_CODE, "PUL");
         values.put(RecapConstants.FAILED_BIBS, "2");
+        values.put(RecapConstants.INSTITUTION_CODES, "PUL");
+        values.put(RecapConstants.FETCH_TYPE, "Full");
+        values.put(RecapConstants.FAILURE_LIST, Arrays.asList("PUL\\*CUL","RECALL\\*FAILED"));
         values.put(RecapConstants.FAILURE_CAUSE, "Bad happened");
         values.put(RecapConstants.BATCH_EXPORT, "Batch Export");
         values.put(RecapCommonConstants.REQUEST_ID, "PUL-2017-12-12 11");
@@ -98,9 +105,11 @@ public class DataExportReportActiveMQConsumerTest extends BaseTestCase {
 
     @Test
     public void processExistingFailureReportEntity() throws  Exception {
-        DataExportReportActiveMQConsumer dataExportReportActiveMQConsumer = new DataExportReportActiveMQConsumer();
         HashMap values = new HashMap();
         values.put(RecapConstants.REQUESTING_INST_CODE, "PUL");
+        values.put(RecapConstants.INSTITUTION_CODES, "PUL");
+        values.put(RecapConstants.FETCH_TYPE, "Incremental");
+        values.put(RecapConstants.FAILURE_LIST, Arrays.asList("PUL\\*CUL","RECALL\\*FAILED"));
         values.put(RecapConstants.FAILED_BIBS, "2");
         values.put(RecapConstants.FAILURE_CAUSE, "Bad happened");
         values.put(RecapConstants.BATCH_EXPORT, "Batch Export");
