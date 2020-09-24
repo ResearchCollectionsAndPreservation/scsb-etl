@@ -104,7 +104,7 @@ public class CSVRouteBuilder_UT extends BaseTestCase {
         assertTrue(directory.isDirectory());
 
         boolean directoryContains = new File(directory, expectedGeneratedFileName).exists();
-        assertTrue(true);
+        assertTrue(directory.isDirectory());
 
        // FileUtils.forceDelete(new File(reportDirectory+File.separator+expectedGeneratedFileName));
 

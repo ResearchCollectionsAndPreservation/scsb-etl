@@ -136,6 +136,8 @@ public class SCSBRecordFormatActiveMQConsumer extends CommonReportGenerator {
             dataExportHeaderUtil = getDataExportHeaderUtil();
             Map values = processReport(batchHeaders, requestId, dataExportHeaderUtil);
             values.put(RecapConstants.NUM_RECORDS, String.valueOf(failures.size()));
+            values.put(RecapConstants.FAILURE_CAUSE,failures.get(0));
+            values.put(RecapConstants.FAILURE_LIST,failures);
             fluentProducerTemplate
                     .to(RecapConstants.DATADUMP_FAILURE_REPORT_Q)
                     .withBody(values);
