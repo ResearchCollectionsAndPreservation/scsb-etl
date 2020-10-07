@@ -118,7 +118,7 @@ public class RecapConstants {
     public static final String DATADUMP_EMAIL_TO_ADDRESS_REQUIRED = "Please enter a valid email address";
     public static final String INVALID_EMAIL_ADDRESS = "Email address is invalid.";
     public static final String INVALID_DATE_FORMAT = "Please enter the date in \"{0}\" format.";
-    public static final String DATADUMP_FETCHTYPE_FULL = "0";
+    public static final String DATADUMP_FETCHTYPE_FULL = "10";
     public static final String DATADUMP_FETCHTYPE_INCREMENTAL = "1";
     public static final String DATADUMP_FETCHTYPE_DELETED = "2";
     public static final String DATADUMP_TRANSMISSION_TYPE_FTP = "0";
@@ -168,6 +168,7 @@ public class RecapConstants {
     public static final String BATCH_EXPORT_SUCCESS = "BatchExportSuccess";
     public static final String BATCH_EXPORT_FAILURE = "BatchExportFailure";
     public static final String FAILURE_CAUSE = "FailureCause";
+    public static final String FAILURE_LIST = "FailureList";
     public static final String FAILED_BIBS = "FailedBibs";
     public static final String COLLECTION_GROUP_IDS = "collectionGroupIds";
     public static final String FETCH_TYPE = "fetchType";
@@ -208,6 +209,8 @@ public class RecapConstants {
     public static final String DATA_DUMP_TYPE = "dataDumpType";
     public static final String MESSAGE = "message";
     public static final String EXPORTED_DATE = "exportedDate";
+    public static final String DATADUMP_FAILURE_REPORT_SFTP_Q = "direct://datadumpFailureReportSftpQ";
+    public static final String DATADUMP_FAILURE_REPORT_SFTP_ID = "datadumpFailureReportSftpQId";
 
     public class MarcFields {
         public static final String CF_001 = "001";
