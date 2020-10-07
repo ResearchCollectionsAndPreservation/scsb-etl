@@ -79,7 +79,7 @@ public class DeletedJsonFormatterService implements DataDumpFormatterInterface {
                 itemExportedCount = itemExportedCount + bibliographicEntity.getItemEntities().size();
             } catch (Exception e) {
                 logger.error(RecapConstants.ERROR,e);
-                errors.add(String.valueOf(e.getCause()));
+                errors.add(bibliographicEntity.getOwningInstitutionBibId()+" * "+String.valueOf(e));
             }
         }
 
