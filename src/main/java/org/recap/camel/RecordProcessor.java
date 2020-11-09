@@ -10,6 +10,8 @@ import org.recap.model.jaxb.JAXBHandler;
 import org.recap.model.jaxb.Holding;
 import org.recap.model.jaxb.Holdings;
 import org.recap.model.jpa.*;
+import org.recap.model.jparw.ReportEntity;
+import org.recap.model.jparw.ReportDataEntity;
 import org.recap.repository.CollectionGroupDetailsRepository;
 import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.repository.ItemStatusDetailsRepository;

@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.ItemEntity;
-import org.recap.model.jpa.ReportDataEntity;
+import org.recap.model.jparw.ReportDataEntity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

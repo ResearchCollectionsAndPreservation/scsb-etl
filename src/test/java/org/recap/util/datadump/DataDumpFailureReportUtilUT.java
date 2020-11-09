@@ -3,7 +3,7 @@ package org.recap.util.datadump;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.model.export.DataDumpRequest;
-import org.recap.model.jpa.ReportDataEntity;
+import org.recap.model.jparw.ReportDataEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
