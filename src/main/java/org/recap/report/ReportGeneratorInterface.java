@@ -1,6 +1,6 @@
 package org.recap.report;
 
-import org.recap.model.jpa.ReportEntity;
+import org.recap.model.jparw.ReportEntity;
 
 import java.util.List;
 

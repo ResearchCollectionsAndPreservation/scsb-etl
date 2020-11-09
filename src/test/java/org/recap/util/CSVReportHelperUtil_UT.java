@@ -3,8 +3,8 @@ package org.recap.util;
 import org.junit.Test;
 import org.recap.RecapCommonConstants;
 import org.recap.model.csv.FailureReportReCAPCSVRecord;
-import org.recap.model.jpa.ReportDataEntity;
-import org.recap.model.jpa.ReportEntity;
+import org.recap.model.jparw.ReportDataEntity;
+import org.recap.model.jparw.ReportEntity;
 
 import java.util.ArrayList;
 import java.util.List;

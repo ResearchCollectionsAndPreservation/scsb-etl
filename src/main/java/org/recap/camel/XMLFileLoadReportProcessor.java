@@ -4,7 +4,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.recap.RecapConstants;
 import org.recap.report.CommonReportGenerator;
-import org.recap.repository.ReportDetailRepository;
+import org.recap.repositoryrw.ReportDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
