@@ -2,7 +2,7 @@ package org.recap.report;
 
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
-import org.recap.model.jpa.ReportEntity;
+import org.recap.model.jparw.ReportEntity;
 import org.springframework.stereotype.Component;
 import java.util.List;
 

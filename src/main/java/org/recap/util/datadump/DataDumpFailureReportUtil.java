@@ -3,7 +3,7 @@ package org.recap.util.datadump;
 import org.recap.RecapConstants;
 import org.recap.model.export.DataDumpRequest;
 import org.recap.model.jpa.BibliographicEntity;
-import org.recap.model.jpa.ReportDataEntity;
+import org.recap.model.jparw.ReportDataEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
