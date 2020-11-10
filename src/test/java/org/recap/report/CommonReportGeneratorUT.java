@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCase;
-import org.recap.repository.ReportDetailRepository;
+import org.recap.repositoryrw.ReportDetailRepository;
 import org.recap.util.datadump.DataExportHeaderUtil;
 
 import java.util.Arrays;

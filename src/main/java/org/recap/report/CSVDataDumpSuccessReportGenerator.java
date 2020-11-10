@@ -4,7 +4,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.DataDumpSuccessReport;
-import org.recap.model.jpa.ReportEntity;
+import org.recap.model.jparw.ReportEntity;
 import org.recap.util.datadump.DataDumpSuccessReportGenerator;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;

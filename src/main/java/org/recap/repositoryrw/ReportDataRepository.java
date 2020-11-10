@@ -1,6 +1,6 @@
-package org.recap.repository;
+package org.recap.repositoryrw;
 
-import org.recap.model.jpa.ReportDataEntity;
+import org.recap.model.jparw.ReportDataEntity;
 import org.recap.repository.jpa.BaseRepository;
 import org.springframework.data.jpa.repository.Query;
 

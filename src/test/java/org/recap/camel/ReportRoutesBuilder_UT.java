@@ -4,9 +4,9 @@ import org.apache.camel.ProducerTemplate;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.RecapCommonConstants;
-import org.recap.model.jpa.ReportDataEntity;
-import org.recap.model.jpa.ReportEntity;
-import org.recap.repository.ReportDetailRepository;
+import org.recap.model.jparw.ReportDataEntity;
+import org.recap.model.jparw.ReportEntity;
+import org.recap.repositoryrw.ReportDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
