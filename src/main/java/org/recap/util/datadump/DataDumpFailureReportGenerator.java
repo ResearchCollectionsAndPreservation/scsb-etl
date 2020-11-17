@@ -3,8 +3,8 @@ package org.recap.util.datadump;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.recap.RecapConstants;
 import org.recap.model.csv.DataDumpFailureReport;
-import org.recap.model.jpa.ReportDataEntity;
-import org.recap.model.jpa.ReportEntity;
+import org.recap.model.jparw.ReportDataEntity;
+import org.recap.model.jparw.ReportEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

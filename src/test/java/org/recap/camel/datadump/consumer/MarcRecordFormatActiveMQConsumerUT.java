@@ -8,7 +8,7 @@ import org.apache.camel.support.*;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.recap.BaseTestCase;
-import org.recap.model.jpa.*;
+import org.recap.model.jpa.BibliographicEntity;
 import org.recap.service.formatter.datadump.MarcXmlFormatterService;
 import org.recap.util.datadump.DataExportHeaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;

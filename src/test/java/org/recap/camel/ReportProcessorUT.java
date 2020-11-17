@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.RecapCommonConstants;
-import org.recap.model.jpa.ReportEntity;
+import org.recap.model.jparw.ReportEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
