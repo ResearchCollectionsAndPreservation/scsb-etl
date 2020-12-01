@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class DeletedDataDumpExecutorService extends AbstractDataDumpExecutorService {
 
-    @Value("${datadump.deleted.type.onlyorphan.institution}")
+    @Value("${etl.data.dump.deleted.type.onlyorphan.institution}")
     private String deletedOnlyOrphanInstitution;
 
     /**

@@ -37,9 +37,9 @@ public class DataExportReportFtpRouteBuilder {
      */
     @Autowired
     public DataExportReportFtpRouteBuilder(CamelContext context,
-                                           @Value("${ftp.userName}") String ftpUserName, @Value("${ftp.datadump.report.remote.server}") String ftpOnlyReportRemoteServer,
-                                           @Value("${ftp.knownHost}") String ftpKnownHost, @Value("${ftp.privateKey}") String ftpPrivateKey,
-                                           @Value("${ftp.datadump.remote.server}") String ftpDumpWithReportRemoteServer) {
+                                           @Value("${ftp.server.userName}") String ftpUserName, @Value("${ftp.datadump.report.remote.server}") String ftpOnlyReportRemoteServer,
+                                           @Value("${ftp.server.knownHost}") String ftpKnownHost, @Value("${ftp.server.privateKey}") String ftpPrivateKey,
+                                           @Value("${ftp.data.dump.dir}") String ftpDumpWithReportRemoteServer) {
         try {
             context.addRoutes(new RouteBuilder() {
                 @Override

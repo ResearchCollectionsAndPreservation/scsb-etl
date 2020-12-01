@@ -1,15 +1,14 @@
 package org.recap.controller;
 
-import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.camel.dynamicrouter.DynamicRouteBuilder;
+import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.service.executor.datadump.DataDumpSchedulerExecutorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by rajeshbabuk on 7/7/17.
@@ -23,6 +22,9 @@ public class DataDumpSequenceRestController {
 
     @Autowired
     private DynamicRouteBuilder dynamicRouteBuilder;
+
+    @Autowired
+    InstitutionDetailsRepository institutionDetailsRepository;
 
     /**
      * Gets dynamic route builder.
@@ -42,10 +44,12 @@ public class DataDumpSequenceRestController {
     @GetMapping(value = "/exportDataDumpSequence")
     @ResponseBody
     public String exportDataDump(@RequestParam String date) {
+        List<String> allInstitutionCodeExceptHTC = institutionDetailsRepository.findAllInstitutionCodeExceptHTC();
+        Optional<String> firstInstitution = allInstitutionCodeExceptHTC.stream().findFirst();
         RecapConstants.EXPORT_SCHEDULER_CALL = true;
         RecapConstants.EXPORT_DATE_SCHEDULER = date;
-        RecapConstants.EXPORT_FETCH_TYPE_INSTITUTION = RecapConstants.EXPORT_INCREMENTAL_PUL;
+        RecapConstants.EXPORT_FETCH_TYPE_INSTITUTION = RecapConstants.EXPORT_INCREMENTAL+firstInstitution.get();
         getDynamicRouteBuilder().addDataDumpExportRoutes();
-        return dataDumpSchedulerExecutorService.initiateDataDumpForScheduler(date, RecapCommonConstants.PRINCETON, null);
+        return dataDumpSchedulerExecutorService.initiateDataDumpForScheduler(date, firstInstitution.get(), null);
     }
 }

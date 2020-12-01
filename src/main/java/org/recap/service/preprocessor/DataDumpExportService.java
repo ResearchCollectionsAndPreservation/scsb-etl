@@ -6,11 +6,14 @@ import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.FileUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
+import org.recap.model.ILSConfigProperties;
 import org.recap.model.export.DataDumpRequest;
 import org.recap.model.jpa.CollectionGroupEntity;
 import org.recap.repository.CollectionGroupDetailsRepository;
+import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.service.email.datadump.DataDumpEmailService;
 import org.recap.service.executor.datadump.DataDumpExecutorService;
+import org.recap.util.PropertyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,26 +69,23 @@ public class DataDumpExportService {
     @Autowired
     private ProducerTemplate producerTemplate;
 
-    @Value("${datadump.status.file.name}")
+    @Value("${etl.data.dump.directory}")
     private String dataDumpStatusFileName;
 
-    @Value("${datadump.fetchtype.full}")
+    @Value("${etl.data.dump.fetchtype.full}")
     private String fetchTypeFull;
 
-    @Value("${datadump.incremental.date.limit}")
+    @Value("${etl.data.dump.incremental.date.limit}")
     private String incrementalDateLimit;
 
     @Value("${recap.assist.email.to}")
     private String recapAssistEmailAddress;
 
-    @Value("${etl.pul.data.loaded.date}")
-    private String pulInitialDataLoadedDate;
+    @Autowired
+    PropertyUtil propertyUtil;
 
-    @Value("${etl.cul.data.loaded.date}")
-    private String culInitialDataLoadedDate;
-
-    @Value("${etl.nypl.data.loaded.date}")
-    private String nyplInitialDataLoadedDate;
+    @Autowired
+    InstitutionDetailsRepository institutionDetailsRepository;
 
     /**
      * Start the data dump process.
@@ -257,10 +257,10 @@ public class DataDumpExportService {
         Date currentDate = new Date();
         Map<Integer, String> errorMessageMap = new HashMap<>();
         Integer errorcount = 1;
+        List<String> allInstitutionCodeExceptHTC = institutionDetailsRepository.findAllInstitutionCodeExceptHTC();
         if (!dataDumpRequest.getInstitutionCodes().isEmpty()) {
             for (String institutionCode : dataDumpRequest.getInstitutionCodes()) {
-                if (!institutionCode.equals(RecapCommonConstants.COLUMBIA) && !institutionCode.equals(RecapCommonConstants.PRINCETON)
-                        && !institutionCode.equals(RecapCommonConstants.NYPL)) {
+                if(!allInstitutionCodeExceptHTC.contains(institutionCode)){
                     errorMessageMap.put(errorcount, RecapConstants.DATADUMP_VALID_INST_CODES_ERR_MSG);
                     errorcount++;
                 }
@@ -270,11 +270,11 @@ public class DataDumpExportService {
                 errorcount++;
             }
         }
-        if (dataDumpRequest.getRequestingInstitutionCode() != null && !dataDumpRequest.getRequestingInstitutionCode().equals(RecapCommonConstants.COLUMBIA) && !dataDumpRequest.getRequestingInstitutionCode().equals(RecapCommonConstants.PRINCETON)
-                && !dataDumpRequest.getRequestingInstitutionCode().equals(RecapCommonConstants.NYPL) ) {
-                errorMessageMap.put(errorcount, RecapConstants.DATADUMP_VALID_REQ_INST_CODE_ERR_MSG);
-                errorcount++;
+        if(dataDumpRequest.getRequestingInstitutionCode() != null && !allInstitutionCodeExceptHTC.contains(dataDumpRequest.getRequestingInstitutionCode())){
+            errorMessageMap.put(errorcount, RecapConstants.DATADUMP_VALID_REQ_INST_CODE_ERR_MSG);
+            errorcount++;
         }
+
         if (!dataDumpRequest.getFetchType().equals(fetchTypeFull) &&
                 !dataDumpRequest.getFetchType().equals(RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL)
                 && !dataDumpRequest.getFetchType().equals(RecapConstants.DATADUMP_FETCHTYPE_DELETED)) {
@@ -302,14 +302,9 @@ public class DataDumpExportService {
                 try {
                     boolean isValidDate = validateDate(dataDumpRequestDateString);
                     if(isValidDate) {
-                        if(institutionCodes.contains(RecapCommonConstants.PRINCETON)) {
-                            errorcount = checkToRestrictFullDumpViaIncremental(errorMessageMap, errorcount, dataDumpRequestDateString, pulInitialDataLoadedDate, RecapCommonConstants.PRINCETON);
-                        }
-                        if(institutionCodes.contains(RecapCommonConstants.COLUMBIA)) {
-                            errorcount = checkToRestrictFullDumpViaIncremental(errorMessageMap, errorcount, dataDumpRequestDateString, culInitialDataLoadedDate, RecapCommonConstants.COLUMBIA);
-                        }
-                        if(institutionCodes.contains(RecapCommonConstants.NYPL)) {
-                            errorcount = checkToRestrictFullDumpViaIncremental(errorMessageMap, errorcount, dataDumpRequestDateString, nyplInitialDataLoadedDate, RecapCommonConstants.NYPL);
+                        for (String institutionCode : institutionCodes) {
+                            ILSConfigProperties ilsConfigProperties = propertyUtil.getILSConfigProperties(institutionCode);
+                            errorcount = checkToRestrictFullDumpViaIncremental(errorMessageMap, errorcount, dataDumpRequestDateString, ilsConfigProperties.getEtlInitialDataLoadedDate(), institutionCode);
                         }
                         errorcount = checkForIncrementalDateLimit(currentDate, errorMessageMap, errorcount, dataDumpRequestDateString);
                     } else {

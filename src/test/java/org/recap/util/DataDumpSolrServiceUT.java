@@ -37,7 +37,7 @@ public class DataDumpSolrServiceUT extends BaseTestCase {
     @Mock
     DataDumpSolrService mockedDataDumpSolrService;
 
-    @Value("${solrclient.url}")
+    @Value("${scsb.solr.doc.url}")
     String solrClientUrl;
 
     @Mock

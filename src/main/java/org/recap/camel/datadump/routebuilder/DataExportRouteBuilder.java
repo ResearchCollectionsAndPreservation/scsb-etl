@@ -1,6 +1,8 @@
 package org.recap.camel.datadump.routebuilder;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.recap.RecapConstants;
 import org.recap.camel.datadump.DataDumpSequenceProcessor;
@@ -140,6 +142,13 @@ public class DataExportRouteBuilder {
                 public void configure() throws Exception {
                     from(RecapConstants.DATA_DUMP_COMPLETION_FROM)
                             .routeId(RecapConstants.DATA_DUMP_COMPLETION_ROUTE_ID)
+                            .process(new Processor() {
+                                @Override
+                                public void process(Exchange exchange) throws Exception {
+                                    logger.info("test");
+                                    logger.info("exchange");
+                                }
+                            })
                             .process(dataDumpSequenceProcessor)
                             .onCompletion().log(RecapConstants.DATA_DUMP_COMPLETION_LOG);
                 }
@@ -148,29 +157,12 @@ public class DataExportRouteBuilder {
             camelContext.addRoutes(new RouteBuilder() {
                 @Override
                 public void configure() throws Exception {
-                    from(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_PUL)
-                            .routeId(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_PUL_ROUTE_ID)
-                            .bean(dataExportCompletionStatusActiveMQConsumer, "pulOnCompletionTopicOnMessage");
+                    from(RecapConstants.DATA_DUMP_COMPLETION_TOPIC)
+                            .routeId(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_ROUTE_ID)
+                            .bean(dataExportCompletionStatusActiveMQConsumer, "onCompletionTopicMessage");
                 }
             });
 
-            camelContext.addRoutes(new RouteBuilder() {
-                @Override
-                public void configure() throws Exception {
-                    from(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_CUL)
-                            .routeId(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_CUL_ROUTE_ID)
-                            .bean(dataExportCompletionStatusActiveMQConsumer, "culOnCompletionTopicOnMessage");
-                }
-            });
-
-            camelContext.addRoutes(new RouteBuilder() {
-                @Override
-                public void configure() throws Exception {
-                    from(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_NYPL)
-                            .routeId(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_NYPL_ROUTE_ID)
-                            .bean(dataExportCompletionStatusActiveMQConsumer, "nyplOnCompletionTopicOnMessage");
-                }
-            });
         } catch (Exception e) {
             logger.error(RecapConstants.ERROR, e);
         }

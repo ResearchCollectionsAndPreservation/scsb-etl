@@ -145,7 +145,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCase {
     private Map<String, Integer> institutionMap;
     @Mock
     private Map<String, Integer> collectionGroupMap;
-    @Value("${etl.dump.directory}")
+    @Value("${etl.data.dump.directory}")
     private String dumpDirectoryPath;
     @PersistenceContext
     private EntityManager entityManager;

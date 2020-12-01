@@ -74,7 +74,7 @@ public class EtlDataLoadController {
     @Value("${etl.load.batchSize}")
     private Integer batchSize;
 
-    @Value("${etl.load.directory}")
+    @Value("${etl.data.load.directory}")
     private String inputDirectoryPath;
 
     /**

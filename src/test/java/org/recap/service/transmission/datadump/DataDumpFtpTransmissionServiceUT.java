@@ -26,19 +26,19 @@ public class DataDumpFtpTransmissionServiceUT extends BaseTestCase {
     @Autowired
     private ProducerTemplate producer;
 
-    @Value("${etl.dump.directory}")
+    @Value("${etl.data.dump.directory}")
     private String dumpDirectoryPath;
 
-    @Value("${ftp.userName}")
+    @Value("${ftp.server.userName}")
     private String ftpUserName;
 
-    @Value("${ftp.knownHost}")
+    @Value("${ftp.server.knownHost}")
     private String ftpKnownHost;
 
-    @Value("${ftp.privateKey}")
+    @Value("${ftp.server.privateKey}")
     private String ftpPrivateKey;
 
-    @Value("${ftp.datadump.remote.server}")
+    @Value("${ftp.data.dump.dir}")
     private String ftpDataDumpRemoteServer;
 
     @Spy

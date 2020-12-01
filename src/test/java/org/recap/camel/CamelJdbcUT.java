@@ -87,7 +87,7 @@ public class CamelJdbcUT extends BaseTestCase {
     @Mock
     DataDumpSolrService mockedDataDumpSolrService;
 
-    @Value("${solrclient.url}")
+    @Value("${scsb.solr.doc.url}")
     String solrClientUrl;
 
     @Mock

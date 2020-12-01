@@ -60,12 +60,12 @@ public class DataDumpRestControllerUT extends BaseControllerUT {
     @Mock
     DataDumpSolrService mockedDataDumpSolrService;
 
-    @Value("${solrclient.url}")
+    @Value("${scsb.solr.doc.url}")
     String solrClientUrl;
 
     private ExecutorService executorService;
 
-    @Value("${datadump.status.file.name}")
+    @Value("${etl.data.dump.directory}")
     String dataDumpStatusFileName;
 
     @Mock

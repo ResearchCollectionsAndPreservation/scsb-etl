@@ -5,18 +5,16 @@ import org.marc4j.MarcReader;
 import org.marc4j.MarcWriter;
 import org.marc4j.MarcXmlReader;
 import org.marc4j.MarcXmlWriter;
-import org.marc4j.marc.ControlField;
-import org.marc4j.marc.DataField;
-import org.marc4j.marc.MarcFactory;
-import org.marc4j.marc.Record;
-import org.marc4j.marc.Subfield;
+import org.marc4j.marc.*;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
+import org.recap.model.ILSConfigProperties;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.ItemEntity;
+import org.recap.util.PropertyUtil;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by premkb on 28/9/16.
@@ -42,14 +33,8 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
 
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(MarcXmlFormatterService.class);
 
-    @Value("${datadump.marc.pul}")
-    private String holdingPUL;
-
-    @Value("${datadump.marc.cul}")
-    private String holdingCUL;
-
-    @Value("${datadump.marc.nypl}")
-    private String holdingNYPL;
+    @Autowired
+    PropertyUtil propertyUtil;
 
     private MarcFactory factory;
 
@@ -287,17 +272,8 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
                 dataField.removeSubfield(subfield);
             }
         }
-        switch (holdingEntity.getInstitutionEntity().getInstitutionCode()) {
-            case RecapCommonConstants.PRINCETON:
-                partnerInfo = holdingPUL;
-                break;
-            case RecapCommonConstants.COLUMBIA:
-                partnerInfo = holdingCUL;
-                break;
-            case RecapCommonConstants.NYPL:
-                partnerInfo = holdingNYPL;
-                break;
-        }
+        ILSConfigProperties ilsConfigProperties = propertyUtil.getILSConfigProperties(holdingEntity.getInstitutionEntity().getInstitutionCode());
+        partnerInfo = ilsConfigProperties.getDatadumpMarc();
         Subfield subfield = factory.newSubfield('b', partnerInfo);
         dataField.addSubfield(subfield);
     }

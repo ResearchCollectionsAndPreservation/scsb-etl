@@ -40,7 +40,7 @@ public class XMLProcessorUT extends BaseTestCase {
     @Autowired
     CamelContext camelContext;
 
-    @Value("${etl.load.directory}")
+    @Value("${etl.data.load.directory}")
     private String etlLoadDir;
 
     @Autowired

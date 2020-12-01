@@ -40,7 +40,7 @@ public class XmlRouteBuilder {
     @Autowired
     public XmlRouteBuilder(CamelContext context, XmlRecordRepository xmlRecordRepository, XMLFileLoadReportProcessor xmlFileLoadReportProcessor, XMLFileLoadExceptionReportProcessor xmlFileLoadExceptionReportProcessor, XMLFileLoadValidator xmlFileLoadValidator,
                            @Value("${etl.split.xml.tag.name}") String xmlTagName,
-                           @Value("${etl.load.directory}") String inputDirectoryPath,
+                           @Value("${etl.data.load.directory}") String inputDirectoryPath,
                            @Value("${etl.pool.size}") Integer poolSize, @Value("${etl.max.pool.size}") Integer maxPoolSize) {
 
         try {

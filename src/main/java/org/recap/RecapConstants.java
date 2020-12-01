@@ -53,16 +53,11 @@ public class RecapConstants {
 
 
     public static final String DATA_DUMP_COMPLETION_ROUTE_ID = "dataDumpCompletionFromQRoute";
-    public static final String DATA_DUMP_COMPLETION_TOPIC_STATUS_PUL_ROUTE_ID = "pulExportProcessCompletionRouteId";
-    public static final String DATA_DUMP_COMPLETION_TOPIC_STATUS_CUL_ROUTE_ID = "culExportProcessCompletionRouteId";
-    public static final String DATA_DUMP_COMPLETION_TOPIC_STATUS_NYPL_ROUTE_ID = "nyplExportProcessCompletionRouteId";
 
     public static final String DATA_DUMP_COMPLETION_FROM = "scsbactivemq:queue:dataDumpCompletionFromQ";
     public static final String DATA_DUMP_COMPLETION_TO = "scsbactivemq:queue:dataDumpCompletionToQ";
     public static final String DATA_DUMP_COMPLETION_LOG = "Scheduled ongoing data export queue consumed";
-    public static final String DATA_DUMP_COMPLETION_TOPIC_STATUS_CUL = "scsbactivemq:topic:CUL.ExportProcessCompletion";
-    public static final String DATA_DUMP_COMPLETION_TOPIC_STATUS_PUL = "scsbactivemq:topic:PUL.ExportProcessCompletion";
-    public static final String DATA_DUMP_COMPLETION_TOPIC_STATUS_NYPL = "scsbactivemq:topic:NYPL.ExportProcessCompletion";
+    public static final String DATA_DUMP_COMPLETION_TOPIC = "scsbactivemq:topic:ExportProcessCompletion";
 
     public static final String DATA_DUMP_COMPLETION_TOPIC_MESSAGE = "Incremental datadump is completed";
 
@@ -211,6 +206,7 @@ public class RecapConstants {
     public static final String EXPORTED_DATE = "exportedDate";
     public static final String DATADUMP_FAILURE_REPORT_SFTP_Q = "direct://datadumpFailureReportSftpQ";
     public static final String DATADUMP_FAILURE_REPORT_SFTP_ID = "datadumpFailureReportSftpQId";
+    public static final String DATA_DUMP_COMPLETION_TOPIC_ROUTE_ID = "DataDumpCompletionTopicRouteId";
 
     public class MarcFields {
         public static final String CF_001 = "001";
@@ -227,12 +223,7 @@ public class RecapConstants {
 
     public static final String INCREMENTAL = "Incremental";
     public static final String DELETED = "Deleted";
-    public static final String EXPORT_INCREMENTAL_PUL = "IncrementalRecordsExportPul";
-    public static final String EXPORT_INCREMENTAL_CUL = "IncrementalRecordsExportCul";
-    public static final String EXPORT_INCREMENTAL_NYPL = "IncrementalRecordsExportNypl";
-    public static final String EXPORT_DELETED_PUL = "DeletedRecordsExportPul";
-    public static final String EXPORT_DELETED_CUL = "DeletedRecordsExportCul";
-    public static final String EXPORT_DELETED_NYPL = "DeletedRecordsExportNypl";
+    public static final String EXPORT_INCREMENTAL = "IncrementalRecordsExport";
 
     public static final String EXPORT_TYPE_FULL = "Full";
 

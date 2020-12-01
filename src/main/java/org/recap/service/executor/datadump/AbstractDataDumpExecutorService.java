@@ -54,7 +54,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
     @Value("${datadump.httpresponse.record.limit}")
     private String httpResonseRecordLimit;
 
-    @Value("${solrclient.url}")
+    @Value("${scsb.solr.doc.url}")
     private String solrClientUrl;
 
     @Value("${datadump.batch.size}")

@@ -46,10 +46,10 @@ public class DataDumpExportServiceUT extends BaseTestCase {
     private ConsumerTemplate consumerTemplate;
     @Autowired
     private ProducerTemplate producerTemplate;
-    @Value("${datadump.fetchtype.full}")
+    @Value("${etl.data.dump.fetchtype.full}")
     private String fetchTypeFull;
 
-    @Value("${datadump.incremental.date.limit}")
+    @Value("${etl.data.dump.incremental.date.limit}")
     private String incrementalDateLimit;
 
     @Value("${recap.assist.email.to}")
