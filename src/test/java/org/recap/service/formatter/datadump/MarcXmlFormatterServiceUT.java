@@ -62,7 +62,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Value("${etl.dump.directory}")
+    @Value("${etl.data.dump.directory}")
     private String dumpDirectoryPath;
 
 

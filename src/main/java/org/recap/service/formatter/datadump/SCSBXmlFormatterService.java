@@ -10,7 +10,7 @@ import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.ItemEntity;
 import org.recap.model.jpa.MatchingBibInfoDetail;
 import org.recap.repository.MatchingBibInfoDetailRepository;
-import org.recap.repository.ReportDataRepository;
+import org.recap.repositoryrw.ReportDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;

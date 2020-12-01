@@ -35,25 +35,25 @@ public class ZipFileProcessor implements Processor {
     /**
      * The Ftp user name.
      */
-    @Value("${ftp.userName}")
+    @Value("${ftp.server.userName}")
     String ftpUserName;
 
     /**
      * The Ftp known host.
      */
-    @Value("${ftp.knownHost}")
+    @Value("${ftp.server.knownHost}")
     String ftpKnownHost;
 
     /**
      * The Ftp private key.
      */
-    @Value("${ftp.privateKey}")
+    @Value("${ftp.server.privateKey}")
     String ftpPrivateKey;
 
     /**
      * The Ftp data dump remote server.
      */
-    @Value("${ftp.datadump.remote.server}")
+    @Value("${ftp.data.dump.dir}")
     String ftpDataDumpRemoteServer;
 
     @Value("${etl.dump.ftp.staging.directory}")
@@ -148,13 +148,7 @@ public class ZipFileProcessor implements Processor {
             producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_FROM, reqestingInst);
         }
         String dataDumpTypeCompletionMessage = getDataDumpTypeCompletionMessage(batchHeaders);
-        if(reqestingInst.equalsIgnoreCase(RecapCommonConstants.PRINCETON)){
-            producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_PUL,buildJsonResponseForTopics(batchHeaders,reqestingInst,dataDumpTypeCompletionMessage));
-        }else if(reqestingInst.equalsIgnoreCase(RecapCommonConstants.COLUMBIA)){
-            producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_CUL, dataDumpTypeCompletionMessage.split("-")[1]);
-        }else if(reqestingInst.equalsIgnoreCase(RecapCommonConstants.NYPL)){
-            producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_TOPIC_STATUS_NYPL,dataDumpTypeCompletionMessage.split("-")[1] );
-        }
+        producer.sendBody(RecapConstants.DATA_DUMP_COMPLETION_TOPIC,buildJsonResponseForTopics(batchHeaders,reqestingInst,dataDumpTypeCompletionMessage));
     }
 
 

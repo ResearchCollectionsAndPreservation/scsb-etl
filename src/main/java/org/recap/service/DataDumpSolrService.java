@@ -19,7 +19,7 @@ public class DataDumpSolrService {
     /**
      * The Solr client url.
      */
-    @Value("${solrclient.url}")
+    @Value("${scsb.solr.doc.url}")
     String solrClientUrl;
 
     /**

@@ -36,9 +36,9 @@ public class DataExportReportRouteBuilder {
      * @param camelContext the camel context
      */
     @Autowired
-    private DataExportReportRouteBuilder(@Value("${ftp.userName}") String ftpUserName,@Value("${ftp.ftpHost}") String ftpHost,
-                                         @Value("${ftp.ftpPort}") String ftpPort,@Value("${ftp.privateKey}") String ftpPrivateKey,
-                                         @Value("${ftp.knownHost}") String ftpKnownHost,@Value("${etl.export.ftp.failurereport.directory}") String ftpFailureReportDirectory,
+    private DataExportReportRouteBuilder(@Value("${ftp.server.userName}") String ftpUserName,@Value("${ftp.server}") String ftpHost,
+                                         @Value("${ftp.server.port}") String ftpPort,@Value("${ftp.server.privateKey}") String ftpPrivateKey,
+                                         @Value("${ftp.server.knownHost}") String ftpKnownHost,@Value("${etl.export.ftp.failurereport.directory}") String ftpFailureReportDirectory,
                                          CamelContext camelContext) {
         try {
             camelContext.addRoutes(new RouteBuilder() {

@@ -18,7 +18,7 @@ import java.util.Map;
 @Service
 public class DataDumpFileSystemTranmissionService implements DataDumpTransmissionInterface {
 
-    @Value("${etl.dump.directory}")
+    @Value("${etl.data.dump.directory}")
     private String dumpDirectoryPath;
 
     @Autowired

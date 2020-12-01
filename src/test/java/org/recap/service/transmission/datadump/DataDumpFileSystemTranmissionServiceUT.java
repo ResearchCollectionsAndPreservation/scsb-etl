@@ -25,7 +25,7 @@ public class DataDumpFileSystemTranmissionServiceUT extends BaseTestCase {
 
     private static final Logger logger = LoggerFactory.getLogger(DataDumpFileSystemTranmissionServiceUT.class);
 
-    @Value("${etl.dump.directory}")
+    @Value("${etl.data.dump.directory}")
     private String dumpDirectoryPath;
 
     @Autowired

@@ -3,7 +3,8 @@ package org.recap.repository;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.RecapCommonConstants;
-import org.recap.model.jpa.ReportDataEntity;
+import org.recap.model.jparw.ReportDataEntity;
+import org.recap.repositoryrw.ReportDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;

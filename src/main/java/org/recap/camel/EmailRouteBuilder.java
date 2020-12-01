@@ -47,8 +47,8 @@ public class EmailRouteBuilder {
      * @param smtpServer        the smtp server
      */
     @Autowired
-    public EmailRouteBuilder(CamelContext context, @Value("${data.dump.email.username}") String username, @Value("${data.dump.email.password.file}") String passwordDirectory,
-                             @Value("${data.dump.email.from}") String from, @Value("${data.dump.email.subject}") String subject,@Value("${data.dump.email.nodata.subject}") String noDataSubject,
+    public EmailRouteBuilder(CamelContext context, @Value("${smtpServer.data.dump.username}") String username, @Value("${smtpServer.data.dump.password.file}") String passwordDirectory,
+                             @Value("${email.data.dump.from}") String from, @Value("${email.data.dump.subject}") String subject,@Value("${email.data.dump.nodata.subject}") String noDataSubject,
                              @Value("${smtpServer}") String smtpServer) {
         try {
             context.addRoutes(new RouteBuilder() {

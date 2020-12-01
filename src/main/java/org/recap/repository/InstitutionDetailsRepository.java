@@ -2,6 +2,9 @@ package org.recap.repository;
 
 import org.recap.model.jpa.InstitutionEntity;
 import org.recap.repository.jpa.BaseRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 /**
  * Created by chenchulakshmig on 6/13/16.
@@ -23,5 +26,8 @@ public interface InstitutionDetailsRepository extends BaseRepository<Institution
      * @return the institution entity
      */
     InstitutionEntity findByInstitutionName(String institutionName);
+
+    @Query(value = "select INSTITUTION_CODE from institution_t where INSTITUTION_CODE != 'HTC';",nativeQuery = true)
+    List<String> findAllInstitutionCodeExceptHTC();
 
 }

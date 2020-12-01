@@ -1,15 +1,15 @@
 package org.recap.service.executor.datadump;
 
 import org.apache.commons.lang3.StringUtils;
-import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
+import org.recap.model.ILSConfigProperties;
 import org.recap.model.export.DataDumpRequest;
 import org.recap.service.preprocessor.DataDumpExportService;
+import org.recap.util.PropertyUtil;
 import org.recap.util.datadump.JobDataParameterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -22,20 +22,14 @@ public class DataDumpSchedulerExecutorService {
 
     private static final Logger logger = LoggerFactory.getLogger(DataDumpSchedulerExecutorService.class);
 
-    @Value("${data.dump.email.nypl.to}")
-    private String dataDumpEmailNyplTo;
-
-    @Value("${data.dump.email.pul.to}")
-    private String dataDumpEmailPulTo;
-
-    @Value("${data.dump.email.cul.to}")
-    private String dataDumpEmailCulTo;
-
     @Autowired
     private DataDumpExportService dataDumpExportService;
 
     @Autowired
     private JobDataParameterUtil jobDataParameterUtil;
+
+    @Autowired
+    PropertyUtil propertyUtil;
 
     /**
      * Gets data dump export service.
@@ -82,21 +76,6 @@ public class DataDumpSchedulerExecutorService {
         return responseMessage;
     }
 
-    /**
-     * Gets the name of export for institution.
-     * @param requestingInstitutionCode
-     * @return
-     */
-    private String getExportJobNameByInstitution(String requestingInstitutionCode) {
-        if (RecapCommonConstants.PRINCETON.equals(requestingInstitutionCode)) {
-            return RecapConstants.EXPORT_INCREMENTAL_PUL;
-        } else if (RecapCommonConstants.COLUMBIA.equals(requestingInstitutionCode)) {
-            return RecapConstants.EXPORT_INCREMENTAL_CUL;
-        } else if (RecapCommonConstants.NYPL.equals(requestingInstitutionCode)) {
-            return RecapConstants.EXPORT_INCREMENTAL_NYPL;
-        }
-        return null;
-    }
 
     /**
      * Gets to email address based on institution.
@@ -104,13 +83,7 @@ public class DataDumpSchedulerExecutorService {
      * @return
      */
     private String getToEmailAddress(String requestingInstitutionCode) {
-        if (RecapCommonConstants.PRINCETON.equals(requestingInstitutionCode)) {
-            return dataDumpEmailPulTo;
-        } else if (RecapCommonConstants.COLUMBIA.equals(requestingInstitutionCode)) {
-            return dataDumpEmailCulTo;
-        } else if (RecapCommonConstants.NYPL.equals(requestingInstitutionCode)) {
-            return dataDumpEmailNyplTo;
-        }
-        return null;
+        ILSConfigProperties ilsConfigProperties = propertyUtil.getILSConfigProperties(requestingInstitutionCode);
+        return ilsConfigProperties.getEmailDataDumpTo();
     }
 }

@@ -21,16 +21,16 @@ import static org.junit.Assert.assertNotNull;
  */
 public class FTPRouteBuilderUT extends BaseTestCase{
 
-    @Value("${ftp.userName}")
+    @Value("${ftp.server.userName}")
     String ftpUserName;
 
-    @Value("${ftp.remote.server}")
+    @Value("${ftp.etl.remote.server}")
     String ftpRemoteServer;
 
-    @Value("${ftp.knownHost}")
+    @Value("${ftp.server.knownHost}")
     String ftpKnownHost;
 
-    @Value("${ftp.privateKey}")
+    @Value("${ftp.server.privateKey}")
     String ftpPrivateKey;
 
     @Value("${etl.report.directory}")

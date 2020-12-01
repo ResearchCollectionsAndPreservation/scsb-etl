@@ -39,19 +39,19 @@ public class IncrementalDataDumpExecutorServiceUT extends BaseTestCase{
     @Autowired
     BibliographicDetailsRepository bibliographicDetailsRepository;
 
-    @Value("${ftp.userName}")
+    @Value("${ftp.server.userName}")
     String ftpUserName;
 
-    @Value("${ftp.knownHost}")
+    @Value("${ftp.server.knownHost}")
     String ftpKnownHost;
 
-    @Value("${ftp.privateKey}")
+    @Value("${ftp.server.privateKey}")
     String ftpPrivateKey;
 
-    @Value("${ftp.datadump.remote.server}")
+    @Value("${ftp.data.dump.dir}")
     String ftpDataDumpRemoteServer;
 
-    @Value("${etl.dump.directory}")
+    @Value("${etl.data.dump.directory}")
     private String dumpDirectoryPath;
 
     @Value("${datadump.batch.size}")

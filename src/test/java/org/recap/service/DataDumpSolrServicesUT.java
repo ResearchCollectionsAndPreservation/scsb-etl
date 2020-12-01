@@ -30,7 +30,7 @@ public class DataDumpSolrServicesUT extends BaseTestCase{
     @Mock
     RestTemplate restTemplate;
 
-    @Value("${solrclient.url}")
+    @Value("${scsb.solr.doc.url}")
     String solrClientUrl;
 
     @Before

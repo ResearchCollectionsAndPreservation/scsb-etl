@@ -10,7 +10,8 @@ import org.junit.Test;
 import org.mockito.internal.invocation.*;
 import org.recap.BaseTestCase;
 import org.recap.model.export.*;
-import org.recap.model.jpa.*;
+import org.recap.model.jpa.BibliographicEntity;
+import org.recap.model.jpa.ItemEntity;
 import org.recap.service.formatter.datadump.DeletedJsonFormatterService;
 
 import java.util.*;

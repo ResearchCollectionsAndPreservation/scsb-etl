@@ -1,9 +1,10 @@
 package org.recap.service.email.datadump;
 
 import org.apache.camel.ProducerTemplate;
-import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.camel.EmailPayLoad;
+import org.recap.model.ILSConfigProperties;
+import org.recap.util.PropertyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,26 +18,20 @@ import java.util.List;
 @Service
 public class DataDumpEmailService {
 
-    @Value("${etl.dump.directory}")
+    @Value("${etl.data.dump.directory}")
     private String fileSystemDataDumpDirectory;
 
-    @Value("${ftp.datadump.remote.server}")
+    @Value("${ftp.data.dump.dir}")
     private String ftpDataDumpDirectory;
 
-    @Value("${datadump.fetchtype.full}")
+    @Value("${etl.data.dump.fetchtype.full}")
     private String dataDumpFetchType;
-
-    @Value("${data.dump.email.nypl.cc}")
-    private String dataDumpCCForNypl;
-
-    @Value("${data.dump.email.cul.cc}")
-    private String dataDumpCCForCul;
-
-    @Value("${data.dump.email.pul.cc}")
-    private String dataDumpCCForPul;
 
     @Autowired
     private ProducerTemplate producer;
+
+    @Autowired
+    PropertyUtil propertyUtil;
 
     /**
      * Send email with the given parameters.
@@ -72,16 +67,8 @@ public class DataDumpEmailService {
     }
 
     private String mailForCc(String requestingInstitutionCode) {
-        if(requestingInstitutionCode.equalsIgnoreCase(RecapCommonConstants.PRINCETON)){
-            return dataDumpCCForPul;
-        }
-        else if (requestingInstitutionCode.equalsIgnoreCase(RecapCommonConstants.COLUMBIA)){
-            return dataDumpCCForCul;
-        }
-        else if (requestingInstitutionCode.equalsIgnoreCase(RecapCommonConstants.NYPL)){
-            return dataDumpCCForNypl;
-        }
-        return null;
+        ILSConfigProperties ilsConfigProperties = propertyUtil.getILSConfigProperties(requestingInstitutionCode);
+        return ilsConfigProperties.getEmailDataDumpCc();
     }
 
     /**

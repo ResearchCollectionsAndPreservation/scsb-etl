@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Scope("prototype")
 public class FullDataDumpExecutorService extends AbstractDataDumpExecutorService {
 
-    @Value("${datadump.fetchtype.full}")
+    @Value("${etl.data.dump.fetchtype.full}")
     private String fetchTypeFull;
 
     /**

@@ -9,10 +9,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.RecapConstants;
-import org.recap.model.jpa.ReportDataEntity;
-import org.recap.model.jpa.ReportEntity;
+import org.recap.model.jparw.ReportDataEntity;
+import org.recap.model.jparw.ReportEntity;
 import org.recap.model.jpa.XmlRecordEntity;
-import org.recap.repository.ReportDetailRepository;
+import org.recap.repositoryrw.ReportDetailRepository;
 import org.recap.repository.XmlRecordRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ public class XMLProcessorUT extends BaseTestCase {
     @Autowired
     CamelContext camelContext;
 
-    @Value("${etl.load.directory}")
+    @Value("${etl.data.load.directory}")
     private String etlLoadDir;
 
     @Autowired

@@ -18,31 +18,32 @@ import java.util.Map;
 @Service
 public class DataDumpFtpTransmissionService implements DataDumpTransmissionInterface {
 
-    @Value("${etl.dump.directory}")
+    @Value("${etl.data.dump.directory}")
     private String dumpDirectoryPath;
 
     /**
      * The Ftp user name.
      */
-    @Value("${ftp.userName}")
+    @Value("${ftp.server.userName}")
     String ftpUserName;
 
     /**
      * The Ftp known host.
      */
-    @Value("${ftp.knownHost}")
+    @Value("${ftp.server.knownHost}")
     String ftpKnownHost;
 
     /**
      * The Ftp private key.
      */
-    @Value("${ftp.privateKey}")
+    @Value("${ftp.server.privateKey}")
     String ftpPrivateKey;
+
 
     /**
      * The Ftp data dump remote server.
      */
-    @Value("${ftp.datadump.remote.server}")
+    @Value("${ftp.data.dump.dir}")
     String ftpDataDumpRemoteServer;
 
     @Autowired

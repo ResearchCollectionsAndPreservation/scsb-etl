@@ -23,10 +23,10 @@ public class EmailRouteBuilderUT extends BaseTestCase {
     @Value("${data.dump.email.nypl.to}")
     private String dataDumpEmailNyplTo;
 
-    @Value("${etl.dump.directory}")
+    @Value("${etl.data.dump.directory}")
     String fileSystemDataDumpDirectory;
 
-    @Value("${ftp.datadump.remote.server}")
+    @Value("${ftp.data.dump.dir}")
     String ftpDataDumpDirectory;
 
     @Test

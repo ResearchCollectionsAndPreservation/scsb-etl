@@ -57,16 +57,10 @@ public class RecapConstantsUT extends BaseTestCase{
 
 
         String DATA_DUMP_COMPLETION_ROUTE_ID = "dataDumpCompletionFromQRoute";
-        String DATA_DUMP_COMPLETION_TOPIC_STATUS_PUL_ROUTE_ID = "pulExportProcessCompletionRouteId";
-        String DATA_DUMP_COMPLETION_TOPIC_STATUS_CUL_ROUTE_ID = "culExportProcessCompletionRouteId";
-        String DATA_DUMP_COMPLETION_TOPIC_STATUS_NYPL_ROUTE_ID = "nyplExportProcessCompletionRouteId";
 
         String DATA_DUMP_COMPLETION_FROM = "scsbactivemq:queue:dataDumpCompletionFromQ";
         String DATA_DUMP_COMPLETION_TO = "scsbactivemq:queue:dataDumpCompletionToQ";
         String DATA_DUMP_COMPLETION_LOG = "Scheduled ongoing data export queue consumed";
-        String DATA_DUMP_COMPLETION_TOPIC_STATUS_CUL = "scsbactivemq:topic:CUL.ExportProcessCompletion";
-        String DATA_DUMP_COMPLETION_TOPIC_STATUS_PUL = "scsbactivemq:topic:PUL.ExportProcessCompletion";
-        String DATA_DUMP_COMPLETION_TOPIC_STATUS_NYPL = "scsbactivemq:topic:NYPL.ExportProcessCompletion";
 
         String DATA_DUMP_COMPLETION_TOPIC_MESSAGE = "Incremental datadump is completed";
 
@@ -223,12 +217,6 @@ public class RecapConstantsUT extends BaseTestCase{
 
         String INCREMENTAL = RecapConstants.INCREMENTAL;
         String DELETED = RecapConstants.DELETED;
-        String EXPORT_INCREMENTAL_PUL = RecapConstants.EXPORT_INCREMENTAL_PUL;
-        String EXPORT_INCREMENTAL_CUL = RecapConstants.EXPORT_INCREMENTAL_CUL;
-        String EXPORT_INCREMENTAL_NYPL = RecapConstants.EXPORT_INCREMENTAL_NYPL;
-        String EXPORT_DELETED_PUL = RecapConstants.EXPORT_DELETED_PUL;
-        String EXPORT_DELETED_CUL = RecapConstants.EXPORT_DELETED_CUL;
-        String EXPORT_DELETED_NYPL = RecapConstants.EXPORT_DELETED_NYPL;
 
         String EXPORT_TYPE_FULL = RecapConstants.EXPORT_TYPE_FULL;
 
