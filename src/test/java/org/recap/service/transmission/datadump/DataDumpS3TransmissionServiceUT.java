@@ -19,9 +19,9 @@ import static org.junit.Assert.*;
  * Created by premkb on 2/10/16.
  */
 
-public class DataDumpFtpTransmissionServiceUT extends BaseTestCase {
+public class DataDumpS3TransmissionServiceUT extends BaseTestCase {
 
-    /*private static final Logger logger = LoggerFactory.getLogger(DataDumpFtpTransmissionServiceUT.class);
+    /*private static final Logger logger = LoggerFactory.getLogger(DataDumpS3TransmissionServiceUT.class);
 
     @Autowired
     private ProducerTemplate producer;
@@ -38,11 +38,11 @@ public class DataDumpFtpTransmissionServiceUT extends BaseTestCase {
     @Value("${ftp.server.privateKey}")
     private String ftpPrivateKey;
 
-    @Value("${ftp.data.dump.dir}")
-    private String ftpDataDumpRemoteServer;
+    @Value("${s3.data.dump.dir}")
+    private String s3DataDumpRemoteServer;
 
     @Spy
-    DataDumpFtpTransmissionService dataDumpFtpTransmissionService;
+    DataDumpS3TransmissionService DataDumpS3TransmissionService;
 
     private String requestingInstitutionCode = "NYPL";
 
@@ -54,24 +54,24 @@ public class DataDumpFtpTransmissionServiceUT extends BaseTestCase {
 
     @Before
     public void beforeTest() {
-        dataDumpFtpTransmissionService = Mockito.spy(DataDumpFtpTransmissionService.class);
+        DataDumpS3TransmissionService = Mockito.spy(DataDumpS3TransmissionService.class);
     }
 
     @Test
     public void testMethod() throws Exception {
         dateTimeString = getDateTimeString();
         producer.sendBodyAndHeader(RecapConstants.DATADUMP_FILE_SYSTEM_Q, xmlString, "routeMap", getRouteMap());
-        dataDumpFtpTransmissionService.transmitDataDump(getRouteMap());
+        DataDumpS3TransmissionService.transmitDataDump(getRouteMap());
         String dateTimeString = getDateTimeString();
         String ftpFileName = RecapConstants.DATA_DUMP_FILE_NAME + requestingInstitutionCode + RecapConstants.ZIP_FILE_FORMAT;
         logger.info("ftpFileName---->" + ftpFileName);
-        ftpDataDumpRemoteServer = ftpDataDumpRemoteServer + File.separator + requestingInstitutionCode + File.separator + dateTimeString;
-        System.out.println("ftpDataDumpRemoteServer--->" + ftpDataDumpRemoteServer);
+        s3DataDumpRemoteServer = s3DataDumpRemoteServer + File.separator + requestingInstitutionCode + File.separator + dateTimeString;
+        System.out.println("s3DataDumpRemoteServer--->" + s3DataDumpRemoteServer);
         camelContext.addRoutes(new RouteBuilder() {
             @Override
             public void configure() throws Exception {
                 from("seda:testDataDumpFtp")
-                        .pollEnrich("sftp://" + ftpUserName + "@" + ftpDataDumpRemoteServer + "?privateKeyFile=" + ftpPrivateKey + "&knownHostsFile=" + ftpKnownHost + "&fileName=" + ftpFileName);
+                        .pollEnrich("sftp://" + ftpUserName + "@" + s3DataDumpRemoteServer + "?privateKeyFile=" + ftpPrivateKey + "&knownHostsFile=" + ftpKnownHost + "&fileName=" + ftpFileName);
             }
         });
         String response = producer.requestBody("seda:testDataDumpFtp", "", String.class);
@@ -93,7 +93,7 @@ public class DataDumpFtpTransmissionServiceUT extends BaseTestCase {
     String requestingInstitutionCode = "NYPL";
     String dateTimeString = null;
     @Autowired
-    DataDumpFtpTransmissionService dataDumpFtpTransmissionService;
+    DataDumpS3TransmissionService DataDumpS3TransmissionService;
 
     @Test
     public void testIsInterested() throws Exception {
@@ -113,8 +113,8 @@ public class DataDumpFtpTransmissionServiceUT extends BaseTestCase {
         dataDumpRequest.setDateTimeString(getDateTimeString());
         try {
 
-            dataDumpFtpTransmissionService.isInterested(dataDumpRequest);
-            dataDumpFtpTransmissionService.transmitDataDump(getRouteMap());
+            DataDumpS3TransmissionService.isInterested(dataDumpRequest);
+            DataDumpS3TransmissionService.transmitDataDump(getRouteMap());
         } catch (Exception e) {
             e.printStackTrace();
         }

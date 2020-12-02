@@ -17,7 +17,7 @@ import java.util.List;
  * Created by premkb on 29/9/16.
  */
 @Component
-public class FTPDataDumpFailureReportGenerator extends CommonReportGenerator implements ReportGeneratorInterface {
+public class S3DataDumpFailureReportGenerator extends CommonReportGenerator implements ReportGeneratorInterface {
 
     public boolean isInterested(String reportType) {
         return reportType.equalsIgnoreCase(RecapConstants.BATCH_EXPORT_FAILURE);

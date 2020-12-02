@@ -26,7 +26,7 @@ public class DataDumpTransmissionService {
     private DataDumpFileSystemTranmissionService dataDumpFileSystemTranmissionService;
 
     @Autowired
-    private DataDumpFtpTransmissionService dataDumpFtpTransmissionService;
+    private DataDumpS3TransmissionService DataDumpS3TransmissionService;
 
 
     /**
@@ -56,7 +56,7 @@ public class DataDumpTransmissionService {
         if(CollectionUtils.isEmpty(dataDumpTransmissionInterfaceList)){
             dataDumpTransmissionInterfaceList = new ArrayList<>();
             dataDumpTransmissionInterfaceList.add(dataDumpFileSystemTranmissionService);
-            dataDumpTransmissionInterfaceList.add(dataDumpFtpTransmissionService);
+            dataDumpTransmissionInterfaceList.add(DataDumpS3TransmissionService);
         }
         return dataDumpTransmissionInterfaceList;
     }

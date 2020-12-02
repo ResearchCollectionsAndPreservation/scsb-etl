@@ -10,8 +10,8 @@ import org.recap.model.csv.DataDumpFailureReport;
 import org.recap.model.csv.DataDumpSuccessReport;
 import org.recap.model.jparw.ReportDataEntity;
 import org.recap.model.jparw.ReportEntity;
-import org.recap.report.FTPDataDumpFailureReportGenerator;
-import org.recap.report.FTPDataDumpSuccessReportGenerator;
+import org.recap.report.S3DataDumpFailureReportGenerator;
+import org.recap.report.S3DataDumpSuccessReportGenerator;
 import org.recap.repositoryrw.ReportDetailRepository;
 import org.recap.service.email.datadump.DataDumpEmailService;
 import org.recap.util.datadump.DataExportHeaderUtil;
@@ -66,13 +66,13 @@ public class DataExportEmailProcessor implements Processor {
      * The Ftp data dump success report generator.
      */
     @Autowired
-    FTPDataDumpSuccessReportGenerator ftpDataDumpSuccessReportGenerator;
+    S3DataDumpSuccessReportGenerator s3DataDumpSuccessReportGenerator;
 
     /**
      * The Ftp data dump failure report generator.
      */
     @Autowired
-    FTPDataDumpFailureReportGenerator ftpDataDumpFailureReportGenerator;
+    S3DataDumpFailureReportGenerator s3DataDumpFailureReportGenerator;
 
     /**
      * The Producer template.
@@ -165,11 +165,11 @@ public class DataExportEmailProcessor implements Processor {
     private void sendBatchExportReportToFTP(List<ReportEntity> reportEntities, String type) {
         if(CollectionUtils.isNotEmpty(reportEntities)) {
             if(type.equalsIgnoreCase(RecapCommonConstants.SUCCESS)) {
-                DataDumpSuccessReport dataDumpSuccessReport = ftpDataDumpSuccessReportGenerator.getDataDumpSuccessReport(reportEntities, reportFileName);
+                DataDumpSuccessReport dataDumpSuccessReport = s3DataDumpSuccessReportGenerator.getDataDumpSuccessReport(reportEntities, reportFileName);
                 producerTemplate.sendBody(RecapConstants.DATAEXPORT_WITH_SUCCESS_REPORT_FTP_Q, dataDumpSuccessReport);
                 logger.info("The Success Report folder : {}", folderName);
             } else if (type.equalsIgnoreCase(RecapCommonConstants.FAILURE)) {
-                DataDumpFailureReport dataDumpFailureReport = ftpDataDumpFailureReportGenerator.getDataDumpFailureReport(reportEntities, reportFileName);
+                DataDumpFailureReport dataDumpFailureReport = s3DataDumpFailureReportGenerator.getDataDumpFailureReport(reportEntities, reportFileName);
                 producerTemplate.sendBody(RecapConstants.DATAEXPORT_WITH_FAILURE_REPORT_FTP_Q, dataDumpFailureReport);
                 logger.info("The Failure Report folder : {}", folderName);
             }

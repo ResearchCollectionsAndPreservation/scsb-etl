@@ -26,7 +26,7 @@ public class EmailRouteBuilderUT extends BaseTestCase {
     @Value("${etl.data.dump.directory}")
     String fileSystemDataDumpDirectory;
 
-    @Value("${ftp.data.dump.dir}")
+    @Value("${s3.data.dump.dir}")
     String ftpDataDumpDirectory;
 
     @Test

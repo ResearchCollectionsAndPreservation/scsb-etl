@@ -52,13 +52,13 @@ public class ReportGenerator {
      * The Ftp failure report generator.
      */
     @Autowired
-    FTPFailureReportGenerator ftpFailureReportGenerator;
+    S3FailureReportGenerator s3FailureReportGenerator;
 
     /**
      * The Ftp success report generator.
      */
     @Autowired
-    FTPSuccessReportGenerator ftpSuccessReportGenerator;
+    S3SuccessReportGenerator s3SuccessReportGenerator;
 
     /**
      * The Csv data dump success report generator.
@@ -76,13 +76,13 @@ public class ReportGenerator {
      * The Ftp data dump success report generator.
      */
     @Autowired
-    FTPDataDumpSuccessReportGenerator ftpDataDumpSuccessReportGenerator;
+    S3DataDumpSuccessReportGenerator s3DataDumpSuccessReportGenerator;
 
     /**
      * The Ftp data dump failure report generator.
      */
     @Autowired
-    FTPDataDumpFailureReportGenerator ftpDataDumpFailureReportGenerator;
+    S3DataDumpFailureReportGenerator s3DataDumpFailureReportGenerator;
 
     /**
      * The Report generators.
@@ -135,12 +135,12 @@ public class ReportGenerator {
             reportGenerators = new ArrayList<>();
             reportGenerators.add(csvFailureReportGenerator);
             reportGenerators.add(csvSuccessReportGenerator);
-            reportGenerators.add(ftpFailureReportGenerator);
-            reportGenerators.add(ftpSuccessReportGenerator);
+            reportGenerators.add(s3FailureReportGenerator);
+            reportGenerators.add(s3SuccessReportGenerator);
             reportGenerators.add(csvDataDumpSuccessReportGenerator);
             reportGenerators.add(csvDataDumpFailureReportGenerator);
-            reportGenerators.add(ftpDataDumpSuccessReportGenerator);
-            reportGenerators.add(ftpDataDumpFailureReportGenerator);
+            reportGenerators.add(s3DataDumpSuccessReportGenerator);
+            reportGenerators.add(s3DataDumpFailureReportGenerator);
         }
         return reportGenerators;
     }

@@ -21,7 +21,7 @@ public class DataDumpEmailService {
     @Value("${etl.data.dump.directory}")
     private String fileSystemDataDumpDirectory;
 
-    @Value("${ftp.data.dump.dir}")
+    @Value("${s3.data.dump.dir}")
     private String ftpDataDumpDirectory;
 
     @Value("${etl.data.dump.fetchtype.full}")

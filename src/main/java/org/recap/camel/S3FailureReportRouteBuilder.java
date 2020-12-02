@@ -2,6 +2,7 @@ package org.recap.camel;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.aws.s3.S3Constants;
 import org.apache.camel.model.dataformat.BindyType;
 import org.recap.RecapConstants;
 import org.recap.model.csv.ReCAPCSVFailureRecord;
@@ -15,23 +16,18 @@ import org.springframework.stereotype.Component;
  * Created by peris on 8/16/16.
  */
 @Component
-public class FtpFailureReportRouteBuilder {
+public class S3FailureReportRouteBuilder {
 
-    private static final Logger logger = LoggerFactory.getLogger(FtpFailureReportRouteBuilder.class);
+    private static final Logger logger = LoggerFactory.getLogger(S3FailureReportRouteBuilder.class);
 
     /**
      * Instantiates a new Ftp failure report route builder.
      *
      * @param context         the context
-     * @param ftpUserName     the ftp user name
-     * @param ftpRemoteServer the ftp remote server
-     * @param ftpKnownHost    the ftp known host
-     * @param ftpPrivateKey   the ftp private key
+     * @param s3EtlRemoteServer the s3 etl remote server
      */
     @Autowired
-    public FtpFailureReportRouteBuilder(CamelContext context,
-                                        @Value("${ftp.server.userName}") String ftpUserName, @Value("${ftp.etl.remote.server}") String ftpRemoteServer,
-                                        @Value("${ftp.server.knownHost}") String ftpKnownHost, @Value("${ftp.server.privateKey}") String ftpPrivateKey) {
+    public S3FailureReportRouteBuilder(CamelContext context, @Value("${s3.etl.remote.server}") String s3EtlRemoteServer) {
 
         try {
             context.addRoutes(new RouteBuilder() {
@@ -41,7 +37,8 @@ public class FtpFailureReportRouteBuilder {
                             .routeId(RecapConstants.FTP_SUCCESS_ROUTE_ID)
                             .process(new FileNameProcessorForFailureRecord())
                             .marshal().bindy(BindyType.Csv, ReCAPCSVFailureRecord.class)
-                            .to("sftp://" + ftpUserName + "@" + ftpRemoteServer + "?privateKeyFile=" + ftpPrivateKey + "&knownHostsFile=" + ftpKnownHost + "&fileName=${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv&fileExist=append");
+                            .setHeader(S3Constants.KEY, simple(s3EtlRemoteServer+"/"+"${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
+                            .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 }
             });
         } catch (Exception e) {
