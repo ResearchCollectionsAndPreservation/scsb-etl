@@ -60,7 +60,7 @@ public class DataDumpS3TransmissionService implements DataDumpTransmissionInterf
                         .constant(true)
                         .completionFromBatchConsumer()
                         .eagerCheckCompletion()
-                        .setHeader(S3Constants.KEY, simple(s3DataDumpRemoteServer+"/"+requestingInstitutionCode + "/" + dateTimeFolder + "/" + fileName + ".zip"))
+                        .setHeader(S3Constants.KEY, simple(s3DataDumpRemoteServer + requestingInstitutionCode + "/" + dateTimeFolder + "/" + fileName + ".zip"))
                         .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 ;
             }

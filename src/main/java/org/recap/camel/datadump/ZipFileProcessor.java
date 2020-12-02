@@ -103,7 +103,7 @@ public class ZipFileProcessor implements Processor {
                         .constant(true)
                         .completionFromBatchConsumer()
                         .eagerCheckCompletion()
-                        .setHeader(S3Constants.KEY, simple(s3DataDumpRemoteServer+"/"+ folderName + ".zip"))
+                        .setHeader(S3Constants.KEY, simple(s3DataDumpRemoteServer+ folderName + ".zip"))
                         .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
             }
         });
