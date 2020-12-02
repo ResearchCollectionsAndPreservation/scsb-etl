@@ -5,6 +5,7 @@ import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.Route;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.aws.s3.S3Constants;
 import org.apache.camel.processor.aggregate.zipfile.ZipAggregationStrategy;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -33,31 +34,13 @@ public class ZipFileProcessor implements Processor {
     private static final Logger logger = LoggerFactory.getLogger(ZipFileProcessor.class);
 
     /**
-     * The Ftp user name.
+     * The s3 data dump remote server.
      */
-    @Value("${ftp.server.userName}")
-    String ftpUserName;
+    @Value("${s3.data.dump.dir}")
+    String s3DataDumpRemoteServer;
 
-    /**
-     * The Ftp known host.
-     */
-    @Value("${ftp.server.knownHost}")
-    String ftpKnownHost;
-
-    /**
-     * The Ftp private key.
-     */
-    @Value("${ftp.server.privateKey}")
-    String ftpPrivateKey;
-
-    /**
-     * The Ftp data dump remote server.
-     */
-    @Value("${ftp.data.dump.dir}")
-    String ftpDataDumpRemoteServer;
-
-    @Value("${etl.dump.ftp.staging.directory}")
-    private String ftpStagingDir;
+    @Value("${etl.dump.staging.directory}")
+    private String s3StagingDir;
 
     /**
      * The Data export email processor.
@@ -114,14 +97,14 @@ public class ZipFileProcessor implements Processor {
                         .log("Data dump zipping completed.")
                         .bean(new ZipFileProcessor(exchange.getContext().createProducerTemplate(), exchange), "ftpOnCompletion")
                         .end();
-                from("file:" + ftpStagingDir + File.separator + folderName + "?noop=true&antInclude=*.xml,*.json")
+                from("file:" + s3StagingDir + File.separator + folderName + "?noop=true&antInclude=*.xml,*.json")
                         .routeId(RecapConstants.FTP_ROUTE)
                         .aggregate(new ZipAggregationStrategy(true, true))
                         .constant(true)
                         .completionFromBatchConsumer()
                         .eagerCheckCompletion()
-                        .to("sftp://" + ftpUserName + "@" + ftpDataDumpRemoteServer + File.separator + "?fileName=" + folderName + ".zip"
-                                + "&privateKeyFile=" + ftpPrivateKey + "&knownHostsFile=" + ftpKnownHost);
+                        .setHeader(S3Constants.KEY, simple(s3DataDumpRemoteServer+"/"+ folderName + ".zip"))
+                        .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
             }
         });
     }

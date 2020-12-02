@@ -47,8 +47,8 @@ public class DeletedDataDumpExecutorServiceUT extends BaseTestCase {
     @Value("${ftp.server.privateKey}")
     String ftpPrivateKey;
 
-    @Value("${ftp.data.dump.dir}")
-    String ftpDataDumpRemoteServer;
+    @Value("${s3.data.dump.dir}")
+    String s3DataDumpRemoteServer;
 
     @Value("${etl.data.dump.deleted.type.onlyorphan.institution}")
     private String deletedOnlyOrphanInstitution;
@@ -148,7 +148,7 @@ public class DeletedDataDumpExecutorServiceUT extends BaseTestCase {
         Thread.sleep(1000);
         String dateTimeString = getDateTimeString();
         String ftpFileName = RecapConstants.DATA_DUMP_FILE_NAME + requestingInstitutionCode + "1" + "-" + dateTimeString + RecapConstants.JSON_FILE_FORMAT;
-        ftpDataDumpRemoteServer = ftpDataDumpRemoteServer + File.separator + requestingInstitutionCode + File.separator + dateTimeString;
+        s3DataDumpRemoteServer = s3DataDumpRemoteServer + File.separator + requestingInstitutionCode + File.separator + dateTimeString;
         assertNull(response);
         //assertNotNull(response, "Success");
     }
