@@ -41,7 +41,7 @@ public class DataExportReportFtpRouteBuilder {
                             .routeId(RecapConstants.DATADUMP_SUCCESS_REPORT_FTP_ROUTE_ID)
                             .process(new FileNameProcessorForDataDumpSuccess())
                             .marshal().bindy(BindyType.Csv, DataDumpSuccessReport.class)
-                            .setHeader(S3Constants.KEY, simple(s3OnlyReportRemoteServer + "/" + "${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
+                            .setHeader(S3Constants.KEY, simple(s3OnlyReportRemoteServer + "${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
                             .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 }
             });
@@ -53,7 +53,7 @@ public class DataExportReportFtpRouteBuilder {
                             .routeId(RecapConstants.DATADUMP_FAILURE_REPORT_FTP_ROUTE_ID)
                             .process(new FileNameProcessorForDataDumpFailure())
                             .marshal().bindy(BindyType.Csv, DataDumpFailureReport.class)
-                            .setHeader(S3Constants.KEY, simple(s3OnlyReportRemoteServer + "/" + "${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
+                            .setHeader(S3Constants.KEY, simple(s3OnlyReportRemoteServer + "${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
                             .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 }
             });
@@ -65,7 +65,7 @@ public class DataExportReportFtpRouteBuilder {
                             .routeId(RecapConstants.DATAEXPORT_WITH_SUCCESS_REPORT_FTP_ROUTE_ID)
                             .process(new FileNameProcessorForDataDumpSuccess())
                             .marshal().bindy(BindyType.Csv, DataDumpSuccessReport.class)
-                            .setHeader(S3Constants.KEY, simple(s3DumpWithReportRemoteServer + "/" + "${in.header.fileName}.csv"))
+                            .setHeader(S3Constants.KEY, simple(s3DumpWithReportRemoteServer + "${in.header.fileName}.csv"))
                             .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 }
             });
@@ -77,7 +77,7 @@ public class DataExportReportFtpRouteBuilder {
                             .routeId(RecapConstants.DATAEXPORT_WITH_FAILURE_REPORT_FTP_ROUTE_ID)
                             .process(new FileNameProcessorForDataDumpFailure())
                             .marshal().bindy(BindyType.Csv, DataDumpFailureReport.class)
-                            .setHeader(S3Constants.KEY, simple(s3DumpWithReportRemoteServer + "/" + "${in.header.fileName}.csv"))
+                            .setHeader(S3Constants.KEY, simple(s3DumpWithReportRemoteServer + "${in.header.fileName}.csv"))
                             .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 }
             });

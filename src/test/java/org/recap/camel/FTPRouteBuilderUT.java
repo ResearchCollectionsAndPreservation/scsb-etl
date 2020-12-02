@@ -24,7 +24,7 @@ public class FTPRouteBuilderUT extends BaseTestCase{
     @Value("${ftp.server.userName}")
     String ftpUserName;
 
-    @Value("${s3.etl.remote.server}")
+    @Value("${s3.etl.reports.dir}")
     String s3RemoteServer;
 
     @Value("${ftp.server.knownHost}")

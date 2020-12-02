@@ -67,7 +67,7 @@ public class DataExportReportRouteBuilder {
                                 }
                             })
                             .marshal().bindy(BindyType.Csv, DataExportFailureReport.class)
-                            .setHeader(S3Constants.KEY, simple(s3FailureReportDirectory + "/" + "${in.header.fileName}.csv"))
+                            .setHeader(S3Constants.KEY, simple(s3FailureReportDirectory + "${in.header.fileName}.csv"))
                             .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 }
             });

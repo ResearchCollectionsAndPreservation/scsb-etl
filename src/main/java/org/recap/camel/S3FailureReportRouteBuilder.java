@@ -24,10 +24,10 @@ public class S3FailureReportRouteBuilder {
      * Instantiates a new Ftp failure report route builder.
      *
      * @param context         the context
-     * @param s3EtlRemoteServer the s3 etl remote server
+     * @param s3EtlReportsDir the s3 etl remote server
      */
     @Autowired
-    public S3FailureReportRouteBuilder(CamelContext context, @Value("${s3.etl.remote.server}") String s3EtlRemoteServer) {
+    public S3FailureReportRouteBuilder(CamelContext context, @Value("${s3.etl.reports.dir}") String s3EtlReportsDir) {
 
         try {
             context.addRoutes(new RouteBuilder() {
@@ -37,7 +37,7 @@ public class S3FailureReportRouteBuilder {
                             .routeId(RecapConstants.FTP_SUCCESS_ROUTE_ID)
                             .process(new FileNameProcessorForFailureRecord())
                             .marshal().bindy(BindyType.Csv, ReCAPCSVFailureRecord.class)
-                            .setHeader(S3Constants.KEY, simple(s3EtlRemoteServer+"/"+"${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
+                            .setHeader(S3Constants.KEY, simple(s3EtlReportsDir+"${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
                             .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 }
             });
