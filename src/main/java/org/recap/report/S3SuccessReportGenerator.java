@@ -10,17 +10,18 @@ import java.util.List;
  * Created by angelind on 18/8/16.
  */
 @Component
-public class FTPFailureReportGenerator extends CommonReportGenerator implements ReportGeneratorInterface {
+public class S3SuccessReportGenerator extends CommonReportGenerator implements ReportGeneratorInterface {
+
 
     /**
-     * Returns true if report type is 'Failure'.
+     * Returns true if report type is 'Success'.
      *
      * @param reportType the report type
      * @return
      */
     @Override
     public boolean isInterested(String reportType) {
-        return reportType.equalsIgnoreCase(RecapCommonConstants.FAILURE);
+        return reportType.equalsIgnoreCase(RecapCommonConstants.SUCCESS);
     }
 
     /**
@@ -46,7 +47,7 @@ public class FTPFailureReportGenerator extends CommonReportGenerator implements 
     }
 
     /**
-     * Generates report with failure records for initial data load.
+     * Generates report with success records for initial data load.
      *
      * @param reportEntities the report entities
      * @param fileName       the file name
@@ -54,6 +55,6 @@ public class FTPFailureReportGenerator extends CommonReportGenerator implements 
      */
     @Override
     public String generateReport(List<ReportEntity> reportEntities, String fileName) {
-        return generateFailureReport(reportEntities, fileName, RecapConstants.FTP_SUCCESS_Q);
+        return generateSuccessReport(reportEntities, fileName, RecapConstants.FTP_FAILURE_Q);
     }
 }

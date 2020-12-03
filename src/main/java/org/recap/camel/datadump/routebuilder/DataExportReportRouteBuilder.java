@@ -4,6 +4,7 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.aws.s3.S3Constants;
 import org.apache.camel.model.dataformat.BindyType;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 /**
@@ -24,22 +26,13 @@ public class DataExportReportRouteBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(DataExportReportRouteBuilder.class);
 
-    private static final String SFTP = "sftp://";
-    private static final String PRIVATE_KEY_FILE = "?privateKeyFile=";
-    private static final String KNOWN_HOSTS_FILE = "&knownHostsFile=";
-
-
-
     /**
      * Instantiates a new Data export report route builder.
      *
      * @param camelContext the camel context
      */
     @Autowired
-    private DataExportReportRouteBuilder(@Value("${ftp.server.userName}") String ftpUserName,@Value("${ftp.server}") String ftpHost,
-                                         @Value("${ftp.server.port}") String ftpPort,@Value("${ftp.server.privateKey}") String ftpPrivateKey,
-                                         @Value("${ftp.server.knownHost}") String ftpKnownHost,@Value("${etl.export.ftp.failurereport.directory}") String ftpFailureReportDirectory,
-                                         CamelContext camelContext) {
+    private DataExportReportRouteBuilder(@Value("${etl.export.s3.failurereport.directory}") String s3FailureReportDirectory, CamelContext camelContext) {
         try {
             camelContext.addRoutes(new RouteBuilder() {
                 @Override
@@ -70,15 +63,16 @@ public class DataExportReportRouteBuilder {
                                     List<DataExportFailureReport> dataExportFailureReportList = (List<DataExportFailureReport>) exchange.getIn().getBody();
                                     exchange.getIn().setHeader(RecapCommonConstants.REPORT_FILE_NAME, dataExportFailureReportList.get(0).getFilename());
                                     exchange.getIn().setHeader(RecapConstants.REPORT_TYPE, dataExportFailureReportList.get(0).getReportType());
-                                    exchange.getIn().setHeader(RecapConstants.INST_NAME,dataExportFailureReportList.get(0).getRequestingInstitutionCode());
+                                    exchange.getIn().setHeader(RecapConstants.INST_NAME, dataExportFailureReportList.get(0).getRequestingInstitutionCode());
                                 }
                             })
                             .marshal().bindy(BindyType.Csv, DataExportFailureReport.class)
-                            .to(SFTP + ftpUserName + "@" +ftpHost +":" +ftpPort+ftpFailureReportDirectory+ PRIVATE_KEY_FILE + ftpPrivateKey + KNOWN_HOSTS_FILE + ftpKnownHost + "&fileName=${in.header.fileName}.csv&fileExist=append");
+                            .setHeader(S3Constants.KEY, simple(s3FailureReportDirectory + "${in.header.fileName}.csv"))
+                            .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 }
             });
         } catch (Exception e) {
-            logger.error(RecapConstants.ERROR,e);
+            logger.error(RecapConstants.ERROR, e);
         }
     }
 }

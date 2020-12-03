@@ -21,8 +21,8 @@ public class DataDumpFtpRouteBuilder extends RouteBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(DataDumpFtpRouteBuilder.class);
 
-    @Value("${etl.dump.ftp.staging.directory}")
-    private String ftpStagingDir;
+    @Value("${etl.dump.staging.directory}")
+    private String s3StagingDir;
 
     /**
      * The File name processor for data export.
@@ -50,7 +50,7 @@ public class DataDumpFtpRouteBuilder extends RouteBuilder {
                 .onWhen(new ExportFileDumpComplete())
                 .process(zipFileProcessor)
                 .end()
-        .to("file:" + ftpStagingDir);
+        .to("file:" + s3StagingDir);
     }
 
     private class ExportFileDumpComplete implements Predicate {

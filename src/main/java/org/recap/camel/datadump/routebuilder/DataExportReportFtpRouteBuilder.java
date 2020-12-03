@@ -2,6 +2,7 @@ package org.recap.camel.datadump.routebuilder;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.aws.s3.S3Constants;
 import org.apache.camel.model.dataformat.BindyType;
 import org.recap.RecapConstants;
 import org.recap.camel.datadump.FileNameProcessorForDataDumpFailure;
@@ -21,25 +22,17 @@ import org.springframework.stereotype.Component;
 public class DataExportReportFtpRouteBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(DataExportReportFtpRouteBuilder.class);
-    private static final String SFTP = "sftp://";
-    private static final String PRIVATE_KEY_FILE = "?privateKeyFile=";
-    private static final String KNOWN_HOSTS_FILE = "&knownHostsFile=";
 
     /**
      * Instantiates a new Data export report ftp route builder.
      *
-     * @param context                       the context
-     * @param ftpUserName                   the ftp user name
-     * @param ftpOnlyReportRemoteServer     the ftp only report remote server
-     * @param ftpKnownHost                  the ftp known host
-     * @param ftpPrivateKey                 the ftp private key
-     * @param ftpDumpWithReportRemoteServer the ftp dump with report remote server
+     * @param context                      the context
+     * @param s3OnlyReportRemoteServer     the ftp only report remote server
+     * @param s3DumpWithReportRemoteServer the ftp dump with report remote server
      */
     @Autowired
-    public DataExportReportFtpRouteBuilder(CamelContext context,
-                                           @Value("${ftp.server.userName}") String ftpUserName, @Value("${ftp.datadump.report.remote.server}") String ftpOnlyReportRemoteServer,
-                                           @Value("${ftp.server.knownHost}") String ftpKnownHost, @Value("${ftp.server.privateKey}") String ftpPrivateKey,
-                                           @Value("${ftp.data.dump.dir}") String ftpDumpWithReportRemoteServer) {
+    public DataExportReportFtpRouteBuilder(CamelContext context, @Value("${s3.datadump.report.remote.server}") String s3OnlyReportRemoteServer,
+                                           @Value("${s3.data.dump.dir}") String s3DumpWithReportRemoteServer) {
         try {
             context.addRoutes(new RouteBuilder() {
                 @Override
@@ -48,7 +41,8 @@ public class DataExportReportFtpRouteBuilder {
                             .routeId(RecapConstants.DATADUMP_SUCCESS_REPORT_FTP_ROUTE_ID)
                             .process(new FileNameProcessorForDataDumpSuccess())
                             .marshal().bindy(BindyType.Csv, DataDumpSuccessReport.class)
-                            .to(SFTP + ftpUserName + "@" + ftpOnlyReportRemoteServer + PRIVATE_KEY_FILE + ftpPrivateKey + KNOWN_HOSTS_FILE + ftpKnownHost + "&fileName=${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv&fileExist=append");
+                            .setHeader(S3Constants.KEY, simple(s3OnlyReportRemoteServer + "${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
+                            .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 }
             });
 
@@ -59,7 +53,8 @@ public class DataExportReportFtpRouteBuilder {
                             .routeId(RecapConstants.DATADUMP_FAILURE_REPORT_FTP_ROUTE_ID)
                             .process(new FileNameProcessorForDataDumpFailure())
                             .marshal().bindy(BindyType.Csv, DataDumpFailureReport.class)
-                            .to(SFTP + ftpUserName + "@" + ftpOnlyReportRemoteServer + PRIVATE_KEY_FILE + ftpPrivateKey + KNOWN_HOSTS_FILE + ftpKnownHost + "&fileName=${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv&fileExist=append");
+                            .setHeader(S3Constants.KEY, simple(s3OnlyReportRemoteServer + "${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
+                            .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 }
             });
 
@@ -70,7 +65,8 @@ public class DataExportReportFtpRouteBuilder {
                             .routeId(RecapConstants.DATAEXPORT_WITH_SUCCESS_REPORT_FTP_ROUTE_ID)
                             .process(new FileNameProcessorForDataDumpSuccess())
                             .marshal().bindy(BindyType.Csv, DataDumpSuccessReport.class)
-                            .to(SFTP + ftpUserName + "@" + ftpDumpWithReportRemoteServer + PRIVATE_KEY_FILE + ftpPrivateKey + KNOWN_HOSTS_FILE + ftpKnownHost + "&fileName=${in.header.fileName}.csv&fileExist=append");
+                            .setHeader(S3Constants.KEY, simple(s3DumpWithReportRemoteServer + "${in.header.fileName}.csv"))
+                            .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 }
             });
 
@@ -81,11 +77,12 @@ public class DataExportReportFtpRouteBuilder {
                             .routeId(RecapConstants.DATAEXPORT_WITH_FAILURE_REPORT_FTP_ROUTE_ID)
                             .process(new FileNameProcessorForDataDumpFailure())
                             .marshal().bindy(BindyType.Csv, DataDumpFailureReport.class)
-                            .to(SFTP + ftpUserName + "@" + ftpDumpWithReportRemoteServer + PRIVATE_KEY_FILE + ftpPrivateKey + KNOWN_HOSTS_FILE + ftpKnownHost + "&fileName=${in.header.fileName}.csv&fileExist=append");
+                            .setHeader(S3Constants.KEY, simple(s3DumpWithReportRemoteServer + "${in.header.fileName}.csv"))
+                            .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 }
             });
         } catch (Exception e) {
-            logger.error(RecapConstants.ERROR,e);
+            logger.error(RecapConstants.ERROR, e);
         }
     }
 }

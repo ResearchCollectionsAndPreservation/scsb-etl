@@ -85,8 +85,8 @@ public class FullDataDumpExecutorServiceUT extends BaseTestCase {
     @Value("${ftp.server.privateKey}")
     String ftpPrivateKey;
 
-    @Value("${ftp.data.dump.dir}")
-    String ftpDataDumpRemoteServer;
+    @Value("${s3.data.dump.dir}")
+    String s3DataDumpRemoteServer;
 
     @Value("${etl.data.dump.directory}")
     private String dumpDirectoryPath;

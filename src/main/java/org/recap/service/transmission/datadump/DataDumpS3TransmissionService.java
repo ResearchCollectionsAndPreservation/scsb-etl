@@ -2,6 +2,7 @@ package org.recap.service.transmission.datadump;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.aws.s3.S3Constants;
 import org.apache.camel.processor.aggregate.zipfile.ZipAggregationStrategy;
 import org.recap.RecapConstants;
 import org.recap.model.export.DataDumpRequest;
@@ -16,35 +17,16 @@ import java.util.Map;
  * Created by premkb on 29/9/16.
  */
 @Service
-public class DataDumpFtpTransmissionService implements DataDumpTransmissionInterface {
+public class DataDumpS3TransmissionService implements DataDumpTransmissionInterface {
 
     @Value("${etl.data.dump.directory}")
     private String dumpDirectoryPath;
 
     /**
-     * The Ftp user name.
+     * The s3 data dump remote server.
      */
-    @Value("${ftp.server.userName}")
-    String ftpUserName;
-
-    /**
-     * The Ftp known host.
-     */
-    @Value("${ftp.server.knownHost}")
-    String ftpKnownHost;
-
-    /**
-     * The Ftp private key.
-     */
-    @Value("${ftp.server.privateKey}")
-    String ftpPrivateKey;
-
-
-    /**
-     * The Ftp data dump remote server.
-     */
-    @Value("${ftp.data.dump.dir}")
-    String ftpDataDumpRemoteServer;
+    @Value("${s3.data.dump.dir}")
+    String s3DataDumpRemoteServer;
 
     @Autowired
     private CamelContext camelContext;
@@ -78,7 +60,8 @@ public class DataDumpFtpTransmissionService implements DataDumpTransmissionInter
                         .constant(true)
                         .completionFromBatchConsumer()
                         .eagerCheckCompletion()
-                        .to("sftp://" +ftpUserName + "@" + ftpDataDumpRemoteServer+ File.separator+"?fileName="+requestingInstitutionCode + File.separator + dateTimeFolder + File.separator + fileName + ".zip" + "&privateKeyFile="+ ftpPrivateKey + "&knownHostsFile=" + ftpKnownHost)
+                        .setHeader(S3Constants.KEY, simple(s3DataDumpRemoteServer + requestingInstitutionCode + "/" + dateTimeFolder + "/" + fileName + ".zip"))
+                        .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
                 ;
             }
         });
