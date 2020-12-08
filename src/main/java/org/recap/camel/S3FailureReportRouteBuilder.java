@@ -33,7 +33,7 @@ public class S3FailureReportRouteBuilder {
             context.addRoutes(new RouteBuilder() {
                 @Override
                 public void configure() throws Exception {
-                    from(RecapConstants.FTP_SUCCESS_Q)
+                    from(RecapConstants.FTP_FAILURE_Q)
                             .routeId(RecapConstants.FTP_SUCCESS_ROUTE_ID)
                             .process(new FileNameProcessorForFailureRecord())
                             .marshal().bindy(BindyType.Csv, ReCAPCSVFailureRecord.class)

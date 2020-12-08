@@ -65,7 +65,7 @@ public class DataDumpRestControllerUT extends BaseControllerUT {
 
     private ExecutorService executorService;
 
-    @Value("${etl.data.dump.directory}")
+    @Value("${etl.data.dump.status.file.name}")
     String dataDumpStatusFileName;
 
     @Mock

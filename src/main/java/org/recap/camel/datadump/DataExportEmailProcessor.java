@@ -56,7 +56,7 @@ public class DataExportEmailProcessor implements Processor {
     /**
      * The Data dump status file name.
      */
-    @Value("${etl.data.dump.directory}")
+    @Value("${etl.data.dump.status.file.name}")
     String dataDumpStatusFileName;
 
     @Value("${etl.data.dump.fetchtype.full}")

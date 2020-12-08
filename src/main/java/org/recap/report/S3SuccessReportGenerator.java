@@ -55,6 +55,6 @@ public class S3SuccessReportGenerator extends CommonReportGenerator implements R
      */
     @Override
     public String generateReport(List<ReportEntity> reportEntities, String fileName) {
-        return generateSuccessReport(reportEntities, fileName, RecapConstants.FTP_FAILURE_Q);
+        return generateSuccessReport(reportEntities, fileName, RecapConstants.FTP_SUCCESS_Q);
     }
 }

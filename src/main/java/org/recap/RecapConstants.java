@@ -35,8 +35,8 @@ public class RecapConstants {
     //Camel Queue Constants
     public static final String CSV_SUCCESS_Q = "scsbactivemq:queue:csvSuccessQ";
     public static final String CSV_FAILURE_Q = "scsbactivemq:queue:csvFailureQ";
-    public static final String FTP_SUCCESS_Q = "scsbactivemq:queue:ftpFailureQ";
-    public static final String FTP_FAILURE_Q = "scsbactivemq:queue:ftpSuccessQ";
+    public static final String FTP_FAILURE_Q = "scsbactivemq:queue:ftpFailureQ";
+    public static final String FTP_SUCCESS_Q = "scsbactivemq:queue:ftpSuccessQ";
     public static final String DATADUMP_SUCCESS_REPORT_Q = "scsbactivemq:queue:dataDumpSuccessReportQ";
     public static final String DATADUMP_SUCCESS_REPORT_CSV_Q = "scsbactivemq:queue:dataDumpSuccessReportCsvQ";
     public static final String DATADUMP_FAILURE_REPORT_Q = "scsbactivemq:queue:dataDumpFailureReportQ";
