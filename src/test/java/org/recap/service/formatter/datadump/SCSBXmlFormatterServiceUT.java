@@ -3,9 +3,12 @@ package org.recap.service.formatter.datadump;
 import org.apache.camel.ProducerTemplate;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCase;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
 import org.recap.camel.BibDataProcessor;
 import org.recap.model.jaxb.BibRecord;
@@ -16,6 +19,7 @@ import org.recap.model.jpa.ItemEntity;
 import org.recap.model.jparw.ReportEntity;
 import org.recap.model.jparw.ReportDataEntity;
 import org.recap.repository.BibliographicDetailsRepository;
+import org.recap.repository.MatchingBibInfoDetailRepository;
 import org.recap.repositoryrw.ReportDetailRepository;
 import org.recap.util.DBReportUtil;
 import org.recap.util.XmlFormatter;
@@ -36,9 +40,40 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by premkb on 23/8/16.
  */
-public class SCSBXmlFormatterServiceUT extends BaseTestCase {
+public class SCSBXmlFormatterServiceUT extends BaseTestCaseUT {
 
     private static final Logger logger = LoggerFactory.getLogger(SCSBXmlFormatterServiceUT.class);
+
+    @InjectMocks
+    SCSBXmlFormatterService scsbXmlFormatterService;
+
+    @Mock
+    BibDataProcessor bibDataProcessor;
+    @Mock
+    ReportDetailRepository reportDetailRepository;
+    @Mock
+    XmlFormatter xmlFormatter;
+    @Mock
+    BibliographicDetailsRepository bibliographicDetailsRepository;
+    @Mock
+    DBReportUtil dbReportUtil;
+    @Mock
+    private ProducerTemplate producer;
+    @Mock
+    private Map itemStatusMap;
+    @Mock
+    private Map<String, Integer> institutionMap;
+    @Mock
+    private Map<String, Integer> collectionGroupMap;
+    @Mock
+    MatchingBibInfoDetailRepository matchingBibInfoDetailRepository;
+
+    @Value("${etl.data.dump.directory}")
+    private String dumpDirectoryPath;
+
+    @Value("${etl.report.directory}")
+    private String reportDirectoryPath;
+
     private final String bibContent = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
             "<collection>\n" +
             "    <record>\n" +
@@ -122,33 +157,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCase {
             "        </datafield>\n" +
             "    </record>\n" +
             "</collection>\n";
-    @Autowired
-    BibDataProcessor bibDataProcessor;
-    @Autowired
-    ReportDetailRepository reportDetailRepository;
-    @Autowired
-    XmlFormatter xmlFormatter;
-    @Autowired
-    BibliographicDetailsRepository bibliographicDetailsRepository;
-    @Autowired
-    DBReportUtil dbReportUtil;
-    @Autowired
-    SCSBXmlFormatterService scsbXmlFormatterService;
 
-    @Value("${etl.report.directory}")
-    private String reportDirectoryPath;
-    @Autowired
-    private ProducerTemplate producer;
-    @Mock
-    private Map itemStatusMap;
-    @Mock
-    private Map<String, Integer> institutionMap;
-    @Mock
-    private Map<String, Integer> collectionGroupMap;
-    @Value("${etl.data.dump.directory}")
-    private String dumpDirectoryPath;
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Before
     public void setUp() {
@@ -158,7 +167,10 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCase {
     @Test
     public void verifySCSBXmlGeneration() throws Exception {
         BibliographicEntity bibliographicEntity = getBibliographicEntity();
-        generateMatchinInfo();
+        Mockito.when(matchingBibInfoDetailRepository.getRecordNum(Mockito.anyList())).thenReturn(Arrays.asList(1));
+        List<MatchingBibInfoDetail> matchingBibInfoDetailList=new ArrayList<>();
+        matchingBibInfoDetailList.add(getMatchingBibInfoDetail());
+        Mockito.when(matchingBibInfoDetailRepository.findByRecordNum(Mockito.anyList())).thenReturn(matchingBibInfoDetailList);
         Map<String, Object> resultMap = scsbXmlFormatterService.prepareBibRecords(Arrays.asList(bibliographicEntity));
         List<BibRecord> bibRecords = (List<BibRecord>) resultMap.get(RecapCommonConstants.SUCCESS);
         scsbXmlFormatterService.getSCSBXmlForBibRecords(bibRecords);
@@ -191,8 +203,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCase {
         reportDataEntity2.setRecordNum("50");
         reportDataEntityList.add(reportDataEntity2);
         reportEntity.setReportDataEntities(reportDataEntityList);
-        ReportEntity savedReportEntity = reportDetailRepository.saveAndFlush(reportEntity);
-        entityManager.refresh(savedReportEntity);
+
     }
 
     private BibliographicEntity getBibliographicEntity() throws URISyntaxException, IOException {
@@ -289,12 +300,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCase {
         itemEntity.setCollectionGroupEntity(collectionGroupEntity);
         itemEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
         bibliographicEntity.setItemEntities(Arrays.asList(itemEntity));
-        MatchingBibInfoDetail matchingBibInfoDetail = new MatchingBibInfoDetail();
-        matchingBibInfoDetail.setId(1);
-        matchingBibInfoDetail.setBibId("1");
-        matchingBibInfoDetail.setOwningInstitutionBibId("565658565465");
-        matchingBibInfoDetail.setOwningInstitution("PUL");
-        matchingBibInfoDetail.setRecordNum(10);
+        MatchingBibInfoDetail matchingBibInfoDetail = getMatchingBibInfoDetail();
         InstitutionEntity institutionEntity = new InstitutionEntity();
         institutionEntity.setInstitutionCode("CUL");
         ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "getSubfieldatafieldType", "Test Code", "Test Value");
@@ -309,5 +315,15 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCase {
         ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "getBibIdRowNumMap", Arrays.asList(matchingBibInfoDetail));
         ReflectionTestUtils.invokeMethod(scsbXmlFormatterService, "getRecordNumReportDataEntityMap", Arrays.asList(matchingBibInfoDetail));
         assertTrue(true);
+    }
+
+    private MatchingBibInfoDetail getMatchingBibInfoDetail() {
+        MatchingBibInfoDetail matchingBibInfoDetail = new MatchingBibInfoDetail();
+        matchingBibInfoDetail.setId(1);
+        matchingBibInfoDetail.setBibId("1");
+        matchingBibInfoDetail.setOwningInstitutionBibId("565658565465");
+        matchingBibInfoDetail.setOwningInstitution("PUL");
+        matchingBibInfoDetail.setRecordNum(10);
+        return matchingBibInfoDetail;
     }
 }

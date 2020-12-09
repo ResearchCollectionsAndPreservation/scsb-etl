@@ -1,11 +1,16 @@
 package org.recap.service.formatter.datadump;
 
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
 import org.recap.model.export.DeletedRecord;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.HoldingsEntity;
+import org.recap.model.jpa.InstitutionEntity;
 import org.recap.model.jpa.ItemEntity;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +30,30 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by premkb on 29/9/16.
  */
-public class DeletedJsonFormatterServiceUT extends BaseTestCase{
+public class DeletedJsonFormatterServiceUT extends BaseTestCaseUT {
 
-    @Autowired
+    @InjectMocks
     private DeletedJsonFormatterService deletedJsonFormatterService;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @Autowired
+    @Mock
     private BibliographicDetailsRepository bibliographicDetailsRepository;
+
+    @Test
+    public void getFormattedOutputDeleted() throws Exception {
+        ItemEntity itemEntity = new ItemEntity();
+        itemEntity.setBarcode("1234");
+        itemEntity.setItemId(1);
+        itemEntity.setCustomerCode("1234");
+        itemEntity.setCallNumber("1234");
+        itemEntity.setCallNumberType("land");
+        itemEntity.setItemAvailabilityStatusId(123);
+        Mockito.when(bibliographicDetailsRepository.findByOwningInstitutionIdAndOwningInstitutionBibId(Mockito.anyInt(),Mockito.anyString())).thenReturn(getBibliographicEntityList().get(0));
+        Map<String,Object> successAndFailureFormattedList = deletedJsonFormatterService.prepareDeletedRecords(getBibliographicEntityList());
+        List<DeletedRecord> deletedRecordList = (List<DeletedRecord>)successAndFailureFormattedList.get(RecapCommonConstants.SUCCESS);
+        String outputString = (String) deletedJsonFormatterService.getJsonForDeletedRecords(deletedRecordList);
+        ReflectionTestUtils.invokeMethod(deletedJsonFormatterService,"isChangedToPrivateCGD",itemEntity);
+        assertNotNull(outputString);
+    }
 
     @Test
     public void getFormattedOutput() throws Exception {
@@ -45,6 +64,10 @@ public class DeletedJsonFormatterServiceUT extends BaseTestCase{
         itemEntity.setCallNumber("1234");
         itemEntity.setCallNumberType("land");
         itemEntity.setItemAvailabilityStatusId(123);
+        BibliographicEntity bibliographicEntity=getBibliographicEntityList().get(0);
+        bibliographicEntity.getItemEntities().get(0).setDeleted(false);
+
+        Mockito.when(bibliographicDetailsRepository.findByOwningInstitutionIdAndOwningInstitutionBibId(Mockito.anyInt(),Mockito.anyString())).thenReturn(bibliographicEntity);
         Map<String,Object> successAndFailureFormattedList = deletedJsonFormatterService.prepareDeletedRecords(getBibliographicEntityList());
         List<DeletedRecord> deletedRecordList = (List<DeletedRecord>)successAndFailureFormattedList.get(RecapCommonConstants.SUCCESS);
         String outputString = (String) deletedJsonFormatterService.getJsonForDeletedRecords(deletedRecordList);
@@ -62,6 +85,7 @@ public class DeletedJsonFormatterServiceUT extends BaseTestCase{
         bibliographicEntity.setCreatedBy("tst");
         bibliographicEntity.setLastUpdatedDate(new Date());
         bibliographicEntity.setLastUpdatedBy("tst");
+        bibliographicEntity.setInstitutionEntity(getInstitutionEntity());
 
         HoldingsEntity holdingsEntity = new HoldingsEntity();
         holdingsEntity.setContent("holding content".getBytes());
@@ -88,6 +112,7 @@ public class DeletedJsonFormatterServiceUT extends BaseTestCase{
         itemEntity.setItemAvailabilityStatusId(1);
         itemEntity.setCopyNumber(1234);
         itemEntity.setDeleted(true);
+        itemEntity.setItemId(1);
         itemEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
 
         ItemEntity itemEntity1 = new ItemEntity();
@@ -106,12 +131,19 @@ public class DeletedJsonFormatterServiceUT extends BaseTestCase{
         itemEntity1.setItemAvailabilityStatusId(1);
         itemEntity1.setCopyNumber(123);
         itemEntity1.setDeleted(true);
+        itemEntity1.setItemId(2);
         bibliographicEntity.setItemEntities(Arrays.asList(itemEntity1,itemEntity));
         bibliographicEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
-        BibliographicEntity savedEntity = bibliographicDetailsRepository.saveAndFlush(bibliographicEntity);
-        entityManager.refresh(savedEntity);
 
-        return Arrays.asList(savedEntity);
+        return Arrays.asList(bibliographicEntity);
+    }
+
+    private InstitutionEntity getInstitutionEntity() {
+        InstitutionEntity institutionEntity=new InstitutionEntity();
+        institutionEntity.setId(3);
+        institutionEntity.setInstitutionName("NYPL");
+        institutionEntity.setInstitutionCode("NYPL");
+        return institutionEntity;
     }
 
 }
