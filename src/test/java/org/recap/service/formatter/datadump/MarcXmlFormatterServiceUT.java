@@ -8,9 +8,14 @@ import org.marc4j.MarcWriter;
 import org.marc4j.MarcXmlReader;
 import org.marc4j.MarcXmlWriter;
 import org.marc4j.marc.Record;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
+import org.recap.model.ILSConfigProperties;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.BibliographicPK;
 import org.recap.model.jpa.CollectionGroupEntity;
@@ -19,6 +24,7 @@ import org.recap.model.jpa.InstitutionEntity;
 import org.recap.model.jpa.ItemEntity;
 import org.recap.model.jpa.ItemStatusEntity;
 import org.recap.repository.BibliographicDetailsRepository;
+import org.recap.util.PropertyUtil;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,21 +52,21 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by premkb on 2/10/16.
  */
-public class MarcXmlFormatterServiceUT extends BaseTestCase {
+public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
 
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(MarcXmlFormatterServiceUT.class);
 
-    @Autowired
+    @InjectMocks
     private MarcXmlFormatterService marcXmlFormatterService;
 
-    @Autowired
+    @Mock
     private BibliographicDetailsRepository bibliographicDetailsRepository;
 
-    @Autowired
+    @Mock
     private ProducerTemplate producer;
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Mock
+    PropertyUtil propertyUtil;
 
     @Value("${etl.data.dump.directory}")
     private String dumpDirectoryPath;
@@ -232,9 +238,11 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
     @Test
     public void generateMarcXml() throws Exception {
         BibliographicEntity bibliographicEntity = getBibliographicEntity();
+        ILSConfigProperties ilsConfigProperties=new ILSConfigProperties();
+        ilsConfigProperties.setDatadumpMarc("data");
+        Mockito.when(propertyUtil.getILSConfigProperties(Mockito.anyString())).thenReturn(ilsConfigProperties);
         Map<String, Object> successAndFailureFormattedList = marcXmlFormatterService.prepareMarcRecords(Arrays.asList(bibliographicEntity));
         String marcXmlString = marcXmlFormatterService.covertToMarcXmlString((List<Record>)successAndFailureFormattedList.get(RecapCommonConstants.SUCCESS));
-        System.out.println(marcXmlString);
         List<Record> recordList = readMarcXml(marcXmlString);
         assertNotNull(recordList);
         assertEquals("SCSB-100", recordList.get(0).getControlFields().get(0).getData());
@@ -383,38 +391,17 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
 
     @Test
     public void generatedFormattedString() throws Exception {
-        saveBibSingleHoldingsSingleItem("100","330033001");
-        Optional<BibliographicEntity> bibliographicEntity = bibliographicDetailsRepository.findById(new BibliographicPK(1, "100"));
+
+        Optional<BibliographicEntity> bibliographicEntity = Optional.ofNullable(saveBibSingleHoldingsSingleItem("100", "330033001"));
 
         ArrayList<Record> recordList = new ArrayList<>();
+        ILSConfigProperties ilsConfigProperties=new ILSConfigProperties();
+        ilsConfigProperties.setDatadumpMarc("data");
+        Mockito.when(propertyUtil.getILSConfigProperties(Mockito.anyString())).thenReturn(ilsConfigProperties);
+
         Map<String, Object> recordMap = marcXmlFormatterService.prepareMarcRecord(bibliographicEntity.get());
         Record record = (Record) recordMap.get(RecapCommonConstants.SUCCESS);
         assertNotNull(record);
-
-        OutputStream out = new ByteArrayOutputStream();
-        MarcWriter writer = new MarcXmlWriter(out, "UTF-8", true);
-        writeMarcXml(recordList, writer);
-        saveBibSingleHoldingsSingleItem("10002","33003302");
-        Optional<BibliographicEntity> bibliographicEntity1 = bibliographicDetailsRepository.findById(new BibliographicPK(1, "10002"));
-
-        ArrayList<Record> recordList1 = new ArrayList<>();
-        Map<String, Object> recordMap1 = marcXmlFormatterService.prepareMarcRecord(bibliographicEntity1.get());
-        Record record1 = (Record) recordMap.get(RecapCommonConstants.SUCCESS);
-        assertNotNull(record1);
-
-        writeMarcXml(recordList1, writer);
-
-        camelContext.addRoutes(new RouteBuilder() {
-            @Override
-            public void configure() throws Exception {
-                from("seda:testStreamOut")
-                        .to("stream:file?fileName=" + dumpDirectoryPath + File.separator + "test.xml");
-            }
-        });
-
-        producer.sendBody("seda:testStreamOut", out.toString());
-
-//        writer.close();
     }
 
     private void writeMarcXml(ArrayList<Record> recordList, MarcWriter writer) {
@@ -426,7 +413,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
         }
     }
 
-    public void saveBibSingleHoldingsSingleItem(String owningInstBibId,String barcode) throws Exception {
+    public BibliographicEntity saveBibSingleHoldingsSingleItem(String owningInstBibId,String barcode) throws Exception {
         Random random = new Random();
         BibliographicEntity bibliographicEntity = getBibEntity(1,owningInstBibId);
 
@@ -447,21 +434,22 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
         itemEntity.setCustomerCode("1");
         itemEntity.setItemAvailabilityStatusId(1);
         itemEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
-
+        ItemStatusEntity itemStatusEntity=new ItemStatusEntity();
+        itemStatusEntity.setStatusCode("available");
+        itemEntity.setItemStatusEntity(itemStatusEntity);
+        CollectionGroupEntity collectionGroupEntity=new CollectionGroupEntity();
+        collectionGroupEntity.setCollectionGroupCode("code");
+        itemEntity.setCollectionGroupEntity(collectionGroupEntity);
+        holdingsEntity.setItemEntities(Arrays.asList(itemEntity));
+        holdingsEntity.setBibliographicEntities(Arrays.asList(bibliographicEntity));
         bibliographicEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
         bibliographicEntity.setItemEntities(Arrays.asList(itemEntity));
-
-        BibliographicEntity savedBibliographicEntity = bibliographicDetailsRepository.saveAndFlush(bibliographicEntity);
-        entityManager.refresh(savedBibliographicEntity);
-
-        assertNotNull(savedBibliographicEntity);
-        assertNotNull(savedBibliographicEntity.getBibliographicId());
-        assertNotNull(savedBibliographicEntity.getHoldingsEntities().get(0).getHoldingsId());
-        assertNotNull(savedBibliographicEntity.getItemEntities().get(0).getItemId());
+        return  bibliographicEntity;
     }
 
     private HoldingsEntity getHoldingsEntity(Random random, Integer institutionId) {
         HoldingsEntity holdingsEntity = new HoldingsEntity();
+        holdingsEntity.setHoldingsId(1);
         holdingsEntity.setContent(holdingContent.getBytes());
         holdingsEntity.setCreatedDate(new Date());
         holdingsEntity.setCreatedBy("etl");
@@ -469,6 +457,9 @@ public class MarcXmlFormatterServiceUT extends BaseTestCase {
         holdingsEntity.setLastUpdatedBy("etl");
         holdingsEntity.setOwningInstitutionId(institutionId);
         holdingsEntity.setOwningInstitutionHoldingsId(String.valueOf(random.nextInt()));
+        InstitutionEntity institutionEntity=new InstitutionEntity();
+        institutionEntity.setInstitutionCode("PUL");
+        holdingsEntity.setInstitutionEntity(institutionEntity);
         return holdingsEntity;
     }
 
