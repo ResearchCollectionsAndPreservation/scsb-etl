@@ -92,7 +92,7 @@ public class ZipFileProcessor implements Processor {
                 onCompletion()
                         .choice()
                         .when(exchangeProperty(RecapCommonConstants.CAMEL_BATCH_COMPLETE))
-                        .log("Sending Email After FTP Zipping")
+                        .log("Sending Email After S3 Zipping")
                         .process(dataExportEmailProcessor)
                         .log("Data dump zipping completed.")
                         .bean(new ZipFileProcessor(exchange.getContext().createProducerTemplate(), exchange), "ftpOnCompletion")

@@ -39,8 +39,8 @@ public class RecapConstantsUT extends BaseTestCase{
 
         String CSV_SUCCESS_Q = "scsbactivemq:queue:csvSuccessQ";
         String CSV_FAILURE_Q = "scsbactivemq:queue:csvFailureQ";
-        String FTP_SUCCESS_Q = "scsbactivemq:queue:ftpFailureQ";
-        String FTP_FAILURE_Q = "scsbactivemq:queue:ftpSuccessQ";
+        String FTP_FAILURE_Q = "scsbactivemq:queue:ftpFailureQ";
+        String FTP_SUCCESS_Q = "scsbactivemq:queue:ftpSuccessQ";
         String DATADUMP_SUCCESS_REPORT_Q = "scsbactivemq:queue:dataDumpSuccessReportQ";
         String DATADUMP_SUCCESS_REPORT_CSV_Q = "scsbactivemq:queue:dataDumpSuccessReportCsvQ";
         String DATADUMP_FAILURE_REPORT_Q = "scsbactivemq:queue:dataDumpFailureReportQ";

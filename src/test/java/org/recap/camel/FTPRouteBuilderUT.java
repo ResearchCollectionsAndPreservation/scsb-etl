@@ -64,7 +64,7 @@ public class FTPRouteBuilderUT extends BaseTestCase{
         assertNotNull(failureReportReCAPCSVRecord.getLastUpdatedDateItem());
         reCAPCSVFailureRecord.setFailureReportReCAPCSVRecordList(Arrays.asList(failureReportReCAPCSVRecord));
 
-        producer.sendBody(RecapConstants.FTP_SUCCESS_Q, reCAPCSVFailureRecord);
+        producer.sendBody(RecapConstants.FTP_FAILURE_Q, reCAPCSVFailureRecord);
 
         Thread.sleep(2000);
     }

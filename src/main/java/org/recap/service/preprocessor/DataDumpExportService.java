@@ -69,7 +69,7 @@ public class DataDumpExportService {
     @Autowired
     private ProducerTemplate producerTemplate;
 
-    @Value("${etl.data.dump.directory}")
+    @Value("${etl.data.dump.status.file.name}")
     private String dataDumpStatusFileName;
 
     @Value("${etl.data.dump.fetchtype.full}")

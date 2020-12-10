@@ -81,7 +81,7 @@ public class DataDumpEmailService {
     private String getLocation(String transmissionType,String dateTimeStringForFolder) {
         String location = null;
         if ("0".equals(transmissionType)) {
-            location = "FTP location - " + getFtpLocation(ftpDataDumpDirectory) + File.separator + dateTimeStringForFolder;
+            location = "S3 location - " + getFtpLocation(ftpDataDumpDirectory) + File.separator + dateTimeStringForFolder;
         } else if ("2".equals(transmissionType)) {
             location = "File System - " + fileSystemDataDumpDirectory + File.separator + dateTimeStringForFolder;
         }
