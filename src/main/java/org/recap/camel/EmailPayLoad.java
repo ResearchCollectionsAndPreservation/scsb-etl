@@ -23,6 +23,7 @@ public class EmailPayLoad implements Serializable{
     private String requestingInstitution;
     private String transmissionType;
     private String outputFileFormat;
+    private String message;
 
     private List<String> institutionsRequested;
     private List<String> institutions;
