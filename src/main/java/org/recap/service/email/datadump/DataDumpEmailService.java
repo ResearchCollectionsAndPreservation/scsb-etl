@@ -4,12 +4,15 @@ import org.apache.camel.ProducerTemplate;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.camel.EmailPayLoad;
+import org.recap.model.export.DataDumpRequest;
+import org.recap.util.datadump.DataDumpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by premkb on 21/9/16.
@@ -34,6 +37,12 @@ public class DataDumpEmailService {
 
     @Value("${data.dump.email.pul.cc}")
     private String dataDumpCCForPul;
+
+    @Value("${data.dump.notification.cc}")
+    private String dataDumpNotificationCC;
+
+    @Autowired
+    private DataDumpUtil dataDumpUtil;
 
     @Autowired
     private ProducerTemplate producer;
@@ -110,7 +119,7 @@ public class DataDumpEmailService {
         }
     }
 
-    private void setEmailForDatadump(String transmissionType,String emailBodyFor, String dateTimeStringForFolder, String toEmailAddress,
+    public void setEmailForDatadump(String transmissionType,String emailBodyFor, String dateTimeStringForFolder, String toEmailAddress,
                                      String requestingInstitutionCode, String subject, String emailBody)
 
     {
@@ -123,6 +132,25 @@ public class DataDumpEmailService {
 
     }
 
+    public void sendEmailForDumpNotification(DataDumpRequest dataDumpRequest) {
+        Boolean isIncrementalSequence = Optional.ofNullable(dataDumpRequest.isIncrementalSequence()).orElse(false);
+        if(!isIncrementalSequence) {
+            String fetchType = dataDumpUtil.getFetchType(dataDumpRequest.getFetchType());
+            String outputformat = dataDumpUtil.getOutputformat(dataDumpRequest.getOutputFileFormat());
+            String transmissionType = dataDumpUtil.getTransmissionType(dataDumpRequest.getTransmissionType());
+            EmailPayLoad emailPayLoad = new EmailPayLoad();
+            emailPayLoad.setTo(dataDumpRequest.getToEmailAddress());
+            emailPayLoad.setCc(dataDumpNotificationCC);
+            emailPayLoad.setSubject("Notification : Initiated data-dump for Fetch type:" + fetchType);
+            emailPayLoad.setInstitutionsRequested(dataDumpRequest.getInstitutionCodes());
+            emailPayLoad.setRequestingInstitution(dataDumpRequest.getRequestingInstitutionCode());
+            emailPayLoad.setFetchType(fetchType);
+            emailPayLoad.setCollectionGroupIds(dataDumpRequest.getCollectionGroupIds());
+            emailPayLoad.setTransmissionType(transmissionType);
+            emailPayLoad.setOutputFileFormat(outputformat);
+            producer.sendBodyAndHeader(RecapConstants.EMAIL_Q, emailPayLoad, RecapConstants.DATADUMP_EMAILBODY_FOR, RecapConstants.DATADUMP_EXPORT_NOTIFICATION);
+        }
+    }
 }
 
 

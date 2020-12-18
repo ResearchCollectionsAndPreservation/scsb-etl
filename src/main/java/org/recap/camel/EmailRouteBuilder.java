@@ -25,11 +25,13 @@ public class EmailRouteBuilder {
     private static final Logger logger = LoggerFactory.getLogger(EmailRouteBuilder.class);
 
     private String emailBody;
+    private String emailForExportNotification;
     private String emailBodyForNoData;
     private String emailPassword;
     private static final String SUBJECT = "subject";
     private static final String EMAIL_PAYLOAD_TO = "${header.emailPayLoad.to}";
     private static final String EMAIL_PAYLOAD_CC = "${header.emailPayLoad.cc}";
+    private static final String EMAIL_PAYLOAD_SUBJECT = "${header.emailPayLoad.subject}";
     private static final String SMTPS = "smtps://";
     private static final String USERNAME = "?username=";
     private static final String PASSWORD = "&password=";
@@ -54,6 +56,7 @@ public class EmailRouteBuilder {
             context.addRoutes(new RouteBuilder() {
                 @Override
                 public void configure() throws Exception {
+                    loadNotificationEmailBodyTemplate();
                     loadEmailBodyTemplate();
                     loadEmailBodyTemplateForNoData();
                     loadEmailPassword();
@@ -64,12 +67,20 @@ public class EmailRouteBuilder {
                             .onCompletion().log("Email has been sent successfully.")
                             .end()
                                 .choice()
+                                    .when(header(RecapConstants.DATADUMP_EMAILBODY_FOR).isEqualTo(RecapConstants.DATADUMP_EXPORT_NOTIFICATION))
+                                        .setHeader("from", simple(from))
+                                        .setHeader("to", simple(EMAIL_PAYLOAD_TO))
+                                        .setHeader("cc", simple(EMAIL_PAYLOAD_CC))
+                                        .setHeader(SUBJECT, simple(EMAIL_PAYLOAD_SUBJECT))
+                                        .setBody(simple(emailForExportNotification))
+                                        .log("Sending email notification for start of data dump process")
+                                        .to(SMTPS + smtpServer + USERNAME + username + PASSWORD + emailPassword)
                                     .when(header(RecapConstants.DATADUMP_EMAILBODY_FOR).isEqualTo(RecapConstants.DATADUMP_DATA_AVAILABLE))
                                         .setHeader(SUBJECT, simple(subject))
                                         .setBody(simple(emailBody))
                                         .setHeader("from", simple(from))
                                         .setHeader("to", simple(EMAIL_PAYLOAD_TO))
-                                        .log("email body for data available")
+                                        .log("Sending email for data available")
                                         .to(SMTPS + smtpServer + USERNAME + username + PASSWORD + emailPassword)
                                     .when(header(EMAIL_BODY_FOR).isEqualTo(RecapConstants.DATADUMP_NO_DATA_AVAILABLE))
                                         .setHeader(SUBJECT, simple(noDataSubject))
@@ -77,7 +88,7 @@ public class EmailRouteBuilder {
                                         .setHeader("from", simple(from))
                                         .setHeader("to", simple(EMAIL_PAYLOAD_TO))
                                         .setHeader("cc", simple(EMAIL_PAYLOAD_CC))
-                                        .log("email body for no data available")
+                                        .log("Sending email for no data available")
                                         .to(SMTPS + smtpServer + USERNAME + username + PASSWORD + emailPassword)
                                     .when(header(EMAIL_BODY_FOR).isEqualTo(RecapConstants.EMAIL_INCREMENTAL_DATA_DUMP))
                                         .setHeader(SUBJECT, simple("${header.emailPayLoad.subject}"))
@@ -102,6 +113,12 @@ public class EmailRouteBuilder {
                     InputStream inputStream = getClass().getResourceAsStream("email_body.vm");
                     StringBuilder out = emailBodyTemplate(inputStream);
                     emailBody = out.toString();
+                }
+
+                private void loadNotificationEmailBodyTemplate() {
+                    InputStream inputStream = getClass().getResourceAsStream("email_for_export_notification.vm");
+                    StringBuilder out = emailBodyTemplate(inputStream);
+                    emailForExportNotification = out.toString();
                 }
 
                 private void loadEmailBodyTemplateForNoData() {
