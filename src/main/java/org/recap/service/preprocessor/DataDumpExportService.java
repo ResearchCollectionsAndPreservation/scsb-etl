@@ -104,6 +104,7 @@ public class DataDumpExportService {
                 String message = getMessageFromIsRecordAvailableQ();
                 if (message.equals(RecapConstants.DATADUMP_RECORDS_AVAILABLE_FOR_PROCESS)) {
                     outputString = getMessageFromHttpQ();
+                    dataDumpEmailService.sendEmailForDumpNotification(dataDumpRequest);
                 } else{
                     outputString = message;
                 }
