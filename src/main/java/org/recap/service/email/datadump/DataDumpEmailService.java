@@ -148,6 +148,7 @@ public class DataDumpEmailService {
             emailPayLoad.setCollectionGroupIds(dataDumpRequest.getCollectionGroupIds());
             emailPayLoad.setTransmissionType(transmissionType);
             emailPayLoad.setOutputFileFormat(outputformat);
+            emailPayLoad.setMessage(!transmissionType.equalsIgnoreCase("HTTP")?"Will send further notification upon completion.":"");
             producer.sendBodyAndHeader(RecapConstants.EMAIL_Q, emailPayLoad, RecapConstants.DATADUMP_EMAILBODY_FOR, RecapConstants.DATADUMP_EXPORT_NOTIFICATION);
         }
     }
