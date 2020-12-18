@@ -8,4 +8,4 @@ Transmission type        : ${header.emailPayLoad.transmissionType}
 XML format               : ${header.emailPayLoad.outputFileFormat}
 Emails mentioned         : ${header.emailPayLoad.to}
 
-Will send further notification upon completion.
+${header.emailPayLoad.message}
