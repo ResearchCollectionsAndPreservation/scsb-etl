@@ -1,0 +1,11 @@
+Initiated data-dump process. Below are the mentioned parameters :
+
+Fetch-Type               : ${header.emailPayLoad.fetchType}
+Requesting-Institution   : ${header.emailPayLoad.requestingInstitution}
+Requested-Institution(s) : ${header.emailPayLoad.institutionsRequested}
+Collection-group-id(s)   : ${header.emailPayLoad.collectionGroupIds}
+Transmission type        : ${header.emailPayLoad.transmissionType}
+XML format               : ${header.emailPayLoad.outputFileFormat}
+Emails mentioned         : ${header.emailPayLoad.to}
+
+Will send further notification upon completion.
