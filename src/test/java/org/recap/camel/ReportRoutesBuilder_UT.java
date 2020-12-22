@@ -2,12 +2,12 @@ package org.recap.camel;
 
 import org.apache.camel.ProducerTemplate;
 import org.junit.Test;
-import org.recap.BaseTestCase;
+import org.mockito.Mock;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
 import org.recap.model.jparw.ReportDataEntity;
 import org.recap.model.jparw.ReportEntity;
 import org.recap.repositoryrw.ReportDetailRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,12 +18,12 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by peris on 8/12/16.
  */
-public class ReportRoutesBuilder_UT extends BaseTestCase {
+public class ReportRoutesBuilder_UT extends BaseTestCaseUT {
 
-    @Autowired
+    @Mock
     private ProducerTemplate producer;
 
-    @Autowired
+    @Mock
     ReportDetailRepository reportDetailRepository;
 
     @Test
@@ -48,7 +48,6 @@ public class ReportRoutesBuilder_UT extends BaseTestCase {
 
         List<ReportEntity> savedReportEntity = reportDetailRepository.findByFileName(reportEntity.getFileName());
         assertNotNull(savedReportEntity);
-//        assertNotNull(savedReportEntity.get(0));
 
     }
 }

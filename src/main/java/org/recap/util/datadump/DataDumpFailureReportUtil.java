@@ -121,6 +121,7 @@ public class DataDumpFailureReportUtil {
                 stringFromList.append(",");
             }
             stringFromList.append(value);
+            count++;
         }
         return stringFromList.toString();
     }

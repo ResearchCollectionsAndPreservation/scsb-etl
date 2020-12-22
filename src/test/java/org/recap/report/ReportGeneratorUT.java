@@ -1,34 +1,35 @@
 package org.recap.report;
 
+import org.apache.camel.ProducerTemplate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.recap.BaseTestCase;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.jparw.ReportDataEntity;
 import org.recap.model.jparw.ReportEntity;
 import org.recap.repositoryrw.ReportDetailRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.util.ReflectionTestUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by peris on 8/17/16.
  */
-public class ReportGeneratorUT extends BaseTestCase {
+public class ReportGeneratorUT extends BaseTestCaseUT {
 
-    @Autowired
+    @Mock
     ReportDetailRepository reportDetailRepository;
 
     private String fileName = "test.xml";
@@ -39,11 +40,56 @@ public class ReportGeneratorUT extends BaseTestCase {
     @Value("${etl.dump.report.directory}")
     private String dataDumpReportDirectory;
 
-    @Autowired
+    @InjectMocks
     ReportGenerator reportGenerator;
 
+    @InjectMocks
+    CSVFailureReportGenerator csvFailureReportGenerator;
+
+    /**
+     * The Csv success report generator.
+     */
+    @InjectMocks
+    CSVSuccessReportGenerator csvSuccessReportGenerator;
+
+    /**
+     * The Ftp failure report generator.
+     */
+    @InjectMocks
+    S3FailureReportGenerator s3FailureReportGenerator;
+
+    /**
+     * The Ftp success report generator.
+     */
+    @InjectMocks
+    S3SuccessReportGenerator s3SuccessReportGenerator;
+
+    /**
+     * The Csv data dump success report generator.
+     */
+    @InjectMocks
+    CSVDataDumpSuccessReportGenerator csvDataDumpSuccessReportGenerator;
+
+    /**
+     * The Csv data dump failure report generator.
+     */
+    @InjectMocks
+    CSVDataDumpFailureReportGenerator csvDataDumpFailureReportGenerator;
+
+    /**
+     * The Ftp data dump success report generator.
+     */
+    @InjectMocks
+    S3DataDumpSuccessReportGenerator s3DataDumpSuccessReportGenerator;
+
+    /**
+     * The Ftp data dump failure report generator.
+     */
+    @InjectMocks
+    S3DataDumpFailureReportGenerator s3DataDumpFailureReportGenerator;
+
     @Mock
-    ReportDetailRepository mockReportDetailsRepository;
+    ProducerTemplate producerTemplate;
 
     @Before
     public void setUp() throws Exception {
@@ -53,84 +99,85 @@ public class ReportGeneratorUT extends BaseTestCase {
 
     @Test
     public void generateFailureReportTest() throws Exception {
-
         ReportEntity savedReportEntity1 = saveFailureReportEntity();
-
-        String generatedReportFileName = generateReport(savedReportEntity1.getCreatedDate(), "ETL",savedReportEntity1.getType(), savedReportEntity1.getInstitutionName(), RecapCommonConstants.FILE_SYSTEM);
-
+        List<ReportEntity> reportEntities=new ArrayList<>();
+        reportEntities.add(savedReportEntity1);
+        Mockito.when(reportDetailRepository.findByFileAndInstitutionAndTypeAndDateRange(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.any(),Mockito.any())).thenReturn(reportEntities);
+        List<ReportGeneratorInterface> reportGenerators=new ArrayList<>();
+        ReportGeneratorInterface reportGeneratorInterface=csvFailureReportGenerator;
+        reportGenerators.add(reportGeneratorInterface);
+        ReflectionTestUtils.setField(reportGenerator,"reportGenerators",reportGenerators);
+        String generatedReportFileName = generateReport(savedReportEntity1.getCreatedDate(),RecapConstants.OPERATION_TYPE_ETL,savedReportEntity1.getType(), savedReportEntity1.getInstitutionName(), RecapCommonConstants.FILE_SYSTEM);
         assertNotNull(generatedReportFileName);
-
-        File directory = new File(reportDirectory);
-        assertTrue(true);
-
-        boolean directoryContains = new File(directory, generatedReportFileName).exists();
-        assertTrue(true);
     }
 
     @Test
     public void generateSuccessReportTest() throws Exception {
-
         ReportEntity savedReportEntity1 = saveSuccessReportEntity();
-
-        String generatedReportFileName = generateReport(savedReportEntity1.getCreatedDate(), "ETL",savedReportEntity1.getType(), savedReportEntity1.getInstitutionName(), RecapCommonConstants.FILE_SYSTEM);
-
+        List<ReportEntity> reportEntities=new ArrayList<>();
+        reportEntities.add(savedReportEntity1);
+        Mockito.when(reportDetailRepository.findByFileAndInstitutionAndTypeAndDateRange(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.any(),Mockito.any())).thenReturn(reportEntities);
+        List<ReportGeneratorInterface> reportGenerators=new ArrayList<>();
+        ReportGeneratorInterface reportGeneratorInterface=csvSuccessReportGenerator;
+        reportGenerators.add(reportGeneratorInterface);
+        ReflectionTestUtils.setField(reportGenerator,"reportGenerators",reportGenerators);
+        String generatedReportFileName = generateReport(savedReportEntity1.getCreatedDate(),RecapConstants.OPERATION_TYPE_ETL,savedReportEntity1.getType(), savedReportEntity1.getInstitutionName(), RecapCommonConstants.FILE_SYSTEM);
         assertNotNull(generatedReportFileName);
-
-        File directory = new File(reportDirectory);
-        assertTrue(true);
-
-        boolean directoryContains = new File(directory, generatedReportFileName).exists();
-        assertTrue(true);
     }
 
     @Test
     public void generateDataDumpFileSystemSuccessReportTest() throws Exception {
-
         ReportEntity savedReportEntity1 = saveDataDumpSuccessReport();
-        String generatedReportFileName = dataDumpGenerateReport(savedReportEntity1.getCreatedDate(), "BatchExport", RecapCommonConstants.SUCCESS, savedReportEntity1.getInstitutionName(), RecapCommonConstants.FILE_SYSTEM,savedReportEntity1.getFileName());
-
+        List<ReportEntity> reportEntities=new ArrayList<>();
+        reportEntities.add(savedReportEntity1);
+        Mockito.when(reportDetailRepository.findByInstitutionAndTypeAndDateRange(Mockito.anyString(),Mockito.anyString(),Mockito.any(),Mockito.any())).thenReturn(reportEntities);
+        List<ReportGeneratorInterface> reportGenerators=new ArrayList<>();
+        ReportGeneratorInterface reportGeneratorInterface=csvDataDumpSuccessReportGenerator;
+        reportGenerators.add(reportGeneratorInterface);
+        ReflectionTestUtils.setField(reportGenerator,"reportGenerators",reportGenerators);
+        String generatedReportFileName = dataDumpGenerateReport(savedReportEntity1.getCreatedDate(),RecapConstants.BATCH_EXPORT, RecapCommonConstants.SUCCESS, savedReportEntity1.getInstitutionName(), RecapCommonConstants.FILE_SYSTEM,savedReportEntity1.getFileName());
         assertNotNull(generatedReportFileName);
-
-        File directory = new File(dataDumpReportDirectory);
-//        assertTrue(directory.isDirectory());
-
-        boolean directoryContains = new File(directory, generatedReportFileName).exists();
-        assertTrue(true);
     }
 
     @Test
-    public void generateDataDumpFtpSuccessReportTest() throws Exception {
-
+    public void generateDataDumpS3SuccessReportTest() throws Exception {
         ReportEntity savedReportEntity1 = saveDataDumpSuccessReport();
-
-        String generatedReportFileName = dataDumpGenerateReport(savedReportEntity1.getCreatedDate(), "BatchExport", RecapCommonConstants.SUCCESS, savedReportEntity1.getInstitutionName(), RecapCommonConstants.FTP,savedReportEntity1.getFileName());
-
+        List<ReportEntity> reportEntities=new ArrayList<>();
+        reportEntities.add(savedReportEntity1);
+        Mockito.when(reportDetailRepository.findByInstitutionAndTypeAndDateRange(Mockito.anyString(),Mockito.anyString(),Mockito.any(),Mockito.any())).thenReturn(reportEntities);
+        List<ReportGeneratorInterface> reportGenerators=new ArrayList<>();
+        ReportGeneratorInterface reportGeneratorInterface=s3DataDumpSuccessReportGenerator;
+        reportGenerators.add(reportGeneratorInterface);
+        ReflectionTestUtils.setField(reportGenerator,"reportGenerators",reportGenerators);
+        String generatedReportFileName = dataDumpGenerateReport(savedReportEntity1.getCreatedDate(),RecapConstants.BATCH_EXPORT, RecapCommonConstants.SUCCESS, savedReportEntity1.getInstitutionName(), RecapCommonConstants.FTP,savedReportEntity1.getFileName());
         assertNotNull(generatedReportFileName);
     }
 
     @Test
     public void generateDataDumpFileSystemFailureReportTest() throws Exception {
-
         ReportEntity savedReportEntity1 = saveDataDumpFailureReport();
-
-        String generatedReportFileName = dataDumpGenerateReport(savedReportEntity1.getCreatedDate(), "BatchExport", RecapCommonConstants.FAILURE, savedReportEntity1.getInstitutionName(), RecapCommonConstants.FILE_SYSTEM,savedReportEntity1.getFileName());
-
+        List<ReportEntity> reportEntities=new ArrayList<>();
+        reportEntities.add(savedReportEntity1);
+        Mockito.when(reportDetailRepository.findByInstitutionAndTypeAndDateRange(Mockito.anyString(),Mockito.anyString(),Mockito.any(),Mockito.any())).thenReturn(reportEntities);
+        List<ReportGeneratorInterface> reportGenerators=new ArrayList<>();
+        ReportGeneratorInterface reportGeneratorInterface=csvDataDumpFailureReportGenerator;
+        reportGenerators.add(reportGeneratorInterface);
+        ReflectionTestUtils.setField(reportGenerator,"reportGenerators",reportGenerators);
+        String generatedReportFileName = dataDumpGenerateReport(savedReportEntity1.getCreatedDate(),RecapConstants.BATCH_EXPORT, RecapCommonConstants.FAILURE, savedReportEntity1.getInstitutionName(), RecapCommonConstants.FILE_SYSTEM,savedReportEntity1.getFileName());
         assertNotNull(generatedReportFileName);
-
-        File directory = new File(dataDumpReportDirectory);
-        //assertTrue(directory.isDirectory());
-
-        boolean directoryContains = new File(directory, generatedReportFileName).exists();
-        assertTrue(true);
     }
 
     @Test
-    public void generateDataDumpFtpFailureReportTest() throws Exception {
-
+    public void generateDataDumpS3FailureReportTest() throws Exception {
         ReportEntity savedReportEntity1 = saveDataDumpFailureReport();
-
-        String generatedReportFileName = dataDumpGenerateReport(savedReportEntity1.getCreatedDate(), "BatchExport", RecapCommonConstants.FAILURE, savedReportEntity1.getInstitutionName(), RecapCommonConstants.FTP,savedReportEntity1.getFileName());
-
+        List<ReportEntity> reportEntities=new ArrayList<>();
+        reportEntities.add(savedReportEntity1);
+        Mockito.when(reportDetailRepository.findByInstitutionAndTypeAndDateRange(Mockito.anyString(),Mockito.anyString(),Mockito.any(),Mockito.any())).thenReturn(reportEntities);
+        List<ReportGeneratorInterface> reportGenerators=new ArrayList<>();
+        ReportGeneratorInterface reportGeneratorInterface=s3DataDumpFailureReportGenerator;
+        reportGenerators.add(reportGeneratorInterface);
+        ReflectionTestUtils.setField(reportGenerator,"reportGenerators",reportGenerators);
+        String generatedReportFileName = dataDumpGenerateReport(savedReportEntity1.getCreatedDate(),RecapConstants.BATCH_EXPORT, RecapCommonConstants.FAILURE, savedReportEntity1.getInstitutionName(), RecapCommonConstants.FTP,savedReportEntity1.getFileName());
         assertNotNull(generatedReportFileName);
     }
 
@@ -138,52 +185,64 @@ public class ReportGeneratorUT extends BaseTestCase {
     @Test
     public void generateFailureReportForTwoEntity() throws Exception {
         ReportEntity savedReportEntity1 = saveFailureReportEntity();
-        ReportEntity savedReportEntity2 = saveFailureReportEntity();
-
-        String generatedReportFileName = generateReport(savedReportEntity1.getCreatedDate(), "ETL",savedReportEntity1.getType(), savedReportEntity1.getInstitutionName(), RecapCommonConstants.FILE_SYSTEM);
-
+        List<ReportEntity> reportEntities=new ArrayList<>();
+        reportEntities.add(savedReportEntity1);
+        Mockito.when(reportDetailRepository.findByFileAndInstitutionAndTypeAndDateRange(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.any(),Mockito.any())).thenReturn(reportEntities);
+        List<ReportGeneratorInterface> reportGenerators=new ArrayList<>();
+        ReportGeneratorInterface reportGeneratorInterface=csvFailureReportGenerator;
+        reportGenerators.add(reportGeneratorInterface);
+        ReflectionTestUtils.setField(reportGenerator,"reportGenerators",reportGenerators);
+        String generatedReportFileName = generateReport(savedReportEntity1.getCreatedDate(),RecapConstants.OPERATION_TYPE_ETL,savedReportEntity1.getType(), savedReportEntity1.getInstitutionName(), RecapCommonConstants.FILE_SYSTEM);
         assertNotNull(generatedReportFileName);
-
-        File directory = new File(reportDirectory);
-        assertTrue(true);
-
-        boolean directoryContains = new File(directory, generatedReportFileName).exists();
-        assertTrue(true);
-
-    }
+ }
 
     @Test
-    public void uploadFailureReportToFTP() throws Exception {
+    public void uploadFailureReportTos3() throws Exception {
         ReportEntity savedReportEntity = saveFailureReportEntity();
-
-        String generatedReportFileName = generateReport(savedReportEntity.getCreatedDate(), "ETL",savedReportEntity.getType(), savedReportEntity.getInstitutionName(), RecapCommonConstants.FTP);
-
+        List<ReportEntity> reportEntities=new ArrayList<>();
+        reportEntities.add(savedReportEntity);
+        Mockito.when(reportDetailRepository.findByFileAndInstitutionAndTypeAndDateRange(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.any(),Mockito.any())).thenReturn(reportEntities);
+        List<ReportGeneratorInterface> reportGenerators=new ArrayList<>();
+        ReportGeneratorInterface reportGeneratorInterface=s3FailureReportGenerator;
+        reportGenerators.add(reportGeneratorInterface);
+        ReflectionTestUtils.setField(reportGenerator,"reportGenerators",reportGenerators);
+        String generatedReportFileName = generateReport(savedReportEntity.getCreatedDate(),RecapConstants.OPERATION_TYPE_ETL,savedReportEntity.getType(), savedReportEntity.getInstitutionName(), RecapCommonConstants.FTP);
         assertNotNull(generatedReportFileName);
     }
 
     @Test
-    public void uploadSuccessReportToFTP() throws Exception {
+    public void uploadSuccessReportTos3() throws Exception {
         ReportEntity savedReportEntity = saveSuccessReportEntity();
-
-        String generatedReportFileName = generateReport(savedReportEntity.getCreatedDate(), "ETL",savedReportEntity.getType(), savedReportEntity.getInstitutionName(), RecapCommonConstants.FTP);
-
+        List<ReportEntity> reportEntities=new ArrayList<>();
+        reportEntities.add(savedReportEntity);
+        Mockito.when(reportDetailRepository.findByFileAndInstitutionAndTypeAndDateRange(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.any(),Mockito.any())).thenReturn(reportEntities);
+        List<ReportGeneratorInterface> reportGenerators=new ArrayList<>();
+        ReportGeneratorInterface reportGeneratorInterface=s3SuccessReportGenerator;
+        reportGenerators.add(reportGeneratorInterface);
+        ReflectionTestUtils.setField(reportGenerator,"reportGenerators",reportGenerators);
+        String generatedReportFileName = generateReport(savedReportEntity.getCreatedDate(),RecapConstants.OPERATION_TYPE_ETL,savedReportEntity.getType(), savedReportEntity.getInstitutionName(), RecapCommonConstants.FTP);
         assertNotNull(generatedReportFileName);
     }
 
     @Test
     public void generateReportWithoutFileName() throws Exception {
         ReportEntity savedSuccessReportEntity1 = saveSuccessReportEntity();
-        ReportEntity savedSuccessReportEntity2 = saveSuccessReportEntity();
         fileName = "";
-        String generatedReportFileName = generateReport(savedSuccessReportEntity1.getCreatedDate(), "ETL",savedSuccessReportEntity1.getType(), savedSuccessReportEntity1.getInstitutionName(), RecapCommonConstants.FILE_SYSTEM);
-
+        List<ReportEntity> reportEntities=new ArrayList<>();
+        reportEntities.add(savedSuccessReportEntity1);
+        Mockito.when(reportDetailRepository.findByInstitutionAndTypeAndDateRange(Mockito.anyString(),Mockito.anyString(),Mockito.any(),Mockito.any())).thenReturn(reportEntities);
+        List<ReportGeneratorInterface> reportGenerators=new ArrayList<>();
+        ReportGeneratorInterface reportGeneratorInterface=csvSuccessReportGenerator;
+        reportGenerators.add(reportGeneratorInterface);
+        ReflectionTestUtils.setField(reportGenerator,"reportGenerators",reportGenerators);
+        String generatedReportFileName = generateReport(savedSuccessReportEntity1.getCreatedDate(),RecapConstants.OPERATION_TYPE_ETL,savedSuccessReportEntity1.getType(), savedSuccessReportEntity1.getInstitutionName(), RecapCommonConstants.FILE_SYSTEM);
         assertNotNull(generatedReportFileName);
+    }
 
-        File directory = new File(reportDirectory);
-        assertTrue(true);
-
-        boolean directoryContains = new File(directory, generatedReportFileName).exists();
-        assertTrue(true);
+    @Test
+    public void getReportGenerators() throws Exception {
+        List<ReportGeneratorInterface> reportGenerators=reportGenerator.getReportGenerators();
+        assertNotNull(reportGenerators);
     }
 
     private ReportEntity saveFailureReportEntity() {
@@ -217,7 +276,7 @@ public class ReportGeneratorUT extends BaseTestCase {
 
         reportEntity.setReportDataEntities(reportDataEntities);
 
-        return reportDetailRepository.save(reportEntity);
+        return reportEntity;
     }
 
     private ReportEntity saveSuccessReportEntity() {
@@ -264,9 +323,7 @@ public class ReportGeneratorUT extends BaseTestCase {
         reportEntity.setType(RecapCommonConstants.SUCCESS);
         reportEntity.setReportDataEntities(reportDataEntities);
         reportEntity.setInstitutionName("PUL");
-
-        ReportEntity savedReportEntity = reportDetailRepository.save(reportEntity);
-        return savedReportEntity;
+        return reportEntity;
     }
 
 
@@ -325,8 +382,7 @@ public class ReportGeneratorUT extends BaseTestCase {
         reportEntity.setReportDataEntities(reportDataEntities);
         reportEntity.setInstitutionName("PUL");
 
-        ReportEntity savedReportEntity = reportDetailRepository.save(reportEntity);
-        return savedReportEntity;
+        return reportEntity;
     }
 
     private ReportEntity saveDataDumpFailureReport(){
@@ -393,9 +449,7 @@ public class ReportGeneratorUT extends BaseTestCase {
         reportEntity.setType("BatchExportFailure");
         reportEntity.setReportDataEntities(reportDataEntities);
         reportEntity.setInstitutionName("PUL");
-
-        ReportEntity savedReportEntity = reportDetailRepository.save(reportEntity);
-        return savedReportEntity;
+        return reportEntity;
     }
 
     public Date getFromDate(Date date){

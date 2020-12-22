@@ -1,26 +1,34 @@
 package org.recap.controller;
 
+import org.apache.camel.CamelContext;
+import org.apache.camel.ServiceStatus;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.recap.BaseTestCase;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.PowerMockRunnerDelegate;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
+import org.recap.camel.RecordProcessor;
 import org.recap.model.etl.EtlLoadRequest;
-import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jparw.ReportDataEntity;
 import org.recap.model.jparw.ReportEntity;
-import org.recap.model.jpa.XmlRecordEntity;
+import org.recap.report.ReportGenerator;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.repositoryrw.ReportDetailRepository;
 import org.recap.repository.XmlRecordRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,23 +43,27 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by chenchulakshmig on 14/7/16.
  */
-public class EtlDataLoadControllerUT extends BaseTestCase {
 
-    @Autowired
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ServiceStatus.class)
+@PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
+public class EtlDataLoadControllerUT extends BaseTestCaseUT {
+
+    @InjectMocks
     EtlDataLoadController etlDataLoadController;
 
-    @Autowired
+    @Mock
     BibliographicDetailsRepository bibliographicDetailsRepository;
 
-    @Autowired
+    @Mock
     XmlRecordRepository xmlRecordRepository;
 
-    @Autowired
+    @Mock
     ReportDetailRepository reportDetailRepository;
 
     @Mock
@@ -65,6 +77,16 @@ public class EtlDataLoadControllerUT extends BaseTestCase {
 
     @Mock
     BindingResult bindingResult;
+
+    @Mock
+    RecordProcessor recordProcessor;
+
+    @Mock
+    CamelContext camelContext;
+
+    @Mock
+    ReportGenerator reportGenerator;
+
 
     @Before
     public void setUp() {
@@ -89,18 +111,29 @@ public class EtlDataLoadControllerUT extends BaseTestCase {
         etlLoadRequest.setFile(multipartFile);
 
         etlDataLoadController.uploadFiles(etlLoadRequest, bindingResult, model);
+    }
 
-        Thread.sleep(1000);
-
-        Page<XmlRecordEntity> xmlRecordEntities = xmlRecordRepository.findByXmlFileName(PageRequest.of(0, 10), "SampleRecord.xml");
-        assertNotNull(xmlRecordEntities);
-        List<XmlRecordEntity> xmlRecordEntityList = xmlRecordEntities.getContent();
-        assertNotNull(xmlRecordEntityList);
-        assertTrue(xmlRecordEntityList.size() > 0);
+    @Test
+    public void uploadFiles1() throws Exception {
+        assertNotNull(etlDataLoadController);
+        URL resource = getClass().getResource("SampleRecord.xml");
+        assertNotNull(resource);
+        File file = new File(resource.toURI());
+        assertNotNull(file);
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile("file",
+                file.getName(), "text/plain", IOUtils.toByteArray(input));
+        assertNotNull(multipartFile);
+        EtlLoadRequest etlLoadRequest = new EtlLoadRequest();
+        etlDataLoadController.uploadFiles(etlLoadRequest, bindingResult, model);
     }
 
     @Test
     public void testBulkIngest() throws Exception {
+        ReflectionTestUtils.setField(etlDataLoadController,"recordProcessor",recordProcessor);
+        ServiceStatus serviceStatus= PowerMockito.mock(ServiceStatus.class);
+        Mockito.when(camelContext.getStatus()).thenReturn(serviceStatus);
+        Mockito.when(serviceStatus.isStarted()).thenReturn(true);
         uploadFiles();
         EtlLoadRequest etlLoadRequest = new EtlLoadRequest();
         etlLoadRequest.setFileName("SampleRecord.xml");
@@ -108,22 +141,18 @@ public class EtlDataLoadControllerUT extends BaseTestCase {
         etlLoadRequest.setUserName(StringUtils.isBlank(etlLoadRequest.getUserName()) ? "etl" : etlLoadRequest.getUserName());
         etlLoadRequest.setOwningInstitutionName("NYPL");
         etlDataLoadController.bulkIngest(etlLoadRequest, bindingResult, model);
-        Thread.sleep(1000);
 
         String report = etlDataLoadController.report();
         assertNotNull(report);
-        System.out.println(report);
-
-        BibliographicEntity bibliographicEntity = bibliographicDetailsRepository.findByOwningInstitutionIdAndOwningInstitutionBibId(3, ".b153286131");
-        assertNotNull(bibliographicEntity);
-        assertNotNull(bibliographicEntity.getHoldingsEntities());
-        assertNotNull(bibliographicEntity.getItemEntities());
     }
 
     @Test
     public void testReports() throws Exception {
+        String[] filename={"test",""};
+        for (String file:
+        filename) {
+            Mockito.when(reportGenerator.generateReport(Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.anyString(),Mockito.any(),Mockito.any(),Mockito.any())).thenReturn(file);
         String fileName = "test.xml";
-
         List<ReportDataEntity> reportDataEntities = new ArrayList<>();
         ReportEntity reportEntity = new ReportEntity();
         reportEntity.setFileName(fileName);
@@ -138,17 +167,14 @@ public class EtlDataLoadControllerUT extends BaseTestCase {
 
         reportEntity.setReportDataEntities(reportDataEntities);
 
-        ReportEntity savedReportEntity = reportDetailRepository.save(reportEntity);
-        assertNotNull(savedReportEntity);
-
         Calendar cal = Calendar.getInstance();
-        Date from = savedReportEntity.getCreatedDate();
+        Date from = reportEntity.getCreatedDate();
         cal.setTime(from);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         from = cal.getTime();
-        Date to = savedReportEntity.getCreatedDate();
+        Date to = reportEntity.getCreatedDate();
         cal.setTime(to);
         cal.set(Calendar.HOUR_OF_DAY, 23);
         cal.set(Calendar.MINUTE, 59);
@@ -171,12 +197,7 @@ public class EtlDataLoadControllerUT extends BaseTestCase {
         Thread.sleep(1000);
 
         assertNotNull(reportFileName);
-
-        File directory = new File(reportDirectory);
-        assertTrue(directory.isDirectory());
-
-        boolean directoryContains = new File(directory, reportFileName).exists();
-        assertTrue(directory.isDirectory());
+        }
     }
 
     @Test

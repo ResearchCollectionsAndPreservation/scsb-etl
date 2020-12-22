@@ -2,9 +2,9 @@ package org.recap.camel;
 
 import org.apache.camel.ProducerTemplate;
 import org.junit.Test;
-import org.recap.BaseTestCase;
+import org.mockito.Mock;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapConstants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
@@ -12,12 +12,14 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Created by chenchulakshmig on 15/9/16.
  */
-public class EmailRouteBuilderUT extends BaseTestCase {
+public class EmailRouteBuilderUT extends BaseTestCaseUT {
 
-    @Autowired
+    @Mock
     private ProducerTemplate producer;
 
     @Value("${data.dump.email.nypl.to}")
@@ -40,7 +42,11 @@ public class EmailRouteBuilderUT extends BaseTestCase {
         emailPayLoad.setLocation(location);
         emailPayLoad.setCount(100);
         emailPayLoad.setTo(dataDumpEmailNyplTo);
+        emailPayLoad.setFailedCount(1);
+        emailPayLoad.setTo("1");
         producer.sendBody(RecapConstants.EMAIL_Q, emailPayLoad);
+        assertNotNull(emailPayLoad.getFailedCount());
+        assertNotNull(emailPayLoad.getTo());
     }
 
 }

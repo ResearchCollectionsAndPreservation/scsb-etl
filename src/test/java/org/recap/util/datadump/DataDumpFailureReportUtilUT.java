@@ -1,19 +1,22 @@
 package org.recap.util.datadump;
 
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.recap.BaseTestCase;
+import org.recap.BaseTestCaseUT;
+import org.recap.RecapConstants;
 import org.recap.model.export.DataDumpRequest;
+import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jparw.ReportDataEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertNotNull;
 
-public class DataDumpFailureReportUtilUT extends BaseTestCase {
-    @Autowired
+public class DataDumpFailureReportUtilUT extends BaseTestCaseUT {
+
+    @InjectMocks
     DataDumpFailureReportUtil dataDumpFailureReportUtil;
 
     @Test
@@ -22,15 +25,22 @@ public class DataDumpFailureReportUtilUT extends BaseTestCase {
         List<String> institutionCodes = new ArrayList<>();
         institutionCodes.add("PUL");
         dataDumpRequest.setInstitutionCodes(institutionCodes);
+        dataDumpRequest.setRequestingInstitutionCode("PUL");
+        dataDumpRequest.setDate(new Date().toString());
+        dataDumpRequest.setTransmissionType("0");
         dataDumpRequest.setFetchType("1");
-        List<Integer> cgIds = new ArrayList<>();
-        cgIds.add(1);
-        cgIds.add(2);
-        dataDumpRequest.setCollectionGroupIds(cgIds);
-        List<Map<String,Object>> obj = new ArrayList<Map<String,Object>>();
-
-        List<ReportDataEntity> entity = new ArrayList<>();
-        entity = dataDumpFailureReportUtil.generateDataDumpFailureReport(obj,dataDumpRequest);
+        dataDumpRequest.setCollectionGroupIds(Arrays.asList(1,2,3));
+        dataDumpRequest.setInstitutionCodes(Arrays.asList("PUL","CUL"));
+        List<Map<String,Object>> successAndFailureFormattedFullList = new ArrayList<Map<String,Object>>();
+        Map<String,Object> successAndFailureFormattedList=new HashMap<>();
+        List<BibliographicEntity> failureList=new ArrayList<>();
+        BibliographicEntity bibliographicEntity=new BibliographicEntity();
+        failureList.add(bibliographicEntity);
+        successAndFailureFormattedList.put(RecapConstants.DATADUMP_SUCCESSLIST,failureList);
+        successAndFailureFormattedList.put(RecapConstants.DATADUMP_FORMATERROR,"formatError");
+        successAndFailureFormattedFullList.add(successAndFailureFormattedList);
+        successAndFailureFormattedFullList.add(successAndFailureFormattedList);
+        List<ReportDataEntity> entity = dataDumpFailureReportUtil.generateDataDumpFailureReport(successAndFailureFormattedFullList,dataDumpRequest);
         assertNotNull(entity);
 
     }
