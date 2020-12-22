@@ -128,15 +128,18 @@ public class DataExportEmailProcessor implements Processor {
         sendBatchExportReportToFTP(failureReportEntities, RecapCommonConstants.FAILURE);
 
         if(fetchType.equals(fetchTypeFull)) {
+            logger.info("Sending email for full dump");
             processEmail(totalRecordCount,failedBibs,exportedItemCount,fetchType,requestingInstitutionCode);
-            writeFullDumpStatusToFile();
         }
         else if(fetchType.equals(RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL)){
+            logger.info("Sending email for incremental dump");
             processEmail(totalRecordCount,failedBibs,exportedItemCount,fetchType,requestingInstitutionCode);
         }
         else if(fetchType.equals(RecapConstants.DATADUMP_FETCHTYPE_DELETED)){
+            logger.info("Sending email for deleted dump");
             processEmail(totalRecordCount,failedBibs,exportedItemCount,fetchType,requestingInstitutionCode);
         }
+        writeDumpStatusToFile();
     }
 
     private void setReportFileName(ReportEntity reportEntity){
@@ -181,7 +184,8 @@ public class DataExportEmailProcessor implements Processor {
      *
      * @throws IOException
      */
-    private void writeFullDumpStatusToFile() throws IOException {
+    private void writeDumpStatusToFile() throws IOException {
+        logger.info("Writing 'Completed' status to data-dump status file...");
         File file = new File(dataDumpStatusFileName);
         try (FileWriter fileWriter = new FileWriter(file, false)) {
             fileWriter.append(RecapConstants.COMPLETED);

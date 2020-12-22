@@ -63,9 +63,10 @@ public class DataDumpSchedulerExecutorService {
      * @return
      */
     public String initiateDataDumpForScheduler(String date, String requestingInstitutionCode, String fetchType) {
+        logger.info("Starting sequencial Incremental and Deleted Dump");
         logger.info("Export data dump for {} from {}", requestingInstitutionCode, date);
         DataDumpRequest dataDumpRequest = new DataDumpRequest();
-
+        dataDumpRequest.setIncrementalSequence(true);
         Map<String, String> requestParameterMap = getJobDataParameterUtil().buildJobRequestParameterMap(RecapConstants.EXPORT_FETCH_TYPE_INSTITUTION);
         if (StringUtils.isBlank(fetchType)) {
             fetchType = requestParameterMap.get(RecapConstants.FETCH_TYPE);

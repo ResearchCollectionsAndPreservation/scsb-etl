@@ -4,6 +4,7 @@ import org.apache.camel.ConsumerTemplate;
 import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.export.DataDumpRequest;
@@ -18,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -27,12 +27,7 @@ import java.nio.charset.Charset;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -109,6 +104,7 @@ public class DataDumpExportService {
                 String message = getMessageFromIsRecordAvailableQ();
                 if (message.equals(RecapConstants.DATADUMP_RECORDS_AVAILABLE_FOR_PROCESS)) {
                     outputString = getMessageFromHttpQ();
+                    dataDumpEmailService.sendEmailForDumpNotification(dataDumpRequest);
                 } else{
                     outputString = message;
                 }
@@ -127,6 +123,9 @@ public class DataDumpExportService {
                     if (RecapConstants.EXPORT_SCHEDULER_CALL) {
                         producerTemplate.sendBody(RecapConstants.DATA_DUMP_COMPLETION_FROM, dataDumpRequest.getRequestingInstitutionCode());
                     }
+                }
+                else {
+                    dataDumpEmailService.sendEmailForDumpNotification(dataDumpRequest);
                 }
             }
             responseMessage = getResponseMessage(outputString, dataDumpRequest);
@@ -334,10 +333,12 @@ public class DataDumpExportService {
             }
         }
 
-        if(dataDumpRequest.getFetchType().equals(fetchTypeFull) && dataDumpRequest.getTransmissionType().equals(RecapConstants.DATADUMP_TRANSMISSION_TYPE_FTP)) {
+        if(RecapConstants.DATADUMP_TYPES.contains(dataDumpRequest.getFetchType())&& dataDumpRequest.getTransmissionType().equals(RecapConstants.DATADUMP_TRANSMISSION_TYPE_FTP)) {
             String dataExportStatus = getDataExportCurrentStatus();
-            if(dataExportStatus != null && dataExportStatus.equals(RecapConstants.IN_PROGRESS)){
-                errorMessageMap.put(errorcount, RecapConstants.FULLDUMP_INPROGRESS_ERR_MSG);
+            String status = Optional.ofNullable(dataExportStatus).orElse("No file created");
+            logger.info("Validating datadump status file for requested Dump-Type {} by {} . Status : {}",dataDumpRequest.getFetchType(),dataDumpRequest.getRequestingInstitutionCode(),status);
+            if(dataExportStatus != null && dataExportStatus.contains(RecapConstants.IN_PROGRESS)){
+                errorMessageMap.put(errorcount, RecapConstants.INPROGRESS_ERR_MSG);
                 errorcount++;
             }
         }
@@ -495,6 +496,7 @@ public class DataDumpExportService {
         String date = new Date().toString();
         if (dataDumpRequest.getTransmissionType().equals(RecapConstants.DATADUMP_TRANSMISSION_TYPE_FTP)) {
             if (outputString.equals(RecapConstants.DATADUMP_RECORDS_AVAILABLE_FOR_PROCESS)) {
+                logger.info("Writing to data-dump status file as 'In Progress' on Dump-Type:{} Requesting Inst : {}",dataDumpRequest.getFetchType(),dataDumpRequest.getRequestingInstitutionCode());
                 setDataExportCurrentStatus();
                 outputString = RecapConstants.DATADUMP_PROCESS_STARTED;
             }
