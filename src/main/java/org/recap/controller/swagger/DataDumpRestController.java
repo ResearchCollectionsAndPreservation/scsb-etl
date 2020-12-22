@@ -80,12 +80,12 @@ public class DataDumpRestController {
     ){
         RecapConstants.EXPORT_SCHEDULER_CALL = false;
         DataDumpRequest dataDumpRequest = new DataDumpRequest();
-        getDynamicRouteBuilder().addDataDumpExportRoutes();
         getDataDumpExportService().setDataDumpRequest(dataDumpRequest,fetchType,institutionCodes,date, toDate, collectionGroupIds,transmissionType,requestingInstitutionCode,emailToAddress,outputFormat);
         String responseMessage = getDataDumpExportService().validateIncomingRequest(dataDumpRequest);
         if(responseMessage!=null) {
             return responseMessage;
         }
+        getDynamicRouteBuilder().addDataDumpExportRoutes();
         responseMessage = getDataDumpExportService().startDataDumpProcess(dataDumpRequest);
         return responseMessage;
     }

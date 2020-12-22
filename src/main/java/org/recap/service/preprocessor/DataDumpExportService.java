@@ -337,24 +337,9 @@ public class DataDumpExportService {
             String dataExportStatus = getDataExportCurrentStatus();
             String status = Optional.ofNullable(dataExportStatus).orElse("No file created");
             logger.info("Validating datadump status file for requested Dump-Type {} by {} . Status : {}",dataDumpRequest.getFetchType(),dataDumpRequest.getRequestingInstitutionCode(),status);
-            if(dataExportStatus != null && dataExportStatus.equals(RecapConstants.IN_PROGRESS)){
-                switch (dataDumpRequest.getFetchType()){
-                    case RecapConstants.DATADUMP_FETCHTYPE_FULL:
-                        errorMessageMap.put(errorcount, RecapConstants.FULLDUMP_INPROGRESS_ERR_MSG);
-                        errorcount++;
-                        break;
-                    case RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL:
-                        errorMessageMap.put(errorcount, RecapConstants.INCREMENTAL_INPROGRESS_ERR_MSG);
-                        errorcount++;
-                        break;
-                    case RecapConstants.DATADUMP_FETCHTYPE_DELETED:
-                        errorMessageMap.put(errorcount, RecapConstants.DELETED_INPROGRESS_ERR_MSG);
-                        errorcount++;
-                        break;
-                    default:
-                        errorMessageMap.put(errorcount, RecapConstants.INPROGRESS_ERR_MSG);
-                        errorcount++;
-                }
+            if(dataExportStatus != null && dataExportStatus.contains(RecapConstants.IN_PROGRESS)){
+                errorMessageMap.put(errorcount, RecapConstants.INPROGRESS_ERR_MSG);
+                errorcount++;
             }
         }
 
