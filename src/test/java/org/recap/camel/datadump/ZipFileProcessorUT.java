@@ -9,6 +9,7 @@ import org.apache.camel.support.DefaultExchange;
 import org.codehaus.jettison.json.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.recap.*;
 import org.springframework.beans.factory.annotation.*;
@@ -18,12 +19,15 @@ import java.util.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.spy;
 
-public class ZipFileProcessorUT extends BaseTestCase {
+public class ZipFileProcessorUT extends BaseTestCaseUT {
     public Exchange exchange;
     ProducerTemplate producerTemplate;
 
-    @Autowired
+    @InjectMocks
     ZipFileProcessor zipFileProcessor;
+
+    @Mock
+    DataExportEmailProcessor dataExportEmailProcessor;
 
     @Test
     public void testProcessor() {

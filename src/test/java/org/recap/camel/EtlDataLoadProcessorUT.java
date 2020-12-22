@@ -1,9 +1,18 @@
 package org.recap.camel;
 
 import org.apache.camel.ProducerTemplate;
+import org.apache.camel.ServiceStatus;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-import org.recap.BaseTestCase;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.PowerMockRunnerDelegate;
+import org.recap.BaseTestCaseUT;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.XmlRecordEntity;
 import org.recap.repository.BibliographicDetailsRepository;
@@ -11,10 +20,15 @@ import org.recap.repository.HoldingsDetailsRepository;
 import org.recap.repository.ItemDetailsRepository;
 import org.recap.repository.XmlRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,40 +36,35 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by angelind on 27/7/16.
  */
-public class EtlDataLoadProcessorUT extends BaseTestCase{
 
-    @Autowired
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ServiceStatus.class)
+@PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
+public class EtlDataLoadProcessorUT extends BaseTestCaseUT {
+
+    @Mock
     XmlRecordRepository xmlRecordRepository;
 
-    @Autowired
+    @InjectMocks
     EtlDataLoadProcessor etlDataLoadProcessor;
 
-    @Autowired
+    @Mock
     RecordProcessor recordProcessor;
 
-    @Autowired
+    @Mock
     BibliographicDetailsRepository bibliographicDetailsRepository;
 
-    @Autowired
+    @Mock
     HoldingsDetailsRepository holdingsDetailsRepository;
 
-    @Autowired
+    @Mock
     ItemDetailsRepository itemDetailsRepository;
 
-    @Autowired
+    @Mock
     ProducerTemplate producer;
 
     @Test
     public void testStartLoadProcessWithXmlFileName() throws Exception {
-
-        assertNotNull(etlDataLoadProcessor);
-        assertNotNull(recordProcessor);
-        assertNotNull(xmlRecordRepository);
-        assertNotNull(bibliographicDetailsRepository);
-        assertNotNull(holdingsDetailsRepository);
-        assertNotNull(itemDetailsRepository);
-        assertNotNull(producer);
-
         XmlRecordEntity xmlRecordEntity = new XmlRecordEntity();
         String xmlFileName = "sampleRecordForEtlLoadTest.xml";
         xmlRecordEntity.setXmlFileName(xmlFileName);
@@ -67,8 +76,12 @@ public class EtlDataLoadProcessorUT extends BaseTestCase{
         File file = new File(resource.toURI());
         String content = FileUtils.readFileToString(file, "UTF-8");
         xmlRecordEntity.setXml(content.getBytes());
-        xmlRecordRepository.save(xmlRecordEntity);
-
+        List distinctFileNames=new ArrayList();
+        distinctFileNames.add(xmlFileName);
+        Mockito.when(xmlRecordRepository.findDistinctFileNames()).thenReturn(distinctFileNames);
+        Mockito.when(xmlRecordRepository.countByXmlFileName(Mockito.anyString())).thenReturn(1l);
+        Page<XmlRecordEntity> xmlRecordEntities= PowerMockito.mock(Page.class);
+        Mockito.when(xmlRecordRepository.findByXmlFileName(Mockito.any(),Mockito.anyString())).thenReturn(xmlRecordEntities);
         etlDataLoadProcessor.setFileName(xmlFileName);
         etlDataLoadProcessor.setBatchSize(10);
         etlDataLoadProcessor.setRecordProcessor(recordProcessor);
@@ -83,22 +96,10 @@ public class EtlDataLoadProcessorUT extends BaseTestCase{
         assertEquals(etlDataLoadProcessor.getRecordProcessor(), recordProcessor);
         assertEquals(etlDataLoadProcessor.getFileName(), xmlFileName);
         etlDataLoadProcessor.startLoadProcess();
-        assertEquals(recordProcessor.getXmlFileName(),xmlFileName);
-
-        BibliographicEntity bibliographicEntity = bibliographicDetailsRepository.findByOwningInstitutionIdAndOwningInstitutionBibId(3,xmlRecordEntity.getOwningInstBibId());
-        assertNotNull(bibliographicEntity);
     }
 
     @Test
     public void testFailureReportEntity() throws Exception {
-
-        assertNotNull(etlDataLoadProcessor);
-        assertNotNull(recordProcessor);
-        assertNotNull(xmlRecordRepository);
-        assertNotNull(bibliographicDetailsRepository);
-        assertNotNull(holdingsDetailsRepository);
-        assertNotNull(itemDetailsRepository);
-        assertNotNull(producer);
 
         XmlRecordEntity xmlRecordEntity = new XmlRecordEntity();
         String xmlFileName = "InvalidRecordForEtlLoadTest.xml";
@@ -111,7 +112,14 @@ public class EtlDataLoadProcessorUT extends BaseTestCase{
         File file = new File(resource.toURI());
         String content = FileUtils.readFileToString(file, "UTF-8");
         xmlRecordEntity.setXml(content.getBytes());
-        xmlRecordRepository.save(xmlRecordEntity);
+
+        List distinctFileNames=new ArrayList();
+        distinctFileNames.add(xmlFileName);
+        Mockito.when(xmlRecordRepository.findDistinctFileNames()).thenReturn(distinctFileNames);
+        Mockito.when(xmlRecordRepository.countByXmlFileName(Mockito.anyString())).thenReturn(1l);
+        Page<XmlRecordEntity> xmlRecordEntities= PowerMockito.mock(Page.class);
+        Mockito.when(xmlRecordRepository.findByXmlFileName(Mockito.any(),Mockito.anyString())).thenReturn(xmlRecordEntities);
+
 
         etlDataLoadProcessor.setFileName(xmlFileName);
         etlDataLoadProcessor.setBatchSize(10);
@@ -127,7 +135,6 @@ public class EtlDataLoadProcessorUT extends BaseTestCase{
         assertEquals(etlDataLoadProcessor.getRecordProcessor(), recordProcessor);
         assertEquals(etlDataLoadProcessor.getFileName(), xmlFileName);
         etlDataLoadProcessor.startLoadProcess();
-        assertEquals(recordProcessor.getXmlFileName(),xmlFileName);
 
     }
 

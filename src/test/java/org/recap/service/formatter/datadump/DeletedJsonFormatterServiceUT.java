@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.recap.BaseTestCase;
 import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
 import org.recap.model.export.DeletedRecord;
@@ -13,11 +12,8 @@ import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.InstitutionEntity;
 import org.recap.model.jpa.ItemEntity;
 import org.recap.repository.BibliographicDetailsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -95,7 +91,8 @@ public class DeletedJsonFormatterServiceUT extends BaseTestCaseUT {
         holdingsEntity.setLastUpdatedBy("etl");
         holdingsEntity.setOwningInstitutionId(1);
         holdingsEntity.setOwningInstitutionHoldingsId("3");
-
+        holdingsEntity.equals(new HoldingsEntity());
+        holdingsEntity.hashCode();
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setLastUpdatedDate(new Date());
         itemEntity.setOwningInstitutionItemId("5");

@@ -1,7 +1,7 @@
 package org.recap.model.search;
 
 import org.junit.Test;
-import org.recap.BaseTestCase;
+import org.recap.BaseTestCaseUT;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -11,13 +11,15 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by hemalathas on 18/4/17.
  */
-public class SearchRecordsRequestUT extends BaseTestCase {
+public class SearchRecordsRequestUT extends BaseTestCaseUT {
 
     @Test
     public void testSearchRecordsRequest() {
         SearchRecordsRequest searchRecordsRequest = new SearchRecordsRequest();
         SearchResultRow searchResultRow = getSearchResultRow();
         SearchItemResultRow searchItemResultRow = getSearchItemResultRow();
+        searchItemResultRow.equals(new SearchItemResultRow());
+        searchItemResultRow.equals(searchItemResultRow);
         searchRecordsRequest.setFieldValue("test");
         searchRecordsRequest.setFieldName("test");
         searchRecordsRequest.setOwningInstitutions(Arrays.asList("PUL"));
@@ -39,6 +41,7 @@ public class SearchRecordsRequestUT extends BaseTestCase {
         searchRecordsRequest.setIndex(1);
         searchRecordsRequest.setDeleted(false);
         searchRecordsRequest.setErrorMessage("test");
+
         assertNotNull(searchRecordsRequest.getFieldValue());
         assertNotNull(searchRecordsRequest.getFieldName());
         assertNotNull(searchRecordsRequest.getOwningInstitutions());

@@ -7,27 +7,33 @@ import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.support.DefaultExchange;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.recap.BaseTestCase;
+import org.mockito.Mockito;
+import org.recap.BaseTestCaseUT;
 import org.recap.model.jpa.BibliographicAbstractEntity;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.service.formatter.datadump.DeletedJsonFormatterService;
 import org.recap.util.datadump.DataExportHeaderUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class DeletedRecordFormatActiveMQConsumerUT extends BaseTestCase {
+public class DeletedRecordFormatActiveMQConsumerUT extends BaseTestCaseUT {
 
-    @Autowired
+    @Mock
     DeletedJsonFormatterService deletedJsonFormatterService;
 
     DeletedRecordFormatActiveMQConsumer deletedRecordFormatActiveMQConsumer = new DeletedRecordFormatActiveMQConsumer(deletedJsonFormatterService);
 
-    @Autowired
+    @Mock
     DataExportHeaderUtil dataExportHeaderUtil;
 
     @Mock
@@ -48,6 +54,18 @@ public class DeletedRecordFormatActiveMQConsumerUT extends BaseTestCase {
     @Mock
     BibliographicEntity bibliographicEntity;
 
+    @Mock
+    List<Future<Object>> futureList;
+
+    @Mock
+    Stream<Future<Object>> future;
+
+    @Mock
+    Stream<Object> futures;
+
+    @Mock
+    Future Future;
+
     @Test
     public void testgetDataExportHeaderUtil() {
         deletedRecordFormatActiveMQConsumer.getDataExportHeaderUtil();
@@ -61,7 +79,7 @@ public class DeletedRecordFormatActiveMQConsumerUT extends BaseTestCase {
     }
 
     @Test
-    public void testprocessRecords() {
+    public void testprocessRecords() throws InterruptedException {
         CamelContext ctx = new DefaultCamelContext();
         Exchange ex = new DefaultExchange(ctx);
         Message in = ex.getIn();
@@ -74,8 +92,16 @@ public class DeletedRecordFormatActiveMQConsumerUT extends BaseTestCase {
         bibliographicEntity.setCreatedBy("tst");
         bibliographicEntity.setLastUpdatedDate(new Date());
         bibliographicEntity.setLastUpdatedBy("tst");
-        in.setBody(bibliographicEntity);
+        List<BibliographicEntity> bib=new ArrayList<>();
+        bib.add(bibliographicEntity);
+        in.setBody(bib);
         ex.setIn(in);
+        ReflectionTestUtils.setField(deletedRecordFormatActiveMQConsumer,"deletedJsonFormatterService",deletedJsonFormatterService);
+        ReflectionTestUtils.setField(deletedRecordFormatActiveMQConsumer,"executorService",executorService);
+        Mockito.when(executorService.invokeAll(Mockito.any())).thenReturn(futureList);
+        Mockito.when(futureList.stream()).thenReturn(future);
+        Mockito.when(future.map(Mockito.any())).thenReturn(futures);
+        Mockito.when(deletedJsonFormatterService.prepareDeletedRecords(Mockito.any())).thenReturn(new HashMap<>());
         try {
             deletedRecordFormatActiveMQConsumer.processRecords(ex);
         } catch (Exception e) {

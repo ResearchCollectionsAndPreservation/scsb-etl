@@ -1,46 +1,75 @@
 package org.recap.camel;
 
 import org.junit.Test;
-import org.recap.BaseTestCase;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.recap.BaseTestCaseUT;
+import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.ItemEntity;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.repository.HoldingsDetailsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.recap.repository.ItemDetailsRepository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by hemalathas on 25/7/17.
  */
-public class EtlDataLoadDAOServiceUT extends BaseTestCase{
+public class EtlDataLoadDAOServiceUT extends BaseTestCaseUT {
 
-    @Autowired
-    private EtlDataLoadDAOService etlDataLoadDAOService;
+    @InjectMocks
+    EtlDataLoadDAOService etlDataLoadDAOService;
 
-    @Autowired
+    @Mock
     BibliographicDetailsRepository bibliographicDetailsRepository;
 
-    @Autowired
+    @Mock
     HoldingsDetailsRepository holdingsDetailsRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Mock
+    ItemDetailsRepository itemDetailsRepository;
+
+    @Mock
+    EntityManager entityManager;
 
     @Test
     public void testSavedHoldingsEntity(){
         Random random = new Random();
+        Mockito.when(holdingsDetailsRepository.save(Mockito.any())).thenReturn(getHoldingsEntity(random, 1));
         HoldingsEntity holdingsEntity = etlDataLoadDAOService.savedHoldingsEntity(getHoldingsEntity(random, 1));
         assertNotNull(holdingsEntity);
     }
 
     @Test
     public void testItemEntity(){
+        Mockito.when(itemDetailsRepository.save(Mockito.any())).thenReturn(getItemEntity());
+        ItemEntity savedItemEntity = etlDataLoadDAOService.saveItemEntity(getItemEntity());
+        assertNotNull(savedItemEntity);
+    }
+
+    @Test
+    public void saveBibliographicEntity(){
+        BibliographicEntity bibliographicEntity=new BibliographicEntity();
+        Mockito.when(bibliographicDetailsRepository.save(Mockito.any())).thenReturn(bibliographicEntity);
+        etlDataLoadDAOService.saveBibliographicEntity(bibliographicEntity);
+        List<BibliographicEntity> bibliographicEntityList=new ArrayList<>();
+        bibliographicEntityList.add(bibliographicEntity);
+        Mockito.when(bibliographicDetailsRepository.saveAll(Mockito.any())).thenReturn(bibliographicEntityList);
+        etlDataLoadDAOService.saveBibliographicEntityList(bibliographicEntityList);
+        etlDataLoadDAOService.clearSession();
+        assertTrue(true);
+    }
+
+    private ItemEntity getItemEntity() {
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setCallNumberType("0");
         itemEntity.setCallNumber("callNum");
@@ -54,8 +83,7 @@ public class EtlDataLoadDAOServiceUT extends BaseTestCase{
         itemEntity.setCollectionGroupId(1);
         itemEntity.setCustomerCode("PA");
         itemEntity.setItemAvailabilityStatusId(1);
-        ItemEntity savedItemEntity = etlDataLoadDAOService.saveItemEntity(itemEntity);
-        assertNotNull(savedItemEntity);
+        return itemEntity;
     }
 
     private HoldingsEntity getHoldingsEntity(Random random, Integer institutionId) {

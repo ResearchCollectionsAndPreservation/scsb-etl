@@ -2,16 +2,14 @@ package org.recap.model.export;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.platform.commons.util.ReflectionUtils;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.recap.BaseTestCaseUT;
 import org.recap.model.jpa.BibliographicEntity;
-import org.recap.model.search.SearchRecordsRequest;
+import org.recap.model.jpa.ItemEntity;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.service.DataDumpSolrService;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -19,21 +17,20 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-@RunWith(PowerMockRunner.class)
-public class ImprovedFullDataDumpCallableUT {
+
+public class ImprovedFullDataDumpCallableUT extends BaseTestCaseUT {
     @InjectMocks
     ImprovedFullDataDumpCallable mockImprovedFullDataDumpCallable;
     @Mock
     DataDumpSolrService mockedDataDumpSolrService;
     @Mock
     BibliographicDetailsRepository mockBibliographicDetailsRepository;
+
     List<BibliographicEntity> bibliographicEntityList;
     @Before
     public void init() {
@@ -47,6 +44,9 @@ public class ImprovedFullDataDumpCallableUT {
         bibliographicEntity.setCreatedBy("tst");
         bibliographicEntity.setLastUpdatedDate(new Date());
         bibliographicEntity.setLastUpdatedBy("tst");
+        ItemEntity itemEntity=new ItemEntity();
+        itemEntity.setItemId(1);
+        bibliographicEntity.setItemEntities(Arrays.asList(itemEntity));
         bibliographicEntityList.add(bibliographicEntity);
         MockitoAnnotations.initMocks(this);
         try {
@@ -70,8 +70,9 @@ public class ImprovedFullDataDumpCallableUT {
         mapData.put("itemIds",data);
         dataDumpSearchResults.add(mapData);
         try {
+            ReflectionTestUtils.setField(mockImprovedFullDataDumpCallable,"dataDumpSearchResults",dataDumpSearchResults);
             Mockito.when(mockBibliographicDetailsRepository.getBibliographicEntityList(Arrays.asList(9572))).thenReturn(bibliographicEntityList);
-            assertEquals(new ImprovedFullDataDumpCallable(dataDumpSearchResults,mockBibliographicDetailsRepository).call(), "Test Data");
+            assertNotNull(new ImprovedFullDataDumpCallable(dataDumpSearchResults,mockBibliographicDetailsRepository).call());
         } catch (Exception exception) {
             exception.printStackTrace();
         }
