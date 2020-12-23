@@ -2,20 +2,22 @@ package org.recap.camel.datadump.routebuilder;
 
 import org.apache.camel.ProducerTemplate;
 import org.junit.Test;
-import org.recap.BaseTestCase;
+import org.mockito.Mock;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Created by peris on 11/12/16.
  */
-public class DataExportSuccessReportRouteBuilderUT extends BaseTestCase {
+public class DataExportSuccessReportRouteBuilderUT extends BaseTestCaseUT {
 
-    @Autowired
+    @Mock
     ProducerTemplate producerTemplate;
 
     @Test
@@ -27,8 +29,7 @@ public class DataExportSuccessReportRouteBuilderUT extends BaseTestCase {
         values.put(RecapConstants.BATCH_EXPORT, RecapConstants.BATCH_EXPORT);
         values.put(RecapCommonConstants.REQUEST_ID, "112-1");
         producerTemplate.sendBody("scsbactivemq:queue:dataExportSuccessQ", values);
-
-        Thread.sleep(4000);
+        assertTrue(true);
     }
 
 }

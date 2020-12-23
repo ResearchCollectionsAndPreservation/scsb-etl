@@ -3,7 +3,9 @@ package org.recap.camel;
 import org.apache.camel.ConsumerTemplate;
 import org.apache.camel.ProducerTemplate;
 import org.junit.Test;
-import org.recap.BaseTestCase;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.FailureReportReCAPCSVRecord;
@@ -12,7 +14,6 @@ import org.recap.model.jparw.ReportDataEntity;
 import org.recap.model.jparw.ReportEntity;
 import org.recap.repositoryrw.ReportDetailRepository;
 import org.recap.util.ReCAPCSVFailureRecordGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
@@ -27,16 +28,16 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by peris on 8/16/16.
  */
-public class CSVRouteBuilder_UT extends BaseTestCase {
+public class CSVRouteBuilder_UT extends BaseTestCaseUT {
 
 
-    @Autowired
+    @Mock
     ReportDetailRepository reportDetailRepository;
 
-    @Autowired
+    @Mock
     ProducerTemplate producer;
 
-    @Autowired
+    @Mock
     ConsumerTemplate consumer;
 
     @Value("${etl.report.directory}")
@@ -80,7 +81,9 @@ public class CSVRouteBuilder_UT extends BaseTestCase {
         reportEntity.setReportDataEntities(reportDataEntities);
 
         reportDetailRepository.save(reportEntity);
-
+        List<ReportEntity> byFileName1=new ArrayList<>();
+        byFileName1.add(reportEntity);
+        Mockito.when(reportDetailRepository.findByFileName("test.xml")).thenReturn(byFileName1);
         List<ReportEntity> byFileName = reportDetailRepository.findByFileName("test.xml");
 
         ReportEntity savedReportEntity = byFileName.get(0);
@@ -105,8 +108,5 @@ public class CSVRouteBuilder_UT extends BaseTestCase {
 
         boolean directoryContains = new File(directory, expectedGeneratedFileName).exists();
         assertTrue(directory.isDirectory());
-
-       // FileUtils.forceDelete(new File(reportDirectory+File.separator+expectedGeneratedFileName));
-
     }
 }

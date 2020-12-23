@@ -2,15 +2,22 @@ package org.recap.camel.datadump.consumer;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
+import org.apache.camel.FluentProducerTemplate;
 import org.apache.camel.Message;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.support.DefaultExchange;
 import org.junit.Before;
 import org.junit.Test;
 import org.marc4j.MarcReader;
+import org.marc4j.MarcWriter;
 import org.marc4j.MarcXmlReader;
+import org.marc4j.MarcXmlWriter;
 import org.marc4j.marc.Record;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.CollectionGroupEntity;
@@ -22,9 +29,7 @@ import org.recap.service.formatter.datadump.MarcXmlFormatterService;
 import org.recap.util.datadump.DataExportHeaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,13 +40,24 @@ import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
 
-public class MarcXMLFormatActiveMQConsumerUT extends BaseTestCase {
-    @Autowired
+public class MarcXMLFormatActiveMQConsumerUT extends BaseTestCaseUT {
+
+    @Mock
     MarcXmlFormatterService marcXmlFormatterService;
+
+    @InjectMocks
     MarcXMLFormatActiveMQConsumer marcXMLFormatActiveMQConsumer;
 
-    @Autowired
+    @Mock
     DataExportHeaderUtil dataExportHeaderUtil;
+
+    @Mock
+    FluentProducerTemplate fluentProducerTemplate;
+
+    @Mock
+    Exchange exchange;
+
+
     private final String bibContent = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
             "<collection>\n" +
             "    <record>\n" +
@@ -148,8 +164,10 @@ public class MarcXMLFormatActiveMQConsumerUT extends BaseTestCase {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Mockito.when(marcXmlFormatterService.prepareMarcRecords(Arrays.asList(bibliographicEntity))).thenCallRealMethod();
         Map<String, Object> successAndFailureFormattedList = marcXmlFormatterService.prepareMarcRecords(Arrays.asList(bibliographicEntity));
         try {
+            Mockito.when(marcXmlFormatterService.covertToMarcXmlString((List<Record>) successAndFailureFormattedList.get(RecapCommonConstants.SUCCESS))).thenCallRealMethod();
             String marcXmlString = marcXmlFormatterService.covertToMarcXmlString((List<Record>) successAndFailureFormattedList.get(RecapCommonConstants.SUCCESS));
             List<Record> recordList = readMarcXml(marcXmlString);
             String dataHeader = ";requestId#1";
@@ -162,11 +180,22 @@ public class MarcXMLFormatActiveMQConsumerUT extends BaseTestCase {
             Map<String, Object> mapdata = new HashMap<>();
             mapdata.put("batchHeaders", dataHeader);
             in.setHeaders(mapdata);
+            Mockito.when(marcXMLFormatActiveMQConsumer.processMarcXmlString(ex)).thenCallRealMethod();
             marcXMLFormatActiveMQConsumer.processMarcXmlString(ex);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         assertTrue(true);
+    }
+
+    public String covertToMarcXmlString(List<Record> recordList) throws Exception {
+        OutputStream out = new ByteArrayOutputStream();
+        MarcWriter writer = new MarcXmlWriter(out, "UTF-8", true);
+
+        recordList.forEach(writer::write);
+        writer.close();
+
+        return out.toString();
     }
 
     private List<Record> readMarcXml(String marcXmlString) {

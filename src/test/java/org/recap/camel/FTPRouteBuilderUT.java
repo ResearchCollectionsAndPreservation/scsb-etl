@@ -2,12 +2,12 @@ package org.recap.camel;
 
 import org.apache.camel.ProducerTemplate;
 import org.junit.Test;
-import org.recap.BaseTestCase;
+import org.mockito.Mock;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.FailureReportReCAPCSVRecord;
 import org.recap.model.csv.ReCAPCSVFailureRecord;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.text.SimpleDateFormat;
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by angelind on 21/7/16.
  */
-public class FTPRouteBuilderUT extends BaseTestCase{
+public class FTPRouteBuilderUT extends BaseTestCaseUT {
 
     @Value("${ftp.server.userName}")
     String ftpUserName;
@@ -36,7 +36,7 @@ public class FTPRouteBuilderUT extends BaseTestCase{
     @Value("${etl.report.directory}")
     private String reportDirectoryPath;
 
-    @Autowired
+    @Mock
     ProducerTemplate producer;
 
     @Test

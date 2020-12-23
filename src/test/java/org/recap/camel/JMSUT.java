@@ -7,7 +7,9 @@ import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
-import org.recap.BaseTestCase;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.csv.FailureReportReCAPCSVRecord;
@@ -15,7 +17,6 @@ import org.recap.model.csv.ReCAPCSVFailureRecord;
 import org.recap.model.jparw.ReportDataEntity;
 import org.recap.model.jparw.ReportEntity;
 import org.recap.repositoryrw.ReportDetailRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
@@ -33,15 +34,15 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by pvsubrah on 6/24/16.
  */
-public class JMSUT extends BaseTestCase {
+public class JMSUT extends BaseTestCaseUT {
 
-    @Autowired
+    @Mock
     ConsumerTemplate consumer;
-    @Autowired
+    @Mock
     CamelContext camelContext;
-    @Autowired
+    @Mock
     ReportDetailRepository reportDetailRepository;
-    @Autowired
+    @Mock
     private ProducerTemplate producer;
     @Value("${etl.report.directory}")
     private String reportDirectoryPath;
@@ -52,7 +53,7 @@ public class JMSUT extends BaseTestCase {
         assertNotNull(consumer);
 
         producer.sendBody("seda:start", "Hello World");
-
+        Mockito.when(consumer.receiveBody("seda:start", String.class)).thenReturn("Hello World");
         String body = consumer.receiveBody("seda:start", String.class);
 
         assertEquals("Hello World", body);
@@ -90,19 +91,6 @@ public class JMSUT extends BaseTestCase {
         DateFormat df = new SimpleDateFormat(RecapCommonConstants.DATE_FORMAT_FOR_FILE_NAME);
         String fileName = FilenameUtils.removeExtension(reCAPCSVFailureRecord.getFileName()) + "-Failure-" + df.format(new Date());
         File file = new File(reportDirectoryPath + File.separator + fileName + ".csv");
-        assertTrue(true);
-        //  String fileContents = Files.toString(file, Charsets.UTF_8);
-      /*  assertNotNull(fileContents);
-        assertTrue(fileContents.contains(failureReportReCAPCSVRecord.getOwningInstitution()));
-        assertTrue(fileContents.contains(failureReportReCAPCSVRecord.getOwningInstitutionBibId()));
-        assertTrue(fileContents.contains(failureReportReCAPCSVRecord.getOwningInstitutionHoldingsId()));
-        assertTrue(fileContents.contains(failureReportReCAPCSVRecord.getLocalItemId()));
-        assertTrue(fileContents.contains(failureReportReCAPCSVRecord.getItemBarcode()));
-        assertTrue(fileContents.contains(failureReportReCAPCSVRecord.getCustomerCode()));
-        assertTrue(fileContents.contains(failureReportReCAPCSVRecord.getTitle()));
-        assertTrue(fileContents.contains(failureReportReCAPCSVRecord.getCollectionGroupDesignation()));
-        assertTrue(fileContents.contains(failureReportReCAPCSVRecord.getExceptionMessage()));
-        assertTrue(fileContents.contains(failureReportReCAPCSVRecord.getErrorDescription()));*/
         assertTrue(true);
     }
 
@@ -152,8 +140,6 @@ public class JMSUT extends BaseTestCase {
 
         List<ReportEntity> byFileName = reportDetailRepository.findByFileName("TestSuccessReport.xml");
         assertNotNull(byFileName);
-       // assertNotNull(byFileName.get(0));
-
     }
 
     public class FileNameProcessor implements Processor {

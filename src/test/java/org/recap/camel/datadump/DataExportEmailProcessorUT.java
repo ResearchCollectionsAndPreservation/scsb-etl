@@ -3,19 +3,28 @@ package org.recap.camel.datadump;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
+import org.apache.camel.ProducerTemplate;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.support.DefaultExchange;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCase;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
+import org.recap.RecapConstants;
+import org.recap.model.csv.DataDumpFailureReport;
+import org.recap.model.csv.DataDumpSuccessReport;
 import org.recap.model.jparw.ReportDataEntity;
 import org.recap.model.jparw.ReportEntity;
+import org.recap.report.S3DataDumpFailureReportGenerator;
+import org.recap.report.S3DataDumpSuccessReportGenerator;
 import org.recap.repositoryrw.ReportDetailRepository;
 import org.recap.service.email.datadump.DataDumpEmailService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
@@ -30,14 +39,24 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by hemalathas on 19/4/17.
  */
-public class DataExportEmailProcessorUT extends BaseTestCase {
+public class DataExportEmailProcessorUT extends BaseTestCaseUT {
 
-    @Autowired
+    @InjectMocks
     DataExportEmailProcessor dataExportEmailProcessor;
+
     @Mock
     ReportDetailRepository reportDetailRepository;
     @Mock
     DataDumpEmailService dataDumpEmailService;
+    @Mock
+    S3DataDumpFailureReportGenerator s3DataDumpFailureReportGenerator;
+    @Mock
+    S3DataDumpSuccessReportGenerator s3DataDumpSuccessReportGenerator;
+    @Mock
+    ProducerTemplate producerTemplate;
+
+    @Value("${etl.data.dump.fetchtype.full}")
+    private String fetchTypeFull;
 
     @Before
     public void init() {
@@ -47,7 +66,6 @@ public class DataExportEmailProcessorUT extends BaseTestCase {
 
     @Test
     public void testDataExportEmailProcess() throws Exception {
-        ReportEntity reportEntity = saveReportEntity();
         dataExportEmailProcessor.setTransmissionType("2");
         dataExportEmailProcessor.setInstitutionCodes(Arrays.asList("PUL", "CUL"));
         dataExportEmailProcessor.setRequestingInstitutionCode("NYPL");
@@ -64,43 +82,44 @@ public class DataExportEmailProcessorUT extends BaseTestCase {
         assertNotNull(dataExportEmailProcessor.getFetchType());
     }
 
-    private ReportEntity saveReportEntity() {
-        List<ReportDataEntity> reportDataEntities = new ArrayList<>();
-
+    private ReportEntity saveReportEntity(String type) {
         ReportEntity reportEntity = new ReportEntity();
         reportEntity.setFileName("test");
         reportEntity.setCreatedDate(new Date());
-        reportEntity.setType(RecapCommonConstants.FAILURE);
+        reportEntity.setType(type);
         reportEntity.setInstitutionName("CUL");
 
-        ReportDataEntity reportDataEntity = new ReportDataEntity();
-        reportDataEntity.setHeaderName("Barcode");
-        reportDataEntity.setHeaderValue("103");
-        reportDataEntities.add(reportDataEntity);
+        ReportDataEntity reportDataEntity1 = new ReportDataEntity();
+        reportDataEntity1.setHeaderName(RecapConstants.HEADER_FETCH_TYPE);
+        reportDataEntity1.setHeaderValue(RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL);
 
-        ReportDataEntity reportDataEntity2 = new ReportDataEntity();
-        reportDataEntity2.setHeaderName("CallNumber");
-        reportDataEntity2.setHeaderValue("X123");
-        reportDataEntities.add(reportDataEntity2);
+        List<ReportDataEntity> reportDataEntities = new ArrayList<>();
+        reportDataEntities.add(getReportDataEntity(RecapConstants.NUM_BIBS_EXPORTED,RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL));
+        reportDataEntities.add(getReportDataEntity(RecapConstants.FAILED_BIBS,RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL));
+        reportDataEntities.add(getReportDataEntity(RecapConstants.EXPORTED_ITEM_COUNT,RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL));
+        reportDataEntities.add(getReportDataEntity(RecapConstants.HEADER_FETCH_TYPE,RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL));
+        reportDataEntities.add(getReportDataEntity(RecapConstants.HEADER_FETCH_TYPE,RecapConstants.DATADUMP_FETCHTYPE_DELETED));
+        reportDataEntities.add(getReportDataEntity(RecapConstants.HEADER_FETCH_TYPE,"3"));
 
-        ReportDataEntity reportDataEntity3 = new ReportDataEntity();
-        reportDataEntity3.setHeaderName("ItemId");
-        reportDataEntity3.setHeaderValue("10412");
-        reportDataEntities.add(reportDataEntity3);
-
-        ReportDataEntity reportDataEntity4 = new ReportDataEntity();
-        reportDataEntity4.setHeaderName("Institution");
-        reportDataEntity4.setHeaderValue("CUL");
-        reportDataEntities.add(reportDataEntity4);
 
         reportEntity.setReportDataEntities(reportDataEntities);
 
-        return reportDetailRepository.save(reportEntity);
+        return reportEntity;
+    }
+
+    private ReportDataEntity getReportDataEntity(String headerName, String headerValue) {
+        ReportDataEntity reportDataEntity = new ReportDataEntity();
+        reportDataEntity.setHeaderName(headerName);
+        reportDataEntity.setHeaderValue(headerValue);
+        return reportDataEntity;
     }
 
     @Test
     public void testProcess() {
-        ReportDataEntity reportDataEntity = new ReportDataEntity();
+        String[] fetchTypes={"1","2","10"};
+        for (String fetchType:
+        fetchTypes) {
+            ReportDataEntity reportDataEntity = new ReportDataEntity();
         reportDataEntity.setHeaderName("FetchType");
         reportDataEntity.setHeaderValue("3");
         List<ReportEntity> reportEntities = new ArrayList<>();
@@ -122,23 +141,29 @@ public class DataExportEmailProcessorUT extends BaseTestCase {
         Map<String, Object> mapdata = new HashMap<>();
         mapdata.put("batchHeaders", dataHeader);
         ReflectionTestUtils.setField(dataExportEmailProcessor,"toEmailId","temp");
-        ReflectionTestUtils.setField(dataExportEmailProcessor,"folderName","temp");
+        ReflectionTestUtils.setField(dataExportEmailProcessor,"folderName","te/mp/er/s");
         ReflectionTestUtils.setField(dataExportEmailProcessor,"institutionCodes",Arrays.asList("CUL"));
         ReflectionTestUtils.setField(dataExportEmailProcessor,"transmissionType","0");
         ReflectionTestUtils.setField(dataExportEmailProcessor,"dataDumpEmailService",dataDumpEmailService);
-        ReflectionTestUtils.invokeMethod(dataExportEmailProcessor,"writeFullDumpStatusToFile");
-        ReflectionTestUtils.invokeMethod(dataExportEmailProcessor,"sendBatchExportReportToFTP",reportEntities,"Failure");
-        try{ReflectionTestUtils.invokeMethod(dataExportEmailProcessor,"setReportFileName",reportEntity);}catch(Exception e){e.printStackTrace();}
+        ReflectionTestUtils.setField(dataExportEmailProcessor,"fetchType",fetchType);
+        ReflectionTestUtils.setField(dataExportEmailProcessor,"fetchTypeFull",fetchTypeFull);
+        ReflectionTestUtils.setField(dataExportEmailProcessor,"reportFileName","reportFileName");
         reportDataEntity.setHeaderValue("2");
-        try{ReflectionTestUtils.invokeMethod(dataExportEmailProcessor,"setReportFileName",reportEntity);}catch(Exception e){e.printStackTrace();}
         reportDataEntity.setHeaderValue("1");
-        try{ReflectionTestUtils.invokeMethod(dataExportEmailProcessor,"setReportFileName",reportEntity);}catch(Exception e){e.printStackTrace();}
         ReflectionTestUtils.invokeMethod(dataExportEmailProcessor,"processEmail","2","2","2","1","CUL");
+        DataDumpFailureReport dataDumpFailureReport=new DataDumpFailureReport();
+        DataDumpSuccessReport dataDumpSuccessReport=new DataDumpSuccessReport();
+        List<ReportEntity> byFileName=new ArrayList<>();
+        byFileName.add(saveReportEntity(RecapConstants.BATCH_EXPORT_SUCCESS));
+        byFileName.add(saveReportEntity(RecapConstants.BATCH_EXPORT_FAILURE));
+        Mockito.when(reportDetailRepository.findByFileName(Mockito.anyString())).thenReturn(byFileName);
+        Mockito.when(s3DataDumpFailureReportGenerator.getDataDumpFailureReport(Mockito.anyList(),Mockito.anyString())).thenReturn(dataDumpFailureReport);
+        Mockito.when(s3DataDumpSuccessReportGenerator.getDataDumpSuccessReport(Mockito.anyList(),Mockito.anyString())).thenReturn(dataDumpSuccessReport);
         try {
             dataExportEmailProcessor.process(ex);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
-
+    }
 }
