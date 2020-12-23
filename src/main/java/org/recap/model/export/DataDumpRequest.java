@@ -21,4 +21,5 @@ public class DataDumpRequest {
     private String outputFileFormat;
     private String dateTimeString;
     private String requestId;
+    private boolean isIncrementalSequence;
 }
