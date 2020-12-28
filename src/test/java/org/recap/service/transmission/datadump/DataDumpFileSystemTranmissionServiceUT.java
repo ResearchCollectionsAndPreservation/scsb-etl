@@ -1,12 +1,16 @@
 package org.recap.service.transmission.datadump;
 
+import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
-import org.junit.*;
-import org.recap.BaseTestCase;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.recap.BaseTestCaseUT;
 import org.recap.RecapConstants;
+import org.recap.model.export.DataDumpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
@@ -21,18 +25,21 @@ import static org.junit.Assert.assertTrue;
  * Created by premkb on 3/10/16.
  */
 
-public class DataDumpFileSystemTranmissionServiceUT extends BaseTestCase {
+public class DataDumpFileSystemTranmissionServiceUT extends BaseTestCaseUT {
 
     private static final Logger logger = LoggerFactory.getLogger(DataDumpFileSystemTranmissionServiceUT.class);
 
     @Value("${etl.data.dump.directory}")
     private String dumpDirectoryPath;
 
-    @Autowired
+    @Mock
     private ProducerTemplate producer;
 
-    @Autowired
-    private DataDumpFileSystemTranmissionService dataDumpFileSystemTranmissionService;
+    @InjectMocks
+    DataDumpFileSystemTranmissionService dataDumpFileSystemTranmissionService;
+
+    @Mock
+    CamelContext camelContext;
 
     private String requestingInstitutionCode = "NYPL";
 
@@ -41,7 +48,7 @@ public class DataDumpFileSystemTranmissionServiceUT extends BaseTestCase {
     private String xmlString = "<marcxml:collection xmlns:marcxml=\"http://www.loc.gov/MARC21/slim\">\n" +
             "  <marcxml:record></marcxml:record>\n" +
             "</marcxml:collection>";
-    @Ignore
+
     @Test
     public void transmitFileSystemDataDump() throws Exception {
         dateTimeString = getDateTimeString();
@@ -50,9 +57,15 @@ public class DataDumpFileSystemTranmissionServiceUT extends BaseTestCase {
         Thread.sleep(2000);
         logger.info(dumpDirectoryPath+File.separator+ requestingInstitutionCode +File.separator+dateTimeString+ File.separator  + RecapConstants.DATA_DUMP_FILE_NAME+ requestingInstitutionCode +"-"+dateTimeString+ RecapConstants.XML_FILE_FORMAT);
         File file = new File(dumpDirectoryPath+File.separator+ requestingInstitutionCode +File.separator+dateTimeString+ File.separator  + RecapConstants.DATA_DUMP_FILE_NAME+ requestingInstitutionCode + RecapConstants.ZIP_FILE_FORMAT);
-        //boolean fileExists = file.exists();
         assertTrue(true);
-      //  file.delete();
+    }
+
+    @Test
+    public void isInterested() throws Exception {
+        DataDumpRequest dataDumpRequest=new DataDumpRequest();
+        dataDumpRequest.setTransmissionType(RecapConstants.DATADUMP_TRANSMISSION_TYPE_FILESYSTEM);
+        boolean interested=dataDumpFileSystemTranmissionService.isInterested(dataDumpRequest);
+        assertTrue(interested);
     }
 
     public Map<String,String> getRouteMap(){

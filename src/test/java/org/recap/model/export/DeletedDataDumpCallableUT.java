@@ -1,13 +1,17 @@
 package org.recap.model.export;
 
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.recap.BaseTestCase;
+import org.recap.BaseTestCaseUT;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.ItemEntity;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,15 +28,16 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by premkb on 2/10/16.
  */
-public class DeletedDataDumpCallableUT extends BaseTestCase {
-    @Autowired
+public class DeletedDataDumpCallableUT extends BaseTestCaseUT {
+
+    @Mock
     ApplicationContext appContext;
 
-    @Autowired
+    @Mock
     BibliographicDetailsRepository bibliographicDetailsRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Mock
+    DataDumpCallableHelperService dataDumpCallableHelperService;
 
     @Test
     public void call() throws Exception {
@@ -47,15 +52,13 @@ public class DeletedDataDumpCallableUT extends BaseTestCase {
         cgIds.add(1);
         cgIds.add(2);
         dataDumpRequest.setCollectionGroupIds(cgIds);
-        try {
-            saveAndGetBibliographicEntities();
-        } catch (URISyntaxException | IOException e) {
-            e.printStackTrace();
-        }
-        DeletedDataDumpCallable deletedDataDumpCallable = appContext.getBean(DeletedDataDumpCallable.class,pageNum,batchSize,dataDumpRequest,bibliographicDetailsRepository);
-        List<BibliographicEntity> bibliographicEntityList = (List<BibliographicEntity>)deletedDataDumpCallable.call();
-        BibliographicEntity bibliographicEntity = bibliographicEntityList.get(0);
-        assertNotNull(bibliographicEntityList);
+
+        Mockito.when(appContext.getBean(DataDumpCallableHelperService.class)).thenReturn(dataDumpCallableHelperService);
+        DeletedDataDumpCallable deletedDataDumpCallable=new DeletedDataDumpCallable(pageNum,batchSize,dataDumpRequest,bibliographicDetailsRepository);
+        ReflectionTestUtils.setField(deletedDataDumpCallable,"appContext",appContext);
+        Mockito.when(dataDumpCallableHelperService.getIncrementalDataDumpRecords(pageNum,batchSize,dataDumpRequest,bibliographicDetailsRepository)).thenReturn(saveAndGetBibliographicEntities());
+        Object dataDumpCallableHelperService1=deletedDataDumpCallable.call();
+        assertNotNull(dataDumpCallableHelperService1);
     }
 
     private List<BibliographicEntity> saveAndGetBibliographicEntities() throws URISyntaxException, IOException {
@@ -100,9 +103,7 @@ public class DeletedDataDumpCallableUT extends BaseTestCase {
         bibliographicEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
         bibliographicEntity.setItemEntities(Arrays.asList(itemEntity));
         itemEntity.setBibliographicEntities(bibliographicEntities);
-        BibliographicEntity savedBibliographicEntity = bibliographicDetailsRepository.saveAndFlush(bibliographicEntity);
-        entityManager.refresh(savedBibliographicEntity);
-        bibliographicEntities.add(savedBibliographicEntity);
+        bibliographicEntities.add(bibliographicEntity);
         return bibliographicEntities;
     }
 }
