@@ -1,5 +1,9 @@
 package org.recap;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by premkb on 19/8/16.
  */
@@ -19,6 +23,8 @@ public class RecapConstants {
     public static final String FILE_FORMAT = "fileFormat";
 
     public static final String SCSB = "SCSB";
+    public static final String MARC = "MARC";
+    public static final String JSON = "JSON";
 
     //General Constants
     public static final String INST_NAME= "institutionName";
@@ -113,12 +119,16 @@ public class RecapConstants {
     public static final String DATADUMP_EMAIL_TO_ADDRESS_REQUIRED = "Please enter a valid email address";
     public static final String INVALID_EMAIL_ADDRESS = "Email address is invalid.";
     public static final String INVALID_DATE_FORMAT = "Please enter the date in \"{0}\" format.";
+
     public static final String DATADUMP_FETCHTYPE_FULL = "10";
     public static final String DATADUMP_FETCHTYPE_INCREMENTAL = "1";
     public static final String DATADUMP_FETCHTYPE_DELETED = "2";
+    public static final List<String> DATADUMP_TYPES = Collections.unmodifiableList(Arrays.asList(RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL,RecapConstants.DATADUMP_FETCHTYPE_DELETED,RecapConstants.DATADUMP_FETCHTYPE_FULL));
+
     public static final String DATADUMP_TRANSMISSION_TYPE_FTP = "0";
     public static final String DATADUMP_TRANSMISSION_TYPE_HTTP = "1";
     public static final String DATADUMP_TRANSMISSION_TYPE_FILESYSTEM = "2";
+
     public static final String DATADUMP_XML_FORMAT_MARC = "0";
     public static final String DATADUMP_XML_FORMAT_SCSB = "1";
     public static final String DATADUMP_DELETED_JSON_FORMAT = "2";
@@ -129,10 +139,14 @@ public class RecapConstants {
     public static final String DATADUMP_FORMATERROR = "formatError";
     public static final String DATADUMP_EMAILBODY_FOR = "emailBodyFor";
     public static final String DATADUMP_DATA_AVAILABLE = "dataAvailable";
+    public static final String DATADUMP_EXPORT_NOTIFICATION = "dataExportNotification";
     public static final String DATADUMP_NO_DATA_AVAILABLE = "dataNotAvailable";
     public static final String COMPLETED = "Completed";
     public static final String IN_PROGRESS = "InProgress";
     public static final String FULLDUMP_INPROGRESS_ERR_MSG = "Can't run data export now, already full data export in progress, wait until it completes.";
+    public static final String INCREMENTAL_INPROGRESS_ERR_MSG = "Can't run data export now, already Incremental data export in progress, wait until it completes.";
+    public static final String DELETED_INPROGRESS_ERR_MSG = "Can't run data export now, already Deleted data export in progress, wait until it completes.";
+    public static final String INPROGRESS_ERR_MSG = "Can't run data export now, already data export in progress, wait until it completes.";
     public static final String INCREMENTAL_DATE_LIMIT_EMPTY_ERR_MSG = "The incremental Date limit is missing. Please contact HTC Support {0} for assistance.";
     public static final String INITIAL_DATA_LOAD_DATE_MISSING_ERR_MSG = "The initial data load Date is missing for the institution {0}. Please contact HTC Support {1} for assistance.";
     public static final String DATADUMP_DAYS_LIMIT_EXCEEDED_ERROR_MSG = "The date used for incremental data dump cannot be older than {0} days from the date of request. Please contact HTC Support {1} for assistance.";
