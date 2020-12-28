@@ -9,6 +9,7 @@ import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.ItemEntity;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -28,12 +29,10 @@ public class FullDataDumpCallableUT extends BaseTestCaseUT {
     ApplicationContext appContext;
 
     @Mock
-    FullDataDumpCallable mockfullDataDumpCallable;
-
-    @Mock
     BibliographicDetailsRepository bibliographicDetailsRepository;
 
-
+    @Mock
+    DataDumpCallableHelperService dataDumpCallableHelperService;
 
     @Test
     public void call() throws Exception {
@@ -48,17 +47,12 @@ public class FullDataDumpCallableUT extends BaseTestCaseUT {
         cgIds.add(1);
         cgIds.add(2);
         dataDumpRequest.setCollectionGroupIds(cgIds);
-        try {
-            saveAndGetBibliographicEntities();
-        } catch (URISyntaxException | IOException e) {
-            e.printStackTrace();
-        }
-        Mockito.when(appContext.getBean(FullDataDumpCallable.class,pageNum,batchSize,dataDumpRequest,bibliographicDetailsRepository)).thenReturn(mockfullDataDumpCallable);
-        Mockito.when(mockfullDataDumpCallable.call()).thenReturn(saveAndGetBibliographicEntities());
-        FullDataDumpCallable fullDataDumpCallable = appContext.getBean(FullDataDumpCallable.class,pageNum,batchSize,dataDumpRequest,bibliographicDetailsRepository);
-        List<BibliographicEntity> bibliographicEntityList = (List<BibliographicEntity>)fullDataDumpCallable.call();
-        BibliographicEntity bibliographicEntity = bibliographicEntityList.get(0);
-        assertNotNull(bibliographicEntityList);
+        Mockito.when(appContext.getBean(DataDumpCallableHelperService.class)).thenReturn(dataDumpCallableHelperService);
+        FullDataDumpCallable fullDataDumpCallable=new FullDataDumpCallable(pageNum,batchSize,dataDumpRequest,bibliographicDetailsRepository);
+        ReflectionTestUtils.setField(fullDataDumpCallable,"appContext",appContext);
+        Mockito.when(dataDumpCallableHelperService.getIncrementalDataDumpRecords(pageNum,batchSize,dataDumpRequest,bibliographicDetailsRepository)).thenReturn(saveAndGetBibliographicEntities());
+        Object fullDataDumpCallable1=fullDataDumpCallable.call();
+        assertNotNull(fullDataDumpCallable1);
     }
 
     private List<BibliographicEntity> saveAndGetBibliographicEntities() throws URISyntaxException, IOException {

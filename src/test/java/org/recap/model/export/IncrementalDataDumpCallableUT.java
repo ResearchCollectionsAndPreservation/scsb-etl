@@ -1,16 +1,16 @@
 package org.recap.model.export;
 
 import org.junit.Test;
-import org.recap.BaseTestCase;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.recap.BaseTestCaseUT;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.HoldingsEntity;
 import org.recap.model.jpa.ItemEntity;
 import org.recap.repository.BibliographicDetailsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -18,22 +18,21 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by premkb on 2/10/16.
  */
-public class IncrementalDataDumpCallableUT extends BaseTestCase {
+public class IncrementalDataDumpCallableUT extends BaseTestCaseUT {
 
-    @Autowired
+    @Mock
     ApplicationContext appContext;
 
-    @Autowired
+    @Mock
     BibliographicDetailsRepository bibliographicDetailsRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Mock
+    DataDumpCallableHelperService dataDumpCallableHelperService;
 
     @Test
     public void call() throws Exception {
@@ -50,15 +49,13 @@ public class IncrementalDataDumpCallableUT extends BaseTestCase {
         dataDumpRequest.setCollectionGroupIds(cgIds);
         String inputDate = "2016-08-30 11:20";
         dataDumpRequest.setDate(inputDate);
-        try {
-            saveAndGetBibliographicEntities();
-        } catch (URISyntaxException | IOException e) {
-            e.printStackTrace();
-        }
-        IncrementalDataDumpCallable incrementalDataDumpCallable = appContext.getBean(IncrementalDataDumpCallable.class,pageNum,batchSize,dataDumpRequest,bibliographicDetailsRepository);
-        List<BibliographicEntity> bibliographicEntityList = (List<BibliographicEntity>)incrementalDataDumpCallable.call();
-        BibliographicEntity bibliographicEntity = bibliographicEntityList.get(0);
-        assertNotNull(bibliographicEntityList);
+
+        Mockito.when(appContext.getBean(DataDumpCallableHelperService.class)).thenReturn(dataDumpCallableHelperService);
+        IncrementalDataDumpCallable incrementalDataDumpCallable=new IncrementalDataDumpCallable(pageNum,batchSize,dataDumpRequest,bibliographicDetailsRepository);
+        ReflectionTestUtils.setField(incrementalDataDumpCallable,"appContext",appContext);
+        Mockito.when(dataDumpCallableHelperService.getIncrementalDataDumpRecords(pageNum,batchSize,dataDumpRequest,bibliographicDetailsRepository)).thenReturn(saveAndGetBibliographicEntities());
+        Object dataDumpCallableHelperService1=incrementalDataDumpCallable.call();
+        assertNotNull(dataDumpCallableHelperService1);
     }
 
     private List<BibliographicEntity> saveAndGetBibliographicEntities() throws URISyntaxException, IOException {
@@ -102,9 +99,7 @@ public class IncrementalDataDumpCallableUT extends BaseTestCase {
         bibliographicEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
         bibliographicEntity.setItemEntities(Arrays.asList(itemEntity));
         itemEntity.setBibliographicEntities(bibliographicEntities);
-        BibliographicEntity savedBibliographicEntity = bibliographicDetailsRepository.saveAndFlush(bibliographicEntity);
-        entityManager.refresh(savedBibliographicEntity);
-        bibliographicEntities.add(savedBibliographicEntity);
+        bibliographicEntities.add(bibliographicEntity);
         return bibliographicEntities;
     }
 }

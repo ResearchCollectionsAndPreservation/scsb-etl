@@ -6,16 +6,21 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.recap.BaseTestCase;
-import org.recap.camel.BibDataProcessor;
+import org.recap.BaseTestCaseUT;
 import org.recap.model.csv.FailureReportReCAPCSVRecord;
+import org.recap.model.jaxb.Bib;
 import org.recap.model.jaxb.BibRecord;
-import org.recap.model.jaxb.JAXBHandler;
+import org.recap.model.jaxb.Holding;
+import org.recap.model.jaxb.Holdings;
+import org.recap.model.jaxb.Items;
+import org.recap.model.jaxb.marc.CollectionType;
+import org.recap.model.jaxb.marc.ContentType;
+import org.recap.model.jaxb.marc.RecordType;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.XmlRecordEntity;
-import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.util.DBReportUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.recap.util.MarcUtil;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -25,26 +30,22 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by chenchulakshmig on 1/7/16.
  */
-public class BibPersisterCallableUT extends BaseTestCase {
+public class BibPersisterCallableUT extends BaseTestCaseUT {
 
-    @Autowired
-    BibliographicDetailsRepository bibliographicDetailsRepository;
-
-    @Autowired
-    BibDataProcessor bibDataProcessor;
-
-    @Autowired
+    @Mock
     DBReportUtil dbReportUtil;
 
     @Mock
@@ -55,6 +56,33 @@ public class BibPersisterCallableUT extends BaseTestCase {
 
     @Mock
     private Map<String, Integer> collectionGroupMap;
+
+    @Mock
+    BibRecord bibRecord;
+
+    @Mock
+    Bib bib;
+
+    @Mock
+    ContentType contentType;
+
+    @Mock
+    CollectionType collection;
+
+    @Mock
+    RecordType recordType;
+
+    @Mock
+    Holdings holdings;
+
+    @Mock
+    Holding holding;
+
+    @Mock
+    Items items;
+
+    @Mock
+    MarcUtil marcUtil;
 
     @Before
     public void setUp() {
@@ -70,7 +98,8 @@ public class BibPersisterCallableUT extends BaseTestCase {
         bibPersisterCallable.setInstitutionEntitiesMap(institutionMap);
         bibPersisterCallable.setCollectionGroupMap(collectionGroupMap);
         bibPersisterCallable.setBibRecord(bibRecord);
-        assertNotNull(bibPersisterCallable);
+        bibPersisterCallable.setInstitutionName("PUL");
+        assertEquals("PUL",bibPersisterCallable.getInstitutionName());
     }
 
     @Test
@@ -127,6 +156,72 @@ public class BibPersisterCallableUT extends BaseTestCase {
             }
         }
         assertTrue(failureReportReCAPCSVRecords.size() == 2);
+    }
+
+    @Test
+    public void checkNullConstraintsError() throws Exception {
+        Mockito.when(institutionMap.get("NYPL")).thenReturn(3);
+        Mockito.when(itemStatusMap.get("Available")).thenReturn(1);
+        Mockito.when(collectionGroupMap.get("Open")).thenReturn(2);
+        Mockito.when(bibRecord.getBib()).thenReturn(bib);
+        Mockito.when(bib.getOwningInstitutionId()).thenReturn("1");
+        Mockito.when(bib.getContent()).thenReturn(contentType);
+        Mockito.when(contentType.getCollection()).thenReturn(collection);
+        List<RecordType> recordTypes=new ArrayList<>();
+        recordTypes.add(recordType);
+        Mockito.when(collection.getRecord()).thenReturn(recordTypes);
+        List<Holdings> holdingsList=new ArrayList<>();
+        holdingsList.add(holdings);
+        Mockito.when(bibRecord.getHoldings()).thenReturn(holdingsList);
+        List<Holding> holdingList=new ArrayList<>();
+        holdingList.add(holding);
+        Mockito.when(holdings.getHolding()).thenReturn(holdingList);
+        Mockito.when(holding.getContent()).thenReturn(contentType);
+        List<Items> itemsList=new ArrayList<>();
+        itemsList.add(items);
+        Mockito.when(holding.getItems()).thenReturn(itemsList);
+        Mockito.when(items.getContent()).thenReturn(contentType);
+        List<FailureReportReCAPCSVRecord> failureReportReCAPCSVRecords = new ArrayList<>();
+
+        Map<String, Integer> institution = new HashMap<>();
+        institution.put("NYPL", 3);
+        Mockito.when(institutionMap.entrySet()).thenReturn(institution.entrySet());
+
+        Map<String, Integer> collection = new HashMap<>();
+        collection.put("Open", 2);
+        Mockito.when(collectionGroupMap.entrySet()).thenReturn(collection.entrySet());
+
+        XmlRecordEntity xmlRecordEntity = new XmlRecordEntity();
+        xmlRecordEntity.setXmlFileName("BibWithoutItemBarcode.xml");
+
+        URL resource = getClass().getResource("BibWithoutItemBarcode.xml");
+        assertNotNull(resource);
+        File file = new File(resource.toURI());
+        assertNotNull(file);
+        assertTrue(file.exists());
+
+        BibPersisterCallable bibPersisterCallable = new BibPersisterCallable();
+        bibPersisterCallable.setItemStatusMap(itemStatusMap);
+        bibPersisterCallable.setInstitutionEntitiesMap(institutionMap);
+        bibPersisterCallable.setCollectionGroupMap(collectionGroupMap);
+        bibPersisterCallable.setXmlRecordEntity(xmlRecordEntity);
+        bibPersisterCallable.setBibRecord(bibRecord);
+        bibPersisterCallable.setDbReportUtil(dbReportUtil);
+        ReflectionTestUtils.setField(bibPersisterCallable,"marcUtil",marcUtil);
+        Mockito.when(marcUtil.getDataFieldValue(recordType, "900", null, null, "a")).thenReturn("Open");
+        Mockito.when(collectionGroupMap.containsKey("Open")).thenReturn(true);
+        assertNotNull(bibPersisterCallable.getItemStatusMap());
+        assertNotNull(bibPersisterCallable.getInstitutionEntitiesMap());
+        assertNotNull(bibPersisterCallable.getCollectionGroupMap());
+        assertNotNull(bibPersisterCallable.getXmlRecordEntity());
+        assertNotNull(bibPersisterCallable.getBibRecord());
+        Map<String, Object> map = (Map<String, Object>) bibPersisterCallable.call();
+        if (map != null) {
+            Object object = map.get("reportEntities");
+            if (object != null) {
+                failureReportReCAPCSVRecords.addAll((List<FailureReportReCAPCSVRecord>) object);
+            }
+        }
     }
 
     @Test
