@@ -191,8 +191,8 @@ public class JAXBHandlerUT {
         assertNotNull(bibRecord);
         Bib bib = bibRecord.getBib();
         assertNotNull(bib);
-        assertEquals(bib.getOwningInstitutionId(), "NYPL");
-        assertEquals(bib.getOwningInstitutionBibId(), ".b153286131");
+        assertEquals("NYPL", bib.getOwningInstitutionId());
+        assertEquals(".b153286131", bib.getOwningInstitutionBibId());
         assertNotNull(bib.getContent());
 
         assertNotNull(bibRecord.getHoldings());
@@ -201,7 +201,7 @@ public class JAXBHandlerUT {
         assertNotNull(holdings);
         Holding holding = holdings.get(0);
         assertNotNull(holding);
-        assertEquals(holding.getOwningInstitutionHoldingsId(), "123456");
+        assertEquals("123456", holding.getOwningInstitutionHoldingsId());
         assertNotNull(holding.getContent());
 
         assertNotNull(holding.getItems());

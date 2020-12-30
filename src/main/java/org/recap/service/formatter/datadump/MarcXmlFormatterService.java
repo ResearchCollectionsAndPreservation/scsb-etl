@@ -57,7 +57,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
      * @return the map
      */
     public Map<String, Object> prepareMarcRecords(List<BibliographicEntity> bibliographicEntities) {
-        Map resultsMap = new HashMap();
+        Map<String, Object> resultsMap = new HashMap<>();
         List<Record> records = new ArrayList<>();
         List<String> errors = new ArrayList<>();
         int itemExportedCount = 0;
@@ -91,7 +91,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
      */
     public Map<String, Object> prepareMarcRecord(BibliographicEntity bibliographicEntity) {
         Record record;
-        Map results = new HashMap();
+        Map<String, Object> results = new HashMap<>();
         try {
             record = getRecordFromContent(bibliographicEntity.getContent());
             update001Field(record, bibliographicEntity);
@@ -101,7 +101,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
             record = addHoldingInfo(record, bibliographicEntity.getHoldingsEntities(),itemIds,getNonOrphanHoldingsIdList(bibliographicEntity.getItemEntities()));
             results.put(RecapCommonConstants.SUCCESS, record);
         } catch (Exception e) {
-            logger.info("failed bib own ins bib id--->{}"+bibliographicEntity.getOwningInstitutionBibId());
+            logger.info("failed bib own ins bib id--->{} %s" , bibliographicEntity.getOwningInstitutionBibId());
             logger.error(RecapConstants.ERROR,e);
             results.put(RecapCommonConstants.FAILURE,bibliographicEntity.getOwningInstitutionBibId()+" * "+ String.valueOf(e));
         }
@@ -213,11 +213,10 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
                             update852bField(dataField, holdingsEntity);
                             record.addVariableField(dataField);
                         }
-                        if (RecapConstants.MarcFields.DF_866.equals(dataField.getTag())) {
-                            if(!(dataField.getSubfield('a') != null && (dataField.getSubfield('a').getData() == null || "".equals(dataField.getSubfield('a').getData())))) {
+                        if (RecapConstants.MarcFields.DF_866.equals(dataField.getTag())  &&
+                            (!(dataField.getSubfield('a') != null && (dataField.getSubfield('a').getData() == null || "".equals(dataField.getSubfield('a').getData()))))) {
                                 addOrUpdateDatafield852Subfield0(dataField, holdingsEntity);
                                 record.addVariableField(dataField);
-                            }
                         }
                     }
                 }

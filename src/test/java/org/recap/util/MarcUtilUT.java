@@ -92,33 +92,33 @@ public class MarcUtilUT {
     public void marcRecordsSettersAndGettersTest() throws Exception {
         CollectionType collectionType = new CollectionType();
         collectionType.setId("1");
-        assertEquals(collectionType.getId(), "1");
+        assertEquals("1", collectionType.getId());
         ControlFieldType controlFieldType = new ControlFieldType();
         controlFieldType.setId("1");
         controlFieldType.setTag("Test Tag");
         controlFieldType.setValue("Test Value");
-        assertEquals(controlFieldType.getId(), "1");
-        assertEquals(controlFieldType.getTag(), "Test Tag");
-        assertEquals(controlFieldType.getValue(), "Test Value");
+        assertEquals("1", controlFieldType.getId());
+        assertEquals("Test Tag", controlFieldType.getTag());
+        assertEquals("Test Value", controlFieldType.getValue());
         DataFieldType dataFieldType = new DataFieldType();
         dataFieldType.setId("1");
         dataFieldType.setTag("Test Tag");
         dataFieldType.setInd1("001");
         dataFieldType.setInd2("002");
-        assertEquals(dataFieldType.getId(), "1");
-        assertEquals(dataFieldType.getTag(), "Test Tag");
-        assertEquals(dataFieldType.getInd1(), "001");
-        assertEquals(dataFieldType.getInd2(), "002");
+        assertEquals("1", dataFieldType.getId());
+        assertEquals("Test Tag", dataFieldType.getTag());
+        assertEquals("001", dataFieldType.getInd1());
+        assertEquals("002", dataFieldType.getInd2());
         LeaderFieldType leaderFieldType = new LeaderFieldType();
         leaderFieldType.setId("1");
         leaderFieldType.setValue("Test Leader Field");
-        assertEquals(leaderFieldType.getId(), "1");
-        assertEquals(leaderFieldType.getValue(), "Test Leader Field");
+        assertEquals("1", leaderFieldType.getId());
+        assertEquals("Test Leader Field", leaderFieldType.getValue());
         RecordType recordType = new RecordType();
         recordType.setId("1");
         recordType.setLeader(leaderFieldType);
         recordType.setType(RecordTypeType.fromValue("Bibliographic"));
-        assertEquals(recordType.getId(), "1");
+        assertEquals("1", recordType.getId());
         assertEquals(recordType.getLeader(), leaderFieldType);
         assertEquals(recordType.getType().value(), RecordTypeType.BIBLIOGRAPHIC.value());
         assertNotNull(recordType.getControlfield());
@@ -127,9 +127,9 @@ public class MarcUtilUT {
         subfieldatafieldType.setId("1");
         subfieldatafieldType.setValue("Test Value");
         subfieldatafieldType.setCode("Test code");
-        assertEquals(subfieldatafieldType.getId(), "1");
-        assertEquals(subfieldatafieldType.getValue(), "Test Value");
-        assertEquals(subfieldatafieldType.getCode(), "Test code");
+        assertEquals("1", subfieldatafieldType.getId());
+        assertEquals("Test Value", subfieldatafieldType.getValue());
+        assertEquals("Test code", subfieldatafieldType.getCode());
     }
 
 }

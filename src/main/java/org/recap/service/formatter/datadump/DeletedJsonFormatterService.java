@@ -48,7 +48,7 @@ public class DeletedJsonFormatterService implements DataDumpFormatterInterface {
      */
     public Map<String, Object> prepareDeletedRecords(List<BibliographicEntity> bibliographicEntityList){
         int itemExportedCount = 0;
-        Map resultsMap = new HashMap();
+        Map<String, Object> resultsMap = new HashMap();
         List<DeletedRecord> deletedRecords = new ArrayList<>();
         List<String> errors = new ArrayList<>();
         updateBibDeletedFlagDependingOnPrivateCGDAndDeletedItem(bibliographicEntityList);

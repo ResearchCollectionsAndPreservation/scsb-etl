@@ -161,19 +161,6 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
     }
 
     /**
-     * Send data to HTTP queue for processing.
-     *
-     * @param outputString
-     */
-    /*private void sendBodyForHttp(String outputString) {
-        FluentProducerTemplate fluentProducerTemplate = new DefaultFluentProducerTemplate(camelContext);
-        fluentProducerTemplate
-                .to(RecapConstants.DATADUMP_HTTP_Q)
-                .withBody(outputString);
-        fluentProducerTemplate.send();
-    }*/
-
-    /**
      * Send appropriate message to queue for records availability.
      *
      * @param outputString

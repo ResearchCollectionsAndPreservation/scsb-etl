@@ -62,7 +62,7 @@ public interface XmlRecordRepository extends BaseRepository<XmlRecordEntity> {
      * @return the list
      */
     @Query(value = "select distinct (xml_file) from xml_records_t",  nativeQuery = true)
-    List findDistinctFileNames();
+    List<String> findDistinctFileNames();
 
     /**
      * Find inst id by file names integer.

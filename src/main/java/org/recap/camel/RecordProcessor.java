@@ -40,9 +40,9 @@ import java.util.concurrent.*;
 public class RecordProcessor {
     private static final Logger logger = LoggerFactory.getLogger(RecordProcessor.class);
 
-    private Map institutionEntityMap;
-    private Map itemStatusMap;
-    private Map collectionGroupMap;
+    private Map<String, Integer> institutionEntityMap;
+    private Map<String, Integer>  itemStatusMap;
+    private Map<String, Integer>  collectionGroupMap;
     private JAXBHandler jaxbHandler;
     private String xmlFileName;
     private String institutionName;
@@ -88,7 +88,7 @@ public class RecordProcessor {
         List<Future<Map<String, String>>> futures = prepareFutureTasks(xmlRecordEntities, reportEntities);
 
         for (Iterator<Future<Map<String, String>>> iterator = futures.iterator(); iterator.hasNext(); ) {
-            Future future = iterator.next();
+            Future<Map<String, String>> future = iterator.next();
             Object object = null;
             try {
                 object = future.get();
@@ -329,9 +329,9 @@ public class RecordProcessor {
      *
      * @return the institution entity map
      */
-    public Map getInstitutionEntityMap() {
+    public Map<String, Integer> getInstitutionEntityMap() {
         if (null == institutionEntityMap) {
-            institutionEntityMap = new HashMap();
+            institutionEntityMap = new HashMap<>();
             Iterable<InstitutionEntity> institutionEntities = institutionDetailsRepository.findAll();
             for (Iterator<InstitutionEntity> iterator = institutionEntities.iterator(); iterator.hasNext(); ) {
                 InstitutionEntity institutionEntity = iterator.next();
@@ -346,9 +346,9 @@ public class RecordProcessor {
      *
      * @return the item status map
      */
-    public Map getItemStatusMap() {
+    public Map<String, Integer> getItemStatusMap() {
         if (null == itemStatusMap) {
-            itemStatusMap = new HashMap();
+            itemStatusMap = new HashMap<>();
             Iterable<ItemStatusEntity> itemStatusEntities = itemStatusDetailsRepository.findAll();
             for (Iterator<ItemStatusEntity> iterator = itemStatusEntities.iterator(); iterator.hasNext(); ) {
                 ItemStatusEntity itemStatusEntity = iterator.next();
@@ -363,9 +363,9 @@ public class RecordProcessor {
      *
      * @return the collection group map
      */
-    public Map getCollectionGroupMap() {
+    public Map<String, Integer> getCollectionGroupMap() {
         if (null == collectionGroupMap) {
-            collectionGroupMap = new HashMap();
+            collectionGroupMap = new HashMap<>();
             Iterable<CollectionGroupEntity> collectionGroupEntities = collectionGroupDetailsRepository.findAll();
             for (Iterator<CollectionGroupEntity> iterator = collectionGroupEntities.iterator(); iterator.hasNext(); ) {
                 CollectionGroupEntity collectionGroupEntity = iterator.next();

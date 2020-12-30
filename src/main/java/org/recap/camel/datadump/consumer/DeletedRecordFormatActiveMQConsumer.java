@@ -95,7 +95,7 @@ public class DeletedRecordFormatActiveMQConsumer extends CommonReportGenerator {
                 });
         List<Integer> itemExportedCountList = new ArrayList<>();
         List failures = new ArrayList<>();
-        for (Future future : futureList) {
+        for (Future<DeletedRecord> future : futureList) {
             Map<String, Object> results = (Map<String, Object>) future.get();
             Collection<? extends DeletedRecord> successRecords = (Collection<? extends DeletedRecord>) results.get(RecapCommonConstants.SUCCESS);
             if (CollectionUtils.isNotEmpty(successRecords)) {

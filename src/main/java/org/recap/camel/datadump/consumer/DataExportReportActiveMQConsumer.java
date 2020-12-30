@@ -87,7 +87,7 @@ public class DataExportReportActiveMQConsumer {
 
             ReportDataEntity reportDataEntityFetchType = new ReportDataEntity();
             reportDataEntities.add(reportDataEntityFetchType);
-            reportDataEntityFetchType.setHeaderName("FetchType");
+            reportDataEntityFetchType.setHeaderName(RecapConstants.HEADER_FETCH_TYPE);
             reportDataEntityFetchType.setHeaderValue(fetchType);
 
             ReportDataEntity reportDataEntityFromDate = new ReportDataEntity();
@@ -201,7 +201,7 @@ public class DataExportReportActiveMQConsumer {
 
             ReportDataEntity reportDataEntityFetchType = new ReportDataEntity();
             reportDataEntities.add(reportDataEntityFetchType);
-            reportDataEntityFetchType.setHeaderName("FetchType");
+            reportDataEntityFetchType.setHeaderName(RecapConstants.HEADER_FETCH_TYPE);
             reportDataEntityFetchType.setHeaderValue(fetchType);
 
             ReportDataEntity reportDataEntityFromDate = new ReportDataEntity();
@@ -254,11 +254,11 @@ public class DataExportReportActiveMQConsumer {
             populateExportFailureRecords(requestId, dataExportFailureReportList, fetchTypeValue, failure,requestingInstitutionCode);
         }
 
-        producerTemplate.sendBodyAndHeader(RecapConstants.DATADUMP_FAILURE_REPORT_SFTP_Q, dataExportFailureReportList, "FetchType", fetchTypeValue);
+        producerTemplate.sendBodyAndHeader(RecapConstants.DATADUMP_FAILURE_REPORT_SFTP_Q, dataExportFailureReportList, RecapConstants.HEADER_FETCH_TYPE, fetchTypeValue);
     }
 
     public void populateExportFailureRecords(String requestId, List<DataExportFailureReport> dataExportFailureReportList, String fetchTypeValue, String failure,String requestingInstitutionCode) {
-        String split[] = failure.split("\\*");
+        String[] split = failure.split("\\*");
         DataExportFailureReport dataExportFailureReport = new DataExportFailureReport();
         dataExportFailureReport.setOwningInstitutionBibId(split[0]);
         dataExportFailureReport.setFailureReason(split[1]);

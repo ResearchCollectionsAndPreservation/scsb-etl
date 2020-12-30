@@ -3,7 +3,6 @@ package org.recap.model.csv;
 import lombok.Data;
 import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
 import org.apache.camel.dataformat.bindy.annotation.DataField;
-import org.apache.camel.dataformat.bindy.annotation.OneToMany;
 
 import java.io.Serializable;
 import java.util.List;
@@ -43,6 +42,6 @@ public class DataDumpSuccessReport implements Serializable{
     /**
      * The Data dump success report list.
      */
-    List<DataDumpSuccessReport> dataDumpSuccessReportList;
+    private List<DataDumpSuccessReport> dataDumpSuccessReportList;
 
 }

@@ -49,10 +49,10 @@ public class EtlDataLoadProcessor {
      * Starts initial data load process.
      */
     public void startLoadProcess() {
-        List distinctFileNames = xmlRecordRepository.findDistinctFileNames();
+        List<String> distinctFileNames = xmlRecordRepository.findDistinctFileNames();
         long totalStartTime = System.currentTimeMillis();
-        for (Iterator iterator = distinctFileNames.iterator(); iterator.hasNext(); ) {
-            String distinctFileName = (String) iterator.next();
+        for (Iterator<String> iterator = distinctFileNames.iterator(); iterator.hasNext(); ) {
+            String distinctFileName = iterator.next();
             if (distinctFileName.contains(fileName)) {
                 Integer instIdByFileName = xmlRecordRepository.findInstIdByFileNames(distinctFileName);
                 long oldBibsCount = bibliographicDetailsRepository.countByOwningInstitutionId(instIdByFileName);

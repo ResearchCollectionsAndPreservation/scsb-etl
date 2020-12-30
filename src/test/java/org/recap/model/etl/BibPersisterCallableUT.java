@@ -52,7 +52,7 @@ public class BibPersisterCallableUT extends BaseTestCaseUT {
     private Map<String, Integer> institutionMap;
 
     @Mock
-    private Map itemStatusMap;
+    private Map<String, Integer> itemStatusMap;
 
     @Mock
     private Map<String, Integer> collectionGroupMap;

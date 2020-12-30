@@ -38,10 +38,10 @@ public class EtlGfaEntityUT extends BaseTestCase {
         assertNotNull(savedEtlGfa);
         assertNotNull(etlGfaEntityList);
         EtlGfaEntity savedEtlGfaEntity = etlGfaEntityList.get(0);
-        assertEquals(savedEtlGfaEntity.getStatus(),"Out on Ret WO: 387966 09/29/15 To PA");
+        assertEquals("Out on Ret WO: 387966 09/29/15 To PA", savedEtlGfaEntity.getStatus());
         assertEquals(savedEtlGfaEntity.getCustomer(), etlGfaEntity.getCustomer());
         assertNotNull(etlGfaEntityListByBarcode);
-        assertEquals(etlGfaEntityListByBarcode.get(0).getItemBarcode(),"3210457796");
+        assertEquals("3210457796", etlGfaEntityListByBarcode.get(0).getItemBarcode());
 
     }
 
