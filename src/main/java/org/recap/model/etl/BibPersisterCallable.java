@@ -1,5 +1,7 @@
 package org.recap.model.etl;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.recap.RecapCommonConstants;
@@ -26,6 +28,8 @@ import java.util.concurrent.Callable;
 /**
  * Created by pvsubrah on 6/24/16.
  */
+@Getter
+@Setter
 public class BibPersisterCallable implements Callable {
 
     private MarcUtil marcUtil;
@@ -326,114 +330,6 @@ public class BibPersisterCallable implements Callable {
     }
 
     /**
-     * Gets bib record.
-     *
-     * @return the bib record
-     */
-    public BibRecord getBibRecord() {
-        return bibRecord;
-    }
-
-    /**
-     * Sets bib record.
-     *
-     * @param bibRecord the bib record
-     */
-    public void setBibRecord(BibRecord bibRecord) {
-        this.bibRecord = bibRecord;
-    }
-
-    /**
-     * Gets institution entities map.
-     *
-     * @return the institution entities map
-     */
-    public Map<String, Integer> getInstitutionEntitiesMap() {
-        return institutionEntitiesMap;
-    }
-
-    /**
-     * Sets institution entities map.
-     *
-     * @param institutionEntitiesMap the institution entities map
-     */
-    public void setInstitutionEntitiesMap(Map<String, Integer> institutionEntitiesMap) {
-        this.institutionEntitiesMap = institutionEntitiesMap;
-    }
-
-    /**
-     * Gets institution name.
-     *
-     * @return the institution name
-     */
-    public String getInstitutionName() {
-        return institutionName;
-    }
-
-    /**
-     * Sets institution name.
-     *
-     * @param institutionName the institution name
-     */
-    public void setInstitutionName(String institutionName) {
-        this.institutionName = institutionName;
-    }
-
-    /**
-     * Gets item status map.
-     *
-     * @return the item status map
-     */
-    public Map<String, Integer> getItemStatusMap() {
-        return itemStatusMap;
-    }
-
-    /**
-     * Sets item status map.
-     *
-     * @param itemStatusMap the item status map
-     */
-    public void setItemStatusMap(Map<String, Integer> itemStatusMap) {
-        this.itemStatusMap = itemStatusMap;
-    }
-
-    /**
-     * Gets collection group map.
-     *
-     * @return the collection group map
-     */
-    public Map<String, Integer> getCollectionGroupMap() {
-        return collectionGroupMap;
-    }
-
-    /**
-     * Sets collection group map.
-     *
-     * @param collectionGroupMap the collection group map
-     */
-    public void setCollectionGroupMap(Map<String, Integer> collectionGroupMap) {
-        this.collectionGroupMap = collectionGroupMap;
-    }
-
-    /**
-     * Gets xml record entity.
-     *
-     * @return the xml record entity
-     */
-    public XmlRecordEntity getXmlRecordEntity() {
-        return xmlRecordEntity;
-    }
-
-    /**
-     * Sets xml record entity.
-     *
-     * @param xmlRecordEntity the xml record entity
-     */
-    public void setXmlRecordEntity(XmlRecordEntity xmlRecordEntity) {
-        this.xmlRecordEntity = xmlRecordEntity;
-    }
-
-    /**
      * Gets marc util.
      *
      * @return the marc util
@@ -445,21 +341,4 @@ public class BibPersisterCallable implements Callable {
         return marcUtil;
     }
 
-    /**
-     * Gets db report util.
-     *
-     * @return the db report util
-     */
-    public DBReportUtil getDbReportUtil() {
-        return dbReportUtil;
-    }
-
-    /**
-     * Sets db report util.
-     *
-     * @param dbReportUtil the db report util
-     */
-    public void setDbReportUtil(DBReportUtil dbReportUtil) {
-        this.dbReportUtil = dbReportUtil;
-    }
-}
+ }
