@@ -23,7 +23,6 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -49,7 +48,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
      */
     @Override
     public boolean isInterested(String formatType) {
-        return formatType.equals(RecapConstants.DATADUMP_XML_FORMAT_SCSB) ? true:false;
+        return formatType.equals(RecapConstants.DATADUMP_XML_FORMAT_SCSB) ? Boolean.TRUE.booleanValue():Boolean.FALSE.booleanValue();
     }
 
     /**
@@ -91,7 +90,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
      */
     public Map<String, Object> prepareBibRecords(List<BibliographicEntity> bibliographicEntities) {
         int itemExportedCount = 0;
-        Map resultsMap = new HashMap();
+        Map<String, Object> resultsMap = new HashMap<>();
         List<BibRecord> records = new ArrayList<>();
         List<String> errors = new ArrayList<>();
         List<String> bibIdList = getBibIdList(bibliographicEntities);
@@ -186,7 +185,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
      */
     private Map<String, Object> prepareBibRecord(BibliographicEntity bibliographicEntity,List<MatchingBibInfoDetail> matchingBibInfoDetailList) {
         BibRecord bibRecord = null;
-        Map results = new HashMap();
+        Map<String, Object> results = new HashMap<>();
         try {
             Bib bib = getBib(bibliographicEntity,matchingBibInfoDetailList);
             List<Integer> itemIds = getItemIds(bibliographicEntity);
@@ -196,7 +195,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
             bibRecord.setHoldings(holdings);
             results.put(RecapCommonConstants.SUCCESS, bibRecord);
         } catch (Exception e) {
-            logger.info("Exception for BIB Record "+bibliographicEntity.getOwningInstitutionBibId());
+            logger.info(String.format("Exception for BIB Record %s", bibliographicEntity.getOwningInstitutionBibId()));
             logger.error(RecapConstants.ERROR,e);
             results.put(RecapCommonConstants.FAILURE, bibliographicEntity.getOwningInstitutionBibId()+" * "+String.valueOf(e));
         }
@@ -398,7 +397,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
      * @throws Exception
      */
     private ContentType getContentType(byte[] byteContent) throws Exception{
-        String content = new String(byteContent, Charset.forName("UTF-8"));
+        String content = new String(byteContent, StandardCharsets.UTF_8);
         CollectionType collectionType;
         JAXBContext context = JAXBContext.newInstance(CollectionType.class);
         XMLInputFactory xif = XMLInputFactory.newFactory();

@@ -35,6 +35,7 @@ public class ReportDataEntity extends AbstractEntity<Integer> {
     private String recordNum;
 
     public ReportDataEntity() {
+        //Do Nothing
     }
 
     public String getHeaderName() {

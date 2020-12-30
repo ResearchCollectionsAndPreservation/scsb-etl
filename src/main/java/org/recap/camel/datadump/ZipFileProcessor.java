@@ -114,7 +114,7 @@ public class ZipFileProcessor implements Processor {
     }
 
     private List<String> getInstitutionCodes(String institutionCodes) {
-        List codes = new ArrayList();
+        List<String> codes = new ArrayList<>();
         StringTokenizer stringTokenizer = new StringTokenizer(institutionCodes, "*");
         while (stringTokenizer.hasMoreTokens()) {
             codes.add(stringTokenizer.nextToken());

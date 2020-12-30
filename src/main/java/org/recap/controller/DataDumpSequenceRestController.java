@@ -48,8 +48,8 @@ public class DataDumpSequenceRestController {
         Optional<String> firstInstitution = allInstitutionCodeExceptHTC.stream().findFirst();
         RecapConstants.EXPORT_SCHEDULER_CALL = true;
         RecapConstants.EXPORT_DATE_SCHEDULER = date;
-        RecapConstants.EXPORT_FETCH_TYPE_INSTITUTION = RecapConstants.EXPORT_INCREMENTAL+firstInstitution.get();
+        RecapConstants.EXPORT_FETCH_TYPE_INSTITUTION = RecapConstants.EXPORT_INCREMENTAL+ (firstInstitution.isPresent() ? firstInstitution.get() : "");
         getDynamicRouteBuilder().addDataDumpExportRoutes();
-        return dataDumpSchedulerExecutorService.initiateDataDumpForScheduler(date, firstInstitution.get(), null);
+        return dataDumpSchedulerExecutorService.initiateDataDumpForScheduler(date,  (firstInstitution.isPresent() ? firstInstitution.get() : ""), null);
     }
 }

@@ -37,5 +37,5 @@ public class ReCAPCSVSuccessRecord implements Serializable {
      * The Success report re capcsv record list.
      */
     @OneToMany(mappedTo = "org.recap.model.csv.SuccessReportReCAPCSVRecord")
-    List<SuccessReportReCAPCSVRecord> successReportReCAPCSVRecordList;
+    private List<SuccessReportReCAPCSVRecord> successReportReCAPCSVRecordList;
 }

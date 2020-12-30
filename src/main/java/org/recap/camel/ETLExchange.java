@@ -12,8 +12,8 @@ import java.util.Map;
 public class ETLExchange implements Serializable {
 
     private List<BibliographicEntity> bibliographicEntities;
-    private Map institutionEntityMap;
-    private Map collectionGroupMap;
+    private Map<String, Integer> institutionEntityMap;
+    private Map<String, Integer> collectionGroupMap;
 
     /**
      * Gets bibliographic entities.
@@ -38,7 +38,7 @@ public class ETLExchange implements Serializable {
      *
      * @return the institution entity map
      */
-    public Map getInstitutionEntityMap() {
+    public Map<String, Integer> getInstitutionEntityMap() {
         return institutionEntityMap;
     }
 
@@ -47,7 +47,7 @@ public class ETLExchange implements Serializable {
      *
      * @param institutionEntityMap the institution entity map
      */
-    public void setInstitutionEntityMap(Map institutionEntityMap) {
+    public void setInstitutionEntityMap(Map<String, Integer> institutionEntityMap) {
         this.institutionEntityMap = institutionEntityMap;
     }
 
@@ -56,7 +56,7 @@ public class ETLExchange implements Serializable {
      *
      * @return the collection group map
      */
-    public Map getCollectionGroupMap() {
+    public Map<String, Integer> getCollectionGroupMap() {
         return collectionGroupMap;
     }
 
@@ -65,7 +65,7 @@ public class ETLExchange implements Serializable {
      *
      * @param collectionGroupMap the collection group map
      */
-    public void setCollectionGroupMap(Map collectionGroupMap) {
+    public void setCollectionGroupMap(Map<String, Integer> collectionGroupMap) {
         this.collectionGroupMap = collectionGroupMap;
     }
 }

@@ -87,7 +87,7 @@ public class IncrementalDataDumpExecutorServiceUT extends BaseTestCase{
         Mockito.when(mockedIncrementalDataDumpExecutorService.process(dataDumpRequest)).thenReturn("Success");
         String response = mockedIncrementalDataDumpExecutorService.process(dataDumpRequest);
         assertNotNull(response);
-        assertEquals(response,"Success");
+        assertEquals("Success", response);
     }
 
     @Test
@@ -110,7 +110,7 @@ public class IncrementalDataDumpExecutorServiceUT extends BaseTestCase{
         Mockito.when(mockedIncrementalDataDumpExecutorService.process(dataDumpRequest)).thenReturn("Success");
         String response = mockedIncrementalDataDumpExecutorService.process(dataDumpRequest);
         assertNotNull(response);
-        assertEquals(response,"Success");
+        assertEquals("Success", response);
     }
 
 

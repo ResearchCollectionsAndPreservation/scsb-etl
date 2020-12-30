@@ -3,6 +3,7 @@ package org.recap.model.etl;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.recap.RecapCommonConstants;
+import org.recap.RecapConstants;
 import org.recap.model.jaxb.*;
 import org.recap.model.jaxb.marc.CollectionType;
 import org.recap.model.jaxb.marc.ContentType;
@@ -33,11 +34,10 @@ public class BibPersisterCallable implements Callable {
     private Map<String, Integer> institutionEntitiesMap;
     private String institutionName;
 
-    private Map itemStatusMap;
-    private Map collectionGroupMap;
+    private Map<String, Integer> itemStatusMap;
+    private Map<String, Integer>  collectionGroupMap;
 
     private DBReportUtil dbReportUtil;
-    private static final String bibliographicEntityname = "bibliographicEntity";
 
     @Override
     public Object call() {
@@ -54,7 +54,7 @@ public class BibPersisterCallable implements Callable {
         Integer owningInstitutionId = institutionEntitiesMap.get(bibRecord.getBib().getOwningInstitutionId());
         Date currentDate = new Date();
         Map<String, Object> bibMap = processAndValidateBibliographicEntity(owningInstitutionId,currentDate);
-        BibliographicEntity bibliographicEntity = (BibliographicEntity) bibMap.get(bibliographicEntityname);
+        BibliographicEntity bibliographicEntity = (BibliographicEntity) bibMap.get(RecapConstants.BIBLIOGRAPHIC_ENTITY_NAME);
         ReportEntity bibReportEntity = (ReportEntity) bibMap.get("bibReportEntity");
         if (bibReportEntity != null) {
             reportEntities.add(bibReportEntity);
@@ -118,7 +118,7 @@ public class BibPersisterCallable implements Callable {
             map.put("reportEntities", reportEntities);
         }
         if (processBib) {
-            map.put(bibliographicEntityname, bibliographicEntity);
+            map.put(RecapConstants.BIBLIOGRAPHIC_ENTITY_NAME, bibliographicEntity);
         }
         return map;
     }
@@ -187,7 +187,7 @@ public class BibPersisterCallable implements Callable {
             reportEntity.addAll(reportDataEntities);
             map.put("bibReportEntity", reportEntity);
         }
-        map.put(bibliographicEntityname, bibliographicEntity);
+        map.put(RecapConstants.BIBLIOGRAPHIC_ENTITY_NAME, bibliographicEntity);
         return map;
     }
 
@@ -262,7 +262,7 @@ public class BibPersisterCallable implements Callable {
         }
         itemEntity.setCallNumber(holdingsCallNumber);
         itemEntity.setCallNumberType(holdingsCallNumberType);
-        itemEntity.setItemAvailabilityStatusId((Integer) itemStatusMap.get("Available"));
+        itemEntity.setItemAvailabilityStatusId(itemStatusMap.get("Available"));
         String copyNumber = getMarcUtil().getDataFieldValue(itemRecordType, "876", null, null, "t");
         if (StringUtils.isNoneBlank(copyNumber) && NumberUtils.isCreatable(copyNumber)) {
             itemEntity.setCopyNumber(Integer.valueOf(copyNumber));
@@ -275,9 +275,9 @@ public class BibPersisterCallable implements Callable {
         }
         String collectionGroupCode = getMarcUtil().getDataFieldValue(itemRecordType, "900", null, null, "a");
         if (StringUtils.isNotBlank(collectionGroupCode) && collectionGroupMap.containsKey(collectionGroupCode)) {
-            itemEntity.setCollectionGroupId((Integer) collectionGroupMap.get(collectionGroupCode));
+            itemEntity.setCollectionGroupId(collectionGroupMap.get(collectionGroupCode));
         } else {
-            itemEntity.setCollectionGroupId((Integer) collectionGroupMap.get("Open"));
+            itemEntity.setCollectionGroupId(collectionGroupMap.get("Open"));
         }
         itemEntity.setCreatedDate(currentDate);
         itemEntity.setCreatedBy("etl");
@@ -357,7 +357,7 @@ public class BibPersisterCallable implements Callable {
      *
      * @param institutionEntitiesMap the institution entities map
      */
-    public void setInstitutionEntitiesMap(Map institutionEntitiesMap) {
+    public void setInstitutionEntitiesMap(Map<String, Integer> institutionEntitiesMap) {
         this.institutionEntitiesMap = institutionEntitiesMap;
     }
 
@@ -384,7 +384,7 @@ public class BibPersisterCallable implements Callable {
      *
      * @return the item status map
      */
-    public Map getItemStatusMap() {
+    public Map<String, Integer> getItemStatusMap() {
         return itemStatusMap;
     }
 
@@ -393,7 +393,7 @@ public class BibPersisterCallable implements Callable {
      *
      * @param itemStatusMap the item status map
      */
-    public void setItemStatusMap(Map itemStatusMap) {
+    public void setItemStatusMap(Map<String, Integer> itemStatusMap) {
         this.itemStatusMap = itemStatusMap;
     }
 
@@ -402,7 +402,7 @@ public class BibPersisterCallable implements Callable {
      *
      * @return the collection group map
      */
-    public Map getCollectionGroupMap() {
+    public Map<String, Integer> getCollectionGroupMap() {
         return collectionGroupMap;
     }
 
@@ -411,7 +411,7 @@ public class BibPersisterCallable implements Callable {
      *
      * @param collectionGroupMap the collection group map
      */
-    public void setCollectionGroupMap(Map collectionGroupMap) {
+    public void setCollectionGroupMap(Map<String, Integer> collectionGroupMap) {
         this.collectionGroupMap = collectionGroupMap;
     }
 

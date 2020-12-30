@@ -22,7 +22,7 @@ public class XmlFormatter {
      */
     public String prettyPrint(final String xml) {
         if (StringUtils.isBlank(xml)) {
-            throw new RuntimeException("xml was null or blank in prettyPrint()");
+            throw new NullPointerException("xml was null or blank in prettyPrint()");
         }
 
         final StringWriter sw;

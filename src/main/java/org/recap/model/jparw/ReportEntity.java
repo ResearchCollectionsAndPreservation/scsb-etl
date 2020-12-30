@@ -43,14 +43,15 @@ public class ReportEntity extends AbstractEntity<Integer> {
     @JoinColumn(
             name = "RECORD_NUM"
     )
-    private List<ReportDataEntity> reportDataEntities = new ArrayList();
+    private List<ReportDataEntity> reportDataEntities = new ArrayList<>();
 
     public ReportEntity() {
+        //Do Nothing
     }
 
     public void addAll(List<ReportDataEntity> reportDataEntities) {
         if (null == this.getReportDataEntities()) {
-            reportDataEntities = new ArrayList();
+            reportDataEntities = new ArrayList<>();
         }
 
         this.reportDataEntities.addAll(reportDataEntities);
