@@ -22,7 +22,6 @@ public class DateUtilUT extends BaseTestCase {
     @Test
     public void getDateFromString() {
         Calendar cal = Calendar.getInstance();
-        System.out.print(cal);
         Date inputDate = cal.getTime();
         DateFormat df = new SimpleDateFormat(RecapConstants.DATE_FORMAT_MMDDYYY);
         String inputDateString = df.format(inputDate);
@@ -45,5 +44,22 @@ public class DateUtilUT extends BaseTestCase {
             e.printStackTrace();
         }
         assertTrue(true);
+    }
+
+
+    @Test
+    public void getFormattedDateString() {
+        Calendar cal = Calendar.getInstance();
+        Date inputDate = cal.getTime();
+        DateFormat df = new SimpleDateFormat(RecapCommonConstants.DATE_FORMAT_YYYYMMDDHHMM);
+        String inputDateString = df.format(inputDate);
+        String dateString=DateUtil.getFormattedDateString(inputDateString,inputDateString);
+        assertNotNull(dateString);
+    }
+
+    @Test
+    public void getFormattedDateStringException() {
+        String dateString=DateUtil.getFormattedDateString(new Date().toString(),new Date().toString());
+        assertNull(dateString);
     }
 }
