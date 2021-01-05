@@ -5,6 +5,7 @@ import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.export.DataDumpRequest;
 import org.recap.model.search.SearchRecordsRequest;
+import org.recap.util.DateUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -43,10 +44,10 @@ public class DeletedDataDumpExecutorService extends AbstractDataDumpExecutorServ
         searchRecordsRequest.setDeleted(true);
         if(StringUtils.isNotBlank(dataDumpRequest.getDate()) && !onlyOrphan) {
             searchRecordsRequest.setFieldName(RecapCommonConstants.ITEM_LASTUPDATED_DATE);
-            searchRecordsRequest.setFieldValue(getFormattedDateString(dataDumpRequest.getDate(), dataDumpRequest.getToDate()));
+            searchRecordsRequest.setFieldValue(DateUtil.getFormattedDateString(dataDumpRequest.getDate(), dataDumpRequest.getToDate()));
         } else if(StringUtils.isNotBlank(dataDumpRequest.getDate()) && onlyOrphan){
             searchRecordsRequest.setFieldName(RecapCommonConstants.BIB_LASTUPDATED_DATE);
-            searchRecordsRequest.setFieldValue(getFormattedDateString(dataDumpRequest.getDate(), dataDumpRequest.getToDate()));
+            searchRecordsRequest.setFieldValue(DateUtil.getFormattedDateString(dataDumpRequest.getDate(), dataDumpRequest.getToDate()));
         }
         searchRecordsRequest.setRequestingInstitution(dataDumpRequest.getRequestingInstitutionCode());
     }

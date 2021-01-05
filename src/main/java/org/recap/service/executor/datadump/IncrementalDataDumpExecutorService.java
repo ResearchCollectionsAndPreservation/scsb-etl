@@ -4,6 +4,7 @@ import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.export.DataDumpRequest;
 import org.recap.model.search.SearchRecordsRequest;
+import org.recap.util.DateUtil;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class IncrementalDataDumpExecutorService extends AbstractDataDumpExecutor
     @Override
     public void populateSearchRequest(SearchRecordsRequest searchRecordsRequest, DataDumpRequest dataDumpRequest) {
         searchRecordsRequest.setFieldName(RecapCommonConstants.BIBITEM_LASTUPDATED_DATE);
-        searchRecordsRequest.setFieldValue(getFormattedDateString(dataDumpRequest.getDate(), dataDumpRequest.getToDate()));
+        searchRecordsRequest.setFieldValue(DateUtil.getFormattedDateString(dataDumpRequest.getDate(), dataDumpRequest.getToDate()));
         searchRecordsRequest.setRequestingInstitution(dataDumpRequest.getRequestingInstitutionCode());
     }
 }
