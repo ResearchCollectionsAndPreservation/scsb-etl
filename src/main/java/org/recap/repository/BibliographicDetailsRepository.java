@@ -1,10 +1,9 @@
 package org.recap.repository;
 
 import org.recap.model.jpa.BibliographicEntity;
-import org.recap.model.jpa.BibliographicPK;
+import org.recap.repository.jpa.BaseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Collection;
@@ -14,7 +13,7 @@ import java.util.List;
 /**
  * Created by pvsubrah on 6/10/16.
  */
-public interface BibliographicDetailsRepository extends JpaRepository<BibliographicEntity, BibliographicPK> {
+public interface BibliographicDetailsRepository extends BaseRepository<BibliographicEntity> {
 
     /**
      * Count by owning institution id long.
@@ -56,7 +55,7 @@ public interface BibliographicDetailsRepository extends JpaRepository<Bibliograp
      * @param bibIds the bib ids
      * @return the bibliographic entity list
      */
-    @Query(value="SELECT BIB FROM BibliographicEntity as BIB WHERE BIB.bibliographicId IN (?1)")
+    @Query(value="SELECT BIB FROM BibliographicEntity as BIB WHERE BIB.id IN (?1)")
     List<BibliographicEntity> getBibliographicEntityList(Collection<Integer> bibIds);
 
 

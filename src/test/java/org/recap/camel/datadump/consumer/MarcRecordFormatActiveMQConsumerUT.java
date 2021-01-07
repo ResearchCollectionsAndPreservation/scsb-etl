@@ -57,7 +57,7 @@ public class MarcRecordFormatActiveMQConsumerUT extends BaseTestCase {
     public void testprocessRecords() throws Exception {
         List<BibliographicEntity> bibliographicEntityList = new ArrayList<>();
         BibliographicEntity bibliographicEntity = new BibliographicEntity();
-        bibliographicEntity.setBibliographicId(100);
+        bibliographicEntity.setId(100);
         bibliographicEntity.setContent("bib content".getBytes());
         bibliographicEntity.setOwningInstitutionId(1);
         bibliographicEntity.setOwningInstitutionBibId("2");

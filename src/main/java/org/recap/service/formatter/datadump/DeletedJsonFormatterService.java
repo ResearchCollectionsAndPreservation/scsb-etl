@@ -57,7 +57,7 @@ public class DeletedJsonFormatterService implements DataDumpFormatterInterface {
                 DeletedRecord deletedRecord = new DeletedRecord();
                 List<String> itemBarcodes = new ArrayList<>();
                 Bib bib = new Bib();
-                bib.setBibId(bibliographicEntity.getBibliographicId().toString());
+                bib.setBibId(bibliographicEntity.getId().toString());
                 bib.setOwningInstitutionBibId(bibliographicEntity.getOwningInstitutionBibId());
                 bib.setOwningInstitutionCode(bibliographicEntity.getInstitutionEntity().getInstitutionCode());
                 if(bibliographicEntity.isDeleted()) {//This if else condition not to print all items are deleted or all the items are changed to private
@@ -67,7 +67,7 @@ public class DeletedJsonFormatterService implements DataDumpFormatterInterface {
                     for (ItemEntity itemEntity : bibliographicEntity.getItemEntities()) {
                         itemBarcodes.add(itemEntity.getBarcode());
                         Item item = new Item();
-                        item.setItemId(itemEntity.getItemId().toString());
+                        item.setItemId(itemEntity.getId().toString());
                         item.setOwningInstitutionItemId(itemEntity.getOwningInstitutionItemId());
                         item.setBarcode(itemEntity.getBarcode());
                         items.add(item);

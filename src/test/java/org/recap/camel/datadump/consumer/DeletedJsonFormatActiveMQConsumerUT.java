@@ -30,7 +30,7 @@ public class DeletedJsonFormatActiveMQConsumerUT extends BaseTestCase {
         BibliographicEntity bibliographicEntity = new BibliographicEntity();
         ItemEntity itemEntity =new ItemEntity();
         itemEntity.setBarcode("1234");
-        itemEntity.setItemId(1);
+        itemEntity.setId(1);
         itemEntity.setCustomerCode("1234");
         itemEntity.setCallNumber("1234");
         itemEntity.setCallNumberType("land");
@@ -51,7 +51,7 @@ public class DeletedJsonFormatActiveMQConsumerUT extends BaseTestCase {
             for (ItemEntity itemEntityNew : bibliographicEntity.getItemEntities()) {
                 itemBarcodes.add(itemEntityNew.getBarcode());
                 Item item = new Item();
-                item.setItemId(itemEntityNew.getItemId().toString());
+                item.setItemId(itemEntityNew.getId().toString());
                 item.setOwningInstitutionItemId(itemEntityNew.getOwningInstitutionItemId());
                 item.setBarcode(itemEntityNew.getBarcode());
                 items.add(item);

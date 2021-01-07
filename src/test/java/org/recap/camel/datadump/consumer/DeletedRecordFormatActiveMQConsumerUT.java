@@ -84,7 +84,7 @@ public class DeletedRecordFormatActiveMQConsumerUT extends BaseTestCaseUT {
         Exchange ex = new DefaultExchange(ctx);
         Message in = ex.getIn();
         BibliographicEntity bibliographicEntity = new BibliographicEntity();
-        bibliographicEntity.setBibliographicId(100);
+        bibliographicEntity.setId(100);
         bibliographicEntity.setContent("bib content".getBytes());
         bibliographicEntity.setOwningInstitutionId(1);
         bibliographicEntity.setOwningInstitutionBibId("2");

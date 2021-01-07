@@ -111,7 +111,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
             if(CollectionUtils.isNotEmpty(bibliographicEntity.getItemEntities())) {
                 List<MatchingBibInfoDetail> matchingBibInfoDetailListForSingleBib = null;
                 if(bibIdRecordNumMap!=null){
-                    Integer rowNum = bibIdRecordNumMap.get(String.valueOf(bibliographicEntity.getBibliographicId()));
+                    Integer rowNum = bibIdRecordNumMap.get(String.valueOf(bibliographicEntity.getId()));
                     matchingBibInfoDetailListForSingleBib = recordNumMatchingBibInfoDetailMap.get(rowNum);
                 }
                 Map<String, Object> stringObjectMap = prepareBibRecord(bibliographicEntity,matchingBibInfoDetailListForSingleBib);
@@ -159,7 +159,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
     private List<String> getBibIdList(List<BibliographicEntity> bibliographicEntityList){
         List<String> bibIdList = new ArrayList<>();
         for(BibliographicEntity bibliographicEntity : bibliographicEntityList){
-            bibIdList.add(String.valueOf(bibliographicEntity.getBibliographicId()));
+            bibIdList.add(String.valueOf(bibliographicEntity.getId()));
         }
         return bibIdList;
     }
@@ -206,7 +206,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
         Set<Integer> holdingsIdSet = new HashSet<>();
         for(ItemEntity itemEntity:itemEntityList){
             for(HoldingsEntity holdingsEntity:itemEntity.getHoldingsEntities()){
-                holdingsIdSet.add(holdingsEntity.getHoldingsId());
+                holdingsIdSet.add(holdingsEntity.getId());
             }        }
         return new ArrayList<>(holdingsIdSet);
     }
@@ -220,7 +220,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
         List<Integer> itemIds = new ArrayList<>();
         List<ItemEntity> itemEntityList = bibliographicEntity.getItemEntities();
         for(ItemEntity itemEntity : itemEntityList){
-            itemIds.add(itemEntity.getItemId());
+            itemIds.add(itemEntity.getId());
         }
         return itemIds;
     }
@@ -237,12 +237,12 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
         bib.setOwningInstitutionBibId(bibliographicEntity.getOwningInstitutionBibId());
         bib.setOwningInstitutionId(bibliographicEntity.getInstitutionEntity().getInstitutionCode());
         if(matchingBibInfoDetailList!=null){
-            bib.setMatchingInstitutionBibId(getMatchingInstitutionBibId(String.valueOf(bibliographicEntity.getBibliographicId()),matchingBibInfoDetailList));
+            bib.setMatchingInstitutionBibId(getMatchingInstitutionBibId(String.valueOf(bibliographicEntity.getId()),matchingBibInfoDetailList));
         }
         ContentType contentType = getContentType(bibliographicEntity.getContent());
         List<RecordType> record = contentType.getCollection().getRecord();
         RecordType recordType = record.get(0);
-        String value = RecapConstants.SCSB+"-"+bibliographicEntity.getBibliographicId();
+        String value = RecapConstants.SCSB+"-"+bibliographicEntity.getId();
         recordType.getControlfield().get(0).setValue(value);
         bib.setContent(contentType);
         return bib;
@@ -278,7 +278,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
         List<Holdings> holdingsList = new ArrayList<>();
         if (holdingsEntityList!=null && !CollectionUtils.isEmpty(holdingsEntityList)) {
             for (HoldingsEntity holdingsEntity : holdingsEntityList) {
-                if (nonOrphanHoldingsIdList !=null && nonOrphanHoldingsIdList.contains(holdingsEntity.getHoldingsId())) {
+                if (nonOrphanHoldingsIdList !=null && nonOrphanHoldingsIdList.contains(holdingsEntity.getId())) {
                     Holdings holdings = new Holdings();
                     Holding holding = new Holding();
                     holding.setOwningInstitutionHoldingsId(holdingsEntity.getOwningInstitutionHoldingsId());
@@ -287,7 +287,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
                     List<ItemEntity> itemEntityList = new ArrayList<>();
                     if(holdingsEntity.getItemEntities()!=null) {
                         for(ItemEntity itemEntity:holdingsEntity.getItemEntities()){
-                            if(itemIds.contains(itemEntity.getItemId())) {
+                            if(itemIds.contains(itemEntity.getId())) {
                                 itemEntityList.add(itemEntity);
                             }
                         }

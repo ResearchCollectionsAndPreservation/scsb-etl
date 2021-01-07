@@ -22,7 +22,7 @@ public class BibEntityPreparerCallableUT extends BaseTestCase {
     @Before
     public void before() {
         bibliographicEntity = new BibliographicEntity();
-        bibliographicEntity.setBibliographicId(100);
+        bibliographicEntity.setId(100);
         bibliographicEntity.setContent("bib content".getBytes());
         bibliographicEntity.setOwningInstitutionId(1);
         bibliographicEntity.setOwningInstitutionBibId("2");
@@ -32,7 +32,7 @@ public class BibEntityPreparerCallableUT extends BaseTestCase {
         bibliographicEntity.setLastUpdatedBy("tst");
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setBarcode("1234");
-        itemEntity.setItemId(1);
+        itemEntity.setId(1);
         itemEntity.setCustomerCode("1234");
         itemEntity.setCallNumber("1234");
         itemEntity.setCallNumberType("land");
