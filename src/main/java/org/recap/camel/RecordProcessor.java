@@ -6,16 +6,22 @@ import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
 import org.recap.model.etl.BibPersisterCallable;
 import org.recap.model.jaxb.BibRecord;
-import org.recap.model.jaxb.JAXBHandler;
 import org.recap.model.jaxb.Holding;
 import org.recap.model.jaxb.Holdings;
-import org.recap.model.jpa.*;
-import org.recap.model.jparw.ReportEntity;
+import org.recap.model.jaxb.JAXBHandler;
+import org.recap.model.jpa.BibliographicEntity;
+import org.recap.model.jpa.CollectionGroupEntity;
+import org.recap.model.jpa.InstitutionEntity;
+import org.recap.model.jpa.ItemStatusEntity;
+import org.recap.model.jpa.XmlRecordEntity;
 import org.recap.model.jparw.ReportDataEntity;
+import org.recap.model.jparw.ReportEntity;
 import org.recap.repository.CollectionGroupDetailsRepository;
+import org.recap.repository.ImsLocationDetailsRepository;
 import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.repository.ItemStatusDetailsRepository;
 import org.recap.util.DBReportUtil;
+import org.recap.util.MarcUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +36,17 @@ import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Created by pvsubrah on 6/21/16.
@@ -71,7 +86,13 @@ public class RecordProcessor {
     @Autowired
     DBReportUtil dbReportUtil;
 
+    @Autowired
+    ImsLocationDetailsRepository imsLocationDetailsRepository;
+
     private ExecutorService executorService;
+
+    @Autowired
+    private MarcUtil marcUtil;
 
 
     /**
@@ -115,7 +136,7 @@ public class RecordProcessor {
 
         if (!CollectionUtils.isEmpty(reportEntities)) {
             for(ReportEntity reportEntity : reportEntities) {
-                producer.sendBody(RecapCommonConstants.REPORT_Q, reportEntity);
+                producer.sendBody(RecapConstants.ETL_REPORT_Q, reportEntity);
             }
         }
 
@@ -176,7 +197,8 @@ public class RecordProcessor {
                     bibPersisterCallable.setItemStatusMap(getItemStatusMap());
                     bibPersisterCallable.setXmlRecordEntity(xmlRecordEntity);
                     bibPersisterCallable.setInstitutionName(institutionName);
-
+                    bibPersisterCallable.setImsLocationDetailsRepository(imsLocationDetailsRepository);
+                    bibPersisterCallable.setMarcUtil(marcUtil);
                     callables.add(bibPersisterCallable);
                 } else {
                     ReportEntity reportEntityForFailure = getReportEntityForFailure(xmlRecordEntity, "Holding content missing");

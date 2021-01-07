@@ -84,6 +84,8 @@ public class SearchRecordsRequest implements Serializable {
     @ApiModelProperty(name= "requestingInstitution", value= "Requesting Institution",position = 21)
     private String requestingInstitution = "";
 
+    @ApiModelProperty(name= "imsDepositoryCodes", value= "IMS Depository Codes",position = 22)
+    private List<String> imsDepositoryCodes = null;
 
     /**
      * Reset.

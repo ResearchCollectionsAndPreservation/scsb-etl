@@ -295,6 +295,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
         dataField.addSubfield(getFactory().newSubfield('t', itemEntity.getCopyNumber() != null ? String.valueOf(itemEntity.getCopyNumber()) : ""));
         dataField.addSubfield(getFactory().newSubfield('x', itemEntity.getCollectionGroupEntity().getCollectionGroupCode()));
         dataField.addSubfield(getFactory().newSubfield('z', itemEntity.getCustomerCode()));
+        dataField.addSubfield(getFactory().newSubfield('l', itemEntity.getImsLocationEntity().getImsLocationCode()));
         record.addVariableField(dataField);
 
         return record;

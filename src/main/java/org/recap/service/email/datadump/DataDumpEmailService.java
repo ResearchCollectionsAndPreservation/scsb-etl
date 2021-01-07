@@ -56,7 +56,7 @@ public class DataDumpEmailService {
      * @param fetchType
      * @param requestingInstitutionCode
      */
-    public void sendEmail(List<String> institutionCodes, Integer totalRecordCount, Integer failedRecordCount, String transmissionType, String dateTimeStringForFolder, String toEmailAddress, String emailBodyFor, Integer exportedItemCount, String fetchType, String requestingInstitutionCode) {
+    public void sendEmail(List<String> institutionCodes, Integer totalRecordCount, Integer failedRecordCount, String transmissionType, String dateTimeStringForFolder, String toEmailAddress, String emailBodyFor, Integer exportedItemCount, String fetchType, String requestingInstitutionCode,List<String> imsDepositoryCodes) {
         if(fetchType.equals(dataDumpFetchType)) {
             EmailPayLoad emailPayLoad = new EmailPayLoad();
             emailPayLoad.setInstitutions(institutionCodes);
@@ -65,6 +65,7 @@ public class DataDumpEmailService {
             emailPayLoad.setFailedCount(failedRecordCount);
             emailPayLoad.setTo(toEmailAddress);
             emailPayLoad.setItemCount(exportedItemCount);
+            emailPayLoad.setImsDepositoryCodes(imsDepositoryCodes);
             producer.sendBodyAndHeader(RecapConstants.EMAIL_Q, emailPayLoad, RecapConstants.DATADUMP_EMAILBODY_FOR, emailBodyFor);
         }
         else if(fetchType.equals(RecapConstants.DATADUMP_FETCHTYPE_INCREMENTAL)){
@@ -116,7 +117,7 @@ public class DataDumpEmailService {
         emailPayLoad.setLocation(getLocation(transmissionType, dateTimeStringForFolder));
         emailPayLoad.setTo(toEmailAddress);
         emailPayLoad.setCc(mailForCc(requestingInstitutionCode));
-        emailPayLoad.setSubject(subject);
+        emailPayLoad.setSubject(emailBodyFor.equals(RecapConstants.DATADUMP_NO_DATA_AVAILABLE)?(subject + " : "+requestingInstitutionCode+"(No data)"):(subject + " : "+requestingInstitutionCode));
         producer.sendBodyAndHeader(RecapConstants.EMAIL_Q, emailPayLoad, RecapConstants.DATADUMP_EMAILBODY_FOR, emailBodyFor.equals(RecapConstants.DATADUMP_NO_DATA_AVAILABLE)?emailBodyFor:emailBody);
 
     }
@@ -137,6 +138,7 @@ public class DataDumpEmailService {
             emailPayLoad.setCollectionGroupIds(dataDumpRequest.getCollectionGroupIds());
             emailPayLoad.setTransmissionType(transmissionType);
             emailPayLoad.setOutputFileFormat(outputformat);
+            emailPayLoad.setImsDepositoryCodes(dataDumpRequest.getImsDepositoryCodes());
             emailPayLoad.setMessage(!transmissionType.equalsIgnoreCase("HTTP")?"Will send further notification upon completion.":"");
             producer.sendBodyAndHeader(RecapConstants.EMAIL_Q, emailPayLoad, RecapConstants.DATADUMP_EMAILBODY_FOR, RecapConstants.DATADUMP_EXPORT_NOTIFICATION);
         }

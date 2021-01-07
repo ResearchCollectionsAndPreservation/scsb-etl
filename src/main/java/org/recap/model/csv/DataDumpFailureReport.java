@@ -27,11 +27,13 @@ public class DataDumpFailureReport implements Serializable{
     private String transmissionType;
     @DataField(pos = 7, columnName = "Export Format")
     private String exportFormat;
-    @DataField(pos = 8, columnName = "To Email Id(s)")
+    @DataField(pos = 8, columnName = "IMS Depository")
+    private String imsDepositoryCodes;
+    @DataField(pos = 9, columnName = "To Email Id(s)")
     private String toEmailId;
-    @DataField(pos = 9, columnName = "Failed Bibs")
+    @DataField(pos = 10, columnName = "Failed Bibs")
     private String failedBibs;
-    @DataField(pos = 10, columnName = "Failure Cause")
+    @DataField(pos = 11, columnName = "Failure Cause")
     private String failureCause;
 
     private String fileName;

@@ -36,6 +36,10 @@ public class ItemEntity extends ItemAbstractEntity {
     private ItemStatusEntity itemStatusEntity;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "IMS_LOCATION_ID", insertable = false, updatable = false)
+    private ImsLocationEntity imsLocationEntity;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "COLLECTION_GROUP_ID", insertable=false, updatable=false)
     private CollectionGroupEntity collectionGroupEntity;
 

@@ -79,6 +79,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
         searchRecordsRequest.setOwningInstitutions(dataDumpRequest.getInstitutionCodes());
         searchRecordsRequest.setCollectionGroupDesignations(getCodesForIds(dataDumpRequest.getCollectionGroupIds()));
         searchRecordsRequest.setPageSize(Integer.valueOf(dataDumpBatchSize));
+        searchRecordsRequest.setImsDepositoryCodes(dataDumpRequest.getImsDepositoryCodes());
         populateSearchRequest(searchRecordsRequest, dataDumpRequest);
 
         Map results = dataDumpSolrService.getResults(searchRecordsRequest);

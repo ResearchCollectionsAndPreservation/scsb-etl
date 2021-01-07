@@ -6,22 +6,35 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
-import org.recap.model.jaxb.*;
+import org.recap.model.jaxb.Bib;
+import org.recap.model.jaxb.BibRecord;
+import org.recap.model.jaxb.Holding;
+import org.recap.model.jaxb.Holdings;
+import org.recap.model.jaxb.Items;
 import org.recap.model.jaxb.marc.CollectionType;
 import org.recap.model.jaxb.marc.ContentType;
 import org.recap.model.jaxb.marc.LeaderFieldType;
 import org.recap.model.jaxb.marc.RecordType;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.HoldingsEntity;
+import org.recap.model.jpa.ImsLocationEntity;
 import org.recap.model.jpa.ItemEntity;
 import org.recap.model.jpa.XmlRecordEntity;
 import org.recap.model.jparw.ReportDataEntity;
 import org.recap.model.jparw.ReportEntity;
+import org.recap.repository.ImsLocationDetailsRepository;
 import org.recap.util.DBReportUtil;
 import org.recap.util.MarcUtil;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 
 
@@ -42,6 +55,7 @@ public class BibPersisterCallable implements Callable {
     private Map<String, Integer>  collectionGroupMap;
 
     private DBReportUtil dbReportUtil;
+    private ImsLocationDetailsRepository imsLocationDetailsRepository;
 
     @Override
     public Object call() {
@@ -167,7 +181,7 @@ public class BibPersisterCallable implements Callable {
             errorMessage.append("Bib Content cannot be empty");
         }
 
-        boolean subFieldExistsFor245 = getMarcUtil().isSubFieldExists(bibContentCollection.getRecord().get(0), "245");
+        boolean subFieldExistsFor245 =getMarcUtil().isSubFieldExists(bibContentCollection.getRecord().get(0), "245");
         if (!subFieldExistsFor245) {
             errorMessage.append("\n");
             errorMessage.append("Atleast one subfield should be there for 245 tag");
@@ -267,6 +281,13 @@ public class BibPersisterCallable implements Callable {
         itemEntity.setCallNumber(holdingsCallNumber);
         itemEntity.setCallNumberType(holdingsCallNumberType);
         itemEntity.setItemAvailabilityStatusId(itemStatusMap.get("Available"));
+
+        String imsLocationCode = getMarcUtil().getDataFieldValue(itemRecordType, "876", null, null, "l");
+        imsLocationCode = !StringUtils.isEmpty(imsLocationCode)?imsLocationCode:RecapConstants.IMS_DEPOSITORY_RECAP;
+        ImsLocationEntity imsLocationEntity = imsLocationDetailsRepository.findByImsLocationCode(imsLocationCode);
+        itemEntity.setImsLocationId(imsLocationEntity.getId());
+        itemEntity.setImsLocationEntity(imsLocationEntity);
+
         String copyNumber = getMarcUtil().getDataFieldValue(itemRecordType, "876", null, null, "t");
         if (StringUtils.isNoneBlank(copyNumber) && NumberUtils.isCreatable(copyNumber)) {
             itemEntity.setCopyNumber(Integer.valueOf(copyNumber));
@@ -329,16 +350,4 @@ public class BibPersisterCallable implements Callable {
         return getMarcUtil().getControlFieldValue(marcRecord, "001");
     }
 
-    /**
-     * Gets marc util.
-     *
-     * @return the marc util
-     */
-    public MarcUtil getMarcUtil() {
-        if (null == marcUtil) {
-            marcUtil = new MarcUtil();
-        }
-        return marcUtil;
-    }
-
- }
+}

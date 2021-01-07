@@ -83,7 +83,7 @@ public class EmailRouteBuilder {
                                         .log("Sending email for data available")
                                         .to(SMTPS + smtpServer + USERNAME + username + PASSWORD + emailPassword)
                                     .when(header(EMAIL_BODY_FOR).isEqualTo(RecapConstants.DATADUMP_NO_DATA_AVAILABLE))
-                                        .setHeader(SUBJECT, simple(noDataSubject))
+                                        .setHeader(SUBJECT, simple(EMAIL_PAYLOAD_SUBJECT))
                                         .setBody(simple(emailBodyForNoData))
                                         .setHeader("from", simple(from))
                                         .setHeader("to", simple(EMAIL_PAYLOAD_TO))

@@ -60,7 +60,11 @@ public class DataExportHeaderUtil {
                 .append(";")
                 .append("institutionCodes")
                 .append("#")
-                .append(getInstitutionCodes(dataDumpRequest))
+                .append(getInstitutionCodes(dataDumpRequest.getInstitutionCodes()))
+                .append(";")
+                .append("imsDepositoryCodes")
+                .append("#")
+                .append(getInstitutionCodes(dataDumpRequest.getImsDepositoryCodes()))
                 .append(";")
                 .append("fileFormat")
                 .append("#")
@@ -106,14 +110,13 @@ public class DataExportHeaderUtil {
     }
 
     /**
-     * Gets a string with institution codes appended by comma from data dump request.
-     * @param dataDumpRequest
+     * Gets a string with values appended by comma from data dump request.
+     * @param values
      * @return
      */
-    private String getInstitutionCodes(DataDumpRequest dataDumpRequest) {
-        List<String> institutionCodes = dataDumpRequest.getInstitutionCodes();
+    private String getInstitutionCodes(List<String> values) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (Iterator<String> iterator = institutionCodes.iterator(); iterator.hasNext(); ) {
+        for (Iterator<String> iterator = values.iterator(); iterator.hasNext(); ) {
             String code = iterator.next();
             stringBuilder.append(code);
             if(iterator.hasNext()){
