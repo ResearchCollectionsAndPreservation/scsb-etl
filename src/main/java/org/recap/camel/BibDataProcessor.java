@@ -84,7 +84,7 @@ public class BibDataProcessor {
                 }
             }
             if (null != reportEntity) {
-                producer.sendBody(RecapCommonConstants.REPORT_Q, reportEntity);
+                producer.sendBody(RecapConstants.ETL_REPORT_Q, reportEntity);
             }
         }
     }
@@ -95,7 +95,7 @@ public class BibDataProcessor {
         for(BibliographicEntity bibliographicEntity:bibliographicEntityList){
             List<ReportEntity> reportEntityList = processDuplicatedRecord(bibliographicEntity);
             for(ReportEntity reportEntity1:reportEntityList){
-                producer.sendBody(RecapCommonConstants.REPORT_Q, reportEntity1);
+                producer.sendBody(RecapConstants.ETL_REPORT_Q, reportEntity1);
             }
         }
     }

@@ -114,6 +114,7 @@ public class RecapConstants {
     public static final String DATADUMP_TRANS_TYPE_ERR_MSG = "Please enter valid transmission type.";
     public static final String DATADUMP_VALID_FETCHTYPE_ERR_MSG = "Please enter valid fetchType either 1 or 2 or configured value for full dump.";
     public static final String DATADUMP_VALID_REQ_INST_CODE_ERR_MSG = "Please enter valid institution code CUL or PUL or NYPL for requestingInstitutionCode .";
+    public static final String DATADUMP_VALID_IMS_DEPOSITORY_CODE_ERR_MSG = "Please enter valid IMS Depository code";
     public static final String DATADUMP_FULL_VALID_TRANS_TYPE = "Transmission type 1 is not valid for full dump. Use transmission type 0 or 2";
     public static final String DATADUMP_HTTP_REPONSE_RECORD_LIMIT_ERR_MSG = "There are more than 100 records. Use transmission type ftp to dump the data";
     public static final String DATADUMP_EMAIL_TO_ADDRESS_REQUIRED = "Please enter a valid email address";
@@ -170,6 +171,7 @@ public class RecapConstants {
     public static final String DELETED_JSON_RECORD_DATA_EXPORT_ROUTE_ID = "deletedJsonRecordDataExportRouteId";
     public static final String DATADUMP_STAGING_ROUTE_ID = "dataExportStagingRouteId";
 
+    public static final String IMS_DEPOSITORY = "imsDepositoryCodes";
     public static final String NUM_RECORDS = "Num Records";
     public static final String NUM_BIBS_EXPORTED = "NoOfBibsExported";
     public static final String EXPORTED_ITEM_COUNT = "ExportedItemCount";
@@ -206,7 +208,7 @@ public class RecapConstants {
     public static final String EMAIL_INCREMENTAL_DATA_DUMP="Incremental_Data_Dump";
     public static final String EMAIL_DELETION_DATA_DUMP="Deletion_Data_Dump";
     public static final String SUBJECT_INCREMENTAL_DATA_DUMP="Export Data Dump Report - Incremental";
-    public static final String SUBJECT_DELETION_DATA_DUMP="Deleted Records Report";
+    public static final String SUBJECT_DELETION_DATA_DUMP="Export Data Dump Report - Deleted";
 
     //Logger
     public static final String ERROR = "error-->";
@@ -221,6 +223,8 @@ public class RecapConstants {
     public static final String DATADUMP_FAILURE_REPORT_SFTP_Q = "direct://datadumpFailureReportSftpQ";
     public static final String DATADUMP_FAILURE_REPORT_SFTP_ID = "datadumpFailureReportSftpQId";
     public static final String DATA_DUMP_COMPLETION_TOPIC_ROUTE_ID = "DataDumpCompletionTopicRouteId";
+    public static final String ETL_REPORT_Q = "scsbactivemq:queue:reportQ";
+    public static final String IMS_DEPOSITORY_RECAP = "RECAP";
 
     public class MarcFields {
         public static final String CF_001 = "001";

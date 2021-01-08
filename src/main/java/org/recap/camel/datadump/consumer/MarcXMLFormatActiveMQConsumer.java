@@ -79,6 +79,7 @@ public class MarcXMLFormatActiveMQConsumer extends CommonReportGenerator {
         values.put(RecapConstants.EXPORT_FORMAT, getDataExportHeaderUtil().getValueFor(batchHeaders, RecapConstants.EXPORT_FORMAT));
         values.put(RecapConstants.TO_EMAIL_ID, getDataExportHeaderUtil().getValueFor(batchHeaders, RecapConstants.TO_EMAIL_ID));
         values.put(RecapConstants.NUM_RECORDS, String.valueOf(records.size()));
+        values.put(RecapConstants.IMS_DEPOSITORY, getDataExportHeaderUtil().getValueFor(batchHeaders, RecapConstants.IMS_DEPOSITORY));
         setValues(values, exchange, requestId);
         FluentProducerTemplate fluentProducerTemplate = generateFluentProducerTemplate(exchange, values, RecapConstants.DATADUMP_SUCCESS_REPORT_Q);
         fluentProducerTemplate.send();

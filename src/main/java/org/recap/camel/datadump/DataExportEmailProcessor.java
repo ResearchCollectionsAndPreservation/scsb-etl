@@ -82,6 +82,7 @@ public class DataExportEmailProcessor implements Processor {
 
     private String transmissionType;
     private List<String> institutionCodes;
+    private List<String> imsDepositoryCodes;
     private String requestingInstitutionCode;
     private String folderName;
     private String reportFileName;
@@ -211,7 +212,7 @@ public class DataExportEmailProcessor implements Processor {
                     this.folderName,
                     toEmailId,
                     RecapConstants.DATADUMP_DATA_AVAILABLE,
-                    Integer.valueOf(exportedItemCount),fetchType,requestingInstitutionCode
+                    Integer.valueOf(exportedItemCount),fetchType,requestingInstitutionCode,imsDepositoryCodes
             );
         }
     }
@@ -358,5 +359,13 @@ public class DataExportEmailProcessor implements Processor {
      */
     public void setFetchType(String fetchType) {
         this.fetchType = fetchType;
+    }
+
+    public List<String> getImsDepositoryCodes() {
+        return imsDepositoryCodes;
+    }
+
+    public void setImsDepositoryCodes(List<String> imsDepositoryCodes) {
+        this.imsDepositoryCodes = imsDepositoryCodes;
     }
 }

@@ -55,6 +55,7 @@ public class DataExportReportActiveMQConsumer {
         String numBibsExported = (String) body.get(RecapConstants.NUM_BIBS_EXPORTED);
         String numRecords = (String) body.get(RecapConstants.NUM_RECORDS);
         Integer exportedItemCount = (Integer) body.get(RecapConstants.ITEM_EXPORTED_COUNT);
+        String imsDepositoryCodes = (String) body.get(RecapConstants.IMS_DEPOSITORY);
         logger.info("No. of bib exported for a single batch---->{}",numRecords);
         logger.info("No. of item exported for a single batch---->{}",exportedItemCount);
 
@@ -120,6 +121,11 @@ public class DataExportReportActiveMQConsumer {
             reportDataEntityExportedItemCount.setHeaderName(RecapConstants.EXPORTED_ITEM_COUNT);
             reportDataEntityExportedItemCount.setHeaderValue(String.valueOf(exportedItemCount));
 
+            ReportDataEntity reportDataEntityImsDepository = new ReportDataEntity();
+            reportDataEntityImsDepository.setHeaderName(RecapConstants.IMS_DEPOSITORY);
+            reportDataEntityImsDepository.setHeaderValue(imsDepositoryCodes);
+            reportDataEntities.add(reportDataEntityImsDepository);
+
 
         } else {
             reportEntity = byFileName.get(0);
@@ -164,6 +170,7 @@ public class DataExportReportActiveMQConsumer {
         String numRecords = (String) body.get(RecapConstants.NUM_RECORDS);
         String failureCause = (String) body.get(RecapConstants.FAILURE_CAUSE);
         List<String> failureList = (List<String>) body.get(RecapConstants.FAILURE_LIST);
+        String imsDepositoryCodes = (String) body.get(RecapConstants.IMS_DEPOSITORY);
 
         List<ReportEntity> byFileName = getReportDetailRepository().findByFileNameAndType(requestId, RecapConstants.BATCH_EXPORT_FAILURE);
 
@@ -228,6 +235,11 @@ public class DataExportReportActiveMQConsumer {
             reportDataEntities.add(reportDataEntityMailedTo);
             reportDataEntityMailedTo.setHeaderName("ToEmailId");
             reportDataEntityMailedTo.setHeaderValue(toEmailId);
+
+            ReportDataEntity reportDataEntityImsDepository = new ReportDataEntity();
+            reportDataEntityImsDepository.setHeaderName(RecapConstants.IMS_DEPOSITORY);
+            reportDataEntityImsDepository.setHeaderValue(imsDepositoryCodes);
+            reportDataEntities.add(reportDataEntityImsDepository);
 
         } else {
             reportEntity = byFileName.get(0);

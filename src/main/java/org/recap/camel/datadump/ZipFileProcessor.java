@@ -72,13 +72,14 @@ public class ZipFileProcessor implements Processor {
         String batchHeaders = (String) exchange.getIn().getHeader("batchHeaders");
         String folderName = getValueFor(batchHeaders, "folderName");
 
-        dataExportEmailProcessor.setInstitutionCodes(getInstitutionCodes(getValueFor(batchHeaders, "institutionCodes")));
+        dataExportEmailProcessor.setInstitutionCodes(getTokenizedCodes(getValueFor(batchHeaders, "institutionCodes")));
         dataExportEmailProcessor.setTransmissionType(getValueFor(batchHeaders, "transmissionType"));
         dataExportEmailProcessor.setFolderName(folderName);
         dataExportEmailProcessor.setRequestingInstitutionCode(getValueFor(batchHeaders, "requestingInstitutionCode"));
         dataExportEmailProcessor.setToEmailId(getValueFor(batchHeaders, "toEmailId"));
         dataExportEmailProcessor.setRequestId(getValueFor(batchHeaders, "requestId"));
         dataExportEmailProcessor.setFetchType(getValueFor(batchHeaders, "fetchType"));
+        dataExportEmailProcessor.setImsDepositoryCodes(getTokenizedCodes(getValueFor(batchHeaders, "imsDepositoryCodes")));
 
         Route ftpRoute = exchange.getContext().getRoute(RecapConstants.FTP_ROUTE);
         if (null != ftpRoute) {
@@ -113,7 +114,7 @@ public class ZipFileProcessor implements Processor {
         return new DataExportHeaderUtil().getValueFor(batchHeaderString, key);
     }
 
-    private List<String> getInstitutionCodes(String institutionCodes) {
+    private List<String> getTokenizedCodes(String institutionCodes) {
         List<String> codes = new ArrayList<>();
         StringTokenizer stringTokenizer = new StringTokenizer(institutionCodes, "*");
         while (stringTokenizer.hasMoreTokens()) {
