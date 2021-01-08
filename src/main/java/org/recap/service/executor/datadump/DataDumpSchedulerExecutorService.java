@@ -65,7 +65,7 @@ public class DataDumpSchedulerExecutorService {
         if (StringUtils.isBlank(fetchType)) {
             fetchType = requestParameterMap.get(RecapConstants.FETCH_TYPE);
         }
-        getDataDumpExportService().setDataDumpRequest(dataDumpRequest, fetchType, requestParameterMap.get(RecapConstants.INSTITUTION_CODES), date, null, requestParameterMap.get(RecapConstants.COLLECTION_GROUP_IDS), requestParameterMap.get(RecapConstants.TRANSMISSION_TYPE), requestingInstitutionCode, getToEmailAddress(requestingInstitutionCode), requestParameterMap.get("outputFormat"));
+        getDataDumpExportService().setDataDumpRequest(dataDumpRequest, fetchType, requestParameterMap.get(RecapConstants.INSTITUTION_CODES), date, null, requestParameterMap.get(RecapConstants.COLLECTION_GROUP_IDS), requestParameterMap.get(RecapConstants.TRANSMISSION_TYPE), requestingInstitutionCode, getToEmailAddress(requestingInstitutionCode), requestParameterMap.get("outputFormat"),requestParameterMap.get("imsDepositoryCodes"));
         String responseMessage = getDataDumpExportService().validateIncomingRequest(dataDumpRequest);
         if (responseMessage != null) {
             RecapConstants.EXPORT_SCHEDULER_CALL = false;

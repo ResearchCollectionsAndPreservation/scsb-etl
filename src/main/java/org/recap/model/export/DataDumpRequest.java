@@ -9,17 +9,21 @@ import java.util.List;
  */
 @Data
 public class DataDumpRequest {
-    private List<String> institutionCodes;
+
     private String fetchType;
     private String date;
     private String toDate;
-    private boolean isRecordsAvailable;
-    private List<Integer> collectionGroupIds;
     private String transmissionType;
     private String requestingInstitutionCode;
     private String toEmailAddress;
     private String outputFileFormat;
     private String dateTimeString;
     private String requestId;
+
+    private boolean isRecordsAvailable;
     private boolean isIncrementalSequence;
+
+    private List<Integer> collectionGroupIds;
+    private List<String> institutionCodes;
+    private List<String> imsDepositoryCodes;
 }

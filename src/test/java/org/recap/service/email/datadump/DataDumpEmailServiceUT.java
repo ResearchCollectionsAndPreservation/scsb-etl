@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -54,14 +55,14 @@ public class DataDumpEmailServiceUT extends BaseTestCaseUT {
 
     @Test
     public void testsendEmailForFull() {
-        dataDumpEmailService.sendEmail(institutionCodes(), 1, 0, "2", "2016-09-02 12:00", "peri.subrahmanya@gmail.com", "dataNotAvailable", 0, "10", "NYPL");
+        dataDumpEmailService.sendEmail(institutionCodes(), 1, 0, "2", "2016-09-02 12:00", "peri.subrahmanya@gmail.com", "dataNotAvailable", 0, "10", "NYPL",Arrays.asList("RECAP"));
         assertTrue(true);
     }
 
     @Test
     public void testsendEmailForDeleted() {
         Mockito.when(propertyUtil.getILSConfigProperties(Mockito.anyString())).thenReturn(getIlsConfigProperties());
-        dataDumpEmailService.sendEmail(institutionCodes(), 1, 0, "0", "2016-09-02 12:00", "peri.subrahmanya@gmail.com", "dataNotAvailable", 0, "2", "NYPL");
+        dataDumpEmailService.sendEmail(institutionCodes(), 1, 0, "0", "2016-09-02 12:00", "peri.subrahmanya@gmail.com", "dataNotAvailable", 0, "2", "NYPL", Arrays.asList("RECAP"));
         assertTrue(true);
     }
 
@@ -70,14 +71,14 @@ public class DataDumpEmailServiceUT extends BaseTestCaseUT {
         ReflectionTestUtils.setField(dataDumpEmailService, "ftpDataDumpDirectory", " ");
         Mockito.when(propertyUtil.getILSConfigProperties(Mockito.anyString())).thenReturn(getIlsConfigProperties());
         Mockito.doNothing().when(producer).sendBodyAndHeader(Mockito.any(),Mockito.anyString(),Mockito.any());
-        dataDumpEmailService.sendEmail(institutionCodes(), 1, 0, "0", "2016-09-02 12:00", "peri.subrahmanya@gmail.com", "dataNotAvailable", 0, "2", "NYPL");
+        dataDumpEmailService.sendEmail(institutionCodes(), 1, 0, "0", "2016-09-02 12:00", "peri.subrahmanya@gmail.com", "dataNotAvailable", 0, "2", "NYPL",Arrays.asList("RECAP"));
         assertTrue(true);
     }
     @Test
     public void testsendEmailForIncremental() {
         ILSConfigProperties ilsConfigProperties = getIlsConfigProperties();
         Mockito.when(propertyUtil.getILSConfigProperties(Mockito.anyString())).thenReturn(ilsConfigProperties);
-        dataDumpEmailService.sendEmail(institutionCodes(), 1, 0, "2", "2016-09-02 12:00", "peri.subrahmanya@gmail.com", "dataNotAvailable", 0, "1", "NYPL");
+        dataDumpEmailService.sendEmail(institutionCodes(), 1, 0, "2", "2016-09-02 12:00", "peri.subrahmanya@gmail.com", "dataNotAvailable", 0, "1", "NYPL",Arrays.asList("RECAP"));
         assertTrue(true);
     }
 

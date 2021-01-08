@@ -100,6 +100,7 @@ public class CommonReportGenerator {
         values.put(RecapConstants.EXPORT_FROM_DATE, dataExportHeaderUtil.getValueFor(batchHeaders, RecapConstants.EXPORT_FROM_DATE));
         values.put(RecapConstants.EXPORT_FORMAT, dataExportHeaderUtil.getValueFor(batchHeaders, RecapConstants.EXPORT_FORMAT));
         values.put(RecapConstants.TO_EMAIL_ID, dataExportHeaderUtil.getValueFor(batchHeaders, RecapConstants.TO_EMAIL_ID));
+        values.put(RecapConstants.IMS_DEPOSITORY, dataExportHeaderUtil.getValueFor(batchHeaders, RecapConstants.IMS_DEPOSITORY));
         return values;
     }
 

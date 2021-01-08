@@ -5,6 +5,7 @@ import org.recap.model.jaxb.marc.ControlFieldType;
 import org.recap.model.jaxb.marc.DataFieldType;
 import org.recap.model.jaxb.marc.RecordType;
 import org.recap.model.jaxb.marc.SubfieldatafieldType;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * Created by pvsubrah on 6/15/16.
  */
+@Component
 public class MarcUtil {
 
     /**

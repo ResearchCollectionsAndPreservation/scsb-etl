@@ -10,7 +10,9 @@ import org.recap.RecapConstants;
 import org.recap.model.ILSConfigProperties;
 import org.recap.model.export.DataDumpRequest;
 import org.recap.model.jpa.CollectionGroupEntity;
+import org.recap.model.jpa.ImsLocationEntity;
 import org.recap.repository.CollectionGroupDetailsRepository;
+import org.recap.repository.ImsLocationDetailsRepository;
 import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.service.email.datadump.DataDumpEmailService;
 import org.recap.service.executor.datadump.DataDumpExecutorService;
@@ -88,6 +90,9 @@ public class DataDumpExportService {
     @Autowired
     InstitutionDetailsRepository institutionDetailsRepository;
 
+    @Autowired
+    ImsLocationDetailsRepository imsLocationDetailsRepository;
+
     /**
      * Start the data dump process.
      *
@@ -125,7 +130,7 @@ public class DataDumpExportService {
                             dataDumpRequest.getToEmailAddress(),
                             RecapConstants.DATADUMP_NO_DATA_AVAILABLE,
                             Integer.valueOf(0),
-                            dataDumpRequest.getFetchType(), dataDumpRequest.getRequestingInstitutionCode());
+                            dataDumpRequest.getFetchType(), dataDumpRequest.getRequestingInstitutionCode(),dataDumpRequest.getImsDepositoryCodes());
                     if (RecapConstants.EXPORT_SCHEDULER_CALL) {
                         producerTemplate.sendBody(RecapConstants.DATA_DUMP_COMPLETION_FROM, dataDumpRequest.getRequestingInstitutionCode());
                     }
@@ -204,13 +209,21 @@ public class DataDumpExportService {
      * @param outputFormat              the output format
      */
     public void setDataDumpRequest(DataDumpRequest dataDumpRequest, String fetchType, String institutionCodes, String date, String toDate, String collectionGroupIds,
-                                   String transmissionType, String requestingInstitutionCode, String toEmailAddress, String outputFormat) {
+                                   String transmissionType, String requestingInstitutionCode, String toEmailAddress, String outputFormat,String imsDepositoryCodes) {
         if (fetchType != null) {
             dataDumpRequest.setFetchType(fetchType);
         }
         if (institutionCodes != null) {
             List<String> institutionCodeList = splitStringAndGetList(institutionCodes);
             dataDumpRequest.setInstitutionCodes(institutionCodeList);
+        }
+        if (imsDepositoryCodes != null && !"".equals(imsDepositoryCodes)) {
+            List<String> imsDepositoryCodesList = splitStringAndGetList(imsDepositoryCodes);
+            dataDumpRequest.setImsDepositoryCodes(imsDepositoryCodesList);
+        }
+        else {
+            ImsLocationEntity imsLocationEntity = imsLocationDetailsRepository.findByImsLocationCode(RecapConstants.IMS_DEPOSITORY_RECAP);
+            dataDumpRequest.setImsDepositoryCodes(Arrays.asList(imsLocationEntity.getImsLocationCode()));
         }
         if (date != null && !"".equals(date)) {
             dataDumpRequest.setDate(date);
@@ -278,6 +291,15 @@ public class DataDumpExportService {
         if(dataDumpRequest.getRequestingInstitutionCode() != null && !allInstitutionCodeExceptHTC.contains(dataDumpRequest.getRequestingInstitutionCode())){
             errorMessageMap.put(errorcount, RecapConstants.DATADUMP_VALID_REQ_INST_CODE_ERR_MSG);
             errorcount++;
+        }
+
+        List<String> imsLocationCodes = imsLocationDetailsRepository.findAllImsLocationCode();
+        for (String imsDepositoryCode : dataDumpRequest.getImsDepositoryCodes()){
+            if(!imsLocationCodes.contains(imsDepositoryCode)){
+                errorMessageMap.put(errorcount, RecapConstants.DATADUMP_VALID_IMS_DEPOSITORY_CODE_ERR_MSG);
+                errorcount++;
+                break;
+            }
         }
 
         if (!dataDumpRequest.getFetchType().equals(fetchTypeFull) &&
