@@ -401,9 +401,6 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
     public BibliographicEntity saveBibSingleHoldingsSingleItem(String owningInstBibId,String barcode) throws Exception {
         Random random = new Random();
         BibliographicEntity bibliographicEntity = getBibEntity(1,owningInstBibId);
-
-        HoldingsEntity holdingsEntity = getHoldingsEntity(random, 1);
-
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setLastUpdatedDate(new Date());
         itemEntity.setOwningInstitutionItemId(String.valueOf(random.nextInt()));
@@ -419,16 +416,16 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         itemEntity.setCustomerCode("1");
         itemEntity.setImsLocationEntity(TestUtil.getImsLocationEntity(1,"RECAP","RECAP_LAS"));
         itemEntity.setItemAvailabilityStatusId(1);
-        itemEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
+        itemEntity.setHoldingsEntities(Arrays.asList(getHoldingsEntity(random, 1)));
         ItemStatusEntity itemStatusEntity=new ItemStatusEntity();
         itemStatusEntity.setStatusCode("available");
         itemEntity.setItemStatusEntity(itemStatusEntity);
         CollectionGroupEntity collectionGroupEntity=new CollectionGroupEntity();
         collectionGroupEntity.setCollectionGroupCode("code");
         itemEntity.setCollectionGroupEntity(collectionGroupEntity);
-        holdingsEntity.setItemEntities(Arrays.asList(itemEntity));
-        holdingsEntity.setBibliographicEntities(Arrays.asList(bibliographicEntity));
-        bibliographicEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
+        getHoldingsEntity(random, 1).setItemEntities(Arrays.asList(itemEntity));
+        getHoldingsEntity(random, 1).setBibliographicEntities(Arrays.asList(bibliographicEntity));
+        bibliographicEntity.setHoldingsEntities(Arrays.asList(getHoldingsEntity(random, 1)));
         bibliographicEntity.setItemEntities(Arrays.asList(itemEntity));
         return  bibliographicEntity;
     }
