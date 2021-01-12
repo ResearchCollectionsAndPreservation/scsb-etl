@@ -62,7 +62,7 @@ public interface ItemDetailsRepository extends BaseRepository<ItemEntity> {
      * @param instId the inst id
      * @return the long
      */
-    @Query(value = "select count(*) from bibliographic_item_t where bib_inst_id = ?1",  nativeQuery = true)
+    @Query(value = "select count(*) from bibliographic_item_t,bibliographic_t where bibliographic_t.bibliographic_id=bibliographic_item_t.bibliographic_id and owning_inst_id = ?1",  nativeQuery = true)
     Long findCountOfBibliographicItemsByInstId(Integer instId);
 
 
