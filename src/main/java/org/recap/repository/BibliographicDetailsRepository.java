@@ -64,7 +64,7 @@ public interface BibliographicDetailsRepository extends BaseRepository<Bibliogra
      *
      * @return the long
      */
-    @Query(value = "select count(owning_inst_bib_id) from bibliographic_holdings_t",  nativeQuery = true)
+    @Query(value = "select count(bibliographic_id) from bibliographic_holdings_t",  nativeQuery = true)
     Long findCountOfBibliographicHoldings();
 
     /**
@@ -73,7 +73,7 @@ public interface BibliographicDetailsRepository extends BaseRepository<Bibliogra
      * @param instId the inst id
      * @return the long
      */
-    @Query(value = "select count(owning_inst_bib_id) from bibliographic_holdings_t where bib_inst_id = ?1",  nativeQuery = true)
+    @Query(value = "select count(bibliographic_holdings_t.bibliographic_id) from bibliographic_holdings_t,bibliographic_t where bibliographic_t.bibliographic_id=bibliographic_holdings_t.bibliographic_id and owning_inst_id = ?1",  nativeQuery = true)
     Long findCountOfBibliographicHoldingsByInstId(Integer instId);
 
     /**
