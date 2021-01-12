@@ -6,6 +6,7 @@ import org.recap.BaseTestCaseUT;
 import org.recap.model.export.DataDumpRequest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class DataExportHeaderUtilUT extends BaseTestCaseUT {
         institutionCodes.add("1");
         institutionCodes.add("2");
         dataDumpRequest.setInstitutionCodes(institutionCodes);
+        dataDumpRequest.setImsDepositoryCodes(Arrays.asList("RECAP","HD"));
         String headerString=dataExportHeaderUtil.getBatchHeaderString(1,1,"folderName","fileName",dataDumpRequest);
         assertNotNull(headerString);
     }
