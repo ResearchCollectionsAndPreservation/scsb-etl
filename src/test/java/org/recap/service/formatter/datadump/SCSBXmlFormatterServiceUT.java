@@ -7,17 +7,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.recap.BaseTestCase;
 import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
+import org.recap.RecapConstants;
+import org.recap.TestUtil;
 import org.recap.camel.BibDataProcessor;
 import org.recap.model.jaxb.BibRecord;
-import org.recap.model.jpa.*;
 import org.recap.model.jpa.BibliographicEntity;
+import org.recap.model.jpa.CollectionGroupEntity;
 import org.recap.model.jpa.HoldingsEntity;
+import org.recap.model.jpa.InstitutionEntity;
 import org.recap.model.jpa.ItemEntity;
-import org.recap.model.jparw.ReportEntity;
-import org.recap.model.jparw.ReportDataEntity;
+import org.recap.model.jpa.ItemStatusEntity;
+import org.recap.model.jpa.MatchingBibInfoDetail;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.repository.MatchingBibInfoDetailRepository;
 import org.recap.repositoryrw.ReportDetailRepository;
@@ -25,15 +27,17 @@ import org.recap.util.DBReportUtil;
 import org.recap.util.XmlFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import static org.junit.Assert.assertTrue;
 
@@ -176,33 +180,20 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCaseUT {
         scsbXmlFormatterService.getSCSBXmlForBibRecords(bibRecords);
     }
 
-    private void generateMatchinInfo() {
-        ReportEntity reportEntity = new ReportEntity();
-        reportEntity.setId(15);
-        reportEntity.setFileName("OCLC,ISBN");
-        reportEntity.setType("MultiMatch");
-        reportEntity.setCreatedDate(new Date());
-        reportEntity.setInstitutionName("ALL");
-        List<ReportDataEntity> reportDataEntityList = new ArrayList<>();
-        ReportDataEntity reportDataEntity = new ReportDataEntity();
-        reportDataEntity.setId(400);
-        reportDataEntity.setHeaderName("BibId");
-        reportDataEntity.setHeaderValue("11,100,12,1,2,3,4,5,6");
-        reportDataEntity.setRecordNum("50");
-        reportDataEntityList.add(reportDataEntity);
-        ReportDataEntity reportDataEntity1 = new ReportDataEntity();
-        reportDataEntity1.setId(401);
-        reportDataEntity1.setHeaderName("OwningInstitution");
-        reportDataEntity1.setHeaderValue("PUL,NYPL,CUL,CUL,CUL,PUL,PUL,NYPL,NYPL");
-        reportDataEntity1.setRecordNum("50");
-        reportDataEntityList.add(reportDataEntity1);
-        ReportDataEntity reportDataEntity2 = new ReportDataEntity();
-        reportDataEntity2.setId(402);
-        reportDataEntity2.setHeaderName("OwningInstitutionBibId");
-        reportDataEntity2.setHeaderValue("3214,20,17980,200,201,202,203,204,205");
-        reportDataEntity2.setRecordNum("50");
-        reportDataEntityList.add(reportDataEntity2);
-        reportEntity.setReportDataEntities(reportDataEntityList);
+
+    @Test
+    public void verifySCSBXmlGenerationException() throws Exception {
+        BibliographicEntity bibliographicEntity = getBibliographicEntity();
+        bibliographicEntity.getItemEntities().get(0).setImsLocationEntity(null);
+        Mockito.when(matchingBibInfoDetailRepository.getRecordNum(Mockito.anyList())).thenReturn(Arrays.asList(1));
+        List<MatchingBibInfoDetail> matchingBibInfoDetailList=new ArrayList<>();
+        matchingBibInfoDetailList.add(getMatchingBibInfoDetail());
+        Mockito.when(matchingBibInfoDetailRepository.findByRecordNum(Mockito.anyList())).thenReturn(matchingBibInfoDetailList);
+        Map<String, Object> resultMap = scsbXmlFormatterService.prepareBibRecords(Arrays.asList(bibliographicEntity));
+        List<BibRecord> bibRecords = (List<BibRecord>) resultMap.get(RecapCommonConstants.SUCCESS);
+        boolean reteurntype=scsbXmlFormatterService.isInterested(RecapConstants.DATADUMP_XML_FORMAT_SCSB);
+        scsbXmlFormatterService.getSCSBXmlForBibRecords(bibRecords);
+        assertTrue(reteurntype);
 
     }
 
@@ -244,6 +235,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCaseUT {
         itemEntity.setOwningInstitutionItemId(".i1231");
         itemEntity.setOwningInstitutionId(3);
         itemEntity.setCollectionGroupId(1);
+        itemEntity.setImsLocationEntity(TestUtil.getImsLocationEntity(1,"RECAP","RECAP_LAS"));
         CollectionGroupEntity collectionGroupEntity = new CollectionGroupEntity();
         collectionGroupEntity.setCollectionGroupCode("Shared");
         itemEntity.setCollectionGroupEntity(collectionGroupEntity);
@@ -296,6 +288,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCaseUT {
         itemEntity.setOwningInstitutionId(1);
         itemEntity.setCollectionGroupId(1);
         itemEntity.setCustomerCode("PA");
+        itemEntity.setImsLocationEntity(TestUtil.getImsLocationEntity(1,"RECAP","RECAP_LAS"));
         itemEntity.setItemAvailabilityStatusId(1);
         itemEntity.setCollectionGroupEntity(collectionGroupEntity);
         itemEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
