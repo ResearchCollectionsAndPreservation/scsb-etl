@@ -225,6 +225,7 @@ public class RecapConstants {
     public static final String DATA_DUMP_COMPLETION_TOPIC_ROUTE_ID = "DataDumpCompletionTopicRouteId";
     public static final String ETL_REPORT_Q = "scsbactivemq:queue:reportQ";
     public static final String IMS_DEPOSITORY_RECAP = "RECAP";
+    public static final String IMS_DEPOSITORY_UNKNOWN = "UN";
 
     public class MarcFields {
         public static final String CF_001 = "001";

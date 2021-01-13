@@ -1,20 +1,17 @@
 package org.recap.service.formatter.datadump;
 
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.builder.RouteBuilder;
 import org.junit.Test;
 import org.marc4j.MarcReader;
-import org.marc4j.MarcWriter;
 import org.marc4j.MarcXmlReader;
-import org.marc4j.MarcXmlWriter;
 import org.marc4j.marc.Record;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.recap.BaseTestCase;
 import org.recap.BaseTestCaseUT;
 import org.recap.RecapCommonConstants;
 import org.recap.RecapConstants;
+import org.recap.TestUtil;
 import org.recap.model.ILSConfigProperties;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.CollectionGroupEntity;
@@ -25,17 +22,11 @@ import org.recap.model.jpa.ItemStatusEntity;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.util.PropertyUtil;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +38,7 @@ import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by premkb on 2/10/16.
@@ -236,11 +228,8 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
 
     @Test
     public void generateMarcXml() throws Exception {
-        BibliographicEntity bibliographicEntity = getBibliographicEntity();
-        ILSConfigProperties ilsConfigProperties=new ILSConfigProperties();
-        ilsConfigProperties.setDatadumpMarc("data");
-        Mockito.when(propertyUtil.getILSConfigProperties(Mockito.anyString())).thenReturn(ilsConfigProperties);
-        Map<String, Object> successAndFailureFormattedList = marcXmlFormatterService.prepareMarcRecords(Arrays.asList(bibliographicEntity));
+        Mockito.when(propertyUtil.getILSConfigProperties(Mockito.anyString())).thenReturn(getIlsConfigProperties());
+        Map<String, Object> successAndFailureFormattedList = marcXmlFormatterService.prepareMarcRecords(Arrays.asList(getBibliographicEntity()));
         String marcXmlString = marcXmlFormatterService.covertToMarcXmlString((List<Record>)successAndFailureFormattedList.get(RecapCommonConstants.SUCCESS));
         List<Record> recordList = readMarcXml(marcXmlString);
         assertNotNull(recordList);
@@ -249,7 +238,12 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         assertEquals("Shared", recordList.get(0).getDataFields().get(19).getSubfields().get(7).getData());
         assertEquals("z", String.valueOf(recordList.get(0).getDataFields().get(19).getSubfields().get(8).getCode()));
         assertEquals("PA", recordList.get(0).getDataFields().get(19).getSubfields().get(8).getData());
+    }
 
+    private ILSConfigProperties getIlsConfigProperties() {
+        ILSConfigProperties ilsConfigProperties = new ILSConfigProperties();
+        ilsConfigProperties.setDatadumpMarc("data");
+        return ilsConfigProperties;
     }
 
     @Test
@@ -261,7 +255,8 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         List<String> failures = (List<String>) successAndFailureFormattedList.get(RecapCommonConstants.FAILURE);
         String failureMessage = failures.get(0);
         assertNotNull(failureMessage);
-        System.out.println(failureMessage);
+        boolean returnType=marcXmlFormatterService.isInterested(RecapConstants.DATADUMP_XML_FORMAT_MARC);
+        assertTrue(returnType);
     }
 
     private BibliographicEntity getMalformedBibliographicEntity() throws URISyntaxException, IOException {
@@ -274,11 +269,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         bibliographicEntity.setLastUpdatedBy("tst");
         bibliographicEntity.setOwningInstitutionBibId("1");
         bibliographicEntity.setOwningInstitutionId(3);
-        InstitutionEntity institutionEntity = new InstitutionEntity();
-        institutionEntity.setId(1);
-        institutionEntity.setInstitutionCode("NYPL");
-        institutionEntity.setInstitutionName("New York Public Library");
-        bibliographicEntity.setInstitutionEntity(institutionEntity);
+        bibliographicEntity.setInstitutionEntity(getInstitutionEntity());
 
         HoldingsEntity holdingsEntity = new HoldingsEntity();
         holdingsEntity.setId(345);
@@ -289,7 +280,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         holdingsEntity.setLastUpdatedBy("tst");
         holdingsEntity.setOwningInstitutionId(3);
         holdingsEntity.setOwningInstitutionHoldingsId("54323");
-        holdingsEntity.setInstitutionEntity(institutionEntity);
+        holdingsEntity.setInstitutionEntity(getInstitutionEntity());
 
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setCallNumberType("0");
@@ -329,11 +320,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         bibliographicEntity.setLastUpdatedBy("tst");
         bibliographicEntity.setOwningInstitutionBibId("1");
         bibliographicEntity.setOwningInstitutionId(3);
-        InstitutionEntity institutionEntity = new InstitutionEntity();
-        institutionEntity.setId(1);
-        institutionEntity.setInstitutionCode("NYPL");
-        institutionEntity.setInstitutionName("New York Public Library");
-        bibliographicEntity.setInstitutionEntity(institutionEntity);
+        bibliographicEntity.setInstitutionEntity(getInstitutionEntity());
 
         HoldingsEntity holdingsEntity = new HoldingsEntity();
         holdingsEntity.setId(345);
@@ -344,7 +331,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         holdingsEntity.setLastUpdatedBy("tst");
         holdingsEntity.setOwningInstitutionId(3);
         holdingsEntity.setOwningInstitutionHoldingsId(".h54323");
-        holdingsEntity.setInstitutionEntity(institutionEntity);
+        holdingsEntity.setInstitutionEntity(getInstitutionEntity());
 
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setId(100);
@@ -363,6 +350,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         itemEntity.setCollectionGroupEntity(collectionGroupEntity);
         itemEntity.setCustomerCode("PA");
         itemEntity.setCopyNumber(1);
+        itemEntity.setImsLocationEntity(TestUtil.getImsLocationEntity(1,"RECAP","RECAP_LAS"));
         itemEntity.setVolumePartYear("v. 30-31 1980-81");
         itemEntity.setItemAvailabilityStatusId(1);
         ItemStatusEntity itemStatusEntity = new ItemStatusEntity();
@@ -374,6 +362,14 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         bibliographicEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
         bibliographicEntity.setItemEntities(Arrays.asList(itemEntity));
         return bibliographicEntity;
+    }
+
+    private InstitutionEntity getInstitutionEntity() {
+        InstitutionEntity institutionEntity = new InstitutionEntity();
+        institutionEntity.setId(1);
+        institutionEntity.setInstitutionCode("NYPL");
+        institutionEntity.setInstitutionName("New York Public Library");
+        return institutionEntity;
     }
 
     private List<Record> readMarcXml(String marcXmlString) {
@@ -394,30 +390,17 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         Optional<BibliographicEntity> bibliographicEntity = Optional.ofNullable(saveBibSingleHoldingsSingleItem("100", "330033001"));
 
         ArrayList<Record> recordList = new ArrayList<>();
-        ILSConfigProperties ilsConfigProperties=new ILSConfigProperties();
-        ilsConfigProperties.setDatadumpMarc("data");
-        Mockito.when(propertyUtil.getILSConfigProperties(Mockito.anyString())).thenReturn(ilsConfigProperties);
+        Mockito.when(propertyUtil.getILSConfigProperties(Mockito.anyString())).thenReturn(getIlsConfigProperties());
 
         Map<String, Object> recordMap = marcXmlFormatterService.prepareMarcRecord(bibliographicEntity.get());
         Record record = (Record) recordMap.get(RecapCommonConstants.SUCCESS);
         assertNotNull(record);
     }
 
-    private void writeMarcXml(ArrayList<Record> recordList, MarcWriter writer) {
-        try {
-            recordList.forEach(writer::write);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
 
     public BibliographicEntity saveBibSingleHoldingsSingleItem(String owningInstBibId,String barcode) throws Exception {
         Random random = new Random();
         BibliographicEntity bibliographicEntity = getBibEntity(1,owningInstBibId);
-
-        HoldingsEntity holdingsEntity = getHoldingsEntity(random, 1);
-
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setLastUpdatedDate(new Date());
         itemEntity.setOwningInstitutionItemId(String.valueOf(random.nextInt()));
@@ -431,17 +414,18 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         itemEntity.setCollectionGroupId(1);
         itemEntity.setCallNumberType("1");
         itemEntity.setCustomerCode("1");
+        itemEntity.setImsLocationEntity(TestUtil.getImsLocationEntity(1,"RECAP","RECAP_LAS"));
         itemEntity.setItemAvailabilityStatusId(1);
-        itemEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
+        itemEntity.setHoldingsEntities(Arrays.asList(getHoldingsEntity(random, 1)));
         ItemStatusEntity itemStatusEntity=new ItemStatusEntity();
         itemStatusEntity.setStatusCode("available");
         itemEntity.setItemStatusEntity(itemStatusEntity);
         CollectionGroupEntity collectionGroupEntity=new CollectionGroupEntity();
         collectionGroupEntity.setCollectionGroupCode("code");
         itemEntity.setCollectionGroupEntity(collectionGroupEntity);
-        holdingsEntity.setItemEntities(Arrays.asList(itemEntity));
-        holdingsEntity.setBibliographicEntities(Arrays.asList(bibliographicEntity));
-        bibliographicEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
+        getHoldingsEntity(random, 1).setItemEntities(Arrays.asList(itemEntity));
+        getHoldingsEntity(random, 1).setBibliographicEntities(Arrays.asList(bibliographicEntity));
+        bibliographicEntity.setHoldingsEntities(Arrays.asList(getHoldingsEntity(random, 1)));
         bibliographicEntity.setItemEntities(Arrays.asList(itemEntity));
         return  bibliographicEntity;
     }

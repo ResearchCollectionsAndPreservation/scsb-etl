@@ -53,6 +53,7 @@ public class BibPersisterCallable implements Callable {
 
     private Map<String, Integer> itemStatusMap;
     private Map<String, Integer>  collectionGroupMap;
+    private Map<String, Integer>  imsLocationCodeMap;
 
     private DBReportUtil dbReportUtil;
     private ImsLocationDetailsRepository imsLocationDetailsRepository;
@@ -282,11 +283,18 @@ public class BibPersisterCallable implements Callable {
         itemEntity.setCallNumberType(holdingsCallNumberType);
         itemEntity.setItemAvailabilityStatusId(itemStatusMap.get("Available"));
 
-        String imsLocationCode = getMarcUtil().getDataFieldValue(itemRecordType, "876", null, null, "l");
-        imsLocationCode = !StringUtils.isEmpty(imsLocationCode)?imsLocationCode:RecapConstants.IMS_DEPOSITORY_RECAP;
-        ImsLocationEntity imsLocationEntity = imsLocationDetailsRepository.findByImsLocationCode(imsLocationCode);
-        itemEntity.setImsLocationId(imsLocationEntity.getId());
-        itemEntity.setImsLocationEntity(imsLocationEntity);
+        String imsLocationCode = null;
+        imsLocationCode =  getMarcUtil().getDataFieldValue(itemRecordType, "876", null, null, "l");
+        if(imsLocationCode != null && imsLocationCode.trim().length()>0) {
+            itemEntity.setCatalogingStatus(RecapCommonConstants.COMPLETE_STATUS);
+        }
+        else {
+            itemEntity.setCatalogingStatus(RecapCommonConstants.INCOMPLETE_STATUS);
+        }
+
+        imsLocationCode = !StringUtils.isEmpty(imsLocationCode)?imsLocationCode:RecapConstants.IMS_DEPOSITORY_UNKNOWN;
+
+        itemEntity.setImsLocationId(imsLocationCodeMap.get(imsLocationCode));
 
         String copyNumber = getMarcUtil().getDataFieldValue(itemRecordType, "876", null, null, "t");
         if (StringUtils.isNoneBlank(copyNumber) && NumberUtils.isCreatable(copyNumber)) {
@@ -308,7 +316,6 @@ public class BibPersisterCallable implements Callable {
         itemEntity.setCreatedBy("etl");
         itemEntity.setLastUpdatedDate(currentDate);
         itemEntity.setLastUpdatedBy("etl");
-        itemEntity.setCatalogingStatus(RecapCommonConstants.COMPLETE_STATUS);
 
         String useRestrictions = getMarcUtil().getDataFieldValue(itemRecordType, "876", null, null, "h");
         if (StringUtils.isNotBlank(useRestrictions) && ("In Library Use".equalsIgnoreCase(useRestrictions) || "Supervised Use".equalsIgnoreCase(useRestrictions))) {

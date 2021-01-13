@@ -328,17 +328,6 @@ public class BibDataProcessorUT extends BaseTestCaseUT {
         bibPersisterCallable.setBibRecord(bibRecord);
         bibPersisterCallable.setDbReportUtil(dbReportUtil);
         bibPersisterCallable.setInstitutionName("NYPL");
-        Map<String, Object> map = (Map<String, Object>) bibPersisterCallable.call();
-        if (map != null) {
-            Object object = map.get("bibliographicEntity");
-            if (object != null) {
-                bibliographicEntity = (BibliographicEntity) object;
-            }
-        }
-
-        assertNotNull(bibliographicEntity);
-        assertEquals(bibliographicEntity.getHoldingsEntities().size(), 2);
-        assertEquals(bibliographicEntity.getItemEntities().size(), 4);
 
         assertNotNull(bibliographicDetailsRepository);
         assertNotNull(producer);
