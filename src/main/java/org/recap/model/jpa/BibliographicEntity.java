@@ -3,9 +3,10 @@ package org.recap.model.jpa;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -20,7 +21,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "bibliographic_t", schema = "recap", catalog = "")
-@IdClass(BibliographicPK.class)
+@AttributeOverride(name = "id", column = @Column(name = "BIBLIOGRAPHIC_ID"))
 public class BibliographicEntity extends BibliographicAbstractEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -29,20 +30,16 @@ public class BibliographicEntity extends BibliographicAbstractEntity {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "bibliographic_holdings_t", joinColumns = {
-            @JoinColumn(name = "OWNING_INST_BIB_ID", referencedColumnName = "OWNING_INST_BIB_ID"),
-            @JoinColumn(name = "BIB_INST_ID", referencedColumnName = "OWNING_INST_ID")},
+            @JoinColumn(name = "BIBLIOGRAPHIC_ID", referencedColumnName = "BIBLIOGRAPHIC_ID")},
             inverseJoinColumns = {
-                    @JoinColumn(name = "OWNING_INST_HOLDINGS_ID", referencedColumnName = "OWNING_INST_HOLDINGS_ID"),
-                    @JoinColumn(name = "HOLDINGS_INST_ID", referencedColumnName = "OWNING_INST_ID")})
+                    @JoinColumn(name = "HOLDINGS_ID", referencedColumnName = "HOLDINGS_ID")})
     private List<HoldingsEntity> holdingsEntities;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "bibliographic_item_t", joinColumns = {
-            @JoinColumn(name="OWNING_INST_BIB_ID", referencedColumnName = "OWNING_INST_BIB_ID"),
-            @JoinColumn(name="BIB_INST_ID", referencedColumnName = "OWNING_INST_ID")},
+            @JoinColumn(name="BIBLIOGRAPHIC_ID", referencedColumnName = "BIBLIOGRAPHIC_ID")},
             inverseJoinColumns = {
-                    @JoinColumn(name="OWNING_INST_ITEM_ID", referencedColumnName = "OWNING_INST_ITEM_ID"),
-                    @JoinColumn(name="ITEM_INST_ID", referencedColumnName = "OWNING_INST_ID") })
+                    @JoinColumn(name="ITEM_ID", referencedColumnName = "ITEM_ID")})
     private List<ItemEntity> itemEntities;
 
     /**

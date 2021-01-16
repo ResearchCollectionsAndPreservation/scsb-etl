@@ -133,7 +133,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
         List<Integer> itemIds = new ArrayList<>();
         List<ItemEntity> itemEntityList = bibliographicEntity.getItemEntities();
         for(ItemEntity itemEntity : itemEntityList){
-            itemIds.add(itemEntity.getItemId());
+            itemIds.add(itemEntity.getId());
         }
         return itemIds;
     }
@@ -147,7 +147,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
         Set<Integer> holdingsIdSet = new HashSet<>();
         for(ItemEntity itemEntity:itemEntityList){
             for(HoldingsEntity holdingsEntity:itemEntity.getHoldingsEntities()){
-                holdingsIdSet.add(holdingsEntity.getHoldingsId());
+                holdingsIdSet.add(holdingsEntity.getId());
             }
         }
         return new ArrayList<>(holdingsIdSet);
@@ -177,13 +177,13 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
         boolean is001Available = false;
         for (ControlField controlField : record.getControlFields()) {
             if (RecapConstants.MarcFields.CF_001.equals(controlField.getTag())) {
-                controlField.setData(RecapConstants.SCSB + "-" + bibliographicEntity.getBibliographicId());
+                controlField.setData(RecapConstants.SCSB + "-" + bibliographicEntity.getId());
                 is001Available = true;
             }
         }
         if(!is001Available) {
             ControlField controlField = getFactory().newControlField(RecapConstants.MarcFields.CF_001);
-            controlField.setData(RecapConstants.SCSB + "-" + bibliographicEntity.getBibliographicId());
+            controlField.setData(RecapConstants.SCSB + "-" + bibliographicEntity.getId());
             record.addVariableField(controlField);
         }
     }
@@ -204,7 +204,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
     private Record addHoldingInfo(Record record, List<HoldingsEntity> holdingsEntityList,List<Integer> itemIds,List<Integer> nonOrphanHoldingsIdList) {
         Record holdingRecord;
         for (HoldingsEntity holdingsEntity : holdingsEntityList) {
-            if (nonOrphanHoldingsIdList !=null && nonOrphanHoldingsIdList.contains(holdingsEntity.getHoldingsId())) {
+            if (nonOrphanHoldingsIdList !=null && nonOrphanHoldingsIdList.contains(holdingsEntity.getId())) {
                 holdingRecord = getRecordFromContent(holdingsEntity.getContent());
                 if(holdingRecord != null) {
                     for (DataField dataField : holdingRecord.getDataFields()) {
@@ -221,7 +221,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
                     }
                 }
                 for(ItemEntity itemEntity : holdingsEntity.getItemEntities()){
-                    if(itemIds.contains(itemEntity.getItemId())) {
+                    if(itemIds.contains(itemEntity.getId())) {
                         record = addItemInfo(record, itemEntity, holdingsEntity);
                     }
                 }
@@ -236,7 +236,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
      * @param holdingEntity
      */
     private void add0SubField(DataField dataField, HoldingsEntity holdingEntity) {
-        dataField.addSubfield(getFactory().newSubfield('0', holdingEntity.getHoldingsId().toString()));
+        dataField.addSubfield(getFactory().newSubfield('0', holdingEntity.getId().toString()));
     }
 
     /**
@@ -249,7 +249,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
         if(CollectionUtils.isNotEmpty(subfields)){
             for(Subfield subfield:subfields){
                 if(subfield.getCode()=='0'){
-                    subfield.setData(holdingEntity.getHoldingsId().toString());
+                    subfield.setData(holdingEntity.getId().toString());
                 }
             }
         } else {
@@ -286,9 +286,9 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
      */
     private Record addItemInfo(Record record, ItemEntity itemEntity,HoldingsEntity holdingsEntity) {
         DataField dataField = getFactory().newDataField(RecapConstants.MarcFields.DF_876, ' ', ' ');
-        dataField.addSubfield(getFactory().newSubfield('0', String.valueOf(holdingsEntity.getHoldingsId())));
+        dataField.addSubfield(getFactory().newSubfield('0', String.valueOf(holdingsEntity.getId())));
         dataField.addSubfield(getFactory().newSubfield('3', itemEntity.getVolumePartYear() != null ? itemEntity.getVolumePartYear() : ""));
-        dataField.addSubfield(getFactory().newSubfield('a', String.valueOf(itemEntity.getItemId())));
+        dataField.addSubfield(getFactory().newSubfield('a', String.valueOf(itemEntity.getId())));
         dataField.addSubfield(getFactory().newSubfield('h', itemEntity.getUseRestrictions() != null ? itemEntity.getUseRestrictions() : ""));
         dataField.addSubfield(getFactory().newSubfield('j', itemEntity.getItemStatusEntity().getStatusCode()));
         dataField.addSubfield(getFactory().newSubfield('p', itemEntity.getBarcode()));

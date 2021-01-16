@@ -3,9 +3,10 @@ package org.recap.model.jpa;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -20,7 +21,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "holdings_t", schema = "recap", catalog = "")
-@IdClass(HoldingsPK.class)
+@AttributeOverride(name = "id", column = @Column(name = "HOLDINGS_ID"))
 public class HoldingsEntity extends HoldingsAbstractEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -32,11 +33,9 @@ public class HoldingsEntity extends HoldingsAbstractEntity {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "item_holdings_t", joinColumns = {
-            @JoinColumn(name="OWNING_INST_HOLDINGS_ID", referencedColumnName = "OWNING_INST_HOLDINGS_ID"),
-            @JoinColumn(name="HOLDINGS_INST_ID", referencedColumnName = "OWNING_INST_ID")},
+            @JoinColumn(name="HOLDINGS_ID", referencedColumnName = "HOLDINGS_ID")},
             inverseJoinColumns = {
-                    @JoinColumn(name="OWNING_INST_ITEM_ID", referencedColumnName = "OWNING_INST_ITEM_ID"),
-                    @JoinColumn(name="ITEM_INST_ID", referencedColumnName = "OWNING_INST_ID") })
+                    @JoinColumn(name="ITEM_ID", referencedColumnName = "ITEM_ID")})
     private List<ItemEntity> itemEntities;
 
     /**

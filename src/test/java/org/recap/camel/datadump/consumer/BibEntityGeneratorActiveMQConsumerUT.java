@@ -54,7 +54,7 @@ public class BibEntityGeneratorActiveMQConsumerUT extends BaseTestCaseUT {
         Mockito.when(value.getHeader(Mockito.anyString())).thenReturn("batchHeaders");
         List<BibliographicEntity> bibliographicEntityList=new ArrayList<>();
         BibliographicEntity bibliographicEntity=new BibliographicEntity();
-        bibliographicEntity.setBibliographicId(1);
+        bibliographicEntity.setId(1);
         bibliographicEntityList.add(bibliographicEntity);
         Mockito.when(bibliographicDetailsRepository.getBibliographicEntityList(Mockito.anyList())).thenReturn(bibliographicEntityList);
         Mockito.when(exchange.getContext()).thenReturn(camelContext);

@@ -217,7 +217,7 @@ public class MarcXMLFormatActiveMQConsumerUT extends BaseTestCaseUT {
 
     private BibliographicEntity getBibliographicEntity() throws URISyntaxException, IOException {
         BibliographicEntity bibliographicEntity = new BibliographicEntity();
-        bibliographicEntity.setBibliographicId(100);
+        bibliographicEntity.setId(100);
         bibliographicEntity.setContent(bibContent.getBytes());
         bibliographicEntity.setCreatedDate(new Date());
         bibliographicEntity.setLastUpdatedDate(new Date());
@@ -232,7 +232,7 @@ public class MarcXMLFormatActiveMQConsumerUT extends BaseTestCaseUT {
         bibliographicEntity.setInstitutionEntity(institutionEntity);
 
         HoldingsEntity holdingsEntity = new HoldingsEntity();
-        holdingsEntity.setHoldingsId(345);
+        holdingsEntity.setId(345);
         holdingsEntity.setContent(holdingContent.getBytes());
         holdingsEntity.setCreatedDate(new Date());
         holdingsEntity.setCreatedBy("tst");
@@ -243,7 +243,7 @@ public class MarcXMLFormatActiveMQConsumerUT extends BaseTestCaseUT {
         holdingsEntity.setInstitutionEntity(institutionEntity);
 
         ItemEntity itemEntity = new ItemEntity();
-        itemEntity.setItemId(100);
+        itemEntity.setId(100);
         itemEntity.setCallNumberType("0");
         itemEntity.setCallNumber("callNum");
         itemEntity.setCreatedDate(new Date());

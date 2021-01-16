@@ -199,7 +199,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCaseUT {
 
     private BibliographicEntity getBibliographicEntity() throws URISyntaxException, IOException {
         BibliographicEntity bibliographicEntity = new BibliographicEntity();
-        bibliographicEntity.setBibliographicId(100);
+        bibliographicEntity.setId(100);
         bibliographicEntity.setContent(bibContent.getBytes());
         bibliographicEntity.setCreatedDate(new Date());
         bibliographicEntity.setLastUpdatedDate(new Date());
@@ -214,7 +214,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCaseUT {
         bibliographicEntity.setInstitutionEntity(institutionEntity);
 
         HoldingsEntity holdingsEntity = new HoldingsEntity();
-        holdingsEntity.setHoldingsId(345);
+        holdingsEntity.setId(345);
         holdingsEntity.setContent(holdingContent.getBytes());
         holdingsEntity.setCreatedDate(new Date());
         holdingsEntity.setCreatedBy("tst");
@@ -257,7 +257,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCaseUT {
     @Test
     public void testgetSubfieldatafieldType() {
         BibliographicEntity bibliographicEntity = new BibliographicEntity();
-        bibliographicEntity.setBibliographicId(100);
+        bibliographicEntity.setId(100);
         bibliographicEntity.setContent(bibContent.getBytes());
         bibliographicEntity.setCreatedDate(new Date());
         bibliographicEntity.setLastUpdatedDate(new Date());
@@ -275,7 +275,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCaseUT {
         holdingsEntity.setLastUpdatedBy("etl");
         holdingsEntity.setOwningInstitutionId(1);
         holdingsEntity.setOwningInstitutionHoldingsId(String.valueOf(new Random().nextInt()));
-        holdingsEntity.setHoldingsId(3);
+        holdingsEntity.setId(3);
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setCallNumberType("0");
         itemEntity.setCallNumber("callNum");

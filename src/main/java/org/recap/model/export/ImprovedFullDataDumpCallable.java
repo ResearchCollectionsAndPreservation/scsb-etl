@@ -61,7 +61,7 @@ public class ImprovedFullDataDumpCallable implements Callable {
                 List<ItemEntity> filteredItems = new ArrayList<>();
                 for (Iterator<ItemEntity> itemEntityIterator = itemEntities.iterator(); itemEntityIterator.hasNext(); ) {
                     ItemEntity itemEntity = itemEntityIterator.next();
-                    if(itemIds.contains(itemEntity.getItemId())){
+                    if(itemIds.contains(itemEntity.getId())){
                         filteredItems.add(itemEntity);
                     }
                 }

@@ -79,7 +79,7 @@ public class BibEntityGeneratorActiveMQConsumer {
 
             for (Iterator<BibliographicEntity> iterator = bibliographicEntityList.iterator(); iterator.hasNext(); ) {
                 BibliographicEntity bibliographicEntity = iterator.next();
-                BibEntityPreparerCallable bibEntityPreparerCallable = new BibEntityPreparerCallable(bibliographicEntity, bibItemMap.get(bibliographicEntity.getBibliographicId()));
+                BibEntityPreparerCallable bibEntityPreparerCallable = new BibEntityPreparerCallable(bibliographicEntity, bibItemMap.get(bibliographicEntity.getId()));
                 callables.add(bibEntityPreparerCallable);
             }
 

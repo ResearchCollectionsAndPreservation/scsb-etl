@@ -1,7 +1,7 @@
 package org.recap.repository;
 
 import org.recap.model.jpa.ItemEntity;
-import org.recap.model.jpa.ItemPK;
+import org.recap.repository.jpa.BaseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -12,16 +12,9 @@ import java.util.List;
 /**
  * Created by chenchulakshmig on 21/6/16.
  */
-public interface ItemDetailsRepository extends PagingAndSortingRepository<ItemEntity, ItemPK> {
+public interface ItemDetailsRepository extends BaseRepository<ItemEntity> {
 
-    /**
-     * Find by item id item entity.
-     *
-     * @param itemId the item id
-     * @return the item entity
-     */
-    ItemEntity findByItemId(Integer itemId);
-
+    
     /**
      * Count by owning institution id long.
      *
@@ -69,7 +62,7 @@ public interface ItemDetailsRepository extends PagingAndSortingRepository<ItemEn
      * @param instId the inst id
      * @return the long
      */
-    @Query(value = "select count(*) from bibliographic_item_t where bib_inst_id = ?1",  nativeQuery = true)
+    @Query(value = "select count(*) from bibliographic_item_t,bibliographic_t where bibliographic_t.bibliographic_id=bibliographic_item_t.bibliographic_id and owning_inst_id = ?1",  nativeQuery = true)
     Long findCountOfBibliographicItemsByInstId(Integer instId);
 
 

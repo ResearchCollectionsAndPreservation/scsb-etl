@@ -36,7 +36,7 @@ public class ImprovedFullDataDumpCallableUT extends BaseTestCaseUT {
     public void init() {
         bibliographicEntityList = new ArrayList<>();
         BibliographicEntity bibliographicEntity = new BibliographicEntity();
-        bibliographicEntity.setBibliographicId(100);
+        bibliographicEntity.setId(100);
         bibliographicEntity.setContent("bib content".getBytes());
         bibliographicEntity.setOwningInstitutionId(1);
         bibliographicEntity.setOwningInstitutionBibId("2");
@@ -45,7 +45,7 @@ public class ImprovedFullDataDumpCallableUT extends BaseTestCaseUT {
         bibliographicEntity.setLastUpdatedDate(new Date());
         bibliographicEntity.setLastUpdatedBy("tst");
         ItemEntity itemEntity=new ItemEntity();
-        itemEntity.setItemId(1);
+        itemEntity.setId(1);
         bibliographicEntity.setItemEntities(Arrays.asList(itemEntity));
         bibliographicEntityList.add(bibliographicEntity);
         MockitoAnnotations.initMocks(this);

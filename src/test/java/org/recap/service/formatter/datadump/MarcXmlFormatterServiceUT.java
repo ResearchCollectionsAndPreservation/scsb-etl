@@ -261,7 +261,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
 
     private BibliographicEntity getMalformedBibliographicEntity() throws URISyntaxException, IOException {
         BibliographicEntity bibliographicEntity = new BibliographicEntity();
-        bibliographicEntity.setBibliographicId(100);
+        bibliographicEntity.setId(100);
         bibliographicEntity.setContent(malformedBibContent.getBytes());
         bibliographicEntity.setCreatedDate(new Date());
         bibliographicEntity.setLastUpdatedDate(new Date());
@@ -272,7 +272,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         bibliographicEntity.setInstitutionEntity(getInstitutionEntity());
 
         HoldingsEntity holdingsEntity = new HoldingsEntity();
-        holdingsEntity.setHoldingsId(345);
+        holdingsEntity.setId(345);
         holdingsEntity.setContent(holdingContent.getBytes());
         holdingsEntity.setCreatedDate(new Date());
         holdingsEntity.setCreatedBy("tst");
@@ -312,7 +312,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
 
     private BibliographicEntity getBibliographicEntity() throws URISyntaxException, IOException {
         BibliographicEntity bibliographicEntity = new BibliographicEntity();
-        bibliographicEntity.setBibliographicId(100);
+        bibliographicEntity.setId(100);
         bibliographicEntity.setContent(bibContent.getBytes());
         bibliographicEntity.setCreatedDate(new Date());
         bibliographicEntity.setLastUpdatedDate(new Date());
@@ -323,7 +323,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         bibliographicEntity.setInstitutionEntity(getInstitutionEntity());
 
         HoldingsEntity holdingsEntity = new HoldingsEntity();
-        holdingsEntity.setHoldingsId(345);
+        holdingsEntity.setId(345);
         holdingsEntity.setContent(holdingContent.getBytes());
         holdingsEntity.setCreatedDate(new Date());
         holdingsEntity.setCreatedBy("tst");
@@ -334,7 +334,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         holdingsEntity.setInstitutionEntity(getInstitutionEntity());
 
         ItemEntity itemEntity = new ItemEntity();
-        itemEntity.setItemId(100);
+        itemEntity.setId(100);
         itemEntity.setCallNumberType("0");
         itemEntity.setCallNumber("callNum");
         itemEntity.setCreatedDate(new Date());
@@ -432,7 +432,7 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
 
     private HoldingsEntity getHoldingsEntity(Random random, Integer institutionId) {
         HoldingsEntity holdingsEntity = new HoldingsEntity();
-        holdingsEntity.setHoldingsId(1);
+        holdingsEntity.setId(1);
         holdingsEntity.setContent(holdingContent.getBytes());
         holdingsEntity.setCreatedDate(new Date());
         holdingsEntity.setCreatedBy("etl");

@@ -38,7 +38,7 @@ public class DeletedJsonFormatterServiceUT extends BaseTestCaseUT {
     public void getFormattedOutputDeleted() throws Exception {
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setBarcode("1234");
-        itemEntity.setItemId(1);
+        itemEntity.setId(1);
         itemEntity.setCustomerCode("1234");
         itemEntity.setCallNumber("1234");
         itemEntity.setCallNumberType("land");
@@ -55,7 +55,7 @@ public class DeletedJsonFormatterServiceUT extends BaseTestCaseUT {
     public void getFormattedOutput() throws Exception {
         ItemEntity itemEntity = new ItemEntity();
         itemEntity.setBarcode("1234");
-        itemEntity.setItemId(1);
+        itemEntity.setId(1);
         itemEntity.setCustomerCode("1234");
         itemEntity.setCallNumber("1234");
         itemEntity.setCallNumberType("land");
@@ -73,7 +73,7 @@ public class DeletedJsonFormatterServiceUT extends BaseTestCaseUT {
 
     private List<BibliographicEntity> getBibliographicEntityList() throws URISyntaxException, IOException {
         BibliographicEntity bibliographicEntity = new BibliographicEntity();
-        bibliographicEntity.setBibliographicId(100);
+        bibliographicEntity.setId(100);
         bibliographicEntity.setContent("bib content".getBytes());
         bibliographicEntity.setOwningInstitutionId(1);
         bibliographicEntity.setOwningInstitutionBibId("2");
@@ -109,7 +109,7 @@ public class DeletedJsonFormatterServiceUT extends BaseTestCaseUT {
         itemEntity.setItemAvailabilityStatusId(1);
         itemEntity.setCopyNumber(1234);
         itemEntity.setDeleted(true);
-        itemEntity.setItemId(1);
+        itemEntity.setId(1);
         itemEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
 
         ItemEntity itemEntity1 = new ItemEntity();
@@ -128,7 +128,7 @@ public class DeletedJsonFormatterServiceUT extends BaseTestCaseUT {
         itemEntity1.setItemAvailabilityStatusId(1);
         itemEntity1.setCopyNumber(123);
         itemEntity1.setDeleted(true);
-        itemEntity1.setItemId(2);
+        itemEntity1.setId(2);
         bibliographicEntity.setItemEntities(Arrays.asList(itemEntity1,itemEntity));
         bibliographicEntity.setHoldingsEntities(Arrays.asList(holdingsEntity));
 

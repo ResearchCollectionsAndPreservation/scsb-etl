@@ -11,6 +11,7 @@ import org.recap.model.jaxb.Holdings;
 import org.recap.model.jaxb.JAXBHandler;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.CollectionGroupEntity;
+import org.recap.model.jpa.ImsLocationEntity;
 import org.recap.model.jpa.InstitutionEntity;
 import org.recap.model.jpa.ItemStatusEntity;
 import org.recap.model.jpa.XmlRecordEntity;
@@ -58,6 +59,7 @@ public class RecordProcessor {
     private Map<String, Integer> institutionEntityMap;
     private Map<String, Integer>  itemStatusMap;
     private Map<String, Integer>  collectionGroupMap;
+    private Map<String, Integer>  imsLocationCodeMap;
     private JAXBHandler jaxbHandler;
     private String xmlFileName;
     private String institutionName;
@@ -195,9 +197,9 @@ public class RecordProcessor {
                     bibPersisterCallable.setCollectionGroupMap(getCollectionGroupMap());
                     bibPersisterCallable.setInstitutionEntitiesMap(getInstitutionEntityMap());
                     bibPersisterCallable.setItemStatusMap(getItemStatusMap());
+                    bibPersisterCallable.setImsLocationCodeMap(getImsLocationCodeMap());
                     bibPersisterCallable.setXmlRecordEntity(xmlRecordEntity);
                     bibPersisterCallable.setInstitutionName(institutionName);
-                    bibPersisterCallable.setImsLocationDetailsRepository(imsLocationDetailsRepository);
                     bibPersisterCallable.setMarcUtil(marcUtil);
                     callables.add(bibPersisterCallable);
                 } else {
@@ -396,6 +398,26 @@ public class RecordProcessor {
         }
         return collectionGroupMap;
     }
+
+
+    /**
+     * Gets item status map.
+     *
+     * @return the item status map
+     */
+    public Map<String, Integer> getImsLocationCodeMap() {
+        if (null == imsLocationCodeMap) {
+            imsLocationCodeMap = new HashMap<>();
+            Iterable<ImsLocationEntity> imsLocationEntities = imsLocationDetailsRepository.findAll();
+            for (Iterator<ImsLocationEntity> iterator = imsLocationEntities.iterator(); iterator.hasNext(); ) {
+                ImsLocationEntity imsLocationEntity = iterator.next();
+                imsLocationCodeMap.put(imsLocationEntity.getImsLocationCode(), imsLocationEntity.getId());
+            }
+        }
+        return imsLocationCodeMap;
+    }
+
+
 
     /**
      * Gets executor service.
