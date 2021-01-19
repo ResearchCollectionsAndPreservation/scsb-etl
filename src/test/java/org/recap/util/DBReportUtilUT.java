@@ -104,7 +104,7 @@ public class DBReportUtilUT extends BaseTestCaseUT {
 
     private BibliographicEntity getBibliographicEntity() {
         BibliographicEntity bibliographicEntity=new BibliographicEntity();
-        bibliographicEntity.setBibliographicId(1);
+        bibliographicEntity.setId(1);
         bibliographicEntity.setOwningInstitutionId(1);
         bibliographicEntity.setOwningInstitutionBibId("2");
         bibliographicEntity.setContent(content.getBytes());
