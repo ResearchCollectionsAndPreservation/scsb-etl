@@ -108,12 +108,12 @@ public class RecapConstants {
     public static final String DATADUMP_PROCESS_STARTED = "Export process has started and we will send an email notification upon completion";
     public static final String DATADUMP_RECORDS_AVAILABLE_FOR_PROCESS = "Data available to export";
     public static final String DATADUMP_INSTITUTIONCODE_ERR_MSG = "Please enter the value for InstitutionCode parameter.";
-    public static final String DATADUMP_VALID_INST_CODES_ERR_MSG = "Please enter a valid InstitutionCode: PUL, CUL or NYPL.";
-    public static final String DATADUMP_MULTIPLE_INST_CODES_ERR_MSG = "Please enter only one InstitutionCode: PUL, CUL or NYPL";
+    public static final String DATADUMP_VALID_INST_CODES_ERR_MSG = "Please enter a valid InstitutionCode";
+    public static final String DATADUMP_MULTIPLE_INST_CODES_ERR_MSG = "Please enter only one InstitutionCode";
     public static final String DATADUMP_DATE_ERR_MSG = "Please enter the date";
     public static final String DATADUMP_TRANS_TYPE_ERR_MSG = "Please enter valid transmission type.";
     public static final String DATADUMP_VALID_FETCHTYPE_ERR_MSG = "Please enter valid fetchType either 1 or 2 or configured value for full dump.";
-    public static final String DATADUMP_VALID_REQ_INST_CODE_ERR_MSG = "Please enter valid institution code CUL or PUL or NYPL for requestingInstitutionCode .";
+    public static final String DATADUMP_VALID_REQ_INST_CODE_ERR_MSG = "Please enter valid institution code for requestingInstitutionCode .";
     public static final String DATADUMP_VALID_IMS_DEPOSITORY_CODE_ERR_MSG = "Please enter valid IMS Depository code";
     public static final String DATADUMP_FULL_VALID_TRANS_TYPE = "Transmission type 1 is not valid for full dump. Use transmission type 0 or 2";
     public static final String DATADUMP_HTTP_REPONSE_RECORD_LIMIT_ERR_MSG = "There are more than 100 records. Use transmission type ftp to dump the data";

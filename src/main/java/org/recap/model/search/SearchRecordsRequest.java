@@ -24,7 +24,7 @@ public class SearchRecordsRequest implements Serializable {
     @ApiModelProperty(name ="fieldName", value= "Select a field name",position = 1)
     private String fieldName;
 
-    @ApiModelProperty(name= "owningInstitutions", value= "Publications Owning Instutions", position = 2, allowableValues="PUL, NYPL, CUL")
+    @ApiModelProperty(name= "owningInstitutions", value= "Publications Owning Instutions", position = 2)
     private List<String> owningInstitutions = null;
 
     @ApiModelProperty(name= "collectionGroupDesignations", value= "Collection Group Designations",position = 3)

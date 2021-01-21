@@ -279,17 +279,17 @@ public class DataDumpExportService {
         if (!dataDumpRequest.getInstitutionCodes().isEmpty()) {
             for (String institutionCode : dataDumpRequest.getInstitutionCodes()) {
                 if(!allInstitutionCodeExceptHTC.contains(institutionCode)){
-                    errorMessageMap.put(errorcount, RecapConstants.DATADUMP_VALID_INST_CODES_ERR_MSG);
+                    errorMessageMap.put(errorcount, RecapConstants.DATADUMP_VALID_INST_CODES_ERR_MSG+" : "+propertyUtil.getAllInstitutions().toString());
                     errorcount++;
                 }
             }
             if(dataDumpRequest.getInstitutionCodes().size() != 1 && dataDumpRequest.getFetchType().equals(fetchTypeFull)) {
-                errorMessageMap.put(errorcount, RecapConstants.DATADUMP_MULTIPLE_INST_CODES_ERR_MSG);
+                errorMessageMap.put(errorcount, RecapConstants.DATADUMP_MULTIPLE_INST_CODES_ERR_MSG+ " : "+propertyUtil.getAllInstitutions().toString());
                 errorcount++;
             }
         }
         if(dataDumpRequest.getRequestingInstitutionCode() != null && !allInstitutionCodeExceptHTC.contains(dataDumpRequest.getRequestingInstitutionCode())){
-            errorMessageMap.put(errorcount, RecapConstants.DATADUMP_VALID_REQ_INST_CODE_ERR_MSG);
+            errorMessageMap.put(errorcount, RecapConstants.DATADUMP_VALID_REQ_INST_CODE_ERR_MSG+" : "+propertyUtil.getAllInstitutions().toString());
             errorcount++;
         }
 
