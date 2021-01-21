@@ -68,9 +68,9 @@ public class DataDumpRestController {
             notes = "Export datadumps to institutions", nickname = "exportDataDump", position = 0)
     @ApiResponses(value = {@ApiResponse(code = 200, message = RecapConstants.DATADUMP_PROCESS_STARTED)})
     @ResponseBody
-    public String exportDataDump(@ApiParam(value = "Code of institutions whose shared collection updates are requested. Use PUL for Princeton, CUL for Columbia and NYPL for NYPL." , required = true, name = "institutionCodes") @RequestParam String institutionCodes,
-                                         @ApiParam(value = "Code of insitituion who is requesting. Use PUL for Princeton, CUL for Columbia and NYPL for NYPL. ",required=true, name = "requestingInstitutionCode") @RequestParam String requestingInstitutionCode,
-                                         @ApiParam(value = "Ims depository - RECAP (use RECAP) or Harvard depository (use HD)" , required = true , name = "imsDepositoryCodes") @RequestParam String imsDepositoryCodes,
+    public String exportDataDump(@ApiParam(value = "${swagger.values.institutionCodes}" , required = true, name = "institutionCodes") @RequestParam String institutionCodes,
+                                         @ApiParam(value = "${swagger.values.requestingInstitutionCode}",required=true, name = "requestingInstitutionCode") @RequestParam String requestingInstitutionCode,
+                                         @ApiParam(value = "${swagger.values.imsDepositoryCodes}" , required = true , name = "imsDepositoryCodes") @RequestParam String imsDepositoryCodes,
                                          @ApiParam(value = "Type of export - Incremental (use 1) or Deleted (use 2)" , required = true , name = "fetchType") @RequestParam String fetchType,
                                          @ApiParam(value = "Type of format - Marc xml (use 0) or SCSB xml (use 1), for deleted records only json format (use 2)",required=true, name = "outputFormat") @RequestParam String outputFormat,
                                          @ApiParam(value = "Get updates to middleware collection since the date provided. Default will be updates since the previous day. Date format will be a string (yyyy-MM-dd HH:mm)", name = "date") @RequestParam(required=false) String date,
