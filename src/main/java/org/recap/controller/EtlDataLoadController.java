@@ -4,12 +4,13 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.recap.model.etl.EtlLoadRequest;
-import org.recap.report.ReportGenerator;
 import org.recap.camel.EtlDataLoadProcessor;
 import org.recap.camel.RecordProcessor;
+import org.recap.model.etl.EtlLoadRequest;
+import org.recap.report.ReportGenerator;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.repository.HoldingsDetailsRepository;
+import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.repository.ItemDetailsRepository;
 import org.recap.repository.XmlRecordRepository;
 import org.slf4j.Logger;
@@ -19,10 +20,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -94,6 +96,9 @@ public class EtlDataLoadController {
      */
     @Autowired
     ReportGenerator reportGenerator;
+
+    @Autowired
+    private InstitutionDetailsRepository institutionDetailsRepository;
 
     /**
      * Loads the data load UI page.
@@ -216,4 +221,11 @@ public class EtlDataLoadController {
         }
         return etlDataLoader(model);
     }
+
+    @GetMapping(value = "/etlDataLoad/institutions")
+    @ResponseBody
+    public List<String> getInstitution(){
+        return  institutionDetailsRepository.findAllInstitutionCodeExceptHTC();
+    }
+
 }

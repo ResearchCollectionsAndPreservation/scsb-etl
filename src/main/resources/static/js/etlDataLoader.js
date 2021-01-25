@@ -11,6 +11,7 @@ jQuery(document).ready(function ($) {
     $('#dateFrom, #dateTo').datepicker({
         format: "yyyy/mm/dd"
     });
+    populateInstitutionForImport();
 });
 
 
@@ -52,3 +53,25 @@ function updateStatus() {
         document.getElementById("bulkIngestStatus").value = msg;
     });
 }
+
+function populateInstitutionForImport() {
+       getInstitutions('institutionName');
+}
+function populateInstitutionForReports() {
+       getInstitutions('reportInstitutionName');
+}
+function getInstitutions(selectId) {
+       $('#'+selectId).empty();
+       var request = $.ajax({
+            url: "etlDataLoad/institutions",
+            type: "GET",
+            contentType: "application/json"
+        });
+        request.done(function (response) {
+             $.each(response , function(index, val) {
+               $('#'+selectId).append('<option value="' + val + '">' + val+ '</option>');
+             });
+        });
+}
+
+
