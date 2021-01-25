@@ -21,9 +21,9 @@
     </div>
 
     <ul class="nav nav-tabs nav-justified">
-        <li class="active"><a data-toggle="tab" href="#etl">ETL</a></li>
+        <li class="active"><a data-toggle="tab" href="#etl" th:onclick="populateInstitutionForImport()">ETL</a></li>
         <li><a data-toggle="tab" href="#uploadFiles">Upload Files</a></li>
-        <li><a data-toggle="tab" href="#reports">Reports</a></li>
+        <li><a data-toggle="tab" href="#reports" th:onclick="populateInstitutionForReports()">Reports</a></li>
     </ul>
 
     <div class="tab-content">
@@ -72,9 +72,7 @@
                                                                     class="form-control"
                                                                     style="width: 160px;"
                                                                     th:field="*{owningInstitutionName}">
-                                                                <option value="PUL">PUL</option>
-                                                                <option value="CUL">CUL</option>
-                                                                <option value="NYPL">NYPL</option>
+                                                                <option value=""></option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -227,9 +225,7 @@
                                                                     class="form-control"
                                                                     style="width: 160px;"
                                                                     th:field="*{reportInstitutionName}">
-                                                                <option value="PUL">PUL</option>
-                                                                <option value="CUL">CUL</option>
-                                                                <option value="NYPL">NYPL</option>
+                                                                <option value=""></option>
                                                             </select>
                                                         </div>
                                                     </div>
