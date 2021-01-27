@@ -208,7 +208,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
     private String getOutputFormat(DataDumpRequest dataDumpRequest) {
         switch (dataDumpRequest.getOutputFileFormat()) {
             case "0":
-                return "MarcXml";
+                return "MARCXml";
             case "1":
                 return "SCSBXml";
             case "2":
