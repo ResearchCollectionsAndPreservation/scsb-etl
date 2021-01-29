@@ -4,6 +4,7 @@ import org.apache.camel.ProducerTemplate;
 import org.junit.Test;
 import org.recap.BaseTestCase;
 import org.recap.RecapCommonConstants;
+import org.recap.RecapConstants;
 import org.recap.model.jparw.ReportDataEntity;
 import org.recap.model.jparw.ReportEntity;
 import org.recap.repositoryrw.ReportDetailRepository;
@@ -42,7 +43,7 @@ public class ReportRoutesBuilder_UT extends BaseTestCase {
         reportDataEntities.add(reportDataEntity1);
         reportEntity.setReportDataEntities(reportDataEntities);
 
-        producer.sendBody(RecapCommonConstants.REPORT_Q, reportEntity);
+        producer.sendBody(RecapConstants.ETL_SERVICE_REPORT_Q, reportEntity);
 
         Thread.sleep(1000);
 

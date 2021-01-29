@@ -167,7 +167,7 @@ public class EtlDataLoadProcessor {
         reportEntity.setReportDataEntities(reportDataEntities);
         reportEntity.setInstitutionName(institutionName);
 
-        producer.sendBody(RecapCommonConstants.REPORT_Q, reportEntity);
+        producer.sendBody(RecapConstants.ETL_SERVICE_REPORT_Q, reportEntity);
     }
 
     /**

@@ -147,7 +147,7 @@ public class JMSUT extends BaseTestCase {
         reportEntity.setType(RecapCommonConstants.SUCCESS);
         reportEntity.setReportDataEntities(reportDataEntities);
         reportEntity.setInstitutionName("NYPL");
-        producer.sendBody(RecapCommonConstants.REPORT_Q, reportEntity);
+        producer.sendBody(RecapConstants.ETL_SERVICE_REPORT_Q, reportEntity);
         Thread.sleep(1000);
 
         List<ReportEntity> byFileName = reportDetailRepository.findByFileName("TestSuccessReport.xml");
