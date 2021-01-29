@@ -115,7 +115,7 @@ public class RecordProcessor {
 
         if (!CollectionUtils.isEmpty(reportEntities)) {
             for(ReportEntity reportEntity : reportEntities) {
-                producer.sendBody(RecapCommonConstants.REPORT_Q, reportEntity);
+                producer.sendBody(RecapConstants.ETL_SERVICE_REPORT_Q, reportEntity);
             }
         }
 
