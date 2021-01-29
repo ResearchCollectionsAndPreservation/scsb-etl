@@ -225,6 +225,7 @@ public class RecapConstants {
     public static final String EXPORTED_DATE = "exportedDate";
     public static final String DATADUMP_FAILURE_REPORT_SFTP_Q = "direct://datadumpFailureReportSftpQ";
     public static final String DATADUMP_FAILURE_REPORT_SFTP_ID = "datadumpFailureReportSftpQId";
+    public static final String ETL_SERVICE_REPORT_Q ="scsbactivemq:queue:etlServiceReportQ";
 
     public class MarcFields {
         public static final String CF_001 = "001";
