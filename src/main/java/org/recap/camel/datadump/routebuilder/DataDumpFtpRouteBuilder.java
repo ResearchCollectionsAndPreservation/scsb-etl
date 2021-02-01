@@ -21,7 +21,7 @@ public class DataDumpFtpRouteBuilder extends RouteBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(DataDumpFtpRouteBuilder.class);
 
-    @Value("${etl.dump.staging.directory}")
+    @Value("${etl.data.dump.ftp.staging.directory}")
     private String s3StagingDir;
 
     /**

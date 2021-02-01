@@ -71,7 +71,7 @@ public class DataDumpExportServiceUT extends BaseTestCaseUT {
     @Value("${etl.data.dump.fetchtype.full}")
     private String fetchTypeFull;
 
-    @Value("${recap.assist.email.to}")
+    @Value("${las.assist.email.to}")
     private String recapAssistEmailAddress;
 
     @Before

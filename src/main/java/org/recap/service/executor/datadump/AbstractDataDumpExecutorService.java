@@ -51,13 +51,13 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
     @Autowired
     private DataExportHeaderUtil dataExportHeaderUtil;
 
-    @Value("${datadump.httpresponse.record.limit}")
+    @Value("${data.dump.httpresponse.record.limit}")
     private String httpResonseRecordLimit;
 
     @Value("${scsb.solr.doc.url}")
     private String solrClientUrl;
 
-    @Value("${datadump.batch.size}")
+    @Value("${data.dump.batch.size}")
     private String dataDumpBatchSize;
 
     @Value("${datadump.solr.fetch.delay}")
