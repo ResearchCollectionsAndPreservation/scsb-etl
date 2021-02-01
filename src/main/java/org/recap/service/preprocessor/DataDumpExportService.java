@@ -81,9 +81,6 @@ public class DataDumpExportService {
     @Value("${etl.data.dump.incremental.date.limit}")
     private String incrementalDateLimit;
 
-    @Value("${las.email.assist.to}")
-    private String recapAssistEmailAddress;
-
     @Autowired
     PropertyUtil propertyUtil;
 
