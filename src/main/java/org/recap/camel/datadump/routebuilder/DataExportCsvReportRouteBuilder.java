@@ -31,7 +31,7 @@ public class DataExportCsvReportRouteBuilder {
      * @param reportsDirectory the reports directory
      */
     @Autowired
-    public DataExportCsvReportRouteBuilder(CamelContext camelContext, @Value("${etl.dump.report.directory}") String reportsDirectory) {
+    public DataExportCsvReportRouteBuilder(CamelContext camelContext, @Value("${etl.data.dump.report.directory}") String reportsDirectory) {
         try {
             camelContext.addRoutes(new RouteBuilder() {
                 @Override

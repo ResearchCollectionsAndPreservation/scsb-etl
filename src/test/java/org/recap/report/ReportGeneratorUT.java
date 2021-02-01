@@ -37,7 +37,7 @@ public class ReportGeneratorUT extends BaseTestCaseUT {
     @Value("${etl.report.directory}")
     private String reportDirectory;
 
-    @Value("${etl.dump.report.directory}")
+    @Value("${etl.data.dump.report.directory}")
     private String dataDumpReportDirectory;
 
     @InjectMocks

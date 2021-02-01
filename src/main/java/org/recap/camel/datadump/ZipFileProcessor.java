@@ -39,7 +39,7 @@ public class ZipFileProcessor implements Processor {
     @Value("${s3.data.dump.dir}")
     String s3DataDumpRemoteServer;
 
-    @Value("${etl.dump.staging.directory}")
+    @Value("${etl.data.dump.ftp.staging.directory}")
     private String s3StagingDir;
 
     /**
