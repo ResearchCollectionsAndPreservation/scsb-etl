@@ -31,56 +31,58 @@ public class DataExportReportFtpRouteBuilder {
      * @param s3DumpWithReportRemoteServer the ftp dump with report remote server
      */
     @Autowired
-    public DataExportReportFtpRouteBuilder(CamelContext context, @Value("${s3.datadump.report.remote.server}") String s3OnlyReportRemoteServer,
+    public DataExportReportFtpRouteBuilder(CamelContext context, @Value("${s3.add.s3.routes.on.startup}") boolean addS3RoutesOnStartup, @Value("${s3.datadump.report.remote.server}") String s3OnlyReportRemoteServer,
                                            @Value("${s3.data.dump.dir}") String s3DumpWithReportRemoteServer) {
         try {
-            context.addRoutes(new RouteBuilder() {
-                @Override
-                public void configure() throws Exception {
-                    from(RecapConstants.DATADUMP_SUCCESS_REPORT_FTP_Q)
-                            .routeId(RecapConstants.DATADUMP_SUCCESS_REPORT_FTP_ROUTE_ID)
-                            .process(new FileNameProcessorForDataDumpSuccess())
-                            .marshal().bindy(BindyType.Csv, DataDumpSuccessReport.class)
-                            .setHeader(S3Constants.KEY, simple(s3OnlyReportRemoteServer + "${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
-                            .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
-                }
-            });
+            if (addS3RoutesOnStartup) {
+                context.addRoutes(new RouteBuilder() {
+                    @Override
+                    public void configure() throws Exception {
+                        from(RecapConstants.DATADUMP_SUCCESS_REPORT_FTP_Q)
+                                .routeId(RecapConstants.DATADUMP_SUCCESS_REPORT_FTP_ROUTE_ID)
+                                .process(new FileNameProcessorForDataDumpSuccess())
+                                .marshal().bindy(BindyType.Csv, DataDumpSuccessReport.class)
+                                .setHeader(S3Constants.KEY, simple(s3OnlyReportRemoteServer + "${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
+                                .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
+                    }
+                });
 
-            context.addRoutes(new RouteBuilder() {
-                @Override
-                public void configure() throws Exception {
-                    from(RecapConstants.DATADUMP_FAILURE_REPORT_FTP_Q)
-                            .routeId(RecapConstants.DATADUMP_FAILURE_REPORT_FTP_ROUTE_ID)
-                            .process(new FileNameProcessorForDataDumpFailure())
-                            .marshal().bindy(BindyType.Csv, DataDumpFailureReport.class)
-                            .setHeader(S3Constants.KEY, simple(s3OnlyReportRemoteServer + "${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
-                            .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
-                }
-            });
+                context.addRoutes(new RouteBuilder() {
+                    @Override
+                    public void configure() throws Exception {
+                        from(RecapConstants.DATADUMP_FAILURE_REPORT_FTP_Q)
+                                .routeId(RecapConstants.DATADUMP_FAILURE_REPORT_FTP_ROUTE_ID)
+                                .process(new FileNameProcessorForDataDumpFailure())
+                                .marshal().bindy(BindyType.Csv, DataDumpFailureReport.class)
+                                .setHeader(S3Constants.KEY, simple(s3OnlyReportRemoteServer + "${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
+                                .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
+                    }
+                });
 
-            context.addRoutes(new RouteBuilder() {
-                @Override
-                public void configure() throws Exception {
-                    from(RecapConstants.DATAEXPORT_WITH_SUCCESS_REPORT_FTP_Q)
-                            .routeId(RecapConstants.DATAEXPORT_WITH_SUCCESS_REPORT_FTP_ROUTE_ID)
-                            .process(new FileNameProcessorForDataDumpSuccess())
-                            .marshal().bindy(BindyType.Csv, DataDumpSuccessReport.class)
-                            .setHeader(S3Constants.KEY, simple(s3DumpWithReportRemoteServer + "${in.header.fileName}.csv"))
-                            .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
-                }
-            });
+                context.addRoutes(new RouteBuilder() {
+                    @Override
+                    public void configure() throws Exception {
+                        from(RecapConstants.DATAEXPORT_WITH_SUCCESS_REPORT_FTP_Q)
+                                .routeId(RecapConstants.DATAEXPORT_WITH_SUCCESS_REPORT_FTP_ROUTE_ID)
+                                .process(new FileNameProcessorForDataDumpSuccess())
+                                .marshal().bindy(BindyType.Csv, DataDumpSuccessReport.class)
+                                .setHeader(S3Constants.KEY, simple(s3DumpWithReportRemoteServer + "${in.header.fileName}.csv"))
+                                .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
+                    }
+                });
 
-            context.addRoutes(new RouteBuilder() {
-                @Override
-                public void configure() throws Exception {
-                    from(RecapConstants.DATAEXPORT_WITH_FAILURE_REPORT_FTP_Q)
-                            .routeId(RecapConstants.DATAEXPORT_WITH_FAILURE_REPORT_FTP_ROUTE_ID)
-                            .process(new FileNameProcessorForDataDumpFailure())
-                            .marshal().bindy(BindyType.Csv, DataDumpFailureReport.class)
-                            .setHeader(S3Constants.KEY, simple(s3DumpWithReportRemoteServer + "${in.header.fileName}.csv"))
-                            .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
-                }
-            });
+                context.addRoutes(new RouteBuilder() {
+                    @Override
+                    public void configure() throws Exception {
+                        from(RecapConstants.DATAEXPORT_WITH_FAILURE_REPORT_FTP_Q)
+                                .routeId(RecapConstants.DATAEXPORT_WITH_FAILURE_REPORT_FTP_ROUTE_ID)
+                                .process(new FileNameProcessorForDataDumpFailure())
+                                .marshal().bindy(BindyType.Csv, DataDumpFailureReport.class)
+                                .setHeader(S3Constants.KEY, simple(s3DumpWithReportRemoteServer + "${in.header.fileName}.csv"))
+                                .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
+                    }
+                });
+            }
         } catch (Exception e) {
             logger.error(RecapConstants.ERROR, e);
         }

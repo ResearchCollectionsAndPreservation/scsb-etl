@@ -26,19 +26,21 @@ public class S3SuccessReportRouteBuilder {
      * @param s3EtlReportsDir the s3 etl remote server
      */
     @Autowired
-    public S3SuccessReportRouteBuilder(CamelContext context, @Value("${s3.etl.reports.dir}") String s3EtlReportsDir) {
+    public S3SuccessReportRouteBuilder(CamelContext context, @Value("${s3.add.s3.routes.on.startup}") boolean addS3RoutesOnStartup, @Value("${s3.etl.reports.dir}") String s3EtlReportsDir) {
         try {
-            context.addRoutes(new RouteBuilder() {
-                @Override
-                public void configure() throws Exception {
-                    from(RecapConstants.FTP_SUCCESS_Q)
-                            .routeId(RecapConstants.FTP_FAILURE_ROUTE_ID)
-                            .process(new FileNameProcessorForSuccessRecord())
-                            .marshal().bindy(BindyType.Csv, ReCAPCSVSuccessRecord.class)
-                            .setHeader(S3Constants.KEY, simple(s3EtlReportsDir+"${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
-                            .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
-                }
-            });
+            if (addS3RoutesOnStartup) {
+                context.addRoutes(new RouteBuilder() {
+                    @Override
+                    public void configure() throws Exception {
+                        from(RecapConstants.FTP_SUCCESS_Q)
+                                .routeId(RecapConstants.FTP_FAILURE_ROUTE_ID)
+                                .process(new FileNameProcessorForSuccessRecord())
+                                .marshal().bindy(BindyType.Csv, ReCAPCSVSuccessRecord.class)
+                                .setHeader(S3Constants.KEY, simple(s3EtlReportsDir + "${in.header.directoryName}/${in.header.fileName}-${in.header.reportType}-${date:now:ddMMMyyyy}.csv"))
+                                .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
+                    }
+                });
+            }
         } catch (Exception e) {
             logger.error(RecapConstants.ERROR,e);
         }

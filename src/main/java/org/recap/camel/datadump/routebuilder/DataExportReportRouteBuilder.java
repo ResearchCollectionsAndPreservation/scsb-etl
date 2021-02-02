@@ -32,45 +32,47 @@ public class DataExportReportRouteBuilder {
      * @param camelContext the camel context
      */
     @Autowired
-    private DataExportReportRouteBuilder(@Value("${etl.export.s3.failurereport.directory}") String s3FailureReportDirectory, CamelContext camelContext) {
+    private DataExportReportRouteBuilder(@Value("${s3.add.s3.routes.on.startup}") boolean addS3RoutesOnStartup, @Value("${etl.export.s3.failurereport.directory}") String s3FailureReportDirectory, CamelContext camelContext) {
         try {
-            camelContext.addRoutes(new RouteBuilder() {
-                @Override
-                public void configure() throws Exception {
-                    from(RecapConstants.DATADUMP_SUCCESS_REPORT_Q)
-                            .routeId(RecapConstants.DATADUMP_SUCCESS_REPORT_ROUTE_ID)
-                            .bean(DataExportReportActiveMQConsumer.class, "saveSuccessReportEntity");
-                }
-            });
+            if (addS3RoutesOnStartup) {
+                camelContext.addRoutes(new RouteBuilder() {
+                    @Override
+                    public void configure() throws Exception {
+                        from(RecapConstants.DATADUMP_SUCCESS_REPORT_Q)
+                                .routeId(RecapConstants.DATADUMP_SUCCESS_REPORT_ROUTE_ID)
+                                .bean(DataExportReportActiveMQConsumer.class, "saveSuccessReportEntity");
+                    }
+                });
 
-            camelContext.addRoutes(new RouteBuilder() {
-                @Override
-                public void configure() throws Exception {
-                    from(RecapConstants.DATADUMP_FAILURE_REPORT_Q)
-                            .routeId(RecapConstants.DATADUMP_FAILURE_REPORT_ROUTE_ID)
-                            .bean(DataExportReportActiveMQConsumer.class, "saveFailureReportEntity");
-                }
-            });
+                camelContext.addRoutes(new RouteBuilder() {
+                    @Override
+                    public void configure() throws Exception {
+                        from(RecapConstants.DATADUMP_FAILURE_REPORT_Q)
+                                .routeId(RecapConstants.DATADUMP_FAILURE_REPORT_ROUTE_ID)
+                                .bean(DataExportReportActiveMQConsumer.class, "saveFailureReportEntity");
+                    }
+                });
 
-            camelContext.addRoutes(new RouteBuilder() {
-                @Override
-                public void configure() throws Exception {
-                    from(RecapConstants.DATADUMP_FAILURE_REPORT_SFTP_Q)
-                            .routeId(RecapConstants.DATADUMP_FAILURE_REPORT_SFTP_ID)
-                            .process(new Processor() {
-                                @Override
-                                public void process(Exchange exchange) throws Exception {
-                                    List<DataExportFailureReport> dataExportFailureReportList = (List<DataExportFailureReport>) exchange.getIn().getBody();
-                                    exchange.getIn().setHeader(RecapCommonConstants.REPORT_FILE_NAME, dataExportFailureReportList.get(0).getFilename());
-                                    exchange.getIn().setHeader(RecapConstants.REPORT_TYPE, dataExportFailureReportList.get(0).getReportType());
-                                    exchange.getIn().setHeader(RecapConstants.INST_NAME, dataExportFailureReportList.get(0).getRequestingInstitutionCode());
-                                }
-                            })
-                            .marshal().bindy(BindyType.Csv, DataExportFailureReport.class)
-                            .setHeader(S3Constants.KEY, simple(s3FailureReportDirectory + "${in.header.fileName}.csv"))
-                            .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
-                }
-            });
+                camelContext.addRoutes(new RouteBuilder() {
+                    @Override
+                    public void configure() throws Exception {
+                        from(RecapConstants.DATADUMP_FAILURE_REPORT_SFTP_Q)
+                                .routeId(RecapConstants.DATADUMP_FAILURE_REPORT_SFTP_ID)
+                                .process(new Processor() {
+                                    @Override
+                                    public void process(Exchange exchange) throws Exception {
+                                        List<DataExportFailureReport> dataExportFailureReportList = (List<DataExportFailureReport>) exchange.getIn().getBody();
+                                        exchange.getIn().setHeader(RecapCommonConstants.REPORT_FILE_NAME, dataExportFailureReportList.get(0).getFilename());
+                                        exchange.getIn().setHeader(RecapConstants.REPORT_TYPE, dataExportFailureReportList.get(0).getReportType());
+                                        exchange.getIn().setHeader(RecapConstants.INST_NAME, dataExportFailureReportList.get(0).getRequestingInstitutionCode());
+                                    }
+                                })
+                                .marshal().bindy(BindyType.Csv, DataExportFailureReport.class)
+                                .setHeader(S3Constants.KEY, simple(s3FailureReportDirectory + "${in.header.fileName}.csv"))
+                                .to(RecapConstants.SCSB_CAMEL_S3_TO_ENDPOINT);
+                    }
+                });
+            }
         } catch (Exception e) {
             logger.error(RecapConstants.ERROR, e);
         }
