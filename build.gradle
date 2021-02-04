@@ -37,12 +37,12 @@ apply plugin: 'jacoco'
 
 sonarqube {
     properties {
-        property "systemProp.sonar.host.url", "http://174.129.129.28:9000"
-        property "systemProp.sonar.jdbc.url", "jdbc:mysql://scsb-mysql:3306/sonar"
-        property "systemProp.sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+        property "systemProp.sonar.host.url", ""
+        property "systemProp.sonar.jdbc.url", ""
+        property "systemProp.sonar.jdbc.driverClassName", "r"
         property "sonar.projectName", "scsb-etl"
-        property "systemProp.sonar.jdbc.username", "sonar"
-        property "systemProp.sonar.jdbc.password", "sonar"
+        property "systemProp.sonar.jdbc.username", ""
+        property "systemProp.sonar.jdbc.password", ""
     }
 }
 
