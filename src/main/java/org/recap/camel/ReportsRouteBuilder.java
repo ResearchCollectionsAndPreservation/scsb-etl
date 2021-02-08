@@ -28,7 +28,7 @@ public class ReportsRouteBuilder {
             camelContext.addRoutes(new RouteBuilder() {
                 @Override
                 public void configure() throws Exception {
-                    from(RecapCommonConstants.REPORT_Q)
+                    from(RecapConstants.ETL_SERVICE_REPORT_Q)
                             .routeId(RecapCommonConstants.REPORT_ROUTE_ID)
                             .process(reportProcessor);
                 }
