@@ -1,10 +1,10 @@
-package org.recap.model.jpa;
+package org.recap.model.jparw;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.recap.model.jpa.AbstractEntity;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -67,7 +67,7 @@ public class ETLRequestLogEntity extends AbstractEntity<Integer> {
     @Column(name="EXPORT_STATUS_ID")
     private Integer exportStatusId;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(
             name = "EXPORT_STATUS_ID",
             insertable = false,

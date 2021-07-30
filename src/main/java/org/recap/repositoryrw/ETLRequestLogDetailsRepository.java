@@ -1,6 +1,6 @@
-package org.recap.repository;
+package org.recap.repositoryrw;
 
-import org.recap.model.jpa.ETLRequestLogEntity;
+import org.recap.model.jparw.ETLRequestLogEntity;
 import org.recap.repository.jpa.BaseRepository;
 
 import java.util.List;

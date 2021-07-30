@@ -5,10 +5,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
-import org.recap.model.jpa.ETLRequestLogEntity;
-import org.recap.model.jpa.ExportStatusEntity;
-import org.recap.repository.ETLRequestLogDetailsRepository;
-import org.recap.repository.ExportStatusDetailsRepository;
+import org.recap.model.jparw.ETLRequestLogEntity;
+import org.recap.model.jparw.ExportStatusEntity;
+import org.recap.repositoryrw.ETLRequestLogDetailsRepository;
+import org.recap.repositoryrw.ExportStatusDetailsRepository;
 
 import java.util.Arrays;
 import java.util.Date;

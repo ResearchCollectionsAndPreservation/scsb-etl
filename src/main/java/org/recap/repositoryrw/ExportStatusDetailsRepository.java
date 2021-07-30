@@ -1,6 +1,6 @@
-package org.recap.repository;
+package org.recap.repositoryrw;
 
-import org.recap.model.jpa.ExportStatusEntity;
+import org.recap.model.jparw.ExportStatusEntity;
 import org.recap.repository.jpa.BaseRepository;
 
 public interface ExportStatusDetailsRepository extends BaseRepository<ExportStatusEntity> {

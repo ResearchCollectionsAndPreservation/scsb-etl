@@ -2,6 +2,7 @@ package org.recap.model.jpa;
 
 import org.junit.Test;
 import org.recap.BaseTestCaseUT;
+import org.recap.model.jparw.ExportStatusEntity;
 
 import static org.junit.Assert.assertNotNull;
 

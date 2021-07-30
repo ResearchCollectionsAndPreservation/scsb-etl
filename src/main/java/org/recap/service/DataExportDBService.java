@@ -1,9 +1,9 @@
 package org.recap.service;
 
-import org.recap.model.jpa.ETLRequestLogEntity;
-import org.recap.model.jpa.ExportStatusEntity;
-import org.recap.repository.ETLRequestLogDetailsRepository;
-import org.recap.repository.ExportStatusDetailsRepository;
+import org.recap.model.jparw.ETLRequestLogEntity;
+import org.recap.model.jparw.ExportStatusEntity;
+import org.recap.repositoryrw.ETLRequestLogDetailsRepository;
+import org.recap.repositoryrw.ExportStatusDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

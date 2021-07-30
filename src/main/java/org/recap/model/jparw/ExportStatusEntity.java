@@ -1,7 +1,8 @@
-package org.recap.model.jpa;
+package org.recap.model.jparw;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.recap.model.jpa.AbstractEntity;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;

@@ -8,8 +8,8 @@ import org.recap.BaseTestCaseUT;
 import org.recap.ScsbConstants;
 import org.recap.camel.dynamicrouter.DynamicRouteBuilder;
 import org.recap.model.export.DataDumpRequest;
-import org.recap.model.jpa.ETLRequestLogEntity;
-import org.recap.model.jpa.ExportStatusEntity;
+import org.recap.model.jparw.ETLRequestLogEntity;
+import org.recap.model.jparw.ExportStatusEntity;
 import org.recap.service.preprocessor.DataDumpExportService;
 import org.recap.util.datadump.DataDumpUtil;
 
