@@ -202,8 +202,8 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
     private void add901Field(Record record, BibliographicEntity bibliographicEntity){
         DataField dataField = getFactory().newDataField(ScsbConstants.MarcFields.DF_901, ' ', ' ');
         dataField.addSubfield(getFactory().newSubfield('a', bibliographicEntity.getMatchingIdentity() != null ? bibliographicEntity.getMatchingIdentity() : ""));
-        dataField.addSubfield(getFactory().newSubfield('b', bibliographicEntity.getMatchScore() != null ? String.valueOf(bibliographicEntity.getMatchScore()) : ""));
-        dataField.addSubfield(getFactory().newSubfield('c', bibliographicEntity.getMatchingIdentity() != null ? String.valueOf(bibliographicEntity.getAnamolyFlag()) : ""));
+        dataField.addSubfield(getFactory().newSubfield('b', bibliographicEntity.getMatchingIdentity() != null ? String.valueOf(bibliographicEntity.getMatchScore()) : ""));
+        dataField.addSubfield(getFactory().newSubfield('c', bibliographicEntity.getMatchingIdentity() != null ? String.valueOf(bibliographicEntity.isAnamolyFlag()) : ""));
         record.addVariableField(dataField);
     }
 

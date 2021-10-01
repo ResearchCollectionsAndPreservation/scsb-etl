@@ -244,9 +244,7 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
         RecordType recordType = record.get(0);
         String value = ScsbConstants.SCSB+"-"+bibliographicEntity.getId();
         recordType.getControlfield().get(0).setValue(value);
-        if(bibliographicEntity.getMatchingIdentity() != null) {
-            recordType.getDatafield().add(add901Field(record, bibliographicEntity));
-        }
+        recordType.getDatafield().add(add901Field(record, bibliographicEntity));
         bib.setContent(contentType);
         return bib;
     }
@@ -423,8 +421,8 @@ public class SCSBXmlFormatterService implements DataDumpFormatterInterface {
         dataFieldType.setInd1(" ");
         dataFieldType.setInd2(" ");
         subfieldatafieldTypes.add(getSubfieldatafieldType("a", bibliographicEntity.getMatchingIdentity() != null ? bibliographicEntity.getMatchingIdentity() : ""));
-        subfieldatafieldTypes.add(getSubfieldatafieldType("b", bibliographicEntity.getMatchScore() != null ? String.valueOf(bibliographicEntity.getMatchScore()) : ""));
-        subfieldatafieldTypes.add(getSubfieldatafieldType("c", bibliographicEntity.getMatchingIdentity() != null ? String.valueOf(bibliographicEntity.getAnamolyFlag()) : ""));
+        subfieldatafieldTypes.add(getSubfieldatafieldType("b", bibliographicEntity.getMatchingIdentity() != null ? String.valueOf(bibliographicEntity.getMatchScore()) : ""));
+        subfieldatafieldTypes.add(getSubfieldatafieldType("c", bibliographicEntity.getMatchingIdentity() != null ? String.valueOf(bibliographicEntity.isAnamolyFlag()) : ""));
         dataFieldType.setSubfield(subfieldatafieldTypes);
         return dataFieldType;
     }
