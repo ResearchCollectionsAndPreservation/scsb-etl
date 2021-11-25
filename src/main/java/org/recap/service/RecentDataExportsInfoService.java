@@ -97,8 +97,10 @@ public class RecentDataExportsInfoService {
     private Map<String, String> mapResult(String[] headers,
                                           String[] records) {
         Map<String, String> result = new HashMap<>();
-        for (int i = 0; i < headers.length; i++) {
-            result.put(headers[i], records[i]);
+        if(headers != null && headers.length > 0) {
+            for (int i = 0; i < headers.length; i++) {
+                result.put(headers[i], records[i]);
+            }
         }
         return result;
     }

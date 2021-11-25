@@ -101,7 +101,9 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
             update001Field(record, bibliographicEntity);
             stripTagsFromBib(record,Arrays.asList(ScsbConstants.MarcFields.DF_852, ScsbConstants.MarcFields.DF_876));
             add009Field(record, bibliographicEntity);
-            add901Field(record, bibliographicEntity);
+            if(bibliographicEntity.getMatchingIdentity() != null) {
+                add901Field(record, bibliographicEntity);
+            }
             List<Integer> itemIds = getItemIds(bibliographicEntity);
             record = addHoldingInfo(record, bibliographicEntity.getHoldingsEntities(),itemIds,getNonOrphanHoldingsIdList(bibliographicEntity.getItemEntities()));
             results.put(ScsbCommonConstants.SUCCESS, record);
