@@ -65,7 +65,7 @@ repositories {
 
 
 dependencies {
-    compile fileTree(dir: '/data/commonjar', include: '*1.8.jar')
+    compile fileTree(dir: '/data/commonjar', include: '*2.1.jar')
     implementation('org.apache.camel.springboot:camel-spring-boot-starter:3.2.0')
     implementation('org.apache.camel.springboot:camel-spring-boot-dependencies:3.2.0')
     implementation('org.apache.camel:camel-activemq:3.2.0')
@@ -125,6 +125,14 @@ dependencies {
     testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.7'
     testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.7'
     compile group: 'javax.validation', name: 'validation-api', version: '2.0.0.Final'
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group == 'org.apache.logging.log4j') {
+            details.useVersion '2.16.0'
+        }
+    }
 }
 
 dependencyManagement {

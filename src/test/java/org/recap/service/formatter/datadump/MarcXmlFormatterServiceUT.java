@@ -313,10 +313,10 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         List<Record> recordList = readMarcXml(marcXmlString);
         assertNotNull(recordList);
         assertEquals("SCSB-100", recordList.get(0).getControlFields().get(0).getData());
-        assertEquals("0", String.valueOf(recordList.get(0).getDataFields().get(19).getSubfields().get(1).getCode()));
-        assertEquals("345", recordList.get(0).getDataFields().get(19).getSubfields().get(1).getData());
-        assertEquals("a", String.valueOf(recordList.get(0).getDataFields().get(19).getSubfields().get(0).getCode()));
-        assertEquals("v.1-v.5", recordList.get(0).getDataFields().get(19).getSubfields().get(0).getData());
+        assertEquals("3", String.valueOf(recordList.get(0).getDataFields().get(19).getSubfields().get(1).getCode()));
+        assertEquals("v. 30-31 1980-81", recordList.get(0).getDataFields().get(19).getSubfields().get(1).getData());
+        assertEquals("0", String.valueOf(recordList.get(0).getDataFields().get(19).getSubfields().get(0).getCode()));
+        assertEquals("345", recordList.get(0).getDataFields().get(19).getSubfields().get(0).getData()); assertEquals("SCSB-100", recordList.get(0).getControlFields().get(0).getData());
     }
 
 
@@ -328,10 +328,11 @@ public class MarcXmlFormatterServiceUT extends BaseTestCaseUT {
         List<Record> recordList = readMarcXml(marcXmlString);
         assertNotNull(recordList);
         assertEquals("SCSB-100", recordList.get(0).getControlFields().get(0).getData());
-        assertEquals("0", String.valueOf(recordList.get(0).getDataFields().get(19).getSubfields().get(1).getCode()));
-        assertEquals("345", recordList.get(0).getDataFields().get(19).getSubfields().get(1).getData());
-        assertEquals("a", String.valueOf(recordList.get(0).getDataFields().get(19).getSubfields().get(0).getCode()));
-        assertEquals("v.1-v.5", recordList.get(0).getDataFields().get(19).getSubfields().get(0).getData());
+        assertEquals("3", String.valueOf(recordList.get(0).getDataFields().get(19).getSubfields().get(1).getCode()));
+        assertEquals("v. 30-31 1980-81", recordList.get(0).getDataFields().get(19).getSubfields().get(1).getData());
+        assertEquals("0", String.valueOf(recordList.get(0).getDataFields().get(19).getSubfields().get(0).getCode()));
+        assertEquals("345", recordList.get(0).getDataFields().get(19).getSubfields().get(0).getData()); assertEquals("SCSB-100", recordList.get(0).getControlFields().get(0).getData());
+
     }
 
     private ILSConfigProperties getIlsConfigProperties() {
