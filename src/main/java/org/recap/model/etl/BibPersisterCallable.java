@@ -60,6 +60,7 @@ public class BibPersisterCallable implements Callable {
 
     private DBReportUtil dbReportUtil;
     private ImsLocationDetailsRepository imsLocationDetailsRepository;
+    private Boolean itemLibraryRequired;
 
     @Override
     public Object call() {
@@ -294,9 +295,11 @@ public class BibPersisterCallable implements Callable {
             itemEntity.setItemLibrary(itemLibrary);
         }
 
+
         String imsLocationCode = null;
         imsLocationCode =  getMarcUtil().getDataFieldValue(itemRecordType, "876", null, null, "l");
-        if(imsLocationCode != null && imsLocationCode.trim().length()>0) {
+        if(imsLocationCode != null && imsLocationCode.trim().length()>0 &&
+                (!getItemLibraryRequired() || getItemLibraryRequired() && itemEntity.getItemLibrary() != null)) {
             itemEntity.setCatalogingStatus(ScsbCommonConstants.COMPLETE_STATUS);
         }
         else {

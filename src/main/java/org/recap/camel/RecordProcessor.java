@@ -24,6 +24,7 @@ import org.recap.repository.InstitutionDetailsRepository;
 import org.recap.repository.ItemStatusDetailsRepository;
 import org.recap.util.DBReportUtil;
 import org.recap.util.MarcUtil;
+import org.recap.util.PropertyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
@@ -97,6 +99,9 @@ public class RecordProcessor {
 
     @Autowired
     private MarcUtil marcUtil;
+
+    @Autowired
+    private PropertyUtil propertyUtil;
 
     @Value("${" + PropertyKeyConstants.ETL_INITIAL_DATA_LOAD_THREAD_SIZE + "}")
     private Integer dataLoadThreadSize;
@@ -182,6 +187,9 @@ public class RecordProcessor {
         BibRecord bibRecord;
 
         List<Callable<Map<String, String>>> callables = new ArrayList<>();
+        Boolean itemLibraryRequired = false;
+        Map<String, String> itemLibraryPropertyMap = propertyUtil.getPropertyByKeyForAllInstitutions(PropertyKeyConstants.ILS.ILS_ITEM_LIBRARY_REQUIRED);
+        itemLibraryRequired = Boolean.parseBoolean(itemLibraryPropertyMap.get(institutionName));
 
         for (Iterator<XmlRecordEntity> iterator = xmlRecordEntities.iterator(); iterator.hasNext(); ) {
             XmlRecordEntity xmlRecordEntity = iterator.next();
@@ -189,6 +197,8 @@ public class RecordProcessor {
             try {
                 JAXBContext context = JAXBContext.newInstance(BibRecord.class);
                 XMLInputFactory xif = XMLInputFactory.newFactory();
+                xif.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                xif.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
                 xif.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
                 InputStream stream = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
                 XMLStreamReader xsr = xif.createXMLStreamReader(stream);
@@ -206,6 +216,7 @@ public class RecordProcessor {
                     bibPersisterCallable.setXmlRecordEntity(xmlRecordEntity);
                     bibPersisterCallable.setInstitutionName(institutionName);
                     bibPersisterCallable.setMarcUtil(marcUtil);
+                    bibPersisterCallable.setItemLibraryRequired(itemLibraryRequired);
                     callables.add(bibPersisterCallable);
                 } else {
                     ReportEntity reportEntityForFailure = getReportEntityForFailure(xmlRecordEntity, "Holding content missing");
