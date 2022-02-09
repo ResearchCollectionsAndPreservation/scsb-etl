@@ -214,7 +214,7 @@ public class BibPersisterCallableUT extends BaseTestCaseUT {
         ReflectionTestUtils.setField(bibPersisterCallable,"marcUtil",marcUtil);
         Mockito.when(marcUtil.getDataFieldValue(recordType, "900", null, null, "a")).thenReturn("Open");
         Mockito.when(marcUtil.getDataFieldValue(recordType, "876", null, null, "p")).thenReturn("123456");
-        Mockito.when(marcUtil.getDataFieldValue(recordType, "876", null, null, "l")).thenReturn("RECAP");
+        Mockito.when(marcUtil.getDataFieldValue(recordType, "876", null, null, "k")).thenReturn("RECAP");
         Mockito.when(marcUtil.getDataFieldValue(recordType, "876", null, null, "t")).thenReturn("4745");
         Mockito.when(marcUtil.getDataFieldValue(recordType, "876", null, null, "a")).thenReturn("9");
         Mockito.when(marcUtil.getDataFieldValue(recordType, "876", null, null, "h")).thenReturn("In Library Use");
