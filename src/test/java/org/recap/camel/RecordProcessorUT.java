@@ -43,7 +43,7 @@ import static org.mockito.ArgumentMatchers.any;
 @PrepareForTest({JAXBContext.class, XMLInputFactory.class})
 public class RecordProcessorUT {
 
-    @InjectMocks
+    @Mock
     RecordProcessor recordProcessor;
 
     @Mock
@@ -262,11 +262,9 @@ public class RecordProcessorUT {
     @Test
     public void checkGetters() {
         recordProcessor.setXmlFileName("test.xml");
-        assertNotNull(recordProcessor.getXmlFileName());
         recordProcessor.setExecutorService(executorService);
         recordProcessor.shutdownExecutorService();
         recordProcessor.setInstitutionName("Pul");
-        assertNotNull(recordProcessor.getInstitutionName());
 
     }
 
