@@ -65,7 +65,7 @@ repositories {
 
 
 dependencies {
-    implementation fileTree(dir: '/data/commonjar', include: '*2.1.jar')
+    implementation fileTree(dir: '/data/commonjar', include: '*2.2.jar')
     implementation('org.apache.camel.springboot:camel-spring-boot-starter:3.14.0')
     implementation('org.apache.camel.springboot:camel-spring-boot-dependencies:3.14.0')
     implementation('org.apache.camel:camel-activemq:3.14.0')
