@@ -118,15 +118,16 @@ public class SCSBRecordFormatActiveMQConsumer extends CommonReportGenerator {
 
         log.info("Time taken to prepare {} scsb records : {} seconds " , bibliographicEntities.size() , (endTime - startTime) / 1000 );
 
-
-        fluentProducerTemplate
-                .to(ScsbConstants.SCSB_RECORD_FOR_DATA_EXPORT_Q)
-                .withBody(records)
-                .withHeader(ScsbConstants.BATCH_HEADERS, exchange.getIn().getHeader(ScsbConstants.BATCH_HEADERS))
-                .withHeader("exportFormat", exchange.getIn().getHeader("exportFormat"))
-                .withHeader("transmissionType", exchange.getIn().getHeader("transmissionType"))
-                .withHeader(ScsbConstants.ITEM_EXPORTED_COUNT,itemExportedCount);
-        fluentProducerTemplate.send();
+        if(!records.isEmpty()) {
+            fluentProducerTemplate
+                    .to(ScsbConstants.SCSB_RECORD_FOR_DATA_EXPORT_Q)
+                    .withBody(records)
+                    .withHeader(ScsbConstants.BATCH_HEADERS, exchange.getIn().getHeader(ScsbConstants.BATCH_HEADERS))
+                    .withHeader("exportFormat", exchange.getIn().getHeader(ScsbConstants.EXPORT_FORMAT))
+                    .withHeader("transmissionType", exchange.getIn().getHeader(ScsbConstants.TRANSMISSION_TYPE))
+                    .withHeader(ScsbConstants.ITEM_EXPORTED_COUNT, itemExportedCount);
+            fluentProducerTemplate.send();
+        }
    }
 
     private Future<Map<String, Object>> getMapFuture(Future<Map<String, Object>> future) {
