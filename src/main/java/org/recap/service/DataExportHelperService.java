@@ -30,6 +30,10 @@ public class DataExportHelperService {
             saveRequestToDB(dataDumpRequest, ScsbConstants.AWAITING);
             return ScsbConstants.EXPORT_MESSAGE;
         }
+        else if (checkIfAnyExportIsInitiated()) {
+            saveRequestToDB(dataDumpRequest, ScsbConstants.AWAITING);
+            return ScsbConstants.EXPORT_MESSAGE;
+        }
         else if(checkIfAnyExportIsAwaiting()){
             saveRequestToDB(dataDumpRequest, ScsbConstants.AWAITING);
             dynamicRouteBuilder.addDataDumpExportRoutes();
@@ -57,6 +61,12 @@ public class DataExportHelperService {
 
     public boolean checkIfAnyExportIsAwaiting() {
         ExportStatusEntity exportStatusEntity = dataExportDBService.findByExportStatusCode(ScsbConstants.AWAITING);
+        List<ETLRequestLogEntity> allStatusOrderByRequestedTime = dataExportDBService.findAllStatusById(exportStatusEntity.getId());
+        return !allStatusOrderByRequestedTime.isEmpty();
+    }
+
+    public boolean checkIfAnyExportIsInitiated() {
+        ExportStatusEntity exportStatusEntity = dataExportDBService.findByExportStatusCode(ScsbConstants.INITIATED);
         List<ETLRequestLogEntity> allStatusOrderByRequestedTime = dataExportDBService.findAllStatusById(exportStatusEntity.getId());
         return !allStatusOrderByRequestedTime.isEmpty();
     }
