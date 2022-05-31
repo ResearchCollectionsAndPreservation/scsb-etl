@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.recap.ScsbConstants;
+import org.recap.controller.DataExportTriggerController;
 import org.recap.model.export.DataDumpRequest;
 import org.recap.service.DataExportHelperService;
 import org.recap.service.DataExportValidateService;
@@ -30,6 +31,8 @@ public class DataDumpRestController {
     @Autowired private DataExportValidateService dataExportValidateService;
     @Autowired DataExportHelperService dataExportHelperService;
     @Autowired DataDumpUtil dataDumpUtil;
+    @Autowired
+    private DataExportTriggerController demoServicePropertiesExample;
 
 
     /**
@@ -71,8 +74,16 @@ public class DataDumpRestController {
         if(responseMessage !=null) {
             return responseMessage;
         }
-        return dataExportHelperService.checkForExistingRequestAndStart(dataDumpRequest);
+        return dataExportHelperService.checkForExistingRequestAndStart(dataDumpRequest,false);
     }
 
-
+    @GetMapping(value="/exportDataDumpTriggerManually")
+    @ApiOperation(value = "exportDataDumpTriggerManually",
+            notes = "Export datadumps to institutions", nickname = "exportDataDumpTriggerManually", position = 2)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = ScsbConstants.DATADUMP_PROCESS_STARTED)})
+    @ResponseBody
+    public String exportDataDumpTrigger(){
+        demoServicePropertiesExample.dataExportTrigger();
+        return "It will validate and if any request is waiting will start process and will send an email notification upon completion";
+    }
 }

@@ -120,7 +120,7 @@ public class DataDumpRestControllerUT extends BaseTestCaseUT {
         Mockito.doNothing().when(dataDumpUtil).setDataDumpRequest(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),any());
         Mockito.when(mockedDataDumpExportService.startDataDumpProcess(Mockito.any())).thenReturn(process);
         Mockito.when(dataExportValidateService.validateIncomingRequest(Mockito.any())).thenReturn(request);
-        Mockito.when(dataExportHelperService.checkForExistingRequestAndStart(any())).thenReturn("");
+        Mockito.when(dataExportHelperService.checkForExistingRequestAndStart(any(),any())).thenReturn("");
         String response = mockedDataDumpRestController.exportDataDump(institutionCodes, requestingInstitutionCode, fetchType, outputFormat, date, toDate, collectionGroupIds, transmissionType, emailToAddress, imsDepositoryCodes, userName);
         assertNotNull(response);
     }

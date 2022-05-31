@@ -126,24 +126,33 @@ public class DataDumpEmailService {
     public void sendEmailNotification(DataDumpRequest dataDumpRequest) {
         Boolean isIncrementalSequence = Optional.ofNullable(dataDumpRequest.isIncrementalSequence()).orElse(false);
         if(!isIncrementalSequence) {
-            String fetchType = dataDumpUtil.getFetchType(dataDumpRequest.getFetchType());
-            String outputformat = dataDumpUtil.getOutputformat(dataDumpRequest.getOutputFileFormat());
-            String transmissionType = dataDumpUtil.getTransmissionType(dataDumpRequest.getTransmissionType());
-            EmailPayLoad emailPayLoad = new EmailPayLoad();
+            sendEmailNotificationForExport(dataDumpRequest, false);
+        }
+    }
+
+    public void sendEmailNotificationForExport(DataDumpRequest dataDumpRequest, Boolean isExportJob){
+        String fetchType = dataDumpUtil.getFetchType(dataDumpRequest.getFetchType());
+        String outputformat = dataDumpUtil.getOutputformat(dataDumpRequest.getOutputFileFormat());
+        String transmissionType = dataDumpUtil.getTransmissionType(dataDumpRequest.getTransmissionType());
+        EmailPayLoad emailPayLoad = new EmailPayLoad();
+        if(isExportJob){
+            emailPayLoad.setSubject("Data Dump Export Triggered with JOB");
+            emailPayLoad.setTo(propertyUtil.getILSConfigProperties(dataDumpRequest.getRequestingInstitutionCode()).getEmailDataDumpTo());
+        } else {
+            emailPayLoad.setSubject("Notification : Initiated data-dump for Fetch type:" + fetchType);
             emailPayLoad.setTo(dataDumpRequest.getToEmailAddress());
             emailPayLoad.setCc(dataDumpNotificationCC);
-            emailPayLoad.setSubject("Notification : Initiated data-dump for Fetch type:" + fetchType);
-            emailPayLoad.setInstitutionsRequested(dataDumpRequest.getInstitutionCodes());
-            emailPayLoad.setRequestingInstitution(dataDumpRequest.getRequestingInstitutionCode());
-            emailPayLoad.setFetchType(fetchType);
-            emailPayLoad.setCollectionGroupIds(dataDumpRequest.getCollectionGroupIds());
-            emailPayLoad.setCollectionGroupCodes(dataDumpUtil.getCollectionGroupCodes(dataDumpRequest.getCollectionGroupIds()));
-            emailPayLoad.setTransmissionType(transmissionType);
-            emailPayLoad.setOutputFileFormat(outputformat);
-            emailPayLoad.setImsDepositoryCodes(dataDumpRequest.getImsDepositoryCodes());
-            emailPayLoad.setMessage(!transmissionType.equalsIgnoreCase("HTTP")?"Will send further notification upon completion.":"");
-            producer.sendBodyAndHeader(ScsbConstants.EMAIL_Q, emailPayLoad, ScsbConstants.DATADUMP_EMAILBODY_FOR, ScsbConstants.DATADUMP_EXPORT_NOTIFICATION);
         }
+        emailPayLoad.setInstitutionsRequested(dataDumpRequest.getInstitutionCodes());
+        emailPayLoad.setRequestingInstitution(dataDumpRequest.getRequestingInstitutionCode());
+        emailPayLoad.setFetchType(fetchType);
+        emailPayLoad.setCollectionGroupIds(dataDumpRequest.getCollectionGroupIds());
+        emailPayLoad.setCollectionGroupCodes(dataDumpUtil.getCollectionGroupCodes(dataDumpRequest.getCollectionGroupIds()));
+        emailPayLoad.setTransmissionType(transmissionType);
+        emailPayLoad.setOutputFileFormat(outputformat);
+        emailPayLoad.setImsDepositoryCodes(dataDumpRequest.getImsDepositoryCodes());
+        emailPayLoad.setMessage(!transmissionType.equalsIgnoreCase("HTTP")?"Will send further notification upon completion.":"");
+        producer.sendBodyAndHeader(ScsbConstants.EMAIL_Q, emailPayLoad, ScsbConstants.DATADUMP_EMAILBODY_FOR, ScsbConstants.DATADUMP_EXPORT_NOTIFICATION);
     }
 }
 

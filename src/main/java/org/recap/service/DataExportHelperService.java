@@ -25,25 +25,27 @@ public class DataExportHelperService {
     @Autowired private DataExportDBService dataExportDBService;
     @Autowired private DataDumpExportService dataDumpExportService;
 
-    public String checkForExistingRequestAndStart(DataDumpRequest dataDumpRequest) {
-        if (checkIfAnyExportIsInProgress()) {
-            saveRequestToDB(dataDumpRequest, ScsbConstants.AWAITING);
-            return ScsbConstants.EXPORT_MESSAGE;
-        }
-        else if (checkIfAnyExportIsInitiated()) {
-            saveRequestToDB(dataDumpRequest, ScsbConstants.AWAITING);
-            return ScsbConstants.EXPORT_MESSAGE;
-        }
-        else if(checkIfAnyExportIsAwaiting()){
-            saveRequestToDB(dataDumpRequest, ScsbConstants.AWAITING);
-            dynamicRouteBuilder.addDataDumpExportRoutes();
-            dataDumpExportService.startDataDumpProcess(dataDumpUtil.prepareRequestForExistingAwaiting());
-            return ScsbConstants.EXPORT_MESSAGE;
-        }
-        else{
-            saveRequestToDB(dataDumpRequest, ScsbConstants.INITIATED);
+    public String checkForExistingRequestAndStart(DataDumpRequest dataDumpRequest, Boolean isTrigger) {
+        if(isTrigger){
             dynamicRouteBuilder.addDataDumpExportRoutes();
             return dataDumpExportService.startDataDumpProcess(dataDumpRequest);
+        }else {
+            if (checkIfAnyExportIsInProgress()) {
+                saveRequestToDB(dataDumpRequest, ScsbConstants.AWAITING);
+                return ScsbConstants.EXPORT_MESSAGE;
+            } else if (checkIfAnyExportIsInitiated()) {
+                saveRequestToDB(dataDumpRequest, ScsbConstants.AWAITING);
+                return ScsbConstants.EXPORT_MESSAGE;
+            } else if (checkIfAnyExportIsAwaiting()) {
+                saveRequestToDB(dataDumpRequest, ScsbConstants.AWAITING);
+                dynamicRouteBuilder.addDataDumpExportRoutes();
+                dataDumpExportService.startDataDumpProcess(dataDumpUtil.prepareRequestForExistingAwaiting());
+                return ScsbConstants.EXPORT_MESSAGE;
+            } else {
+                saveRequestToDB(dataDumpRequest, ScsbConstants.INITIATED);
+                dynamicRouteBuilder.addDataDumpExportRoutes();
+                return dataDumpExportService.startDataDumpProcess(dataDumpRequest);
+            }
         }
     }
 
@@ -70,5 +72,4 @@ public class DataExportHelperService {
         List<ETLRequestLogEntity> allStatusOrderByRequestedTime = dataExportDBService.findAllStatusById(exportStatusEntity.getId());
         return !allStatusOrderByRequestedTime.isEmpty();
     }
-
 }
