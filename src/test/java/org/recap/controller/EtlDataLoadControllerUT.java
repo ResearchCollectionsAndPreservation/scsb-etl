@@ -1,6 +1,7 @@
 package org.recap.controller;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.ProducerTemplate;
 import org.apache.commons.compress.utils.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,30 +11,34 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCaseUT;
 import org.recap.ScsbCommonConstants;
+import org.recap.camel.EtlDataLoadProcessor;
 import org.recap.camel.RecordProcessor;
 import org.recap.model.etl.EtlLoadRequest;
 import org.recap.model.jparw.ReportDataEntity;
 import org.recap.model.jparw.ReportEntity;
 import org.recap.report.ReportGenerator;
 import org.recap.repository.BibliographicDetailsRepository;
+import org.recap.repository.HoldingsDetailsRepository;
+import org.recap.repository.ItemDetailsRepository;
 import org.recap.repository.XmlRecordRepository;
 import org.recap.repositoryrw.ReportDetailRepository;
 import org.recap.util.CommonUtil;
+import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.beans.PropertyEditor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -69,6 +74,14 @@ public class EtlDataLoadControllerUT extends BaseTestCaseUT{
     private CommonUtil commonUtil;
     @Value("${etl.report.directory}")
     private String reportDirectory;
+
+    @Mock
+    HoldingsDetailsRepository holdingsDetailsRepository;
+    @Mock
+    ItemDetailsRepository itemDetailsRepository;
+
+    @Mock
+    ProducerTemplate producer;
 
     @Before
     public void setUp() {
@@ -200,4 +213,263 @@ public class EtlDataLoadControllerUT extends BaseTestCaseUT{
         assertNotNull(etlLoadRequest.getDateTo());
     }
 
+    @Test
+    public void bulkIngestTest(){
+        EtlLoadRequest etlLoadRequest = new EtlLoadRequest();
+        etlLoadRequest.setFileName("test");
+        etlLoadRequest.setFile(multipartFile);
+        etlLoadRequest.setUserName("john");
+        etlLoadRequest.setReportFileName("test");
+        etlLoadRequest.setReportType(ScsbCommonConstants.FAILURE);
+        etlLoadRequest.setDateFrom(new Date());
+        etlLoadRequest.setDateTo(new Date());
+        etlLoadRequest.setTransmissionType(ScsbCommonConstants.FILE_SYSTEM);
+        etlLoadRequest.setOwningInstitutionName("NYPL");
+        etlLoadRequest.setReportInstitutionName("NYPL");
+        etlLoadRequest.setOperationType("ETL");
+        etlLoadRequest.setBatchSize(1);
+
+        BindingResult result = new BindingResult() {
+            @Override
+            public Object getTarget() {
+                return null;
+            }
+
+            @Override
+            public Map<String, Object> getModel() {
+                return null;
+            }
+
+            @Override
+            public Object getRawFieldValue(String field) {
+                return null;
+            }
+
+            @Override
+            public PropertyEditor findEditor(String field, Class<?> valueType) {
+                return null;
+            }
+
+            @Override
+            public PropertyEditorRegistry getPropertyEditorRegistry() {
+                return null;
+            }
+
+            @Override
+            public String[] resolveMessageCodes(String errorCode) {
+                return new String[0];
+            }
+
+            @Override
+            public String[] resolveMessageCodes(String errorCode, String field) {
+                return new String[0];
+            }
+
+            @Override
+            public void addError(ObjectError error) {
+
+            }
+
+            @Override
+            public String getObjectName() {
+                return null;
+            }
+
+            @Override
+            public void setNestedPath(String nestedPath) {
+
+            }
+
+            @Override
+            public String getNestedPath() {
+                return null;
+            }
+
+            @Override
+            public void pushNestedPath(String subPath) {
+
+            }
+
+            @Override
+            public void popNestedPath() throws IllegalStateException {
+
+            }
+
+            @Override
+            public void reject(String errorCode) {
+
+            }
+
+            @Override
+            public void reject(String errorCode, String defaultMessage) {
+
+            }
+
+            @Override
+            public void reject(String errorCode, Object[] errorArgs, String defaultMessage) {
+
+            }
+
+            @Override
+            public void rejectValue(String field, String errorCode) {
+
+            }
+
+            @Override
+            public void rejectValue(String field, String errorCode, String defaultMessage) {
+
+            }
+
+            @Override
+            public void rejectValue(String field, String errorCode, Object[] errorArgs, String defaultMessage) {
+
+            }
+
+            @Override
+            public void addAllErrors(Errors errors) {
+
+            }
+
+            @Override
+            public boolean hasErrors() {
+                return false;
+            }
+
+            @Override
+            public int getErrorCount() {
+                return 0;
+            }
+
+            @Override
+            public List<ObjectError> getAllErrors() {
+                return null;
+            }
+
+            @Override
+            public boolean hasGlobalErrors() {
+                return false;
+            }
+
+            @Override
+            public int getGlobalErrorCount() {
+                return 0;
+            }
+
+            @Override
+            public List<ObjectError> getGlobalErrors() {
+                return null;
+            }
+
+            @Override
+            public ObjectError getGlobalError() {
+                return null;
+            }
+
+            @Override
+            public boolean hasFieldErrors() {
+                return false;
+            }
+
+            @Override
+            public int getFieldErrorCount() {
+                return 0;
+            }
+
+            @Override
+            public List<FieldError> getFieldErrors() {
+                return null;
+            }
+
+            @Override
+            public FieldError getFieldError() {
+                return null;
+            }
+
+            @Override
+            public boolean hasFieldErrors(String field) {
+                return false;
+            }
+
+            @Override
+            public int getFieldErrorCount(String field) {
+                return 0;
+            }
+
+            @Override
+            public List<FieldError> getFieldErrors(String field) {
+                return null;
+            }
+
+            @Override
+            public FieldError getFieldError(String field) {
+                return null;
+            }
+
+            @Override
+            public Object getFieldValue(String field) {
+                return null;
+            }
+
+            @Override
+            public Class<?> getFieldType(String field) {
+                return null;
+            }
+        };
+
+        Model model = new Model() {
+            @Override
+            public Model addAttribute(String attributeName, Object attributeValue) {
+                return null;
+            }
+
+            @Override
+            public Model addAttribute(Object attributeValue) {
+                return null;
+            }
+
+            @Override
+            public Model addAllAttributes(Collection<?> attributeValues) {
+                return null;
+            }
+
+            @Override
+            public Model addAllAttributes(Map<String, ?> attributes) {
+                return null;
+            }
+
+            @Override
+            public Model mergeAttributes(Map<String, ?> attributes) {
+                return null;
+            }
+
+            @Override
+            public boolean containsAttribute(String attributeName) {
+                return false;
+            }
+
+            @Override
+            public Object getAttribute(String attributeName) {
+                return null;
+            }
+
+            @Override
+            public Map<String, Object> asMap() {
+                return null;
+            }
+        };
+
+        EtlDataLoadProcessor etlDataLoadProcessor = new EtlDataLoadProcessor();
+        etlDataLoadProcessor.setBatchSize(123);
+        etlDataLoadProcessor.setFileName("fileName");
+        etlDataLoadProcessor.setInstitutionName("HD");
+        etlDataLoadProcessor.setXmlRecordRepository(xmlRecordRepository);
+        etlDataLoadProcessor.setBibliographicDetailsRepository(bibliographicDetailsRepository);
+        etlDataLoadProcessor.setHoldingsDetailsRepository(holdingsDetailsRepository);
+        etlDataLoadProcessor.setItemDetailsRepository(itemDetailsRepository);
+        etlDataLoadProcessor.setProducer(producer);
+        etlDataLoadProcessor.setRecordProcessor(recordProcessor);
+        etlDataLoadProcessor.startLoadProcess();
+
+        etlDataLoadController.bulkIngest(etlLoadRequest, result, model);
+    }
 }

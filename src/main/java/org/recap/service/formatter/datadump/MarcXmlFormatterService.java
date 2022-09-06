@@ -120,7 +120,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
      * @param record
      * @param tagList
      */
-    private void stripTagsFromBib(Record record,List<String> tagList){
+    private static void stripTagsFromBib(Record record,List<String> tagList){
         for(Iterator<DataField> dataFieldIterator = record.getDataFields().iterator(); dataFieldIterator.hasNext();) {
             DataField dataField = dataFieldIterator.next();
             for (String tag : tagList) {
@@ -136,7 +136,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
      * @param bibliographicEntity
      * @return
      */
-    private List<Integer> getItemIds(BibliographicEntity bibliographicEntity){
+    private static List<Integer> getItemIds(BibliographicEntity bibliographicEntity){
         List<Integer> itemIds = new ArrayList<>();
         List<ItemEntity> itemEntityList = bibliographicEntity.getItemEntities();
         for(ItemEntity itemEntity : itemEntityList){
@@ -150,7 +150,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
      * @param itemEntityList
      * @return
      */
-    private List<Integer> getNonOrphanHoldingsIdList(List<ItemEntity> itemEntityList){
+    private static List<Integer> getNonOrphanHoldingsIdList(List<ItemEntity> itemEntityList){
         Set<Integer> holdingsIdSet = new HashSet<>();
         for(ItemEntity itemEntity:itemEntityList){
             for(HoldingsEntity holdingsEntity:itemEntity.getHoldingsEntities()){
@@ -164,7 +164,7 @@ public class MarcXmlFormatterService implements DataDumpFormatterInterface {
      * @param content
      * @return
      */
-    private Record getRecordFromContent(byte[] content) {
+    private static Record getRecordFromContent(byte[] content) {
         MarcReader reader;
         Record record = null;
         InputStream inputStream = new ByteArrayInputStream(content);

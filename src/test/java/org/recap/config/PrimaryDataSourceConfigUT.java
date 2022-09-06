@@ -44,7 +44,7 @@ public class PrimaryDataSourceConfigUT extends BaseTestCaseUT {
     private DataSourceProperties getDataSourceProperties() {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
         dataSourceProperties.setDriverClassName("test");
-        dataSourceProperties.setInitializationMode(DataSourceInitializationMode.EMBEDDED);
+//        dataSourceProperties.setInitializationMode(DataSourceInitializationMode.EMBEDDED);
         return dataSourceProperties;
     }
 

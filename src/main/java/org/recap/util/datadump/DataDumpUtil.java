@@ -44,7 +44,7 @@ public class DataDumpUtil {
         List<CollectionGroupEntity> collectionGroupEntityList = collectionGroupDetailsRepository.findAllByIds(collectionGroupIds);
         return collectionGroupEntityList.stream()
                 .map(CollectionGroupEntity::getCollectionGroupCode)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public String getFetchType(String fetchTypeNumber) {
@@ -173,7 +173,7 @@ public class DataDumpUtil {
      * @param inputString
      * @return
      */
-    private List<String> splitStringAndGetList(String inputString) {
+    private static List<String> splitStringAndGetList(String inputString) {
         String[] splittedString = inputString.split(",");
         return Arrays.asList(splittedString);
     }
@@ -183,7 +183,7 @@ public class DataDumpUtil {
      * @param inputString
      * @return
      */
-    private List<Integer> splitStringAndGetIntegerList(String inputString) {
+    private static List<Integer> splitStringAndGetIntegerList(String inputString) {
         return getIntegerListFromStringList(splitStringAndGetList(inputString));
     }
 
@@ -192,7 +192,7 @@ public class DataDumpUtil {
      * @param stringList
      * @return
      */
-    private List<Integer> getIntegerListFromStringList(List<String> stringList) {
+    private static List<Integer> getIntegerListFromStringList(List<String> stringList) {
         List<Integer> integerList = new ArrayList<>();
         for (String stringValue : stringList) {
             integerList.add(Integer.parseInt(stringValue));
@@ -260,14 +260,14 @@ public class DataDumpUtil {
         });
     }
 
-    private DataDumpRequest prepareDataDumpReq(ETLRequestLogEntity etlRequestLogEntity) {
+    private static DataDumpRequest prepareDataDumpReq(ETLRequestLogEntity etlRequestLogEntity) {
         DataDumpRequest dataDumpRequestForAwaiting=new DataDumpRequest();
         dataDumpRequestForAwaiting.setFetchType(etlRequestLogEntity.getFetchType());
         dataDumpRequestForAwaiting.setOutputFileFormat(etlRequestLogEntity.getOutputFormat());
         dataDumpRequestForAwaiting.setTransmissionType(etlRequestLogEntity.getTransmissionType());
         List<Integer> collectionGroupIds = Arrays.stream(etlRequestLogEntity.getCollectionGroupIds()
                 .split(",")).map(Integer::parseInt)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
         dataDumpRequestForAwaiting.setCollectionGroupIds(collectionGroupIds);
         List<String> imsRepositoryList = List.of(etlRequestLogEntity.getImsRepositoryCodes().split(","));
         dataDumpRequestForAwaiting.setImsDepositoryCodes(imsRepositoryList);

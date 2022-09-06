@@ -161,7 +161,7 @@ public class RecordProcessor {
      * @param bibliographicEntities
      * @param reportEntities
      */
-    private void processFutureResults(Object object, List<BibliographicEntity> bibliographicEntities, List<ReportEntity> reportEntities) {
+    private static void processFutureResults(Object object, List<BibliographicEntity> bibliographicEntities, List<ReportEntity> reportEntities) {
         Map<String, Object> resultMap = (Map<String, Object>) object;
 
         if (object != null) {
@@ -326,7 +326,7 @@ public class RecordProcessor {
      * @param holdings
      * @return
      */
-    private boolean validateHoldingsContent(List<Holdings> holdings) {
+    private static boolean validateHoldingsContent(List<Holdings> holdings) {
         if(!CollectionUtils.isEmpty(holdings)) {
             for (Iterator<Holdings> iterator = holdings.iterator(); iterator.hasNext(); ) {
                 Holdings holding = iterator.next();

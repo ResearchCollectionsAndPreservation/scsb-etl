@@ -182,7 +182,7 @@ public class DataExportValidateService {
      * @param erroMessageMap
      * @return
      */
-    private String buildErrorMessage(Map<Integer, String> erroMessageMap) {
+    private static String buildErrorMessage(Map<Integer, String> erroMessageMap) {
         StringBuilder errorMessageBuilder = new StringBuilder();
         erroMessageMap.forEach((key, value) -> errorMessageBuilder.append(key).append(". ").append(value).append("\n"));
         return errorMessageBuilder.toString();
@@ -211,7 +211,7 @@ public class DataExportValidateService {
      * @param toEmailAddress
      * @return
      */
-    private boolean validateEmailAddress(String toEmailAddress) {
+    private static boolean validateEmailAddress(String toEmailAddress) {
         String regex = ScsbCommonConstants.REGEX_FOR_EMAIL_ADDRESS;
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(toEmailAddress);

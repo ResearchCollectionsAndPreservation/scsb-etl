@@ -1,20 +1,12 @@
 package org.recap.service;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.recap.BaseTestCaseUT;
 import org.recap.model.search.SearchRecordsRequest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -63,7 +55,24 @@ public class DataDumpSolrServicesUT extends BaseTestCaseUT {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+    @Test
+    public void getSolrClientUrlTest(){
+        DataDumpSolrService service = new DataDumpSolrService();
+       String result= service.getSolrClientUrl();
+    }
+
+    @Test
+    public void getRestTemplateTest(){
+        DataDumpSolrService service = new DataDumpSolrService();
+        RestTemplate template= service.getRestTemplate();
+    }
+
+    @Test
+    public void getSolrClientUrlTest2(){
+        DataDumpSolrService service = new DataDumpSolrService();
+        String result= service.getSolrClientUrl();
+    }
+
 
 }

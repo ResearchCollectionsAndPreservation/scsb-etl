@@ -114,11 +114,11 @@ public class ZipFileProcessor implements Processor {
         });
     }
 
-    private String getValueFor(String batchHeaderString, String key) {
+    private static String getValueFor(String batchHeaderString, String key) {
         return new DataExportHeaderUtil().getValueFor(batchHeaderString, key);
     }
 
-    private List<String> getTokenizedCodes(String institutionCodes) {
+    private static List<String> getTokenizedCodes(String institutionCodes) {
         List<String> codes = new ArrayList<>();
         StringTokenizer stringTokenizer = new StringTokenizer(institutionCodes, "*");
         while (stringTokenizer.hasMoreTokens()) {
@@ -140,7 +140,7 @@ public class ZipFileProcessor implements Processor {
     }
 
 
-    private JSONObject buildJsonResponseForTopics(String batchHeaders, String requestingInstitutionCode, String dataDumpTypeCompletionMessage) throws JSONException {
+    private static JSONObject buildJsonResponseForTopics(String batchHeaders, String requestingInstitutionCode, String dataDumpTypeCompletionMessage) throws JSONException {
         JSONObject jsonObject = new JSONObject();
         String[] messageSplit = dataDumpTypeCompletionMessage.split("-");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -154,7 +154,7 @@ public class ZipFileProcessor implements Processor {
         return jsonObject;
     }
 
-    private String getDataDumpTypeCompletionMessage(String batchHeaders) {
+    private static String getDataDumpTypeCompletionMessage(String batchHeaders) {
         Integer fetchType = Integer.valueOf(getValueFor(batchHeaders, ScsbConstants.FETCH_TYPE));
         if (fetchType == 1){
             return "IncrementalDataDump-"+ ScsbConstants.DATA_DUMP_COMPLETION_TOPIC_MESSAGE;

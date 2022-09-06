@@ -14,7 +14,7 @@ public class SwaggerConfigUT extends BaseTestCaseUT {
 
     @Test
     public void documentation() {
-        Docket docket = swaggerConfig.api();
+        Docket docket = swaggerConfig.documentation();
         assertNotNull(docket);
     }
 }

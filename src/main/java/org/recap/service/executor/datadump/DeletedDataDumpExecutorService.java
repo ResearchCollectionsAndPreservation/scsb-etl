@@ -58,7 +58,7 @@ public class DeletedDataDumpExecutorService extends AbstractDataDumpExecutorServ
         return deleteOnlyOrphanInstitutionList.contains(requestingInstitution);
     }
 
-    private List<String> getInstitutionList(String institutionString){
+    private static List<String> getInstitutionList(String institutionString){
         return Arrays.asList(institutionString.split("\\s*,\\s*"));
     }
 }

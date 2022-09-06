@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.ArrayStack;
 import org.recap.PropertyKeyConstants;
 import org.recap.ScsbCommonConstants;
 import org.recap.model.export.S3RecentDataExportInfo;
@@ -67,7 +68,7 @@ public class RecentDataExportsInfoService {
             log.error(ScsbCommonConstants.LOG_ERROR, e);
         }
         recentDataExportInfoList.sort(Comparator.comparing(S3RecentDataExportInfo::getKeyLastModified).reversed());
-        return recentDataExportInfoList.stream().limit(Integer.parseInt(recentDataExportInfoLimit)).collect(Collectors.toList());
+        return recentDataExportInfoList.stream().limit(Integer.parseInt(recentDataExportInfoLimit)).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public Map<String, String> getObjectContent(String fileName) {
@@ -93,7 +94,7 @@ public class RecentDataExportsInfoService {
         }
         return mapResult(headers, records);
     }
-    private Map<String, String> mapResult(String[] headers,
+    private static Map<String, String> mapResult(String[] headers,
                                           String[] records) {
         Map<String, String> result = new HashMap<>();
         if(headers != null && headers.length > 0) {

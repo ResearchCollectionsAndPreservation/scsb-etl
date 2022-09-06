@@ -98,7 +98,7 @@ public class MarcRecordFormatActiveMQConsumer extends CommonReportGenerator {
         List<Future<Map<String, Object>>> futureList = getExecutorService().invokeAll(callables);
         List<Future<Map<String, Object>>> collectedFutures = futureList.stream()
                 .map(this::getMapFuture)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
         List<Integer> itemExportedCountList = new ArrayList<>();
         List failures = new ArrayList();
         for (Future future : collectedFutures) {

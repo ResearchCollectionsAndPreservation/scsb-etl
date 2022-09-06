@@ -68,14 +68,14 @@ public class XmlProcessor implements Processor {
 
             try {
                 xmlRecordRepository.save(xmlRecordEntity);
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 log.error("Exception" , e);
             }
 
         }
     }
 
-    private void setInstitutionOnHeader(Exchange exchange, String owningInstitutionId) {
+    private static void setInstitutionOnHeader(Exchange exchange, String owningInstitutionId) {
         Map<?, ?> property = exchange.getProperty(Exchange.AGGREGATION_STRATEGY, Map.class);
         for (Iterator<?> iterator = property.keySet().iterator(); iterator.hasNext(); ) {
             Object key = iterator.next();

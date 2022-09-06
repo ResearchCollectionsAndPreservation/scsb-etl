@@ -131,7 +131,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
      * @param results
      * @return
      */
-    private boolean bibHasItems(Map results) {
+    private static boolean bibHasItems(Map results) {
         List<HashMap> dataDumpSearchResults = (List<HashMap>) results.get("dataDumpSearchResults");
         for (Iterator<HashMap> iterator = dataDumpSearchResults.iterator(); iterator.hasNext(); ) {
             HashMap bibItemIds = iterator.next();
@@ -178,7 +178,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
      * @param pageNum
      * @return
      */
-    private String getFileName(DataDumpRequest dataDumpRequest, int pageNum) throws ParseException {
+    private static String getFileName(DataDumpRequest dataDumpRequest, int pageNum) throws ParseException {
         String institutions = StringUtils.join(dataDumpRequest.getInstitutionCodes(), "-");
         SimpleDateFormat dateFormatForReport=new SimpleDateFormat(ScsbConstants.DATE_FORMAT_FOR_REPORT_NAME);
         SimpleDateFormat dateFomatFromApi=new SimpleDateFormat(ScsbConstants.DATE_FORMAT_FROM_API);
@@ -202,7 +202,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
      * @param dataDumpRequest
      * @return
      */
-    private String getOutputFormat(DataDumpRequest dataDumpRequest) {
+    private static String getOutputFormat(DataDumpRequest dataDumpRequest) {
         switch (dataDumpRequest.getOutputFileFormat()) {
             case "0":
                 return "MARCXml";
@@ -221,7 +221,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
      * @param dataDumpRequest
      * @return
      */
-    private String getFolderName(DataDumpRequest dataDumpRequest) throws ParseException {
+    private static String getFolderName(DataDumpRequest dataDumpRequest) throws ParseException {
         String institutions = StringUtils.join(dataDumpRequest.getInstitutionCodes(), "-");
         SimpleDateFormat dateFormatForReport=new SimpleDateFormat(ScsbConstants.DATE_FORMAT_FOR_REPORT_NAME);
         SimpleDateFormat dateFomatFromApi=new SimpleDateFormat(ScsbConstants.DATE_FORMAT_FROM_API);
@@ -244,7 +244,7 @@ public abstract class AbstractDataDumpExecutorService implements DataDumpExecuto
      * @param fetchType
      * @return
      */
-    private String getFullOrIncrementalDirectory(String fetchType) {
+    private static String getFullOrIncrementalDirectory(String fetchType) {
         if (ScsbConstants.DATADUMP_FETCHTYPE_INCREMENTAL.equalsIgnoreCase(fetchType)) {
             return ScsbConstants.INCREMENTAL + File.separator;
         } else if (ScsbConstants.DATADUMP_FETCHTYPE_DELETED.equalsIgnoreCase(fetchType)) {

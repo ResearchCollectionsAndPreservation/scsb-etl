@@ -148,7 +148,7 @@ public class BibDataProcessor {
         return reportEntityList;
     }
 
-    private boolean isDuplicateItem(List<ItemEntity> existingItemEntityList,ItemEntity itemEntity ){
+    private static boolean isDuplicateItem(List<ItemEntity> existingItemEntityList,ItemEntity itemEntity ){
         boolean isDuplicate = true;
         if(!existingItemEntityList.isEmpty()){
             ItemEntity existingItemEntity = existingItemEntityList.get(0);
@@ -161,7 +161,7 @@ public class BibDataProcessor {
         return isDuplicate;
     }
 
-    private String getBarcodeList(List<ItemEntity> itemEntityList){
+    private static String getBarcodeList(List<ItemEntity> itemEntityList){
         StringBuilder stringBuilder= new StringBuilder();
         for(ItemEntity itemEntity:itemEntityList){
             stringBuilder.append(itemEntity.getOwningInstitutionItemId()).append("-").append(itemEntity.getBarcode()).append(",");
@@ -169,7 +169,7 @@ public class BibDataProcessor {
         return stringBuilder.toString();
     }
 
-    private ItemEntity getExistingBarcodeItemWithinSameBib(List<ItemEntity> existingItemList,ItemEntity itemEntity){
+    private static ItemEntity getExistingBarcodeItemWithinSameBib(List<ItemEntity> existingItemList,ItemEntity itemEntity){
         for(ItemEntity existingItem:existingItemList){
             if(existingItem.getBarcode().equals(itemEntity.getBarcode())){
                 return existingItem;

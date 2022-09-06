@@ -109,7 +109,7 @@ public class DeletedJsonFormatterService implements DataDumpFormatterInterface {
         }
     }
 
-    private boolean isChangedToPrivateCGD(ItemEntity fetchedItemEntity){
+    private static boolean isChangedToPrivateCGD(ItemEntity fetchedItemEntity){
         return ((fetchedItemEntity.getCgdChangeLog()!=null) &&
             (fetchedItemEntity.getCgdChangeLog().equals(ScsbCommonConstants.CGD_CHANGE_LOG_SHARED_TO_PRIVATE) ||
                     fetchedItemEntity.getCgdChangeLog().equals(ScsbCommonConstants.CGD_CHANGE_LOG_OPEN_TO_PRIVATE)));

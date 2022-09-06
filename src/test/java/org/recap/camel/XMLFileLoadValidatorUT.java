@@ -36,6 +36,15 @@ public class XMLFileLoadValidatorUT extends BaseTestCaseUT {
         Mockito.when(reportDetailRepository.findByFileName(any())).thenReturn(Arrays.asList(reportEntity));
         xmlFileLoadValidator.process(ex);
     }
+    @Test
+    public void processTest() throws Exception {
+        CamelContext ctx = new DefaultCamelContext();
+        Exchange ex = new DefaultExchange(ctx);
+        ex.getIn().setHeader("CamelFileName", "sample.txt");
+        ReportEntity reportEntity = new ReportEntity();
+        Mockito.when(reportDetailRepository.findByFileName(any())).thenReturn(Arrays.asList(reportEntity));
+        xmlFileLoadValidator.process(ex);
+    }
 
     private ReportEntity getReportEntity() {
         ReportEntity reportEntity = new ReportEntity();

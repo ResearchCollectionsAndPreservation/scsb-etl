@@ -36,7 +36,7 @@ public class FileNameProcessorForDataExport extends BaseProcessor {
         setProcessExchange(exchange);
     }
 
-    private String getValueFor(String batchHeaderString, String key) {
+    private static String getValueFor(String batchHeaderString, String key) {
         return new DataExportHeaderUtil().getValueFor(batchHeaderString, key);
     }
 

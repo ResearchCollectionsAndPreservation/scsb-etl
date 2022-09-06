@@ -97,7 +97,7 @@ public class DeletedRecordFormatActiveMQConsumer extends CommonReportGenerator {
         List<Future<DeletedRecord>> futureList = getExecutorService().invokeAll(callables);
         List<Future<DeletedRecord>> collectedFutures = futureList.stream()
                 .map(this::getDeletedRecordFuture)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
         List<Integer> itemExportedCountList = new ArrayList<>();
         List failures = new ArrayList<>();
         for (Future<DeletedRecord> future : collectedFutures) {

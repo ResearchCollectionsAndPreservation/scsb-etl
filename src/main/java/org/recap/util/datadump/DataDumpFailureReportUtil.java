@@ -95,7 +95,7 @@ public class DataDumpFailureReportUtil {
      * @param stringList
      * @return
      */
-    private String getStringFromStringList(List<String> stringList){
+    private static String getStringFromStringList(List<String> stringList){
         StringBuilder stringFromList = new StringBuilder();
         int count = 0;
         for(String value : stringList){
@@ -113,7 +113,7 @@ public class DataDumpFailureReportUtil {
      * @param integerList
      * @return
      */
-    private String getStringFromIntegerList(List<Integer> integerList){
+    private static String getStringFromIntegerList(List<Integer> integerList){
         int count = 0;
         StringBuilder stringFromList = new StringBuilder();
         for(Integer value : integerList){

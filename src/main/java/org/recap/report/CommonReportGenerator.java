@@ -90,7 +90,7 @@ public class CommonReportGenerator {
         fluentProducerTemplate.send();
     }
 
-    private HashMap<String, String> getValues(String batchHeaders, DataExportHeaderUtil dataExportHeaderUtil) {
+    private static HashMap<String, String> getValues(String batchHeaders, DataExportHeaderUtil dataExportHeaderUtil) {
         HashMap<String, String> values = new HashMap<>();
         values.put(ScsbConstants.REQUESTING_INST_CODE, dataExportHeaderUtil.getValueFor(batchHeaders, ScsbConstants.REQUESTING_INST_CODE));
         values.put(ScsbConstants.INSTITUTION_CODES, dataExportHeaderUtil.getValueFor(batchHeaders, ScsbConstants.INSTITUTION_CODES));

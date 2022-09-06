@@ -101,7 +101,7 @@ public class DataDumpEmailService {
         return location;
     }
 
-    private String getFtpLocation(String ftpLocation) {
+    private static String getFtpLocation(String ftpLocation) {
         if (ftpLocation.contains(File.separator)) {
             String[] splittedFtpLocation = ftpLocation.split(File.separator,2);
             return splittedFtpLocation[1];

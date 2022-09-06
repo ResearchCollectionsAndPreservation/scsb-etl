@@ -240,6 +240,13 @@ public class RecordProcessorUT {
     }
 
     @Test
+    public void getReportEntityForFailureTest() {
+        XmlRecordEntity xmlRecordEntity = new XmlRecordEntity();
+        String message = "Holding content missing";
+        ReflectionTestUtils.invokeMethod(recordProcessor, "getReportEntityForFailure", xmlRecordEntity, message);
+    }
+
+    @Test
     public void getJaxbHandler() {
         recordProcessor.getJaxbHandler();
     }

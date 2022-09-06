@@ -106,7 +106,7 @@ public class BibEntityGeneratorActiveMQConsumer {
             List<Future<BibliographicEntity>> futureList = getExecutorService().invokeAll(callables);
             List<Future<BibliographicEntity>> collectedFutures = futureList.stream()
                     .map(this::getBibliographicEntityFuture)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toCollection(ArrayList::new));
 
 
             for (Future<BibliographicEntity> future : collectedFutures) {

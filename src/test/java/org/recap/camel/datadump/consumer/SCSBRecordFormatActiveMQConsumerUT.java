@@ -16,6 +16,7 @@ import org.recap.ScsbCommonConstants;
 import org.recap.ScsbConstants;
 import org.recap.model.export.Bib;
 import org.recap.model.export.DeletedRecord;
+import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.service.formatter.datadump.SCSBXmlFormatterService;
 import org.recap.util.datadump.DataExportHeaderUtil;
@@ -129,6 +130,109 @@ public class SCSBRecordFormatActiveMQConsumerUT extends BaseTestCaseUT {
         results.put(ScsbCommonConstants.SUCCESS, Arrays.asList(getDeletedRecord()));
         results.put(ScsbCommonConstants.FAILURE, Arrays.asList("FailureRecords", getDeletedRecord()));
         results.put(ScsbConstants.ITEM_EXPORTED_COUNT, 10);
+        ReflectionTestUtils.setField(sCSBRecordFormatActiveMQConsumer,"dataDumpScsbFormatBatchSize",10);
+        ReflectionTestUtils.setField(sCSBRecordFormatActiveMQConsumer,"dataDumpScsbFormatThreadSize",10);
+        Mockito.when(executorService.invokeAll(any())).thenReturn(futureList);
+        Mockito.when(future.get()).thenReturn(results);
+        try {
+            sCSBRecordFormatActiveMQConsumer.processRecords(ex);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        assertTrue(true);
+    }
+
+    @Test
+    public void processRecordsTest() throws InterruptedException, ExecutionException {
+        List<BibliographicEntity> bibliographicEntities = new ArrayList<>();
+        BibliographicEntity bibliographicEntity = getBibliographicEntity();
+        bibliographicEntities.add(bibliographicEntity);
+
+        String dataHeader = ";transmissionType#exportFormat";
+        CamelContext ctx = new DefaultCamelContext();
+        Exchange ex = new DefaultExchange(ctx);
+        Message in = ex.getIn();
+        ex.setMessage(in);
+        in.setBody(bibliographicEntities);
+        ex.setIn(in);
+        Map<String, Object> mapdata = new HashMap<>();
+        mapdata.put("batchHeaders", dataHeader);
+        in.setHeaders(mapdata);
+        List<Future<Object>> futureList = new ArrayList<>();
+        futureList.add(future);
+        Map<String, Object> results = new HashMap<>();
+        DeletedRecord deletedRecord = new DeletedRecord();
+        results.put(ScsbCommonConstants.SUCCESS, Arrays.asList(deletedRecord));
+//        results.put(ScsbCommonConstants.FAILURE, Arrays.asList("FailureRecords", getDeletedRecord()));
+//        results.put(ScsbConstants.ITEM_EXPORTED_COUNT, 10);
+        ReflectionTestUtils.setField(sCSBRecordFormatActiveMQConsumer,"dataDumpScsbFormatBatchSize",10);
+        ReflectionTestUtils.setField(sCSBRecordFormatActiveMQConsumer,"dataDumpScsbFormatThreadSize",10);
+        Mockito.when(executorService.invokeAll(any())).thenReturn(futureList);
+        Mockito.when(future.get()).thenReturn(results);
+        try {
+            sCSBRecordFormatActiveMQConsumer.processRecords(ex);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        assertTrue(true);
+    }
+
+
+    @Test
+    public void processRecordTest() throws InterruptedException, ExecutionException {
+        List<BibliographicEntity> bibliographicEntities = new ArrayList<>();
+        BibliographicEntity bibliographicEntity = getBibliographicEntity();
+        bibliographicEntities.add(bibliographicEntity);
+
+        String dataHeader = ";transmissionType#exportFormat";
+        CamelContext ctx = new DefaultCamelContext();
+        Exchange ex = new DefaultExchange(ctx);
+        Message in = ex.getIn();
+        ex.setMessage(in);
+        in.setBody(bibliographicEntities);
+        ex.setIn(in);
+        Map<String, Object> mapdata = new HashMap<>();
+        mapdata.put("batchHeaders", dataHeader);
+        in.setHeaders(mapdata);
+        List<Future<Object>> futureList = new ArrayList<>();
+        futureList.add(future);
+        Map<String, Object> results = new HashMap<>();
+        DeletedRecord deletedRecord = new DeletedRecord();
+        results.put(ScsbCommonConstants.FAILURE, Arrays.asList("FailureRecords", deletedRecord));
+//        results.put(ScsbConstants.ITEM_EXPORTED_COUNT, 10);
+        ReflectionTestUtils.setField(sCSBRecordFormatActiveMQConsumer,"dataDumpScsbFormatBatchSize",10);
+        ReflectionTestUtils.setField(sCSBRecordFormatActiveMQConsumer,"dataDumpScsbFormatThreadSize",10);
+        Mockito.when(executorService.invokeAll(any())).thenReturn(futureList);
+        Mockito.when(future.get()).thenReturn(results);
+        try {
+            sCSBRecordFormatActiveMQConsumer.processRecords(ex);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        assertTrue(true);
+    }
+
+
+    @Test
+    public void processRecordExportTest() throws InterruptedException, ExecutionException {
+        List<BibliographicEntity> bibliographicEntities = new ArrayList<>();
+        BibliographicEntity bibliographicEntity = getBibliographicEntity();
+        bibliographicEntities.add(bibliographicEntity);
+
+        String dataHeader = ";transmissionType#exportFormat";
+        CamelContext ctx = new DefaultCamelContext();
+        Exchange ex = new DefaultExchange(ctx);
+        Message in = ex.getIn();
+        ex.setMessage(in);
+        in.setBody(bibliographicEntities);
+        ex.setIn(in);
+        Map<String, Object> mapdata = new HashMap<>();
+        mapdata.put("batchHeaders", dataHeader);
+        in.setHeaders(mapdata);
+        List<Future<Object>> futureList = new ArrayList<>();
+        futureList.add(future);
+        Map<String, Object> results = new HashMap<>();
+        results.put(ScsbConstants.ITEM_EXPORTED_COUNT, 0);
         ReflectionTestUtils.setField(sCSBRecordFormatActiveMQConsumer,"dataDumpScsbFormatBatchSize",10);
         ReflectionTestUtils.setField(sCSBRecordFormatActiveMQConsumer,"dataDumpScsbFormatThreadSize",10);
         Mockito.when(executorService.invokeAll(any())).thenReturn(futureList);

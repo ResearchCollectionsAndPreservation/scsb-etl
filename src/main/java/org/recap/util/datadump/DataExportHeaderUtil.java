@@ -122,7 +122,7 @@ public class DataExportHeaderUtil {
      * @param values
      * @return
      */
-    private String getInstitutionCodes(List<String> values) {
+    private static String getInstitutionCodes(List<String> values) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Iterator<String> iterator = values.iterator(); iterator.hasNext(); ) {
             String code = iterator.next();
@@ -139,7 +139,7 @@ public class DataExportHeaderUtil {
      * @param dataDumpRequest
      * @return
      */
-    private String getCollectionGroupIds(DataDumpRequest dataDumpRequest) {
+    private static String getCollectionGroupIds(DataDumpRequest dataDumpRequest) {
         List<Integer> institutionCodes = dataDumpRequest.getCollectionGroupIds();
         StringBuilder stringBuilder = new StringBuilder();
         for (Iterator<Integer> iterator = institutionCodes.iterator(); iterator.hasNext(); ) {

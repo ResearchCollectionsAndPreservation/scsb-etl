@@ -73,7 +73,7 @@ public class SwaggerConfig implements WebMvcConfigurer{
                 .apiInfo(metadata());
     }
 
-    private ApiInfo metadata() {
+    private static ApiInfo metadata() {
         return new ApiInfoBuilder()
                 .title("SCSB APIs")
                 .description("APIs to interact with SCSB middleware are RESTful and need an API_KEY for any call to be invoked. Further NCIP protocols are also supported.")
@@ -114,7 +114,7 @@ public class SwaggerConfig implements WebMvcConfigurer{
             private <T extends RequestMappingInfoHandlerMapping> void customizeSpringfoxHandlerMappings(List<T> mappings) {
                 List<T> copy = mappings.stream()
                         .filter(mapping -> mapping.getPatternParser() == null)
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toCollection(ArrayList::new));
                 mappings.clear();
                 mappings.addAll(copy);
             }
@@ -131,7 +131,7 @@ public class SwaggerConfig implements WebMvcConfigurer{
             }
         };
     }
-    private ApiKey apiKey() {
+    private static ApiKey apiKey() {
         return new ApiKey("API Key", "api_key", "header");
     }
 
