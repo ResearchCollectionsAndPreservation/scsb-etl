@@ -142,6 +142,10 @@ public class DataDumpUtil {
             collectionGroupIdList.add(collectionGroupEntityShared.getId());
             CollectionGroupEntity collectionGroupEntityOpen = collectionGroupDetailsRepository.findByCollectionGroupCode(ScsbConstants.COLLECTION_GROUP_OPEN);
             collectionGroupIdList.add(collectionGroupEntityOpen.getId());
+            CollectionGroupEntity collectionGroupEntityCommitted = collectionGroupDetailsRepository.findByCollectionGroupCode(ScsbConstants.COLLECTION_GROUP_COMMITTED);
+            collectionGroupIdList.add(collectionGroupEntityCommitted.getId());
+            CollectionGroupEntity collectionGroupEntityUnCommittable = collectionGroupDetailsRepository.findByCollectionGroupCode(ScsbConstants.COLLECTION_GROUP_UNCOMMITTABLE);
+            collectionGroupIdList.add(collectionGroupEntityUnCommittable.getId());
             dataDumpRequest.setCollectionGroupIds(collectionGroupIdList);
         }
         if (transmissionType != null && !"".equals(transmissionType)) {
@@ -207,7 +211,7 @@ public class DataDumpUtil {
         etlRequestLogEntity.setExportStatusEntity(exportStatusEntity);
         String collectionGroupIds = dataDumpRequest.getCollectionGroupIds().stream().map(String::valueOf)
                 .collect(Collectors.joining(","));
-        String defaultCgds = Arrays.asList(ScsbConstants.DATADUMP_CGD_SHARED, ScsbConstants.DATADUMP_CGD_OPEN).stream().map(String::valueOf).collect(Collectors.joining(","));
+        String defaultCgds = Arrays.asList(ScsbConstants.DATADUMP_CGD_SHARED, ScsbConstants.DATADUMP_CGD_OPEN, ScsbConstants.DATADUMP_CGD_COMMITTED, ScsbConstants.DATADUMP_CGD_UNCOMMITTABLE).stream().map(String::valueOf).collect(Collectors.joining(","));
         etlRequestLogEntity.setCollectionGroupIds(collectionGroupIds!=null?collectionGroupIds:defaultCgds );
         etlRequestLogEntity.setEmailIds(dataDumpRequest.getToEmailAddress());
         etlRequestLogEntity.setRequestedTime(new Date());

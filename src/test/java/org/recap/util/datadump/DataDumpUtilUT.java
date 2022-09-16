@@ -184,7 +184,7 @@ public class DataDumpUtilUT extends BaseTestCaseUT {
         Mockito.when(collectionGroupDetailsRepository.findAllByIds(any())).thenReturn(getCollectionGroupEntityList());
         List<Integer> collectionGroupIds = getCollectionGroupEntityList().stream().map(CollectionGroupEntity::getId).collect(Collectors.toList());
         List<String> collectionGroupCodes = dataDumpUtil.getCollectionGroupCodes(collectionGroupIds);
-        assertEquals(Arrays.asList(ScsbConstants.COLLECTION_GROUP_SHARED, ScsbConstants.COLLECTION_GROUP_OPEN, ScsbConstants.COLLECTION_GROUP_PRIVATE),collectionGroupCodes);
+        assertEquals(Arrays.asList(ScsbConstants.COLLECTION_GROUP_SHARED, ScsbConstants.COLLECTION_GROUP_OPEN, ScsbConstants.COLLECTION_GROUP_PRIVATE, ScsbConstants.COLLECTION_GROUP_COMMITTED, ScsbConstants.COLLECTION_GROUP_UNCOMMITTABLE),collectionGroupCodes);
     }
 
     @Test

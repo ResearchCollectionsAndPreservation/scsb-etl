@@ -133,6 +133,8 @@ public class ScsbConstants {
     public static final Integer DATADUMP_CGD_SHARED = 1;
     public static final Integer DATADUMP_CGD_OPEN = 2;
     public static final Integer DATADUMP_CGD_PRIVATE = 3;
+    public static final Integer DATADUMP_CGD_COMMITTED = 5;
+    public static final Integer DATADUMP_CGD_UNCOMMITTABLE= 6;
 
     public static final String DATADUMP_XML_FORMAT_MARC = "0";
     public static final String DATADUMP_XML_FORMAT_SCSB = "1";
@@ -155,6 +157,8 @@ public class ScsbConstants {
     public static final String COLLECTION_GROUP_SHARED = "Shared";
     public static final String COLLECTION_GROUP_OPEN = "Open";
     public static final String COLLECTION_GROUP_PRIVATE = "Private";
+    public static final String COLLECTION_GROUP_COMMITTED = "Committed";
+    public static final String COLLECTION_GROUP_UNCOMMITTABLE = "Uncommittable";
 
     public static final String SOLR_INPUT_FOR_DATA_EXPORT_Q = "scsbactivemq:queue:SolrInputForDataExportQ";
     public static final String BIB_ENTITY_FOR_DATA_EXPORT_Q = "scsbactivemq:queue:BibEntityForDataExportQ";
