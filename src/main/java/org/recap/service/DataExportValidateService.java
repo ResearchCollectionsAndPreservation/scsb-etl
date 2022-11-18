@@ -61,17 +61,17 @@ public class DataExportValidateService {
         if (!dataDumpRequest.getInstitutionCodes().isEmpty()) {
             for (String institutionCode : dataDumpRequest.getInstitutionCodes()) {
                 if(!allInstitutionCodesExceptSupportInstitution.contains(institutionCode)){
-                    errorMessageMap.put(errorcount, ScsbConstants.DATADUMP_VALID_INST_CODES_ERR_MSG+" : "+propertyUtil.getAllInstitutions().toString());
+                    errorMessageMap.put(errorcount, ScsbConstants.DATADUMP_VALID_INST_CODES_ERR_MSG+" : "+allInstitutionCodesExceptSupportInstitution.toString());
                     errorcount++;
                 }
             }
             if(dataDumpRequest.getInstitutionCodes().size() != 1 && dataDumpRequest.getFetchType().equals(fetchTypeFull)) {
-                errorMessageMap.put(errorcount, ScsbConstants.DATADUMP_MULTIPLE_INST_CODES_ERR_MSG+ " : "+propertyUtil.getAllInstitutions().toString());
+                errorMessageMap.put(errorcount, ScsbConstants.DATADUMP_MULTIPLE_INST_CODES_ERR_MSG+ " : "+allInstitutionCodesExceptSupportInstitution.toString());
                 errorcount++;
             }
         }
         if(dataDumpRequest.getRequestingInstitutionCode() != null && !allInstitutionCodesExceptSupportInstitution.contains(dataDumpRequest.getRequestingInstitutionCode())){
-            errorMessageMap.put(errorcount, ScsbConstants.DATADUMP_VALID_REQ_INST_CODE_ERR_MSG+" : "+propertyUtil.getAllInstitutions().toString());
+            errorMessageMap.put(errorcount, ScsbConstants.DATADUMP_VALID_REQ_INST_CODE_ERR_MSG+" : "+allInstitutionCodesExceptSupportInstitution.toString());
             errorcount++;
         }
         List<String> imsLocationCodes = imsLocationDetailsRepository.findAllImsLocationCodeExceptUnknown();

@@ -184,6 +184,8 @@ public class DataDumpExportService {
                     dataDumpUtil.updateStatusInETLRequestLog(dataDumpRequest, ScsbConstants.IN_PROGRESS);
                 }
                     outputString = ScsbConstants.DATADUMP_PROCESS_STARTED;
+            } else if(outputString.equals(ScsbConstants.DATADUMP_NO_RECORD)){
+                dataDumpUtil.updateStatusInETLRequestLog(dataDumpRequest, ScsbConstants.COMPLETED);
             }
             responseHeaders.add(ScsbCommonConstants.RESPONSE_DATE, date);
             return outputString;
