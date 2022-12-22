@@ -37,6 +37,7 @@ public class EmailRouteBuilder {
     private static final String USERNAME = "?username=";
     private static final String PASSWORD = "&password=";
     private static final String EMAIL_BODY_FOR = "emailBodyFor";
+    private String emailPayLoadMessage = "${header.emailPayLoad.message}";
 
     /**
      * Instantiates a new Email route builder.
@@ -108,7 +109,14 @@ public class EmailRouteBuilder {
                                         .setHeader("cc", simple(EMAIL_PAYLOAD_CC))
                                         .log("Email sent for Deletion data dump")
                                         .to(SMTPS + smtpServer + USERNAME + username + PASSWORD + emailPassword)
-                            ;
+                                    .when(header(EMAIL_BODY_FOR).isEqualTo(ScsbConstants.EMAIL_REQUEST_LOG))
+                                        .setHeader(SUBJECT, simple(ScsbConstants.GATEWAY_REQUESTS_LOG_SUBJECT))
+                                        .setBody(simple(emailPayLoadMessage))
+                                        .setHeader("from", simple(from))
+                                        .setHeader("to", simple(EMAIL_PAYLOAD_TO))
+                                        .setHeader("cc", simple(EMAIL_PAYLOAD_CC))
+                                        .log("email sent for gateway requests log")
+                                        .to(SMTPS + smtpServer + USERNAME + username + PASSWORD + emailPassword);
                 }
 
                 private void loadEmailBodyTemplate() {

@@ -259,4 +259,17 @@ public class ScsbConstants {
     public static final String SCSB_CAMEL_S3_TO_ENDPOINT = "aws-s3://{{scsbBucketName}}?autocloseBody=false&region={{awsRegion}}&accessKey=RAW({{awsAccessKey}})&secretKey=RAW({{awsAccessSecretKey}})";
 
     public static final String BIBLIOGRAPHIC_ENTITY_NAME = "bibliographicEntity";
+
+    public static final String EMAIL_REQUEST_LOG = "emailForRequstLog";
+    public static final String FAILED = "FAILED";
+    public static final String GATEWAY_REQUST_LOG_EXCEPTION_MESSAGE = "exception occurred while pulling data from database to get failed gateway request count";
+    public static final String GATEWAY_REQUESTS_LOG_SUBJECT = "GATEWAY REQUESTS LOGGED: requests are logged in gateway due to circ not reachable";
+    public static final String GATEWAY_REQUESTS_LOG_BODY_MESSAGE = "Below are the requests logged in gateway due to circ not reachable:";
+    public static final String BARCODE = "Barcode : ";
+    public static final String LINE_SEPERATOR = "line.separator";
+    public static final String REQUEST_CREATE_DATE = " Request Created Date : ";
+    public static final String SUCCESS = "SUCCESS";
+    public static final String GATEWAY_REQUESTS_LOG_FREQUENCY_CHECK_IN_SEC = "gateway.requests.log.frequency.check.insec";
+    public static final String GATEWAY_REQUESTS_EMAIL_TO = "gateway.requests.log.email.to";
+
 }
