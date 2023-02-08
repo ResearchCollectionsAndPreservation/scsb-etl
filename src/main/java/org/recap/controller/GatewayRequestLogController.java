@@ -7,6 +7,7 @@ import org.recap.ScsbConstants;
 import org.recap.camel.EmailPayLoad;
 import org.recap.model.jpa.ItemRequestReceivedInformationEntity;
 import org.recap.repository.ItemRequestInformationRepository;
+import org.recap.service.GatewayRequestLogServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * @author Dinakar N created on 07/12/22
@@ -40,12 +43,19 @@ public class GatewayRequestLogController {
     private ProducerTemplate producer;
 
     @Autowired
+    private GatewayRequestLogServiceImpl gatewayRequestLogServiceImpl;
+
+    @Autowired
     private ItemRequestInformationRepository itemRequestInformationRepository;
 
     @GetMapping(value = "/requestsEmailNotification", consumes = "application/json", produces = "application/json")
     public ResponseEntity<String> requestsLogEmailNotification() {
+
         Integer count = 0;
         Date date = new Date(System.currentTimeMillis() - GATEWAY_REQUEST_LOG_FREQUENCY_CHECK_IN_SEC * 1000);
+
+        Executor executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> gatewayRequestLogServiceImpl.updateGatewayRequestLogRequests(date));
 
         Optional<List<ItemRequestReceivedInformationEntity>> entityList = null;
         try {

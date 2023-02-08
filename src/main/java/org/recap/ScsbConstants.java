@@ -271,5 +271,10 @@ public class ScsbConstants {
     public static final String SUCCESS = "SUCCESS";
     public static final String GATEWAY_REQUESTS_LOG_FREQUENCY_CHECK_IN_SEC = "gateway.requests.log.frequency.check.insec";
     public static final String GATEWAY_REQUESTS_EMAIL_TO = "gateway.requests.log.email.to";
+    public static final String GATEWAY_VALIDATION_LOG_MESSAGE = "gateway requests log id's are {} updated with validation status";
+    public static final String GATEWAY_VALIDATION_FAILURE = "FAILURE";
+    public static final String GATEWAY_VALIDATION_SUCCESS = "SUCCESS";
+    public static final String GATEWAY_EXCEPTION_UPDATE = "exception occurred while update requests log id with validation message is :: {}";
+    public static final String RESPONSE_LOG = "Resonse Message is {}";
 
 }
