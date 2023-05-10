@@ -59,13 +59,13 @@ public class GatewayRequestLogController {
 
       //  Optional<List<ItemRequestReceivedInformationEntity>> entityList = null;
         try {
-            Optional<List<ItemRequestReceivedInformationEntity>> entityList = itemRequestInformationRepository.findAllByDateAndStatus(date, ScsbConstants.FAILED);
+            Optional<List<ItemRequestReceivedInformationEntity>> entityList = itemRequestInformationRepository.findAllByDateAndStatus(date, ScsbConstants.FAILURE);
             count = entityList.map(List::size).orElse(0);
             if(count > 0)
                 sendEmailNotification(entityList.get());
         } catch (Exception e) {
             log.info(ScsbConstants.GATEWAY_REQUST_LOG_EXCEPTION_MESSAGE);
-            return new ResponseEntity<>(ScsbConstants.FAILED, HttpStatus.OK);
+            return new ResponseEntity<>(ScsbConstants.FAILURE, HttpStatus.OK);
         }
         return new ResponseEntity<>(ScsbConstants.SUCCESS, HttpStatus.OK);
     }

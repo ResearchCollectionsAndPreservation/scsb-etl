@@ -261,7 +261,7 @@ public class ScsbConstants {
     public static final String BIBLIOGRAPHIC_ENTITY_NAME = "bibliographicEntity";
 
     public static final String EMAIL_REQUEST_LOG = "emailForRequstLog";
-    public static final String FAILED = "FAILED";
+    public static final String FAILURE = "FAILURE";
     public static final String GATEWAY_REQUST_LOG_EXCEPTION_MESSAGE = "exception occurred while pulling data from database to get failed gateway request count";
     public static final String GATEWAY_REQUESTS_LOG_SUBJECT = "GATEWAY REQUESTS LOGGED: requests are logged in gateway due to circ not reachable";
     public static final String GATEWAY_REQUESTS_LOG_BODY_MESSAGE = "Below are the requests logged in gateway due to circ not reachable:";
