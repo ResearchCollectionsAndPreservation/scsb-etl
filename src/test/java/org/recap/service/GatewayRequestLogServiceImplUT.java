@@ -1,6 +1,6 @@
 package org.recap.service;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -9,14 +9,11 @@ import org.recap.PropertyKeyConstants;
 import org.recap.ScsbConstants;
 import org.recap.model.jpa.ItemRequestReceivedInformationEntity;
 import org.recap.repository.ItemRequestInformationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.*;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

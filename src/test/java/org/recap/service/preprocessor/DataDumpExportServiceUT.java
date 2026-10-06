@@ -4,8 +4,8 @@ import org.apache.camel.ConsumerTemplate;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.ProducerTemplate;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -21,7 +21,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.File;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class DataDumpExportServiceUT extends BaseTestCaseUT {
@@ -54,7 +54,7 @@ public class DataDumpExportServiceUT extends BaseTestCaseUT {
     @Value("${etl.data.dump.fetchtype.full}")
     private String fetchTypeFull;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }

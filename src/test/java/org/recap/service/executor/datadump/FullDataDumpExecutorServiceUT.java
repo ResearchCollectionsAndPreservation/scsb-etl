@@ -1,7 +1,7 @@
 package org.recap.service.executor.datadump;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCaseUT;
@@ -10,7 +10,7 @@ import org.recap.model.search.SearchRecordsRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by premkb on 27/9/16.
@@ -25,7 +25,7 @@ public class FullDataDumpExecutorServiceUT extends BaseTestCaseUT {
     @Value("${etl.data.dump.fetchtype.full}")
     private final String fetchTypeFull = "full";
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         ReflectionTestUtils.setField(fullDataDumpExecutorService, "fetchTypeFull", fetchTypeFull);
         MockitoAnnotations.initMocks(this);

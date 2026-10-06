@@ -1,19 +1,24 @@
 package org.recap.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCaseUT;
 import org.recap.model.search.SearchRecordsRequest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Created by hemalathas on 19/4/17.
@@ -31,7 +36,7 @@ public class DataDumpSolrServicesUT extends BaseTestCaseUT {
     @Value("${scsb.solr.doc.url}")
     String solrClientUrl = "http://test/recap/datadump";
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(dataDumpSolrService, "solrClientUrl", solrClientUrl);

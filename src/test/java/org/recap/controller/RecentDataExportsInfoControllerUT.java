@@ -1,28 +1,28 @@
 package org.recap.controller;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.recap.model.export.S3RecentDataExportInfo;
 import org.recap.model.export.S3RecentDataExportInfoList;
 import org.recap.service.RecentDataExportsInfoService;
 import org.recap.util.CommonUtil;
 import org.recap.util.PropertyUtil;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith({SpringExtension.class})
 public class RecentDataExportsInfoControllerUT {
 
 
@@ -48,7 +48,7 @@ public class RecentDataExportsInfoControllerUT {
     S3RecentDataExportInfoList s3RecentDataExportInfoList = new S3RecentDataExportInfoList();
     S3RecentDataExportInfoList s3RecentDataExportActualInfoList = new S3RecentDataExportInfoList();
 
-    @Before
+    @BeforeEach
     public void setup() {
         institutions = Arrays.asList("PUL", "CUL");
         bibDataFormat = "MARC";

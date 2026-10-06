@@ -1,7 +1,7 @@
 package org.recap.util;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCaseUT;
@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Created by AnithaV on 12/12/20.
@@ -29,7 +29,7 @@ public class DBReportUtilUT extends BaseTestCaseUT {
     @InjectMocks
     DBReportUtil mockDBReportUtil;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         Map<String, Integer> institutionEntitiesMap=new HashMap<>();
         institutionEntitiesMap.put("OwningInstitutionId",1);

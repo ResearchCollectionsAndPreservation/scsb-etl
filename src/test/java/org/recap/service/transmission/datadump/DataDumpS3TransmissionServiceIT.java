@@ -1,7 +1,7 @@
 package org.recap.service.transmission.datadump;
 
 import org.apache.camel.CamelContext;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.recap.BaseTestCase;
 import org.recap.ScsbConstants;
 import org.springframework.beans.factory.annotation.Autowired;

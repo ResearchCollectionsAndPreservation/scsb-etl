@@ -1,8 +1,8 @@
 package org.recap.service.preprocessor;
 
 import org.joda.time.DateTime;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -20,15 +20,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DataExportValidateServiceUT extends BaseTestCaseUT {
 
@@ -48,7 +42,7 @@ public class DataExportValidateServiceUT extends BaseTestCaseUT {
     @Value("${scsb.support.institution}")
     private String supportInstitution;
 
-    @Before
+    @BeforeEach
     public void setup() {
         ReflectionTestUtils.setField(dataExportValidateService, "fetchTypeFull", "10");
         //ReflectionTestUtils.setField(dataExportValidateService, "dataDumpStatusFileName", "");

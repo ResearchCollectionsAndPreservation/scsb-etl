@@ -1,7 +1,8 @@
 package org.recap.controller;
 
-import org.junit.Assert;
-import org.junit.Before;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.recap.BaseTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -34,10 +35,10 @@ public class BaseControllerUT extends BaseTestCase {
     @Autowired
     public void setConverters(HttpMessageConverter<?>[] converters) {
         this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream().filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter).findAny().get();
-        Assert.assertNotNull("the JSON message converter must not be null", this.mappingJackson2HttpMessageConverter);
+        Assertions.assertNotNull("the JSON message converter must not be null", this.mappingJackson2HttpMessageConverter.toString());
     }
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
     }

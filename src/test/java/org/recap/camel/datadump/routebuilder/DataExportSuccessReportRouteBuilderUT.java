@@ -1,7 +1,7 @@
 package org.recap.camel.datadump.routebuilder;
 
 import org.apache.camel.ProducerTemplate;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.recap.BaseTestCaseUT;
 import org.recap.ScsbCommonConstants;
@@ -10,7 +10,7 @@ import org.recap.ScsbConstants;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by peris on 11/12/16.

@@ -1,6 +1,6 @@
 package org.recap.util.datadump;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.recap.BaseTestCaseUT;
 import org.recap.ScsbConstants;
@@ -8,14 +8,9 @@ import org.recap.model.export.DataDumpRequest;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jparw.ReportDataEntity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DataDumpFailureReportUtilUT extends BaseTestCaseUT {
 

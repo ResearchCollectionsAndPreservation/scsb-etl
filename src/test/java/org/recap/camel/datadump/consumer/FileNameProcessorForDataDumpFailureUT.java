@@ -5,8 +5,8 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.support.DefaultExchange;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.recap.BaseTestCaseUT;
 import org.recap.camel.datadump.FileNameProcessorForDataDumpFailure;
@@ -16,14 +16,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileNameProcessorForDataDumpFailureUT extends BaseTestCaseUT {
 
     @InjectMocks
     FileNameProcessorForDataDumpFailure fileNameProcessorForDataDumpFailure;
 
-    @Before
+    @BeforeEach
     public void setUpBefore() {
         fileNameProcessorForDataDumpFailure = new FileNameProcessorForDataDumpFailure();
     }

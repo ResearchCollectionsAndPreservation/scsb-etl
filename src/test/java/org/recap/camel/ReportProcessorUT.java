@@ -5,8 +5,8 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.support.DefaultExchange;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.recap.BaseTestCaseUT;
@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ReportProcessorUT extends BaseTestCaseUT {
     @InjectMocks
@@ -29,7 +29,7 @@ public class ReportProcessorUT extends BaseTestCaseUT {
     @Mock
     ReportDetailRepository reportDetailRepository;
 
-    @Before
+    @BeforeEach
     public void setUpBefore() {
         reportEntity = new ReportEntity();
         reportEntity.setFileName("test");

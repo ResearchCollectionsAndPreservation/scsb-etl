@@ -1,7 +1,7 @@
 package org.recap.service.executor.datadump;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -35,7 +35,7 @@ public class DeletedDataDumpExecutorServiceUT extends BaseTestCaseUT {
     @Value("${etl.data.dump.deleted.type.onlyorphan.institution}")
     private final String deletedOnlyOrphanInstitution = "PUL";
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(mockedDeletedDataDumpExecutorService, "deletedOnlyOrphanInstitution", deletedOnlyOrphanInstitution);

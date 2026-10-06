@@ -6,8 +6,8 @@ import org.apache.camel.FluentProducerTemplate;
 import org.apache.camel.Message;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.support.DefaultExchange;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.marc4j.MarcReader;
 import org.marc4j.MarcWriter;
 import org.marc4j.MarcXmlReader;
@@ -18,29 +18,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
 import org.recap.ScsbCommonConstants;
-import org.recap.model.jpa.BibliographicEntity;
-import org.recap.model.jpa.CollectionGroupEntity;
-import org.recap.model.jpa.HoldingsEntity;
-import org.recap.model.jpa.InstitutionEntity;
-import org.recap.model.jpa.ItemEntity;
-import org.recap.model.jpa.ItemStatusEntity;
+import org.recap.model.jpa.*;
 import org.recap.service.formatter.datadump.MarcXmlFormatterService;
 import org.recap.util.datadump.DataExportHeaderUtil;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MarcXMLFormatActiveMQConsumerUT extends BaseTestCaseUT {
 
@@ -151,7 +137,7 @@ public class MarcXMLFormatActiveMQConsumerUT extends BaseTestCaseUT {
             "    </record>\n" +
             "</collection>\n";
 
-    @Before
+    @BeforeEach
     public void setUpBefore() {
         marcXMLFormatActiveMQConsumer = new MarcXMLFormatActiveMQConsumer(marcXmlFormatterService);
     }

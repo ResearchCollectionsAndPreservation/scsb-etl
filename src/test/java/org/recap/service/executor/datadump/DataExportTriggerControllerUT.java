@@ -1,8 +1,8 @@
 package org.recap.service.executor.datadump;
 
 import org.apache.camel.ProducerTemplate;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -57,13 +57,13 @@ public class DataExportTriggerControllerUT extends BaseTestCaseUT {
         DataDumpRequest dataDumpRequest = new DataDumpRequest();
         Mockito.when(dataDumpUtil.prepareRequestForExistingAwaiting()).thenReturn(dataDumpRequest);
         Boolean valid = controller.isDataDumpTriggerValid();
-        Assert.assertEquals(valid, true);
+        Assertions.assertEquals(true, valid);
     }
 
     @Test
     public void validateDatadumpTriggerTest(){
         Boolean aBoolean = controller.validateDatadumpTrigger();
-        Assert.assertEquals(aBoolean, false);
+        Assertions.assertEquals(false, aBoolean);
     }
 
 }

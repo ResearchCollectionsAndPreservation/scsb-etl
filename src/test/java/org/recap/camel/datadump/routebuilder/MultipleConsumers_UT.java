@@ -5,14 +5,14 @@ import org.apache.camel.ConsumerTemplate;
 import org.apache.camel.FluentProducerTemplate;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.engine.DefaultFluentProducerTemplate;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.recap.BaseTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by peris on 11/20/16.
  */
-@Ignore
+@Disabled
 public class MultipleConsumers_UT extends BaseTestCase {
 
     @Autowired

@@ -1,28 +1,23 @@
 package org.recap.camel;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import org.apache.camel.ProducerTemplate;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.powermock.api.mockito.PowerMockito;
 import org.recap.BaseTestCaseUT;
 import org.recap.ScsbConstants;
 import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jaxb.Holding;
 import org.recap.model.jaxb.Holdings;
 import org.recap.model.jaxb.marc.ContentType;
-import org.recap.model.jpa.BibliographicEntity;
-import org.recap.model.jpa.CollectionGroupEntity;
-import org.recap.model.jpa.HoldingsEntity;
-import org.recap.model.jpa.ImsLocationEntity;
-import org.recap.model.jpa.InstitutionEntity;
-import org.recap.model.jpa.ItemEntity;
-import org.recap.model.jpa.ItemStatusEntity;
-import org.recap.model.jpa.XmlRecordEntity;
+import org.recap.model.jpa.*;
 import org.recap.model.jparw.ReportDataEntity;
 import org.recap.model.jparw.ReportEntity;
 import org.recap.repository.CollectionGroupDetailsRepository;
@@ -33,29 +28,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 
 public class RecordProcessorUT extends BaseTestCaseUT{
 
@@ -98,15 +82,14 @@ public class RecordProcessorUT extends BaseTestCaseUT{
     @Mock
     Unmarshaller unmarshaller;
 
-    @Before
+    @BeforeEach
     public void setup() {
-//        PowerMockito.mockStatic(JAXBContext.class);
-        PowerMockito.mockStatic(XMLInputFactory.class);
+//        Mockito.mockStatic(JAXBContext.class);
         MockitoAnnotations.initMocks(this);
     }
 
-    @Ignore
-    @Test
+
+    @Disabled
     public void process() throws Exception {
         XmlRecordEntity xmlRecordEntity = getXmlRecordEntity();
         InstitutionEntity institutionEntity = getInstitutionEntity();
@@ -119,8 +102,8 @@ public class RecordProcessorUT extends BaseTestCaseUT{
         Mockito.when(executorService.invokeAll(any())).thenReturn(futures);
         BibRecord bibRecord = new BibRecord();
         bibRecord.setHoldings(Arrays.asList(getHoldings()));
-        PowerMockito.when(JAXBContext.newInstance(BibRecord.class)).thenReturn(jaxbContext);
-        PowerMockito.when(XMLInputFactory.newFactory()).thenReturn(xmlInputFactory);
+        Mockito.when(JAXBContext.newInstance(BibRecord.class)).thenReturn(jaxbContext);
+        Mockito.when(XMLInputFactory.newFactory()).thenReturn(xmlInputFactory);
         Mockito.when(xmlInputFactory.createXMLStreamReader(any(InputStream.class))).thenReturn(xmlStreamReader);
         Mockito.when(jaxbContext.createUnmarshaller()).thenReturn(unmarshaller);
         Mockito.when(unmarshaller.unmarshal(any(XMLStreamReader.class))).thenReturn(bibRecord);
@@ -132,8 +115,7 @@ public class RecordProcessorUT extends BaseTestCaseUT{
         }
     }
 
-    @Ignore
-    @Test
+    @Disabled
     public void processInterruptedException() throws Exception {
         XmlRecordEntity xmlRecordEntity = getXmlRecordEntity();
         InstitutionEntity institutionEntity = getInstitutionEntity();
@@ -146,8 +128,8 @@ public class RecordProcessorUT extends BaseTestCaseUT{
         Mockito.when(executorService.invokeAll(any())).thenReturn(futures);
         BibRecord bibRecord = new BibRecord();
         bibRecord.setHoldings(Arrays.asList(getHoldings()));
-        PowerMockito.when(JAXBContext.newInstance(BibRecord.class)).thenReturn(jaxbContext);
-        PowerMockito.when(XMLInputFactory.newFactory()).thenReturn(xmlInputFactory);
+        Mockito.when(JAXBContext.newInstance(BibRecord.class)).thenReturn(jaxbContext);
+        Mockito.when(XMLInputFactory.newFactory()).thenReturn(xmlInputFactory);
         try {
             Mockito.when(xmlInputFactory.createXMLStreamReader(any(InputStream.class))).thenReturn(xmlStreamReader);
             Mockito.when(jaxbContext.createUnmarshaller()).thenReturn(unmarshaller);
@@ -176,8 +158,8 @@ public class RecordProcessorUT extends BaseTestCaseUT{
             Mockito.when(future.get()).thenThrow(new ExecutionException(new Throwable()));
             Mockito.when(executorService.invokeAll(any())).thenReturn(futures);
             BibRecord bibRecord = new BibRecord();
-            PowerMockito.when(JAXBContext.newInstance(BibRecord.class)).thenReturn(jaxbContext);
-            PowerMockito.when(XMLInputFactory.newFactory()).thenReturn(xmlInputFactory);
+            Mockito.when(JAXBContext.newInstance(BibRecord.class)).thenReturn(jaxbContext);
+            Mockito.when(XMLInputFactory.newFactory()).thenReturn(xmlInputFactory);
             Mockito.when(xmlInputFactory.createXMLStreamReader(any(InputStream.class))).thenReturn(xmlStreamReader);
             Mockito.when(jaxbContext.createUnmarshaller()).thenReturn(unmarshaller);
             Mockito.when(unmarshaller.unmarshal(any(XMLStreamReader.class))).thenReturn(bibRecord);
@@ -199,8 +181,7 @@ public class RecordProcessorUT extends BaseTestCaseUT{
     }
 
 
-    @Ignore
-    @Test
+    @Disabled
     public void processInnerException() throws Exception {
         XmlRecordEntity xmlRecordEntity = getXmlRecordEntity();
         InstitutionEntity institutionEntity = getInstitutionEntity();
@@ -211,8 +192,8 @@ public class RecordProcessorUT extends BaseTestCaseUT{
         futures.add(future);
         Mockito.when(executorService.invokeAll(any())).thenThrow(new InterruptedException());
         BibRecord bibRecord = new BibRecord();
-        PowerMockito.when(JAXBContext.newInstance(BibRecord.class)).thenReturn(jaxbContext);
-        PowerMockito.when(XMLInputFactory.newFactory()).thenReturn(xmlInputFactory);
+        Mockito.when(JAXBContext.newInstance(BibRecord.class)).thenReturn(jaxbContext);
+        Mockito.when(XMLInputFactory.newFactory()).thenReturn(xmlInputFactory);
         Mockito.when(xmlInputFactory.createXMLStreamReader(any(InputStream.class))).thenReturn(xmlStreamReader);
         Mockito.when(jaxbContext.createUnmarshaller()).thenReturn(unmarshaller);
         Mockito.when(unmarshaller.unmarshal(any(XMLStreamReader.class))).thenReturn(bibRecord);

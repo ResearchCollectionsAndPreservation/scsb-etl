@@ -1,7 +1,7 @@
 package org.recap.service.executor.datadump;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -17,8 +17,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DataDumpExecutorServiceUT extends BaseTestCaseUT {
 
@@ -38,7 +38,7 @@ public class DataDumpExecutorServiceUT extends BaseTestCaseUT {
     DeletedDataDumpExecutorService deletedDataDumpExecutorService;
 
 
-    @Before
+    @BeforeEach
     public void before() {
         MockitoAnnotations.initMocks(this);
     }

@@ -1,8 +1,8 @@
 package org.recap.service.email.datadump;
 
 import org.apache.camel.ProducerTemplate;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DataDumpEmailServiceUT extends BaseTestCaseUT {
 
@@ -44,7 +44,7 @@ public class DataDumpEmailServiceUT extends BaseTestCaseUT {
     @Value("${etl.data.dump.fetchtype.full}")
     private final String dataDumpFetchType = "10";
 
-    @Before
+    @BeforeEach
     public void setup() {
         ReflectionTestUtils.setField(dataDumpEmailService, "fileSystemDataDumpDirectory", fileSystemDataDumpDirectory);
         ReflectionTestUtils.setField(dataDumpEmailService, "ftpDataDumpDirectory", "/");

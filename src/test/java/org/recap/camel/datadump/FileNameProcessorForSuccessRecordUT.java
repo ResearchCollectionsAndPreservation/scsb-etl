@@ -5,7 +5,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.support.DefaultExchange;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.recap.ScsbCommonConstants;
 import org.recap.camel.FileNameProcessorForSuccessRecord;
 import org.recap.model.csv.SCSBCSVSuccessRecord;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileNameProcessorForSuccessRecordUT {
 

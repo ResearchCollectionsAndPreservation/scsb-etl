@@ -1,7 +1,7 @@
 package org.recap.config;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.recap.BaseTestCaseUT;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -14,7 +14,7 @@ public class AWSClientConfigUT extends BaseTestCaseUT {
     @InjectMocks
     AWSClientConfig awsClientConfig;
 
-    @Before
+    @BeforeEach
     public void setup() {
         ReflectionTestUtils.setField(awsClientConfig, "awsAccessKey", testKey);
         ReflectionTestUtils.setField(awsClientConfig, "awsAccessSecretKey", testSecretKey);

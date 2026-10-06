@@ -1,7 +1,7 @@
 package org.recap.camel;
 
 import org.apache.camel.CamelContext;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.recap.BaseTestCase;
 import org.recap.camel.datadump.DataDumpSequenceProcessor;
 import org.recap.camel.datadump.consumer.DataExportCompletionStatusActiveMQConsumer;

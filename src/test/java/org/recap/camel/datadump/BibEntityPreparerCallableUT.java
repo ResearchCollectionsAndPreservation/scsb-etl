@@ -1,7 +1,7 @@
 package org.recap.camel.datadump;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.recap.BaseTestCaseUT;
 import org.recap.camel.datadump.callable.BibEntityPreparerCallable;
 import org.recap.model.jpa.BibliographicEntity;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BibEntityPreparerCallableUT extends BaseTestCaseUT {
 
@@ -19,7 +19,7 @@ public class BibEntityPreparerCallableUT extends BaseTestCaseUT {
 
     BibliographicEntity bibliographicEntity;
 
-    @Before
+    @BeforeEach
     public void before() {
         bibliographicEntity = new BibliographicEntity();
         bibliographicEntity.setId(100);

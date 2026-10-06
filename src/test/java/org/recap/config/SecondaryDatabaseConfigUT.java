@@ -1,6 +1,6 @@
 package org.recap.config;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -10,7 +10,7 @@ import org.springframework.core.env.Environment;
 
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 
 public class SecondaryDatabaseConfigUT extends BaseTestCaseUT {

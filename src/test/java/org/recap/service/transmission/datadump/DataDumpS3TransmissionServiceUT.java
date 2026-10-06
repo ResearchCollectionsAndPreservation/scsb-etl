@@ -1,19 +1,15 @@
 package org.recap.service.transmission.datadump;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.recap.BaseTestCaseUT;
 import org.recap.ScsbConstants;
 import org.recap.model.export.DataDumpRequest;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by premkb on 2/10/16.
@@ -52,7 +48,7 @@ public class DataDumpS3TransmissionServiceUT extends BaseTestCaseUT {
             "  <marcxml:record></marcxml:record>\n" +
             "</marcxml:collection>";
 
-    @Before
+    @BeforeEach
     public void beforeTest() {
         DataDumpS3TransmissionService = Mockito.spy(DataDumpS3TransmissionService.class);
     }

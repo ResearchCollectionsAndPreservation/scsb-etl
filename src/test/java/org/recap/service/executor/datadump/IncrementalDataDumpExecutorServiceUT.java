@@ -1,7 +1,7 @@
 package org.recap.service.executor.datadump;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.recap.BaseTestCaseUT;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by premkb on 29/9/16.
@@ -28,7 +28,7 @@ public class IncrementalDataDumpExecutorServiceUT extends BaseTestCaseUT {
 
     private String requestingInstitutionCode = "CUL";
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
     }

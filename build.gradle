@@ -119,21 +119,29 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
 
-    testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.5.0'
-    testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'
-    testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.9'
-
     implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+
+    testImplementation 'org.mockito:mockito-core:5.23.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:6.1.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.1.0'
+
 
 }
 
-//configurations.all {
-//    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
 //        if (details.requested.group == 'org.apache.logging.log4j') {
-//            details.useVersion '2.17.0'
+//            details.useVersion '3.0.0-beta2'
 //        }
-//    }
-//}
+        if (details.requested.group == 'org.junit.platform') {
+            details.useVersion '6.1.0'
+        }
+        if (details.requested.group == 'org.junit.jupiter') {
+            details.useVersion '6.1.0'
+        }
+    }
+
+}
 
 dependencyManagement {
     imports {
@@ -149,6 +157,7 @@ eclipse {
 }
 
 test {
+    useJUnitPlatform()
     finalizedBy jacocoTestReport // report is always generated after tests run
     systemProperties = System.properties
     jvmArgs "--add-opens", "java.base/java.lang=ALL-UNNAMED"

@@ -1,11 +1,11 @@
 package org.recap.config;
 
 import brave.sampler.Sampler;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.recap.BaseTestCaseUT;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SamplerConfigUT extends BaseTestCaseUT {
 

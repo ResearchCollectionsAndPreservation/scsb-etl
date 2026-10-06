@@ -1,10 +1,10 @@
 package org.recap.camel.datadump.consumer;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.recap.BaseTestCaseUT;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DataExportCompletionStatusActiveMQConsumerUT extends BaseTestCaseUT {
 

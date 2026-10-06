@@ -3,8 +3,8 @@ package org.recap.controller;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.commons.compress.utils.IOUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -40,7 +40,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Created by chenchulakshmig on 14/7/16.
@@ -83,7 +83,7 @@ public class EtlDataLoadControllerUT extends BaseTestCaseUT{
     @Mock
     ProducerTemplate producer;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
     }

@@ -1,11 +1,11 @@
 package org.recap.model.export;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.recap.BaseTestCaseUT;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class S3RecentDataExportInfoUT extends BaseTestCaseUT {
 

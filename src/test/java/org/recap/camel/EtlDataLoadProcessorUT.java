@@ -2,11 +2,10 @@ package org.recap.camel;
 
 import org.apache.camel.ProducerTemplate;
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.recap.BaseTestCaseUT;
 import org.recap.model.jpa.XmlRecordEntity;
 import org.recap.repository.BibliographicDetailsRepository;
@@ -21,8 +20,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Created by angelind on 27/7/16.
@@ -68,7 +67,7 @@ public class EtlDataLoadProcessorUT extends  BaseTestCaseUT {
         distinctFileNames.add(xmlFileName);
         Mockito.when(xmlRecordRepository.findDistinctFileNames()).thenReturn(distinctFileNames);
         Mockito.when(xmlRecordRepository.countByXmlFileName(Mockito.anyString())).thenReturn(1l);
-        Page<XmlRecordEntity> xmlRecordEntities= PowerMockito.mock(Page.class);
+        Page<XmlRecordEntity> xmlRecordEntities = Mockito.mock(Page.class);
         Mockito.when(xmlRecordRepository.findByXmlFileName(Mockito.any(),Mockito.anyString())).thenReturn(xmlRecordEntities);
         etlDataLoadProcessor.setFileName(xmlFileName);
         etlDataLoadProcessor.setBatchSize(10);
@@ -105,7 +104,7 @@ public class EtlDataLoadProcessorUT extends  BaseTestCaseUT {
         distinctFileNames.add(xmlFileName);
         Mockito.when(xmlRecordRepository.findDistinctFileNames()).thenReturn(distinctFileNames);
         Mockito.when(xmlRecordRepository.countByXmlFileName(Mockito.anyString())).thenReturn(1l);
-        Page<XmlRecordEntity> xmlRecordEntities= PowerMockito.mock(Page.class);
+        Page<XmlRecordEntity> xmlRecordEntities = Mockito.mock(Page.class);
         Mockito.when(xmlRecordRepository.findByXmlFileName(Mockito.any(),Mockito.anyString())).thenReturn(xmlRecordEntities);
 
 

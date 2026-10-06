@@ -7,8 +7,8 @@ import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.file.GenericFile;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.support.DefaultExchange;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -19,15 +19,10 @@ import org.recap.model.jparw.ReportEntity;
 import org.recap.repositoryrw.ReportDetailRepository;
 import org.recap.util.datadump.DataExportHeaderUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class CommonReportGeneratorUT extends BaseTestCaseUT {
 
@@ -43,7 +38,7 @@ public class CommonReportGeneratorUT extends BaseTestCaseUT {
     @Mock
     ProducerTemplate producerTemplate;
 
-    @Before
+    @BeforeEach
     public void init() {
         commonReportGenerator = new CommonReportGenerator();
         MockitoAnnotations.initMocks(this);

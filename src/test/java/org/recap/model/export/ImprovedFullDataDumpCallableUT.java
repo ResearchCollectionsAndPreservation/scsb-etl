@@ -1,12 +1,11 @@
 package org.recap.model.export;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.powermock.api.mockito.PowerMockito;
 import org.recap.BaseTestCaseUT;
 import org.recap.model.jpa.BibliographicEntity;
 import org.recap.model.jpa.ItemEntity;
@@ -14,13 +13,9 @@ import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.service.DataDumpSolrService;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class ImprovedFullDataDumpCallableUT extends BaseTestCaseUT {
@@ -32,7 +27,8 @@ public class ImprovedFullDataDumpCallableUT extends BaseTestCaseUT {
     BibliographicDetailsRepository mockBibliographicDetailsRepository;
 
     List<BibliographicEntity> bibliographicEntityList;
-    @Before
+
+    @BeforeEach
     public void init() {
         bibliographicEntityList = new ArrayList<>();
         BibliographicEntity bibliographicEntity = new BibliographicEntity();
@@ -52,7 +48,7 @@ public class ImprovedFullDataDumpCallableUT extends BaseTestCaseUT {
         try {
             Mockito.when(mockImprovedFullDataDumpCallable.call()).thenReturn("Test Data");
             Mockito.when(mockBibliographicDetailsRepository.getBibliographicEntityList(Arrays.asList(12))).thenReturn(bibliographicEntityList);
-            PowerMockito.whenNew(ImprovedFullDataDumpCallable.class).withArguments(Mockito.any(), Mockito.any()).thenReturn(mockImprovedFullDataDumpCallable);
+            //PowerMockito.whenNew(ImprovedFullDataDumpCallable.class).withArguments(Mockito.any(), Mockito.any()).thenReturn(mockImprovedFullDataDumpCallable);
             ReflectionTestUtils.setField(mockImprovedFullDataDumpCallable,"bibliographicEntityList",bibliographicEntityList);
         } catch (Exception exception) {
             exception.printStackTrace();

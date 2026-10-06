@@ -1,7 +1,7 @@
 package org.recap.config;
 
 import com.zaxxer.hikari.HikariDataSource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -13,7 +13,7 @@ import org.springframework.core.env.Environment;
 import javax.sql.DataSource;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 
 public class PrimaryDataSourceConfigUT extends BaseTestCaseUT {

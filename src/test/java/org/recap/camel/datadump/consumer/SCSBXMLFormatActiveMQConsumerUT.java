@@ -5,17 +5,13 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.support.DefaultExchange;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.recap.BaseTestCaseUT;
-import org.recap.model.jaxb.Bib;
-import org.recap.model.jaxb.BibRecord;
-import org.recap.model.jaxb.Holding;
-import org.recap.model.jaxb.Holdings;
-import org.recap.model.jaxb.Items;
+import org.recap.model.jaxb.*;
 import org.recap.model.jaxb.marc.ContentType;
 import org.recap.service.formatter.datadump.SCSBXmlFormatterService;
 import org.recap.util.XmlFormatter;
@@ -25,8 +21,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 
 public class SCSBXMLFormatActiveMQConsumerUT extends BaseTestCaseUT {

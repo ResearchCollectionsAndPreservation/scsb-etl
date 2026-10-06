@@ -1,7 +1,7 @@
 package org.recap.camel.datadump.callable;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BibRecordPreparerCallableUT extends BaseTestCaseUT {
     @Mock
@@ -26,7 +26,7 @@ public class BibRecordPreparerCallableUT extends BaseTestCaseUT {
     @Mock
     SCSBXmlFormatterService scsbXmlFormatterService;
 
-    @Before
+    @BeforeEach
     public void before() {
         bibRecordPreparerCallable = Mockito.mock(BibRecordPreparerCallable.class);
         scsbXmlFormatterService = Mockito.mock(SCSBXmlFormatterService.class);

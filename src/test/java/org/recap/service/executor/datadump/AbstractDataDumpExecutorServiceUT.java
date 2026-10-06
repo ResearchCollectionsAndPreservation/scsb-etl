@@ -2,8 +2,8 @@ package org.recap.service.executor.datadump;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.impl.DefaultCamelContext;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -18,12 +18,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class AbstractDataDumpExecutorServiceUT extends BaseTestCaseUT {
@@ -40,7 +35,7 @@ public class AbstractDataDumpExecutorServiceUT extends BaseTestCaseUT {
     DataDumpSolrService dataDumpSolrService;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         CamelContext ctx = new DefaultCamelContext();
         SearchRecordsRequest searchRecordsRequest;

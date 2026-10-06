@@ -1,17 +1,15 @@
 package org.recap.model.etl;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Unmarshaller;
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.recap.BaseTestCaseUT;
 import org.recap.TestUtil;
 import org.recap.model.csv.FailureReportSCSBCSVRecord;
-import org.recap.model.jaxb.Bib;
-import org.recap.model.jaxb.BibRecord;
-import org.recap.model.jaxb.Holding;
-import org.recap.model.jaxb.Holdings;
-import org.recap.model.jaxb.Items;
+import org.recap.model.jaxb.*;
 import org.recap.model.jaxb.marc.CollectionType;
 import org.recap.model.jaxb.marc.ContentType;
 import org.recap.model.jaxb.marc.RecordType;
@@ -21,8 +19,6 @@ import org.recap.util.DBReportUtil;
 import org.recap.util.MarcUtil;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
@@ -34,9 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by chenchulakshmig on 1/7/16.

@@ -5,20 +5,20 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.support.DefaultExchange;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.recap.BaseTestCaseUT;
 import org.recap.model.csv.DataDumpSuccessReport;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileNameProcessorForDataDumpSuccessUT extends BaseTestCaseUT {
     FileNameProcessorForDataDumpSuccess fileNameProcessorForDataDumpSuccess;
 
-    @Before
+    @BeforeEach
     public void setUpBefore() {
         fileNameProcessorForDataDumpSuccess = new FileNameProcessorForDataDumpSuccess();
     }

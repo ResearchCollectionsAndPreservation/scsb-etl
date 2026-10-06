@@ -1,16 +1,14 @@
 package org.recap.controller;
 
 import org.apache.camel.ProducerTemplate;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.recap.BaseTestCaseUT;
-import org.recap.PropertyKeyConstants;
 import org.recap.ScsbConstants;
 import org.recap.model.jpa.ItemRequestReceivedInformationEntity;
 import org.recap.repository.ItemRequestInformationRepository;
 import org.recap.service.GatewayRequestLogServiceImpl;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -20,11 +18,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.*;
-import static org.powermock.api.mockito.PowerMockito.doNothing;
+
 
 /**
  * @author Charan Raj C created on 30/03/23
@@ -34,14 +31,6 @@ public class GatewayRequestLogControllerUT extends BaseTestCaseUT {
     @InjectMocks
     GatewayRequestLogController gatewayRequestLogController;
 
-    @Value("${" + ScsbConstants.GATEWAY_REQUESTS_EMAIL_TO + "}")
-    String emailRequestsLogFailed;
-
-    @Value("${" + PropertyKeyConstants.REQUEST_PENDING_LIMIT + "}")
-    Integer MAX_RECORDS_COUNT;
-
-    @Value("${" + ScsbConstants.GATEWAY_REQUESTS_LOG_FREQUENCY_CHECK_IN_SEC + "}")
-    Integer GATEWAY_REQUEST_LOG_FREQUENCY_CHECK_IN_SEC;
 
     @Mock
     ProducerTemplate producer;
@@ -52,9 +41,9 @@ public class GatewayRequestLogControllerUT extends BaseTestCaseUT {
     @Mock
     ItemRequestInformationRepository itemRequestInformationRepository;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -76,7 +65,7 @@ public class GatewayRequestLogControllerUT extends BaseTestCaseUT {
         Date date = new Date();
         doNothing().when(gatewayRequestLogServiceImpl).updateGatewayRequestLogRequests(date);
         Optional<List<ItemRequestReceivedInformationEntity>> entityList = getItemRequestReceivedInformationEntityTest();
-        Mockito.when(itemRequestInformationRepository.findAllByDateAndStatus(date, ScsbConstants.FAILURE));
+        Mockito.when(itemRequestInformationRepository.findAllByDateAndStatus(date, ScsbConstants.FAILURE)).thenReturn(entityList);
         ResponseEntity<String> response = gatewayRequestLogController.requestsLogEmailNotification();
         assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(gatewayRequestLogServiceImpl, times(0)).updateGatewayRequestLogRequests(date);
@@ -88,11 +77,16 @@ public class GatewayRequestLogControllerUT extends BaseTestCaseUT {
 
         try {
             ReflectionTestUtils.setField(gatewayRequestLogController, "MAX_RECORDS_COUNT", 10);
+            ReflectionTestUtils.setField(gatewayRequestLogController, "emailRequestsLogFailed", "test@gmail.com");
             List<ItemRequestReceivedInformationEntity> entityList = new ArrayList<>();
             for (int i = 0; i < 5; i++) {
-                entityList.add(new ItemRequestReceivedInformationEntity());
+                ItemRequestReceivedInformationEntity entity = new ItemRequestReceivedInformationEntity();
+                entity.setRequestedItemBarcode("barcode_" + i);
+                entity.setDate(new Date());
+                entityList.add(entity);
             }
-            ReflectionTestUtils.invokeMethod(gatewayRequestLogController, "sendEmailNotification", getItemRequestReceivedInformationEntity());
+            ReflectionTestUtils.invokeMethod(gatewayRequestLogController, "sendEmailNotification", entityList);
+            verify(producer, times(1)).sendBodyAndHeader(ArgumentMatchers.anyString(), any(), any(), any());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -101,12 +95,16 @@ public class GatewayRequestLogControllerUT extends BaseTestCaseUT {
     @Test
     public void testSendEmailNotificationWithMoreThanMaxRecordsCount() {
         ReflectionTestUtils.setField(gatewayRequestLogController, "MAX_RECORDS_COUNT", 10);
+        ReflectionTestUtils.setField(gatewayRequestLogController, "emailRequestsLogFailed", "test@gmail.com");
         List<ItemRequestReceivedInformationEntity> entityList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            entityList.add(new ItemRequestReceivedInformationEntity());
+        for (int i = 0; i < 15; i++) {
+            ItemRequestReceivedInformationEntity entity = new ItemRequestReceivedInformationEntity();
+            entity.setRequestedItemBarcode("barcode_" + i);
+            entity.setDate(new Date());
+            entityList.add(entity);
         }
-        ReflectionTestUtils.invokeMethod(gatewayRequestLogController, "sendEmailNotification", getItemRequestReceivedInformationEntity());
-        verify(producer, never()).sendBodyAndHeaders(ArgumentMatchers.anyString(), any(), anyMap());
+        ReflectionTestUtils.invokeMethod(gatewayRequestLogController, "sendEmailNotification", entityList);
+        verify(producer, times(1)).sendBodyAndHeader(ArgumentMatchers.anyString(), any(), any(), any());
     }
 
     private Optional<List<ItemRequestReceivedInformationEntity>> getItemRequestReceivedInformationEntityTest() {

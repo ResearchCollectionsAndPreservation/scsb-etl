@@ -1,22 +1,16 @@
 package org.recap.util;
 
-import org.junit.Test;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.recap.BaseTestCaseUT;
 import org.recap.model.jaxb.BibRecord;
 import org.recap.model.jaxb.JAXBHandler;
-import org.recap.model.jaxb.marc.CollectionType;
-import org.recap.model.jaxb.marc.ControlFieldType;
-import org.recap.model.jaxb.marc.DataFieldType;
-import org.recap.model.jaxb.marc.LeaderFieldType;
-import org.recap.model.jaxb.marc.RecordType;
-import org.recap.model.jaxb.marc.RecordTypeType;
-import org.recap.model.jaxb.marc.SubfieldatafieldType;
+import org.recap.model.jaxb.marc.*;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -26,12 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by pvsubrah on 6/22/16.

@@ -1,8 +1,8 @@
 package org.recap.service.formatter.datadump;
 
 import org.apache.camel.ProducerTemplate;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -13,13 +13,7 @@ import org.recap.ScsbConstants;
 import org.recap.TestUtil;
 import org.recap.camel.BibDataProcessor;
 import org.recap.model.jaxb.BibRecord;
-import org.recap.model.jpa.BibliographicEntity;
-import org.recap.model.jpa.CollectionGroupEntity;
-import org.recap.model.jpa.HoldingsEntity;
-import org.recap.model.jpa.InstitutionEntity;
-import org.recap.model.jpa.ItemEntity;
-import org.recap.model.jpa.ItemStatusEntity;
-import org.recap.model.jpa.MatchingBibInfoDetail;
+import org.recap.model.jpa.*;
 import org.recap.repository.BibliographicDetailsRepository;
 import org.recap.repository.MatchingBibInfoDetailRepository;
 import org.recap.repositoryrw.ReportDetailRepository;
@@ -30,14 +24,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by premkb on 23/8/16.
@@ -160,7 +149,7 @@ public class SCSBXmlFormatterServiceUT extends BaseTestCaseUT {
             "</collection>\n";
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
